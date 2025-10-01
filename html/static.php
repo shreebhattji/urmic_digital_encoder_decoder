@@ -275,26 +275,16 @@ rtmp {
 
     application " . $input_rtmp_mount . " {
       live on;
-      drop_idle_publisher 10;
-      idle_streams off;
       record off;
       meta off;
       wait_video on;
-      allow publish all;
-      deny play all;
-      allow play 127.0.0.1;
     }
 
     application shree {
       live on;
-      drop_idle_publisher 10;
-      idle_streams off;
       record off;
       meta off;
       wait_video on;
-      deny publish all;
-      allow publish 127.0.0.1;
-      allow play all;
       " .
             $rtmp_push
             . "
@@ -311,14 +301,9 @@ rtmp {
 
     application shree {
       live on;
-      drop_idle_publisher 10;
-      idle_streams off;
       record off;
       meta off;
       wait_video on;
-      deny publish all;
-      allow publish 127.0.0.1;
-      allow play all;
       " .
             $rtmp_push
             . "
