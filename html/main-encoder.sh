@@ -1,0 +1,1 @@
+ffmpeg -stream_loop -1 -re -i rtmp://127.0.0.1:1935/mahadev/live  -vf "scale=1920x1080" -b:v 3.3M -minrate 3.3M -maxrate 3.3M -bufsize 3.3M -g 12 -c:a aac -ar 48000 -b:a 96k -f flv rtmp://127.0.0.1:1935/shree/bhattji

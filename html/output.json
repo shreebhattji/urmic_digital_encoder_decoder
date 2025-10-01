@@ -1,0 +1,135 @@
+{
+    "output": "rtmp_multiple",
+    "video": {
+        "resolution": "1920x1080",
+        "format": "h264",
+        "data_rate": "3.3M",
+        "gop": "12"
+    },
+    "audio": {
+        "format": "aac",
+        "sample_rate": "48000",
+        "bit_rate": "96k"
+    },
+    "output_display": "1920x1080@60.00",
+    "output_display_audio": "0,3",
+    "rtmp_single": "",
+    "srt_single": "",
+    "rtmp_multiple": {
+        "1": {
+            "url": "rtmp://192.168.2.45/live/live1",
+            "name": "facebook",
+            "enabled": true
+        },
+        "2": {
+            "url": "rtmp://192.168.2.45/live/live2",
+            "name": "youtube.com",
+            "enabled": true
+        },
+        "3": {
+            "url": "rtmp://192.168.2.45/live/live3",
+            "name": "urmic",
+            "enabled": true
+        },
+        "4": {
+            "url": "rtmp://192.168.2.45/live/live4",
+            "name": "test4",
+            "enabled": true
+        },
+        "5": {
+            "url": "",
+            "name": "",
+            "enabled": false
+        },
+        "6": {
+            "url": "",
+            "name": "",
+            "enabled": false
+        },
+        "7": {
+            "url": "",
+            "name": "",
+            "enabled": false
+        },
+        "8": {
+            "url": "",
+            "name": "",
+            "enabled": false
+        },
+        "9": {
+            "url": "",
+            "name": "",
+            "enabled": false
+        },
+        "10": {
+            "url": "",
+            "name": "",
+            "enabled": false
+        },
+        "11": {
+            "url": "",
+            "name": "",
+            "enabled": false
+        }
+    },
+    "srt_multiple": {
+        "1": {
+            "url": "",
+            "name": "",
+            "enabled": false
+        },
+        "2": {
+            "url": "",
+            "name": "",
+            "enabled": false
+        },
+        "3": {
+            "url": "",
+            "name": "",
+            "enabled": false
+        },
+        "4": {
+            "url": "",
+            "name": "",
+            "enabled": false
+        },
+        "5": {
+            "url": "",
+            "name": "",
+            "enabled": false
+        },
+        "6": {
+            "url": "",
+            "name": "",
+            "enabled": false
+        },
+        "7": {
+            "url": "",
+            "name": "",
+            "enabled": false
+        },
+        "8": {
+            "url": "",
+            "name": "",
+            "enabled": false
+        },
+        "9": {
+            "url": "",
+            "name": "",
+            "enabled": false
+        },
+        "10": {
+            "url": "",
+            "name": "",
+            "enabled": false
+        },
+        "11": {
+            "url": "",
+            "name": "",
+            "enabled": false
+        }
+    },
+    "udp_primary": "",
+    "udp_vlan": "",
+    "custom_output": ""
+}

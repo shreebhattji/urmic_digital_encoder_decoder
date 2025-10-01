@@ -1,0 +1,19 @@
+{
+    "input": "rtmp",
+    "hdmi": {
+        "resolution": "1920x1080",
+        "audio_source": "hw:1,0"
+    },
+    "url": "https://cdn.urmic.org/unavailable.mp4",
+    "rtmp": {
+        "mount": "mahadev",
+        "password": "live",
+        "port": "1935"
+    },
+    "srt": {
+        "stream_id_1": "har",
+        "stream_id_2": "har",
+        "stream_id_3": "Mahadev",
+        "port": "1937"
+    }
+}
