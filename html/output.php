@@ -149,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <select name="output_video_formate" id="output_video_formate">
               <option value="mpeg2" <?php if ($data['video']['format'] == 'mpeg2') echo 'selected'; ?>>mpeg2</option>
               <option value="mpeg4" <?php if ($data['video']['format'] == 'mpeg4') echo 'selected'; ?>>mpeg4</option>
-              <option value="h264" <?php if ($data['video']['format'] == 'h264') echo 'selected'; ?>>h264</option>
+              <option value="h264" <?php if ($data['video']['format'] == 'h264_qsv') echo 'selected'; ?>>h264</option>
               <option value="h265" <?php if ($data['video']['format'] == 'h265') echo 'selected'; ?>>h265</option>
             </select>
           </div>

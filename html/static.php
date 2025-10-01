@@ -132,7 +132,7 @@ function update_service()
     $input_rtmp_mount = $data['rtmp']['mount'];
     $input_rtmp_pass = $data['rtmp']['password'];
     $input_port_srt = $data['srt']['port'];
-    
+
     if ($input_rtmp_port === "80" || $input_rtmp_port === "443" || $input_port_srt === "80" || $input_port_srt === "443") {
         echo '<script>alert("80 or 443 port is not allowed .");</script>';
         die();
@@ -165,7 +165,7 @@ function update_service()
         'output' => 'display',
         'video' => [
             'resolution' => '1920x1080',
-            'format' => 'h264',
+            'format' => 'h264_h264',
             'data_rate' => '4M',
             'gop' => '12'
         ],
@@ -215,16 +215,16 @@ function update_service()
             }
             break;
         case "rtmp_single":
-            $input .= '-vf "scale=' . $data['video']['resolution'] . '" -b:v ' . $data['video']['data_rate']
+            $input .= '-vf "scale=' . $data['video']['resolution'] . '" -c:v ' . $data['video']['format'] . ' -b:v ' . $data['video']['data_rate']
                 . ' -minrate ' . $data['video']['data_rate'] . ' -maxrate ' . $data['video']['data_rate'] . ' -bufsize ' . $data['video']['data_rate'] . ' -g ' . $data['video']['gop'] .
                 ' -c:a ' . $data['audio']['format'] . ' -ar ' . $data['audio']['sample_rate'] . ' -b:a ' . $data['audio']['bit_rate'] . ' -f flv ' . $data['rtmp_single'];
             break;
         case "srt_single":
-            $input .= '-vf "scale=' . $data['video']['resolution'] . '" -b:v ' . $data['video']['data_rate'] . ' -minrate ' . $data['video']['data_rate'] . ' -maxrate ' . $data['video']['data_rate'] . ' -bufsize ' . $data['video']['data_rate'] . ' -g ' . $data['video']['gop'] .
+            $input .= '-vf "scale=' . $data['video']['resolution'] . '" -c:v ' . $data['video']['format'] . '" -b:v ' . $data['video']['data_rate'] . ' -minrate ' . $data['video']['data_rate'] . ' -maxrate ' . $data['video']['data_rate'] . ' -bufsize ' . $data['video']['data_rate'] . ' -g ' . $data['video']['gop'] .
                 ' -c:a ' . $data['audio']['format'] . ' -ar ' . $data['audio']['sample_rate'] . ' -b:a ' . $data['audio']['bit_rate'] . ' -f mpegts ' . $data['srt_single'];
             break;
         case "rtmp_multiple":
-            $input .= '-vf "scale=' . $data['video']['resolution'] . '" -b:v ' . $data['video']['data_rate']
+            $input .= '-vf "scale=' . $data['video']['resolution'] . '" -c:v ' . $data['video']['format'] . '" -b:v ' . $data['video']['data_rate']
                 . ' -minrate ' . $data['video']['data_rate'] . ' -maxrate ' . $data['video']['data_rate'] . ' -bufsize ' . $data['video']['data_rate'] . ' -g ' . $data['video']['gop'] .
                 ' -c:a ' . $data['audio']['format'] . ' -ar ' . $data['audio']['sample_rate'] . ' -b:a ' . $data['audio']['bit_rate'] . ' -f flv rtmp://127.0.0.1:'
                 . $input_rtmp_port . '/shree/bhattji';
@@ -232,7 +232,7 @@ function update_service()
         case "srt_multiple":
             if (empty($input_port))
                 $input_port = "1937";
-            $input .= '-vf "scale=' . $data['video']['resolution'] . '" -b:v ' . $data['video']['data_rate']
+            $input .= '-vf "scale=' . $data['video']['resolution'] . '" -c:v ' . $data['video']['format'] . '" -b:v ' . $data['video']['data_rate']
                 . ' -minrate ' . $data['video']['data_rate'] . ' -maxrate ' . $data['video']['data_rate'] . ' -bufsize ' . $data['video']['data_rate'] . ' -g ' . $data['video']['gop'] .
                 ' -c:a ' . $data['audio']['format'] . ' -ar ' . $data['audio']['sample_rate'] . ' -b:a ' . $data['audio']['bit_rate'] . ' -f mpegts srt://127.0.0.1:'
                 . $input_port . '/shree/bhatt/ji';
