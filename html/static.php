@@ -74,7 +74,7 @@ srt {
 
 function update_service()
 {
-    system('sudo systemctl stop main-encoder');
+    system('sudo /bin/systemctl stop main-encoder');
 
     $candidate = '/var/www/html/nginx.conf';
     $fallback  = '/var/www/html/default_nginx.conf';
@@ -335,7 +335,7 @@ rtmp {
         exec($restart_cmd, $out, $rc2);
     }
 
-    system('sudo systemctl restart main-encoder');
+    system('sudo /bin/systemctl restart main-encoder');
 }
 
 
