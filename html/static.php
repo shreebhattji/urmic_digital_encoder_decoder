@@ -36,7 +36,6 @@ http {
 }
 ";
 
-#sls.conf
 $sls = "
 srt {                
     
@@ -75,6 +74,7 @@ srt {
 
 function update_service()
 {
+    system('sudo systemctl stop main-encoder');
 
     $candidate = '/var/www/html/nginx.conf';
     $fallback  = '/var/www/html/default_nginx.conf';
@@ -85,7 +85,7 @@ function update_service()
     };
 
     $test_cmd    = 'sudo /usr/sbin/nginx -t -q';
-    $restart_cmd = 'sudo /bin/systemctl restart nginx';
+    $restart_cmd = 'sudo /bin/systemctl reload nginx';
 
 
     $input = "ffmpeg ";
@@ -334,6 +334,8 @@ rtmp {
     if ($rc === 0) {
         exec($restart_cmd, $out, $rc2);
     }
+
+    system('sudo systemctl restart main-encoder');
 }
 
 

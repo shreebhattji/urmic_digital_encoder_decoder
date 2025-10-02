@@ -1,5 +1,5 @@
 {
-    "input": "rtmp",
+    "input": "hdmi",
     "hdmi": {
         "resolution": "1920x1080",
         "audio_source": "hw:1,0"
