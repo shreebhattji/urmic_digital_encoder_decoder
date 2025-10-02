@@ -85,11 +85,8 @@ function update_service()
 
     $test_cmd    = 'sudo /usr/sbin/nginx -t -q';
     $restart_cmd = 'sudo /bin/systemctl reload nginx';
-    $stop_main_encoder = 'sudo /bin/systemctl stop main-encoder';
-    $restart_main_encoder = 'sudo /bin/systemctl restart main-encoder';
 
-    exec($stop_main_encoder, $out, $status);
-
+    shell_exec("sudo systemctl stop main-encoder");
 
     $input = "ffmpeg ";
     $input_link = "";
@@ -338,8 +335,8 @@ rtmp {
         exec($restart_cmd, $out, $rc2);
     }
 
-    sleep(3);
-    exec($restart_main_encoder, $out, $status);
+    sleep(5);
+    shell_exec("sudo systemctl restart main-encoder");
 }
 
 
