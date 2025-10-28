@@ -187,7 +187,7 @@ server {
 	index index.php index.html;
 
 	location / {
-		try_files $uri $uri/ =404;
+		try_files \$uri \$uri/ =404;
 	}
 	location ~ \.php$ {
 	    include snippets/fastcgi-php.conf;
