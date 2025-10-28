@@ -75,6 +75,8 @@ srt {
 function update_service()
 {
 
+    shell_exec("sudo /bin/systemctl stop main-encoder");
+
     $candidate = '/var/www/html/nginx.conf';
     $fallback  = '/var/www/html/default_nginx.conf';
     $target    = '/etc/nginx/nginx.conf';
@@ -86,7 +88,6 @@ function update_service()
     $test_cmd    = 'sudo /usr/sbin/nginx -t -q';
     $restart_cmd = 'sudo /bin/systemctl reload nginx';
 
-    shell_exec("sudo systemctl stop main-encoder");
 
     $input = "ffmpeg ";
     $input_link = "";
@@ -104,7 +105,8 @@ function update_service()
         'input' => 'url',
         'hdmi' => [
             'resolution' => '1920x1080',
-            'audio_source' => 'hw:1,0'
+            'audio_source' => 'hw:1,0',
+            'framerate' => '30'
         ],
         'url' => 'https://cdn.urmic.org/unavailable.mp4',
         'rtmp' => [
@@ -140,7 +142,7 @@ function update_service()
 
     switch ($input_source) {
         case "hdmi":
-            $input .= "-f v4l2  -input_format mjpeg -framerate 30 -video_size " . $data['hdmi']['resolution'] . " -i /dev/video0 -f alsa -i " . $data['hdmi']['audio_source'];
+            $input .= "-f v4l2  -input_format mjpeg -framerate " . $data['hdmi']['framerate'] . " -video_size " . $data['hdmi']['resolution'] . " -i /dev/video0 -f alsa -i " . $data['hdmi']['audio_source'];
             break;
         case "url":
             $input .= "-stream_loop -1 -re -i " . $data['url'];
@@ -335,8 +337,8 @@ rtmp {
         exec($restart_cmd, $out, $rc2);
     }
 
-    sleep(5);
-    shell_exec("sudo systemctl restart main-encoder");
+    sleep(10);
+    shell_exec("sudo /bin/systemctl restart main-encoder");
 }
 
 

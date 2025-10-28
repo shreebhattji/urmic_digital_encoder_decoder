@@ -7,7 +7,8 @@ $defaults = [
   'output' => 'display',
   'video' => [
     'resolution' => '1920x1080',
-    'format' => 'h264',
+    'format' => 'h264_qsv',
+    'framerate' => '25',
     'data_rate' => '3.3M',
     'gop' => '12'
   ],
@@ -57,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   $new['video']['resolution'] = $get('output_resolution', $defaults['video']['resolution']);
   $new['video']['format'] = $get('output_video_formate', $defaults['video']['format']);
+  $new['video']['framerate'] = $get('output_video_framerate', $defaults['video']['framerate']);
   $new['video']['data_rate'] = $get('output_data_rate', $defaults['video']['data_rate']);
   $new['video']['gop'] = $get('output_gop', $defaults['video']['gop']);
 
@@ -147,12 +149,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <span class="dropdown-label">Output Video Formate :</span>
           <div class="dropdown">
             <select name="output_video_formate" id="output_video_formate">
-              <option value="mpeg2" <?php if ($data['video']['format'] == 'mpeg2') echo 'selected'; ?>>mpeg2</option>
+              <option value="mpeg2video" <?php if ($data['video']['format'] == 'mpeg2video') echo 'selected'; ?>>mpeg2</option>
               <option value="mpeg4" <?php if ($data['video']['format'] == 'mpeg4') echo 'selected'; ?>>mpeg4</option>
               <option value="h264_qsv" <?php if ($data['video']['format'] == 'h264_qsv') echo 'selected'; ?>>h264</option>
               <option value="h265" <?php if ($data['video']['format'] == 'h265') echo 'selected'; ?>>h265</option>
             </select>
           </div>
+        </div>
+        <div class="input-group">
+          <input type="text" id="output_video_framerate" name="output_video_framerate" placeholder="25" value="<?php echo htmlspecialchars($data['video']['framerate']); ?>">
+          <label for="output_video_framerate">Framerate :</label>
         </div>
         <div class="input-group">
           <input type="text" id="output_data_rate" name="output_data_rate" placeholder="4M" value="<?php echo htmlspecialchars($data['video']['data_rate']); ?>">

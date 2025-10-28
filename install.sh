@@ -1,6 +1,6 @@
 sudo mkdir /etc/srt;
 sudo apt update
-sudo apt install -y vainfo intel-media-va-driver-non-free i965-va-driver-shaders ffmpeg nginx v4l-utils python3-pip php-fpm mpv libnginx-mod-rtmp alsa-utils vlan git zlib1g-dev
+sudo apt install -y vainfo intel-media-va-driver-non-free i965-va-driver-shaders ffmpeg nginx v4l-utils python3-pip php-fpm8.3 mpv libnginx-mod-rtmp alsa-utils vlan git zlib1g-dev
 sudo pip3 install psutil --break-system-packages
 
 dpkg -i srt-1.5.5-Linux.deb
@@ -177,6 +177,30 @@ cat > /etc/srt/srt.sh<<EOL
 /etc/srt/srt -c /var/www/html/sls.conf
 EOL
 
+cat > /etc/nginx/sites-available/default<<EOL
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+	server_name _;
+
+	root /var/www/html;
+	index index.php index.html;
+
+	location / {
+		try_files $uri $uri/ =404;
+	}
+	location ~ \.php$ {
+	    include snippets/fastcgi-php.conf;
+	    fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+	}
+
+    location ~ /\. { deny all; }
+}
+EOL
+
+rm /var/www/html/index.nginx-debian.html;
+cp -r html/* /var/www/html/
+
 sudo chmod +x /usr/local/bin/nginx_system_monitor_sampler.py
 sudo systemctl daemon-reload
 sudo systemctl enable --now system-monitor.service
@@ -187,3 +211,5 @@ sudo systemctl enable --now srt.service
 sudo systemctl status srt.service --no-pager
 sudo systemctl enable --now nginx.service
 sudo systemctl status nginx.service --no-pager
+sudo chmod -R 777 /var/www/html/*
+sudo chown -R www-data:www-data /var/www/html/*

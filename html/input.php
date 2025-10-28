@@ -8,7 +8,8 @@ $defaults = [
     'input' => 'url',
     'hdmi' => [
         'resolution' => '1920x1080',
-        'audio_source' => 'hw:1,0'
+        'audio_source' => 'hw:1,0',
+        'framerate' => '30'
     ],
     'url' => 'https://cdn.urmic.org/unavailable.mp4',
     'rtmp' => [
@@ -43,7 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'input' => $posted('input', $defaults['input']),
         'hdmi' => [
             'resolution' => $posted('hdmi_resolution', $defaults['hdmi']['resolution']),
-            'audio_source' => $posted('hdmi_audio_source', $defaults['hdmi']['audio_source'])
+            'audio_source' => $posted('hdmi_audio_source', $defaults['hdmi']['audio_source']),
+            'framerate' => $posted('hdmi_framerate', $defaults['hdmi']['framerate'])
         ],
         'url' => $posted('url', $defaults['url']),
         'rtmp' => [
@@ -117,6 +119,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $aopts = ['hw:0,0', 'hw:1,0'];
                             foreach ($aopts as $a) {
                                 $sel = ($data['hdmi']['audio_source'] === $a) ? 'selected' : '';
+                                echo "<option value=\"" . htmlspecialchars($a) . "\" $sel>$a</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="dropdown-container">
+                    <span class="dropdown-label">Framerate :</span>
+                    <div class="dropdown">
+                        <select name="hdmi_framerate">
+                            <?php
+                            $aopts = ['10','20', '30', '50','60'];
+                            foreach ($aopts as $a) {
+                                $sel = ($data['hdmi']['framerate'] === $a) ? 'selected' : '';
                                 echo "<option value=\"" . htmlspecialchars($a) . "\" $sel>$a</option>";
                             }
                             ?>
