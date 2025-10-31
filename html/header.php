@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Full-page layout — static header & footer</title>
+    <title>ShreeBhattJi</title>
     <script src="chart.js"></script>
     <style>
         *,
@@ -56,7 +56,8 @@
             max-width: 1100px;
             margin: 12px auto;
             padding: 12px;
-            padding-top: 63px;
+            padding-top: 160px;
+            /* Adjusted for multiple headers */
             background: #ffffff;
             border-radius: 12px;
             box-shadow: 0 8px 24px rgba(2, 6, 23, 0.06);
@@ -116,7 +117,6 @@
                 --footer-h: 56px;
             }
 
-
             main {
                 padding: 10px;
             }
@@ -150,13 +150,47 @@
             font-size: 14px;
         }
 
-        .site-header {
+        /* === MULTIPLE TOP HEADERS === */
+        .top-header-1 {
             position: fixed;
+            left: 0;
+            right: 0;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #e6eef8;
+            font-size: 17px;
+            z-index: 1001;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .top-header-2 {
+            position: fixed;
+            left: 0;
+            right: 0;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #e6eef8;
+            font-size: 14px;
+            z-index: 1001;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .top-header-1 {
             top: 0;
+            background: #0f172a;
+            font-size: 20px;
+        }
+
+        .top-header-2 {
+            position: fixed;
+            top: 50px;
             left: 0;
             right: 0;
             height: var(--footer-h, 73px);
-
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -165,18 +199,47 @@
             background: linear-gradient(90deg, #0f172a, #1e293b);
             color: #e6eef8;
             font-weight: bold;
-
-            font-size: 17px;
+            font-size: 15px;
             font-weight: 500;
             letter-spacing: 0.4px;
-
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-
             z-index: 999;
             transition: all 0.3s ease;
         }
 
+        .top-header-2 nav a {
+            margin-left: 28px;
+            color: #e6eef8;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: bold;
+        }
+
+
+        /* === MAIN NAV HEADER === */
+        .site-header {
+            position: fixed;
+            top: 90px;
+            left: 0;
+            right: 0;
+            height: var(--footer-h, 73px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 48px;
+            margin-bottom: 57px;
+            background: linear-gradient(90deg, #0f172a, #1e293b);
+            color: #e6eef8;
+            font-weight: bold;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 0.4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
 
         .site-header nav a {
             margin-left: 28px;
@@ -188,11 +251,6 @@
 
         .site-header nav a:hover {
             color: #38bdf8;
-        }
-
-        .site-header.scrolled {
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(6px);
         }
 
         .dropdown-container {
@@ -254,7 +312,6 @@
             flex-wrap: nowrap;
             gap: 10px;
         }
-
 
         .input-group {
             position: relative;
@@ -324,7 +381,6 @@
             background-color: red;
             color: white;
             font-weight: bold;
-            /* bold text */
             padding: 10px 20px;
             border: none;
             width: 33%;
@@ -338,14 +394,23 @@
 
         .form-center {
             text-align: center;
-            /* center button */
         }
     </style>
 </head>
 
 <body>
+    <!-- Three stacked headers -->
+    <header class="top-header-1">URMI Universal Encoder / Decoder</header>
+    <header class="top-header-2">
+        <nav aria-label="Top navigation">
+            <a href="about_us.php">Tutorials</a>
+            <a href="about_us.php">About Us</a>
+            <a href="about_us.php">Contact Us</a>
+        </nav>
+    </header>
+
+    <!-- Main navigation header -->
     <header class="site-header">
-        Encoder / Decoder
         <nav aria-label="Top navigation">
             <a href="index.php">Monitor</a>
             <a href="input.php">Input</a>
@@ -353,6 +418,8 @@
             <a href="network.php">Network</a>
             <a href="firewall.php">Firewall</a>
             <a href="firmware.php">Firmware</a>
-            <a href="about_us.php">About Us</a>
         </nav>
     </header>
+</body>
+
+</html>
