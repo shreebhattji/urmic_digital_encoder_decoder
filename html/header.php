@@ -400,10 +400,10 @@
 
 <body>
     <!-- Three stacked headers -->
-    <header class="top-header-1">URMI Universal Encoder / Decoder</header>
+    <header class="top-header-1"><a href="index.php">Universal Digital Encoder / Decoder</a></header>
     <header class="top-header-2">
         <nav aria-label="Top navigation">
-            <a href="about_us.php">Tutorials</a>
+            <a href="https://learn.urmic.org/" target="_blank">Tutorials</a>
             <a href="about_us.php">About Us</a>
             <a href="about_us.php">Contact Us</a>
         </nav>
