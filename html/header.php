@@ -395,28 +395,49 @@
         .form-center {
             text-align: center;
         }
+        .social-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            padding: 8px;
+        }
+        .social-btn {
+            width: 67px;
+            height: 67px;
+            display: inline-grid;
+            place-items: center;
+            border-radius: 8px;
+            background: #f3f4f6;
+            text-decoration: none;
+            transition: transform .12s, box-shadow .12s;
+        }
+        .social-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,.08); }
+        .social-btn svg { width: 22px; height: 22px; display: block; }
+        .sr-only { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
     </style>
 </head>
 
 <body>
     <!-- Three stacked headers -->
-    <header class="top-header-1"><a href="index.php">Universal Digital Encoder / Decoder</a></header>
+    <header class="top-header-1"><a href="index.php" style="color:white; text-decoration:none;">URMI Universal Encoder / Decoder</a></header>
     <header class="top-header-2">
         <nav aria-label="Top navigation">
             <a href="https://learn.urmic.org/" target="_blank">Tutorials</a>
             <a href="about_us.php">About Us</a>
-            <a href="about_us.php">Contact Us</a>
+            <a href="contact_us.php">Contact Us ( Free Service )</a>
+            <a href="premium_service.php">Premium Service</a>
+            <a href="domain.php">Domain SSL</a>
         </nav>
     </header>
 
     <!-- Main navigation header -->
     <header class="site-header">
         <nav aria-label="Top navigation">
+            <a href="status.php">Status</a>
             <a href="index.php">Monitor</a>
             <a href="input.php">Input</a>
             <a href="output.php">Output</a>
             <a href="network.php">Network</a>
-            <a href="firewall.php">Firewall</a>
             <a href="firmware.php">Firmware</a>
         </nav>
     </header>

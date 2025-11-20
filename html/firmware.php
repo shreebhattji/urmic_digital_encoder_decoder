@@ -26,7 +26,7 @@ if ($_POST['action'] === 'update') {
 } elseif ($_POST['action'] === 'reset') {
     $files = glob('/var/www/html/*.json');
     foreach ($files as $file) {
-        if (is_file($file)) {
+        if (is_file($file) && basename($file) !== 'critical.json') {
             unlink($file);
         }
     }

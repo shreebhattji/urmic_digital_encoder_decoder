@@ -89,7 +89,7 @@ function update_service()
     $restart_cmd = 'sudo /bin/systemctl reload nginx';
 
 
-    $input = "ffmpeg ";
+    $input = "";
     $input_link = "";
     $input_source = "";
     $input_rtmp_port = "";
@@ -142,19 +142,17 @@ function update_service()
 
     switch ($input_source) {
         case "hdmi":
-            $input .= "-f v4l2  -input_format mjpeg -framerate " . $data['hdmi']['framerate'] . " -video_size " . $data['hdmi']['resolution'] . " -i /dev/video0 -f alsa -i " . $data['hdmi']['audio_source'];
+            $input = "ffmpeg -thread_queue_size 512 -f v4l2 -input_format mjpeg -framerate " . $data['hdmi']['framerate'] . " -video_size " . $data['hdmi']['resolution'] . " -i /dev/video0 " .
+                "-f alsa -i " . $data['hdmi']['audio_source'] . ' -init_hw_device qsv=hw:/dev/dri/renderD128 -filter_hw_device hw   -fflags +genpts -use_wallclock_as_timestamps 1   -vf "format=nv12,hwupload=extra_hw_frames=64,format=qsv"   -c:v h264_qsv';
             break;
         case "url":
-            $input .= "-stream_loop -1 -re -i " . $data['url'];
-            $input_link = $data['url'];
+            $input .= "ffmpeg -stream_loop -1 -re -i " . $data['url'];
             break;
         case "rtmp":
             $input .= "-stream_loop -1 -re -i rtmp://127.0.0.1:" . $data['rtmp']['port'] . "/" . $data['rtmp']['mount'] . "/" . $data['rtmp']['password'];
-            $input_link = "rtmp://127.0.0.1:" . $data['rtmp']['port'] . "/" . $data['rtmp']['mount'] . "/" . $data['rtmp']['password'];
             break;
         case "srt":
             $input .= "-stream_loop -1 -re -i srt://127.0.0.1:" . $data['srt']['port'] . "/" . $data['srt']['stream_id_1'] . "/" . $data['srt']['stream_id_2'] . "/" . $data['srt']['stream_id_3'];
-            $input_link = "srt://127.0.0.1:" . $data['srt']['port'] . "/" . $data['srt']['stream_id_1'] . "/" . $data['srt']['stream_id_2'] . "/" . $data['srt']['stream_id_3'];
             $input_port_srt = $data['srt']['port'];
             break;
     }
@@ -203,18 +201,23 @@ function update_service()
 
     $rtmp_multiple = $data['rtmp_multiple'];
     $srt_multiple = $data['srt_multiple'];
-    $output = $data['output'];
 
+    $input .= ' -b:v ' . $data['video']['data_rate'] . ' -maxrate ' . $data['video']['data_rate'] . ' -bufsize 10M -g ' . $data['video']['gop'] .' -af "aresample=async=1:first_pts=0" '.
+        ' -c:a ' . $data['audio']['format'] . ' -ar ' . $data['audio']['sample_rate'] . ' -b:a ' . $data['audio']['bit_rate'] . ' -vsync 1 -copytb 1 -f mpegts udp://239.255.255.254:39000?localaddr=127.0.0.1';
+
+    $service = $input;
+    $file = "/var/www/main-encoder.sh";
+    if (file_put_contents($file, $service) !== false) {
+        echo "File saved.";
+    } else {
+        echo "Error writing file.";
+    }
 
 
     switch ($data['output']) {
         case "display":
-            if ($input_source === "hdmi") {
-                echo "<script>alert('HDMI input and Disply Output is not supported');</script>";
-            } else {
-                $output_display_audio = $data['output_display_audio'];
-                $input = "mpv --fs --loop --hwdec=auto --audio-device=alsa/plughw:" . $output_display_audio . " " . $input_link;
-            }
+            $output_display_audio = $data['output_display_audio'];
+            $input = "mpv --fs --loop --hwdec=auto --audio-device=alsa/plughw:" . $output_display_audio . " udp://239.255.255.254:39000";
             break;
         case "rtmp_single":
             $input .= '-vf "scale=' . $data['video']['resolution'] . '" -c:v ' . $data['video']['format'] . ' -b:v ' . $data['video']['data_rate']
@@ -245,14 +248,6 @@ function update_service()
             break;
         case "custom_output":
             break;
-    }
-
-    $service = $input;
-    $file = "/var/www/html/main-encoder.sh";
-    if (file_put_contents($file, $service) !== false) {
-        echo "File saved.";
-    } else {
-        echo "Error writing file.";
     }
 
     if (empty($input_rtmp_port))
