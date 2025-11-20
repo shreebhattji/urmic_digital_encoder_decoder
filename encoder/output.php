@@ -71,6 +71,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $new['output_display'] = $get('output_display', $defaults['output_display']);
   $new['output_display_audio'] = $get('output_display_audio', $defaults['output_display_audio']);
   $new['service_display'] = $get('service_display', $defaults['service_display']);
+  $new['service_rtmp_multiple'] = $get('service_rtmp_multiple', $defaults['service_rtmp_multiple']);
+  $new['service_rtmp_hls'] = $get('service_rtmp_hls', $defaults['service_rtmp_hls']);
+  $new['service_rtmp_dash'] = $get('service_rtmp_dash', $defaults['service_rtmp_dash']);
+  $new['service_srt_multiple'] = $get('service_srt_multiple', $defaults['service_srt_multiple']);
+  $new['service_display'] = $get('service_display', $defaults['service_display']);
+  $new['service_custom'] = $get('service_custom', $defaults['service_custom']);
 
   $new['udp'] = $get('udp', '');
   $new['custom_output'] = $get('custom_output', '');
@@ -100,7 +106,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $success = "Saved.";
     }
   }
-  update_service();
+  if (isset($_POST['display'])) {
+  update_service("display");
+  }
+
+  if (isset($_POST['rtmp'])) {
+  update_service("rtmp");
+  }
+
+  if (isset($_POST['srt'])) {
+  update_service("srt");
+  }
+
+  if (isset($_POST['udo'])) {
+  update_service("udo");
+  }
+
+  if (isset($_POST['custom'])) {
+  update_service("custom");
+  }
+
+
 }
 ?>
 <form method="POST">
@@ -198,7 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="dropdown-container">
           <span class="dropdown-label">Service Status :</span>
           <div class="dropdown">
-            <select name="service_display" id="display">
+            <select name="service_display" id="service_display">
               <option value="enable" <?php if ($data['service_display'] == 'enable') echo 'selected'; ?>>Enable</option>
               <option value="disable" <?php if ($data['service_display'] == 'disable') echo 'selected'; ?>>Disable</option>
             </select>
@@ -284,6 +310,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </select>
           </div>
         </div>
+        <div style="text-align:center; width:100%; margin-top:12px;">
+          <button type="submit" name="display" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Save Display</button>
+        </div>
+
       </div>
 
       <div class="card wide">
@@ -334,6 +364,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
           </div>
         <?php endfor; ?>
+        <div style="text-align:center; width:100%; margin-top:12px;">
+          <button type="submit" name="rtmp" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Save RTMP</button>
+        </div>
+
       </div>
 
       <div class="card wide">
@@ -366,6 +400,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
           </div>
         <?php endfor; ?>
+        <div style="text-align:center; width:100%; margin-top:12px;">
+          <button type="submit" name="srt" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Save SRT</button>
+        </div>
       </div>
 
       <div class="card wide">
@@ -382,6 +419,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="input-group">
           <input type="text" id="udp" name="udp" placeholder="udp" value="<?php echo htmlspecialchars($data['udp']); ?>">
           <label for="udp">UDP Primary URL</label>
+        </div>
+        <div style="text-align:center; width:100%; margin-top:12px;">
+          <button type="submit" name="udp" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Save UDP</button>
         </div>
       </div>
 
@@ -400,15 +440,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <input type="text" id="custom_output" name="custom_output" placeholder="custom" value="<?php echo htmlspecialchars($data['custom_output']); ?>">
           <label for="custom_output">Custom Output</label>
         </div>
+        <div style="text-align:center; width:100%; margin-top:12px;">
+          <button type="submit" name="custom" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Save Custom</button>
+        </div>
       </div>
-
     </div>
 
-    <div style="text-align:center; width:100%; margin-top:12px;">
-      <button type="submit" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Save</button>
-    </div>
     <br><br><br>
-
 </form>
 
 <?php

@@ -25,6 +25,10 @@
     <div>CPU: <span id="lastCpu">—</span>% · RAM: <span id="lastRam">—</span>% · In: <span id="lastIn">—</span>KB/s ·
       Out: <span id="lastOut">—</span>KB/s</div>
   </div>
+  <br>
+  <br>
+  <br>
+  <br>
 </div>
 <script>
   const POLL_MS = 1000;

@@ -10,14 +10,14 @@ $defaults = [
     ],
     'url' => 'https://cdn.urmic.org/unavailable.mp4',
     'rtmp' => [
-        'mount' => 'shreebhattji',
+        'mount' => 'channel_name',
         'password' => 'live',
         'port' => '1935'
     ],
     'srt' => [
         'stream_id_1' => 'har',
         'stream_id_2' => 'har',
-        'stream_id_3' => 'Mahadev',
+        'stream_id_3' => 'mahadev',
         'port' => '1937'
     ],
     'udp'=>'udp://@224.1.1.1:8000',
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $saveSuccess = "Saved.";
     }
 
-    update_service();
+    update_service("input");
 }
 ?>
 

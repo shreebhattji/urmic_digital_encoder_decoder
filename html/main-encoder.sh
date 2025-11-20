@@ -1,1 +1,0 @@
-ffmpeg -stream_loop -1 -re -i https://cdn.urmic.org/unavailable.mp4  -vf "scale=1920x1080" -c:v mpeg2video -b:v 3.3M -minrate 3.3M -maxrate 3.3M -bufsize 3.3M -g 12 -c:a aac -ar 48000 -b:a 96k -f flv rtmp://127.0.0.1:1935/shree/bhattji

@@ -324,14 +324,14 @@ rtmp {
                 exec('sudo cp /var/www/nginx.conf /etc/nginx/');
                 exec("$nginx -t 2>&1", $output, $status);
                 if ($status === 0) {
-                    // Config OK → restart nginx
-                    exec("sudo systemctl restart nginx");
-                    exec("sudo systemctl reset-failed encoder-rtmp.service");
-                    exec("sudo systemctl restart encoder-rtmp");
+                    exec("sudo systemctl restart nginx 2>&1", $o, $s);
+                    while (trim(shell_exec("systemctl is-active nginx")) !== "active") {
+                        sleep(1);
+                    }
+                    exec("sudo systemctl enable encoder-rtmp");
                 } else {
                     exec('sudo cp /var/www/nginx.conf /etc/nginx/');
                     exec("sudo systemctl restart nginx");
-                    exec("sudo systemctl stop encoder-rtmp");
                 }
             } {
             }

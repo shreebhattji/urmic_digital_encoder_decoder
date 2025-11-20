@@ -1,0 +1,1 @@
+ffmpeg -fflags nobuffer -i "udp://239.255.255.254:39000?localaddr=127.0.0.1&fifo_size=5000000&overrun_nonfatal=1" -c:v copy -c:a aac -f flv rtmp://127.0.0.1:1935/shree/bhattji

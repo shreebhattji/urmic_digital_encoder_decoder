@@ -1,6 +1,6 @@
 sudo mkdir /etc/srt;
 sudo apt update
-sudo apt install -y vainfo intel-media-va-driver-non-free i965-va-driver-shaders ffmpeg nginx v4l-utils python3-pip php8.3-fpm mpv libnginx-mod-rtmp alsa-utils vlan git zlib1g-dev
+sudo apt install -y vainfo intel-media-va-driver-non-free i965-va-driver libmfx1 certbot intel-gpu-tools python3-certbot-nginx ffmpeg nginx v4l-utils python3-pip php8.3-fpm mpv libnginx-mod-rtmp alsa-utils vlan git zlib1g-dev
 sudo pip3 install psutil --break-system-packages
 
 dpkg -i srt-1.5.5-Linux.deb
@@ -9,14 +9,33 @@ cat >/etc/sudoers.d/www-data<<EOL
 www-data     ALL=(ALL) NOPASSWD: ALL
 EOL
 
-cat > /etc/systemd/system/main-encoder.service<<EOL
+cat > /etc/systemd/system/encoder-main.service<<EOL
 [Unit]
 Description=Main Encoder by ShreeBhattJi
-After=network.target
+Requires=nginx.service
+After=nginx.service
 
 [Service]
-ExecStart=/bin/bash /var/www/html/main-encoder.sh
-WorkingDirectory=/var/www/html
+ExecStart=/bin/bash /var/www/encoder-main.sh
+WorkingDirectory=/var/www/
+Restart=always
+User=root
+Environment=PATH=/usr/bin:/usr/local/bin
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+cat > /etc/systemd/system/encoder-rtmp.service<<EOL
+[Unit]
+Description= Rtmp Encoder by ShreeBhattJi
+Requires=nginx.service
+After=nginx.service
+
+
+[Service]
+ExecStart=/bin/bash /var/www/encoder-rtmp.sh
+WorkingDirectory=/var/www/
 Restart=always
 User=root
 Environment=PATH=/usr/bin:/usr/local/bin
@@ -93,8 +112,8 @@ def sample_once():
     if elapsed <= 0:
         elapsed = SAMPLE_INTERVAL
 
-    in_rate = (net.bytes_recv - _prev_net.bytes_recv) / elapsed
-    out_rate = (net.bytes_sent - _prev_net.bytes_sent) / elapsed
+    in_rate = int(((net.bytes_recv - _prev_net.bytes_recv) / elapsed) * 8)
+    out_rate = int(((net.bytes_sent - _prev_net.bytes_sent) / elapsed) * 8)
 
     read_rate = (disk.read_bytes - _prev_disk.read_bytes) / elapsed
     write_rate = (disk.write_bytes - _prev_disk.write_bytes) / elapsed
@@ -205,10 +224,13 @@ sudo chmod +x /usr/local/bin/nginx_system_monitor_sampler.py
 sudo systemctl daemon-reload
 sudo systemctl enable --now system-monitor.service
 sudo systemctl status system-monitor.service --no-pager
-sudo systemctl enable --now main-encoder.service
-sudo systemctl status main-encoder.service --no-pager
+sudo systemctl enable --now encoder-main.service
+sudo systemctl status encoder-main.service --no-pager
 sudo systemctl enable --now srt.service
 sudo systemctl status srt.service --no-pager
+
+sudo mkdir -p /var/www/html/hls/shree;
+sudo mkdir -p /var/www/html/dash/shree;
 sudo systemctl enable --now nginx.service
 sudo systemctl status nginx.service --no-pager
 sudo chmod -R 777 /var/www/html/*
