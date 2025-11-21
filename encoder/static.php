@@ -1,39 +1,6 @@
 <?php
 
-$nginx_top = "
-user www-data;
-worker_processes auto;
-pid /run/nginx.pid;
-include /etc/nginx/modules-enabled/*.conf;
-
-events {
-    worker_connections 2048;
-    multi_accept on;
-}
-
-";
-
 $nginx_bottom = "
-
-http {
-  sendfile on;
-  tcp_nopush on;
-  types_hash_max_size 2048;
-
-  include /etc/nginx/mime.types;
-  default_type application/octet-stream;
-        
-  ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3; # Dropping SSLv3, ref: POODLE
-  ssl_prefer_server_ciphers on;
-
-  access_log /var/log/nginx/access.log;
-  error_log /var/log/nginx/error.log warn;
-
-  gzip on;
-  include /etc/nginx/conf.d/*.conf;
-  include /etc/nginx/sites-enabled/*;
-
-}
 ";
 
 $sls = "
@@ -75,28 +42,13 @@ srt {
 function update_service($which_service)
 {
 
-    $candidate = '/var/www/html/nginx.conf';
-    $fallback  = '/var/www/html/default_nginx.conf';
-    $target    = '/etc/nginx/nginx.conf';
-
-    $cp_cmd = function (string $src, string $dst): string {
-        return 'sudo /bin/cp ' . escapeshellarg($src) . ' ' . escapeshellarg($dst);
-    };
-
-    $test_cmd    = 'sudo /usr/sbin/nginx -t -q';
-    $restart_cmd = 'sudo /bin/systemctl reload nginx';
-
-
     $input = "";
-    $input_link = "";
     $input_source = "";
     $input_rtmp_port = "";
     $input_port_srt = "";
     $input_rtmp_mount = "";
     $input_rtmp_pass = "";
     $output = "";
-    global $nginx_top;
-    global $nginx_bottom;
     $rtmp_multiple[] = [];
     $srt_multiple[] = [];
     $defaults = [
@@ -267,7 +219,17 @@ function update_service($which_service)
                 }
             }
 
-            $nginx = $nginx_top;
+            $nginx = "
+user www-data;
+worker_processes auto;
+pid /run/nginx.pid;
+include /etc/nginx/modules-enabled/*.conf;
+
+events {
+    worker_connections 2048;
+    multi_accept on;
+}
+";
             if ($input_source === "rtmp") {
                 $nginx .= "    
 rtmp {
@@ -313,7 +275,28 @@ rtmp {
   }
 }";
             }
-            $nginx .= $nginx_bottom;
+            $nginx .= "
+
+http {
+  sendfile on;
+  tcp_nopush on;
+  types_hash_max_size 2048;
+
+  include /etc/nginx/mime.types;
+  default_type application/octet-stream;
+        
+  ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3; # Dropping SSLv3, ref: POODLE
+  ssl_prefer_server_ciphers on;
+
+  access_log /var/log/nginx/access.log;
+  error_log /var/log/nginx/error.log warn;
+
+  gzip on;
+  include /etc/nginx/conf.d/*.conf;
+  include /etc/nginx/sites-enabled/*;
+
+}            
+            ";
             $file = "/var/www/nginx.conf";
             file_put_contents($file, $nginx);
 
@@ -325,10 +308,7 @@ rtmp {
                 exec("$nginx -t 2>&1", $output, $status);
                 if ($status === 0) {
                     exec("sudo systemctl restart nginx 2>&1", $o, $s);
-                    while (trim(shell_exec("systemctl is-active nginx")) !== "active") {
-                        sleep(1);
-                    }
-                    exec("sudo systemctl enable encoder-rtmp");
+                    exec('sudo systemctl restart encoder-rtmp');
                 } else {
                     exec('sudo cp /var/www/nginx.conf /etc/nginx/');
                     exec("sudo systemctl restart nginx");
