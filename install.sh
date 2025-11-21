@@ -1,15 +1,60 @@
 sudo mkdir /etc/srt;
 sudo apt update
-sudo apt install -y vainfo intel-media-va-driver-non-free i965-va-driver libmfx1 certbot intel-gpu-tools python3-certbot-nginx ffmpeg nginx v4l-utils python3-pip php8.3-fpm mpv libnginx-mod-rtmp alsa-utils vlan git zlib1g-dev
+sudo apt install -y apache2 vainfo intel-media-va-driver-non-free i965-va-driver libmfx1 certbot intel-gpu-tools python3-certbot-nginx ffmpeg nginx v4l-utils python3-pip php8.3-fpm mpv libnginx-mod-rtmp alsa-utils vlan git zlib1g-dev
 sudo pip3 install psutil --break-system-packages
 
 dpkg -i srt-1.5.5-Linux.deb
 
-cat >/etc/sudoers.d/www-data<<EOL
+cat > /etc/sudoers.d/www-data << 'EOL'
 www-data     ALL=(ALL) NOPASSWD: ALL
 EOL
 
-cat > /etc/systemd/system/encoder-main.service<<EOL
+cat > /etc/apache2/sites-available/000-default.conf << 'EOL'
+<VirtualHost *:8080>
+
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/encoder
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+</VirtualHost>
+EOL
+cat > /etc/apache2/sites-available/default-ssl.conf << 'EOL'
+<VirtualHost *:8443>
+	
+    ServerAdmin webmaster@localhost
+	DocumentRoot /var/www/encoder
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+	SSLEngine on
+
+	SSLCertificateFile      /etc/ssl/certs/ssl-cert-snakeoil.pem
+	SSLCertificateKeyFile   /etc/ssl/private/ssl-cert-snakeoil.key
+
+	<FilesMatch "\.(?:cgi|shtml|phtml|php)$">
+		SSLOptions +StdEnvVars
+	</FilesMatch>
+	<Directory /usr/lib/cgi-bin>
+		SSLOptions +StdEnvVars
+	</Directory>
+</VirtualHost>
+EOL
+
+cat>/etc/apache2/ports.conf<< 'EOL'
+Listen 8080
+
+<IfModule ssl_module>
+	Listen 8443
+</IfModule>
+
+<IfModule mod_gnutls.c>
+	Listen 8443
+</IfModule>
+EOL
+
+cat > /etc/systemd/system/encoder-main.service<< 'EOL'
 [Unit]
 Description=Main Encoder by ShreeBhattJi
 Requires=nginx.service
@@ -26,9 +71,27 @@ Environment=PATH=/usr/bin:/usr/local/bin
 WantedBy=multi-user.target
 EOL
 
-cat > /etc/systemd/system/encoder-rtmp.service<<EOL
+cat > /etc/systemd/system/encoder-display.service<< 'EOL'
 [Unit]
-Description= Rtmp Encoder by ShreeBhattJi
+Description= Display Encoder by ShreeBhattJi
+Requires=nginx.service
+After=nginx.service
+
+
+[Service]
+ExecStart=/bin/bash /var/www/encoder-display.sh
+WorkingDirectory=/var/www/
+Restart=always
+User=root
+Environment=PATH=/usr/bin:/usr/local/bin
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+cat > /etc/systemd/system/encoder-rtmp.service<< 'EOL'
+[Unit]
+Description= RTMP Encoder by ShreeBhattJi
 Requires=nginx.service
 After=nginx.service
 
@@ -44,8 +107,44 @@ Environment=PATH=/usr/bin:/usr/local/bin
 WantedBy=multi-user.target
 EOL
 
+cat > /etc/systemd/system/encoder-srt.service<< 'EOL'
+[Unit]
+Description= SRT Encoder by ShreeBhattJi
+Requires=nginx.service
+After=nginx.service
+
+
+[Service]
+ExecStart=/bin/bash /var/www/encoder-srt.sh
+WorkingDirectory=/var/www/
+Restart=always
+User=root
+Environment=PATH=/usr/bin:/usr/local/bin
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+cat > /etc/systemd/system/encoder-udp.service<< 'EOL'
+[Unit]
+Description= UDP Encoder by ShreeBhattJi
+Requires=nginx.service
+After=nginx.service
+
+
+[Service]
+ExecStart=/bin/bash /var/www/encoder-udp.sh
+WorkingDirectory=/var/www/
+Restart=always
+User=root
+Environment=PATH=/usr/bin:/usr/local/bin
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
 # graph monitor setup
-cat > /etc/systemd/system/system-monitor.service<<EOL
+cat > /etc/systemd/system/system-monitor.service<< 'EOL'
 [Unit]
 Description=Lightweight System Monitor Sampler by ShreeBhattJi
 After=network.target
@@ -63,7 +162,7 @@ StandardError=journal
 WantedBy=multi-user.target
 EOL
 
-cat > /usr/local/bin/nginx_system_monitor_sampler.py<<EOL
+cat > /usr/local/bin/nginx_system_monitor_sampler.py<< 'EOL'
 #!/usr/bin/env python3
 """
 Lightweight sampler for nginx static frontend.
@@ -171,7 +270,7 @@ EOL
 # srt server setup
 sudo chmod +x /etc/srt/srt.sh
 sudo cp srt /etc/srt/
-cat > /etc/systemd/system/srt.service<<EOL
+cat > /etc/systemd/system/srt.service<< 'EOL'
 [Unit]
 Description=Srt by ShreeBhattJi
 Documentation=https://dbhatt.org
@@ -192,11 +291,11 @@ SyslogIdentifier=srt
 WantedBy=multi-user.target
 EOL
 
-cat > /etc/srt/srt.sh<<EOL
+cat > /etc/srt/srt.sh<< 'EOL'
 /etc/srt/srt -c /var/www/html/sls.conf
 EOL
 
-cat > /etc/nginx/sites-available/default<<EOL
+cat > /etc/nginx/sites-available/default<< 'EOL'
 server {
 	listen 80 default_server;
 	listen [::]:80 default_server;
