@@ -319,6 +319,9 @@ EOL
 rm /var/www/html/index.nginx-debian.html;
 cp -r html/* /var/www/html/
 
+sudo cp -r encoder /var/www/
+
+
 sudo chmod +x /usr/local/bin/nginx_system_monitor_sampler.py
 sudo systemctl daemon-reload
 sudo systemctl enable --now system-monitor.service
