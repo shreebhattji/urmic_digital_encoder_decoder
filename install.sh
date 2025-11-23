@@ -1,6 +1,6 @@
 sudo mkdir /etc/srt;
 sudo apt update
-sudo apt install -y apache2 vainfo intel-media-va-driver-non-free i965-va-driver libmfx1 certbot intel-gpu-tools python3-certbot-nginx ffmpeg nginx v4l-utils python3-pip php8.3-fpm mpv libnginx-mod-rtmp alsa-utils vlan git zlib1g-dev
+sudo apt install -y apache2 php libapache2-mod-php vainfo intel-media-va-driver-non-free i965-va-driver libmfx1 certbot intel-gpu-tools python3-certbot-nginx ffmpeg nginx v4l-utils python3-pip mpv libnginx-mod-rtmp alsa-utils vlan git zlib1g-dev
 sudo pip3 install psutil --break-system-packages
 
 dpkg -i srt-1.5.5-Linux.deb
