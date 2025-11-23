@@ -338,5 +338,5 @@ sudo systemctl status srt.service --no-pager
 
 sudo systemctl enable --now nginx.service
 sudo systemctl status nginx.service --no-pager
-sudo chmod -R 777 /var/www/html/*
-sudo chown -R www-data:www-data /var/www/html/*
+sudo chmod 777 -R /var/www
+sudo chown -R www-data:www-data /var/www
