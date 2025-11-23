@@ -306,7 +306,7 @@ http {
                 file_put_contents($file, $rtmp);
                 exec('sudo cp /var/www/nginx.conf /etc/nginx/nginx.conf');
                 exec("nginx -t 2>&1", $output, $status);
-                if ($status === 0) {
+                if ($status == 0) {
                     error_log("nginx tested fine ");
                     exec("sudo systemctl restart nginx 2>&1", $o, $s);
                     exec('sudo systemctl enable encoder-rtmp');
