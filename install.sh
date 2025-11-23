@@ -323,6 +323,9 @@ sudo mkdir -p /var/www/encoder;
 cp -r html/* /var/www/html/
 sudo cp -r encoder/* /var/www/encoder/
 
+sudo a2enmod ssl
+sudo systemctl enable apache2
+sudo systemctl restart apache2
 
 sudo chmod +x /usr/local/bin/nginx_system_monitor_sampler.py
 sudo systemctl daemon-reload
