@@ -307,10 +307,12 @@ http {
                 exec('sudo cp /var/www/nginx.conf /etc/nginx/');
                 exec("$nginx -t 2>&1", $output, $status);
                 if ($status === 0) {
+                    error_log("nginx tested fine ");
                     exec("sudo systemctl restart nginx 2>&1", $o, $s);
                     exec('sudo systemctl enable encoder-rtmp');
                     exec('sudo systemctl restart encoder-rtmp');
                 } else {
+                    error_log("Error Nginx default");
                     exec('sudo cp /var/www/nginx.conf /etc/nginx/');
                     exec("sudo systemctl restart nginx");
                     exec('sudo systemctl stop encoder-rtmp');
