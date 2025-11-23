@@ -95,7 +95,7 @@ function update_service($which_service)
     switch ($input_source) {
         case "hdmi":
             $input = "ffmpeg -thread_queue_size 512 -f v4l2 -input_format mjpeg -framerate " . $data['hdmi']['framerate'] . " -video_size " . $data['hdmi']['resolution'] . " -i /dev/video0 " .
-                "-f alsa -i " . $data['hdmi']['audio_source'] . ' -init_hw_device qsv=hw:/dev/dri/renderD128 -filter_hw_device hw   -fflags +genpts -use_wallclock_as_timestamps 1   -vf "format=nv12,hwupload=extra_hw_frames=64,format=qsv"   -c:v h264_qsv';
+                "-f alsa -i " . $data['hdmi']['audio_source'] . ' -init_hw_device qsv=hw:/dev/dri/renderD128 -filter_hw_device hw   -fflags +genpts -use_wallclock_as_timestamps 1   -vf "format=nv12,hwupload=extra_hw_frames=64,format=qsv" ';
             break;
         case "url":
             $input .= "ffmpeg -hwaccel auto -stream_loop -1 -re -i " . $data['url'];
@@ -165,7 +165,7 @@ function update_service($which_service)
     $rtmp_multiple = $data['rtmp_multiple'];
     $srt_multiple = $data['srt_multiple'];
 
-    $input .= ' -b:v ' . $data['video']['data_rate'] . ' -maxrate ' . $data['video']['data_rate'] . ' -bufsize 10M -g ' . $data['video']['gop'] . ' -af "aresample=async=1:first_pts=0" ' .
+    $input .=  ' -c:v h264_qsv -b:v ' . $data['video']['data_rate'] . ' -maxrate ' . $data['video']['data_rate'] . ' -bufsize 10M -g ' . $data['video']['gop'] . ' -af "aresample=async=1:first_pts=0" ' .
         ' -c:a ' . $data['audio']['format'] . ' -ar ' . $data['audio']['sample_rate'] . ' -b:a ' . $data['audio']['bit_rate'] . ' -vsync 1 -copytb 1 -f mpegts udp://239.255.255.254:39000?localaddr=127.0.0.1';
 
     $service = $input;
