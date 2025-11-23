@@ -313,10 +313,10 @@ http {
                     exec('sudo systemctl restart encoder-rtmp');
                 } else {
                     error_log("Error Nginx default");
-                    exec('sudo cp /var/www/nginx.conf /etc/nginx/');
-                    exec("sudo systemctl restart nginx");
-                    exec('sudo systemctl stop encoder-rtmp');
-                    exec('sudo systemctl disable encoder-rtmp');
+#                    exec('sudo cp /var/www/nginx.conf /etc/nginx/');
+#                    exec("sudo systemctl restart nginx");
+#                    exec('sudo systemctl stop encoder-rtmp');
+#                    exec('sudo systemctl disable encoder-rtmp');
                 }
             } {
             }
