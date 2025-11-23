@@ -317,9 +317,11 @@ server {
 EOL
 
 rm /var/www/html/index.nginx-debian.html;
+sudo mkdir -p /var/www/html/hls/shree;
+sudo mkdir -p /var/www/html/dash/shree;
+sudo mkdir -p /var/www/encoder;
 cp -r html/* /var/www/html/
-
-sudo cp -r encoder /var/www/
+sudo cp -r encoder/* /var/www/encoder/
 
 
 sudo chmod +x /usr/local/bin/nginx_system_monitor_sampler.py
@@ -331,8 +333,6 @@ sudo systemctl status encoder-main.service --no-pager
 sudo systemctl enable --now srt.service
 sudo systemctl status srt.service --no-pager
 
-sudo mkdir -p /var/www/html/hls/shree;
-sudo mkdir -p /var/www/html/dash/shree;
 sudo systemctl enable --now nginx.service
 sudo systemctl status nginx.service --no-pager
 sudo chmod -R 777 /var/www/html/*
