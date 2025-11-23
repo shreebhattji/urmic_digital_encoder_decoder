@@ -304,7 +304,7 @@ http {
                 $rtmp = 'ffmpeg -fflags nobuffer -i "udp://239.255.255.254:39000?localaddr=127.0.0.1&fifo_size=5000000&overrun_nonfatal=1" -c:v copy -c:a aac -f flv rtmp://127.0.0.1:1935/shree/bhattji';
                 $file = "/var/www/encoder-rtmp.sh";
                 file_put_contents($file, $rtmp);
-                exec('sudo cp /var/www/nginx.conf /etc/nginx/');
+                exec('sudo cp /var/www/nginx.conf /etc/nginx/nginx.conf');
                 exec("$nginx -t 2>&1", $output, $status);
                 if ($status === 0) {
                     error_log("nginx tested fine ");
