@@ -183,7 +183,6 @@ function update_service($which_service)
         case 'display';
             break;
         case 'rtmp';
-            //if hls service enable add this to nginx
             if ($service_rtmp_hls === "enable") {
                 $hls = "
       hls on;
@@ -195,8 +194,6 @@ function update_service($which_service)
                 $hls = "
 ";
             }
-
-            //if dash service enable add this to nginx
             if ($service_rtmp_dash === "enable") {
                 $dash = "
       dash on;
@@ -313,10 +310,10 @@ http {
                     exec('sudo systemctl restart encoder-rtmp');
                 } else {
                     error_log("Error Nginx default");
-#                    exec('sudo cp /var/www/nginx.conf /etc/nginx/');
-#                    exec("sudo systemctl restart nginx");
-#                    exec('sudo systemctl stop encoder-rtmp');
-#                    exec('sudo systemctl disable encoder-rtmp');
+                    exec('sudo cp /var/www/nginx.conf /etc/nginx/');
+                    exec("sudo systemctl restart nginx");
+                    exec('sudo systemctl stop encoder-rtmp');
+                    exec('sudo systemctl disable encoder-rtmp');
                 }
             } {
             }

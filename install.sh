@@ -173,7 +173,7 @@ from collections import deque
 from datetime import datetime
 import psutil
 
-OUT_FILE = "/var/www/html/metrics.json"
+OUT_FILE = "/var/www/encoder/metrics.json"
 TMP_FILE = OUT_FILE + ".tmp"
 SAMPLE_INTERVAL = 10.0               # seconds between samples
 HISTORY_SECONDS = 15 * 60           # 15 minutes
@@ -305,14 +305,8 @@ server {
 	index index.php index.html;
 
 	location / {
-		try_files \$uri \$uri/ =404;
+        try_files $uri $uri/ =404;
 	}
-	location ~ \.php$ {
-	    include snippets/fastcgi-php.conf;
-	    fastcgi_pass unix:/run/php/php8.3-fpm.sock;
-	}
-
-    location ~ /\. { deny all; }
 }
 EOL
 
