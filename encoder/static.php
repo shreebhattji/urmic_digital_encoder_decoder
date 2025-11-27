@@ -99,7 +99,7 @@ function update_service($which_service)
             $input .= "ffmpeg -hwaccel auto -stream_loop -1 -re -i " . $data['url'];
             break;
         case "udp":
-            $input .= "ffmpeg -hwaccel auto -stream_loop -1 -re -i " . $data['udp']."?reuse=1&fifo_size=1000000&overrun_nonfatal=1";
+            $input .= 'ffmpeg -hwaccel auto -stream_loop -1 -re -i "' . $data['udp']."?reuse=1&fifo_size=1000000&overrun_nonfatal=1".'"';
             break;
         case "rtmp":
             $input .= "ffmpeg -hwaccel auto -stream_loop -1 -re -i rtmp://127.0.0.1:1935/" . $$input_rtmp_mount . "/" . $input_rtmp_pass;
