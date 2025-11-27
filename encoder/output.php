@@ -9,7 +9,7 @@ $defaults = [
     'format' => 'h264_qsv',
     'framerate' => '25',
     'data_rate' => '3.3M',
-    'gop' => '12'
+    'gop' => '25'
   ],
   'audio' => [
     'format' => 'aac',

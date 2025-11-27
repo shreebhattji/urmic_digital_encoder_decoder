@@ -62,16 +62,14 @@ function update_service($which_service)
         'rtmp' => [
             'mount' => 'channel_name',
             'password' => 'live',
-            'port' => '1935'
         ],
         'srt' => [
             'stream_id_1' => 'har',
             'stream_id_2' => 'har',
             'stream_id_3' => 'mahadev',
-            'port' => '1937'
         ],
         'udp' => 'udp://@224.1.1.1:8000',
-        'custom' => ''
+        'custom' => '',
     ];
 
     $jsonFile = __DIR__ . '/input.json';
@@ -100,11 +98,14 @@ function update_service($which_service)
         case "url":
             $input .= "ffmpeg -hwaccel auto -stream_loop -1 -re -i " . $data['url'];
             break;
+        case "udp":
+            $input .= "ffmpeg -hwaccel auto -stream_loop -1 -re -i " . $data['udp']."?reuse=1&fifo_size=1000000&overrun_nonfatal=1";
+            break;
         case "rtmp":
-            $input .= "ffmpeg -hwaccel auto -stream_loop -1 -re -i rtmp://127.0.0.1:" . $$input_rtmp_port . "/" . $$input_rtmp_mount . "/" . $input_rtmp_pass;
+            $input .= "ffmpeg -hwaccel auto -stream_loop -1 -re -i rtmp://127.0.0.1:1935/" . $$input_rtmp_mount . "/" . $input_rtmp_pass;
             break;
         case "srt":
-            $input .= "-stream_loop -1 -re -i srt://127.0.0.1:" . $data['srt']['port'] . "/" . $data['srt']['stream_id_1'] . "/" . $data['srt']['stream_id_2'] . "/" . $data['srt']['stream_id_3'];
+            $input .= "-stream_loop -1 -re -i srt://127.0.0.1:1937/" . $data['srt']['stream_id_1'] . "/" . $data['srt']['stream_id_2'] . "/" . $data['srt']['stream_id_3'];
             $input_port_srt = $data['srt']['port'];
             break;
     }
@@ -166,7 +167,7 @@ function update_service($which_service)
     $srt_multiple = $data['srt_multiple'];
 
     $input .=  ' -c:v h264_qsv -b:v ' . $data['video']['data_rate'] . ' -maxrate ' . $data['video']['data_rate'] . ' -bufsize 10M -g ' . $data['video']['gop'] . ' -af "aresample=async=1:first_pts=0" ' .
-        ' -c:a ' . $data['audio']['format'] . ' -ar ' . $data['audio']['sample_rate'] . ' -b:a ' . $data['audio']['bit_rate'] . ' -vsync 1 -copytb 1 -f mpegts udp://239.255.255.254:39000?localaddr=127.0.0.1';
+        ' -c:a ' . $data['audio']['format'] . ' -ar ' . $data['audio']['sample_rate'] . ' -b:a ' . $data['audio']['bit_rate'] . ' -vsync 1 -copytb 1 -f mpegts udp://127.0.0.1:39000';
 
     $service = $input;
     $file = "/var/www/encoder-main.sh";
@@ -231,7 +232,7 @@ events {
                 $nginx .= "    
 rtmp {
   server {
-    listen " . $input_rtmp_port . ";
+    listen 1935;
     chunk_size 4096;
 
     application " . $input_rtmp_mount . " {
@@ -298,7 +299,7 @@ http {
             file_put_contents($file, $nginx);
 
             if ($service_rtmp_multiple === "enable") {
-                $rtmp = 'ffmpeg -fflags nobuffer -i "udp://239.255.255.254:39000?localaddr=127.0.0.1&fifo_size=5000000&overrun_nonfatal=1" -c:v copy -c:a aac -f flv rtmp://127.0.0.1:1935/shree/bhattji';
+                $rtmp = 'ffmpeg -fflags nobuffer -i "udp://127.0.0.1:39000?fifo_size=5000000&overrun_nonfatal=1" -c:v copy -c:a aac -f flv rtmp://127.0.0.1:1935/shree/bhattji';
                 $file = "/var/www/encoder-rtmp.sh";
                 file_put_contents($file, $rtmp);
                 exec('sudo cp /var/www/nginx.conf /etc/nginx/nginx.conf');

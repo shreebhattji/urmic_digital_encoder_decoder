@@ -12,16 +12,14 @@ $defaults = [
     'rtmp' => [
         'mount' => 'channel_name',
         'password' => 'live',
-        'port' => '1935'
     ],
     'srt' => [
         'stream_id_1' => 'har',
         'stream_id_2' => 'har',
         'stream_id_3' => 'mahadev',
-        'port' => '1937'
     ],
-    'udp'=>'udp://@224.1.1.1:8000',
-    'custom'=>''
+    'udp' => 'udp://@224.1.1.1:8000',
+    'custom' => ''
 ];
 
 if (file_exists($jsonFile)) {
@@ -50,13 +48,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'rtmp' => [
             'mount' => $posted('rtmp_mount', $defaults['rtmp']['mount']),
             'password' => $posted('rtmp_password', $defaults['rtmp']['password']),
-            'port' => $posted('rtmp_port', $defaults['rtmp']['port'])
         ],
         'srt' => [
             'stream_id_1' => $posted('srt_stream_id_1', $defaults['srt']['stream_id_1']),
             'stream_id_2' => $posted('srt_stream_id_2', $defaults['srt']['stream_id_2']),
             'stream_id_3' => $posted('srt_stream_id_3', $defaults['srt']['stream_id_3']),
-            'port' => $posted('srt_port', $defaults['srt']['port'])
         ],
         'udp' => $posted('udp', $defaults['udp']),
         'custom' => $posted('custom', $defaults['custom'])
@@ -103,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="dropdown">
                         <select name="hdmi_resolution">
                             <?php
-                            $res = ['1920x1080', '1600x1200', '1360x768', '1280x1024', '1280x720', '1024x768', '720x576','640x480'];
+                            $res = ['1920x1080', '1600x1200', '1360x768', '1280x1024', '1280x720', '1024x768', '720x576', '640x480'];
                             foreach ($res as $r) {
                                 $sel = ($data['hdmi']['resolution'] === $r) ? 'selected' : '';
                                 echo "<option value=\"" . htmlspecialchars($r) . "\" $sel>$r</option>";
@@ -161,12 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="text" id="rtmp_password" name="rtmp_password" value="<?php echo htmlspecialchars($data['rtmp']['password']); ?>" placeholder="live">
                     <label for="rtmp_password">Password</label>
                 </div>
-                <div class="input-group">
-                    <input type="text" id="rtmp_port" name="rtmp_port" value="<?php echo htmlspecialchars($data['rtmp']['port']); ?>" placeholder="1935">
-                    <label for="rtmp_port">Port Number</label>
-                </div>
             </div>
-
             <div class="card wide">
                 <h3>SRT Caller Setting</h3>
                 <div class="input-group">
@@ -181,12 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="text" id="srt_stream_id_3" name="srt_stream_id_3" value="<?php echo htmlspecialchars($data['srt']['stream_id_3']); ?>" placeholder="pass3">
                     <label for="srt_stream_id_3">Stream ID 3</label>
                 </div>
-                <div class="input-group">
-                    <input type="text" id="srt_port" name="srt_port" value="<?php echo htmlspecialchars($data['srt']['port']); ?>" placeholder="1937">
-                    <label for="srt_port">Port Number</label>
-                </div>
             </div>
-
             <div class="card wide">
                 <h3>UDP</h3>
                 <div class="input-group">
@@ -217,7 +203,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <br>
 
 <?php
-// optional status messages
 if (!empty($saveError)) echo '<p style="color:red;text-align:center;">' . htmlspecialchars($saveError) . '</p>';
 if (!empty($saveSuccess)) echo '<p style="color:green;text-align:center;">' . htmlspecialchars($saveSuccess) . '</p>';
 ?>

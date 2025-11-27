@@ -267,7 +267,11 @@ if __name__ == "__main__":
     main()
 EOL
 
-# srt server setup
+
+sudo mkdir -p /etc/srt/;
+cat > /etc/srt/srt.sh<< 'EOL'
+/etc/srt/srt -c /var/www/sls.conf
+EOL
 sudo chmod +x /etc/srt/srt.sh
 sudo cp srt /etc/srt/
 cat > /etc/systemd/system/srt.service<< 'EOL'
@@ -289,10 +293,6 @@ SyslogIdentifier=srt
 
 [Install]
 WantedBy=multi-user.target
-EOL
-
-cat > /etc/srt/srt.sh<< 'EOL'
-/etc/srt/srt -c /var/www/html/sls.conf
 EOL
 
 cat > /etc/nginx/sites-available/default<< 'EOL'
@@ -334,3 +334,5 @@ sudo systemctl enable --now nginx.service
 sudo systemctl status nginx.service --no-pager
 sudo chmod 777 -R /var/www
 sudo chown -R www-data:www-data /var/www
+sudo ufw allow proto udp to 224.0.0.0/4
+sudo ufw route allow proto udp to 224.0.0.0/4
