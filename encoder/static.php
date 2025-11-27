@@ -167,7 +167,7 @@ function update_service($which_service)
     $srt_multiple = $data['srt_multiple'];
 
     $input .=  ' -c:v h264_qsv -b:v ' . $data['video']['data_rate'] . ' -maxrate ' . $data['video']['data_rate'] . ' -bufsize 10M -g ' . $data['video']['gop'] . ' -af "aresample=async=1:first_pts=0" ' .
-        ' -c:a ' . $data['audio']['format'] . ' -ar ' . $data['audio']['sample_rate'] . ' -b:a ' . $data['audio']['bit_rate'] . ' -vsync 1 -copytb 1 -f mpegts udp://127.0.0.1:39000';
+        ' -c:a ' . $data['audio']['format'] . ' -ar ' . $data['audio']['sample_rate'] . ' -b:a ' . $data['audio']['bit_rate'] . ' -f mpegts udp://127.0.0.1:39000';
 
     $service = $input;
     $file = "/var/www/encoder-main.sh";

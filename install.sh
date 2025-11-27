@@ -272,6 +272,7 @@ sudo mkdir -p /etc/srt/;
 cat > /etc/srt/srt.sh<< 'EOL'
 /etc/srt/srt -c /var/www/sls.conf
 EOL
+
 sudo chmod +x /etc/srt/srt.sh
 sudo cp srt /etc/srt/
 cat > /etc/systemd/system/srt.service<< 'EOL'
@@ -293,6 +294,11 @@ SyslogIdentifier=srt
 
 [Install]
 WantedBy=multi-user.target
+EOL
+
+cat > /etc/srt/srt.sh<< 'EOL'
+/etc/srt/srt -c /var/www/html/sls.conf
+EOL
 EOL
 
 cat > /etc/nginx/sites-available/default<< 'EOL'
