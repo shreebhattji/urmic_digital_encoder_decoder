@@ -112,6 +112,31 @@
         color: #fff;
     }
 
+    .hls-player-wrapper {
+        max-width: 900px;
+        margin: 20px auto;
+        padding: 16px;
+        box-sizing: border-box;
+        background: #121212;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: #f1f1f1;
+    }
+
+    .hls-video {
+        width: 100%;
+        max-height: 70vh;
+        border-radius: 10px;
+        background: #000;
+        outline: none;
+    }
+
+    .hls-video:focus-visible {
+        outline: 2px solid #1e88e5;
+        outline-offset: 2px;
+    }
+
     @media (max-width: 768px) {
         .card-right {
             align-items: flex-start;
@@ -355,12 +380,14 @@
         </div>
 
         <div class="card wide">
-            <div class="player-wrapper">
+            <div class="hls-player-wrapper">
                 <video
-                    id="m3u8Player"
+                    class="hls-video"
                     controls
-                    playsinline>
-                    Your browser does not support HTML5 video.
+                    autoplay
+                    playsinline
+                    src="http://127.0.0.1/shree/bhattji.m3u8">
+                    Your browser does not support HTML5 HLS playback.
                 </video>
             </div>
         </div>
