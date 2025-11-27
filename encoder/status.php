@@ -1,5 +1,104 @@
 <?php include 'header.php'; ?>
+<?php
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    if (isset($_POST['action'])) {
+        $data = explode("_", $_POST['action']);
+
+        switch ($data[0]) {
+            case 'main':
+                switch ($data[1]) {
+                    case 'restart':
+                        exec('sudo systemctl restart encoder-main');
+                        break;
+                    case 'enable':
+                        exec('sudo systemctl enable encoder-main');
+                        exec('sudo systemctl restart encoder-main');
+                        break;
+                    case 'disable':
+                        exec('sudo systemctl stop encoder-main');
+                        exec('sudo systemctl disable encoder-main');
+                        break;
+                }
+                break;
+            case 'rtmp':
+                switch ($data[1]) {
+                    case 'restart':
+                        exec('sudo systemctl enable nginx');
+                        exec('sudo systemctl restart nginx');
+                        exec('sudo systemctl enable encoder-rtmp');
+                        exec('sudo systemctl restart encoder-rtmp');
+                        break;
+                    case 'enable':
+                        exec('sudo systemctl enable nginx');
+                        exec('sudo systemctl restart nginx');
+                        exec('sudo systemctl enable encoder-rtmp');
+                        exec('sudo systemctl restart encoder-rtmp');
+                        break;
+                    case 'disable':
+                        exec('sudo systemctl stop nginx');
+                        exec('sudo systemctl disable nginx');
+                        exec('sudo systemctl stop encoder-rtmp');
+                        exec('sudo systemctl disable encoder-rtmp');
+                        break;
+                }
+                break;
+            case 'srt':
+                switch ($data[1]) {
+                    case 'restart':
+                        exec('sudo systemctl restart srt');
+                        exec('sudo systemctl restart encoder-srt');
+                        break;
+                    case 'enable':
+                        exec('sudo systemctl enable srt');
+                        exec('sudo systemctl restart srt');
+                        exec('sudo systemctl enable encoder-srt');
+                        exec('sudo systemctl restart encoder-srt');
+                        break;
+                    case 'disable':
+                        exec('sudo systemctl stop encoder-srt');
+                        exec('sudo systemctl disable encoder-srt');
+                        exec('sudo systemctl stop srt');
+                        exec('sudo systemctl disable srt');
+                        break;
+                }
+                break;
+            case 'udp':
+                switch ($data[1]) {
+                    case 'restart':
+                        exec('sudo systemctl restart encoder-udp');
+                        break;
+                    case 'enable':
+                        exec('sudo systemctl enable encoder-udp');
+                        exec('sudo systemctl restart encoder-udp');
+                        break;
+                    case 'disable':
+                        exec('sudo systemctl stop encoder-udp');
+                        exec('sudo systemctl disable encoder-udp');
+                        break;
+                }
+                break;
+            case 'custom':
+                switch ($data[1]) {
+                    case 'restart':
+                        exec('sudo systemctl restart encoder-custom');
+                        break;
+                    case 'enable':
+                        exec('sudo systemctl enable encoder-custom');
+                        exec('sudo systemctl restart encoder-custom');
+                        break;
+                    case 'disable':
+                        exec('sudo systemctl stop encoder-custom');
+                        exec('sudo systemctl disable encoder-custom');
+                        break;
+                }
+                break;
+        }
+    }
+}
+
+?>
 <style>
     .card-row {
         display: flex;
@@ -170,16 +269,16 @@
                 </div>
 
                 <form method="post" class="service-buttons">
-                    <button type="submit" name="action_rtmp" value="restart" class="btn-restart">
+                    <button type="submit" name="action" value="main_restart" class="btn-restart">
                         Restart
                     </button>
 
                     <?php if ($serviceEnabled): ?>
-                        <button type="submit" name="action_rtmp" value="disable" class="btn-disable">
+                        <button type="submit" name="action" value="main_disable" class="btn-disable">
                             Disable
                         </button>
                     <?php else: ?>
-                        <button type="submit" name="action_rtmp" value="enable" class="btn-enable">
+                        <button type="submit" name="action" value="main_enable" class="btn-enable">
                             Enable
                         </button>
                     <?php endif; ?>
@@ -221,18 +320,12 @@
                     </div>
 
                     <form method="post" class="service-buttons">
-                        <button type="submit" name="action_rtmp" value="restart" class="btn-restart">
-                            Restart
-                        </button>
+                        <button type="submit" name="action" value="rtmp_restart" class="btn-restart">Restart</button>
 
                         <?php if ($serviceEnabled): ?>
-                            <button type="submit" name="action_rtmp" value="disable" class="btn-disable">
-                                Disable
-                            </button>
+                            <button type="submit" name="action" value="rtmp_disable" class="btn-disable">Disable</button>
                         <?php else: ?>
-                            <button type="submit" name="action_rtmp" value="enable" class="btn-enable">
-                                Enable
-                            </button>
+                            <button type="submit" name="action" value="rtmp_enable" class="btn-enable">Enable</button>
                         <?php endif; ?>
                     </form>
                 </div>
@@ -271,18 +364,12 @@
                     </div>
 
                     <form method="post" class="service-buttons">
-                        <button type="submit" name="action_rtmp" value="restart" class="btn-restart">
-                            Restart
-                        </button>
+                        <button type="submit" name="action" value="srt_restart" class="btn-restart">Restart</button>
 
                         <?php if ($serviceEnabled): ?>
-                            <button type="submit" name="action_rtmp" value="disable" class="btn-disable">
-                                Disable
-                            </button>
+                            <button type="submit" name="action" value="srt_disable" class="btn-disable">Disable</button>
                         <?php else: ?>
-                            <button type="submit" name="action_rtmp" value="enable" class="btn-enable">
-                                Enable
-                            </button>
+                            <button type="submit" name="action" value="srt_enable" class="btn-enable">Enable</button>
                         <?php endif; ?>
                     </form>
                 </div>
@@ -321,16 +408,16 @@
                     </div>
 
                     <form method="post" class="service-buttons">
-                        <button type="submit" name="action_rtmp" value="restart" class="btn-restart">
+                        <button type="submit" name="action" value="udp_restart" class="btn-restart">
                             Restart
                         </button>
 
                         <?php if ($serviceEnabled): ?>
-                            <button type="submit" name="action_rtmp" value="disable" class="btn-disable">
+                            <button type="submit" name="action" value="udp_disable" class="btn-disable">
                                 Disable
                             </button>
                         <?php else: ?>
-                            <button type="submit" name="action_rtmp" value="enable" class="btn-enable">
+                            <button type="submit" name="action" value="udp_enable" class="btn-enable">
                                 Enable
                             </button>
                         <?php endif; ?>
@@ -362,16 +449,16 @@
                 </div>
 
                 <form method="post" class="service-buttons">
-                    <button type="submit" name="action_rtmp" value="restart" class="btn-restart">
+                    <button type="submit" name="action" value="custom_restart" class="btn-restart">
                         Restart
                     </button>
 
                     <?php if ($serviceEnabled): ?>
-                        <button type="submit" name="action_rtmp" value="disable" class="btn-disable">
+                        <button type="submit" name="action" value="custom_disable" class="btn-disable">
                             Disable
                         </button>
                     <?php else: ?>
-                        <button type="submit" name="action_rtmp" value="enable" class="btn-enable">
+                        <button type="submit" name="action" value="custom_enable" class="btn-enable">
                             Enable
                         </button>
                     <?php endif; ?>
