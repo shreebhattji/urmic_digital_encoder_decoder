@@ -15,9 +15,9 @@ function update_service($which_service)
     $input_rtmp_mount = "";
     $input_rtmp_pass = "";
     $output = "";
-    $srt_pass1 = generateRandomString(16);
-    $srt_pass2 = generateRandomString(16);
-    $srt_pass3 = generateRandomString(16);
+    $srt_pass1 = "";
+    $srt_pass2 = "";
+    $srt_pass3 = "";
     $rtmp_multiple[] = [];
     $srt_multiple[] = [];
     $defaults = [
@@ -33,9 +33,9 @@ function update_service($which_service)
             'password' => 'live',
         ],
         'srt' => [
-            'stream_id_1' => 'pass1',
-            'stream_id_2' => 'pass2',
-            'stream_id_3' => 'pass3',
+            'stream_id_1' => "'".generateRandomString(16)."'",
+            'stream_id_2' => "'".generateRandomString(16)."'",
+            'stream_id_3' => "'".generateRandomString(16)."'",
         ],
         'udp' => 'udp://@224.1.1.1:8000',
         'custom' => '',
