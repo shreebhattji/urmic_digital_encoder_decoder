@@ -286,7 +286,13 @@ http {
                     }
                 }
 
-
+                if ($srt_pass1 === "") {
+                    $srt_pass1 = generateRandomString(16);
+                }
+                
+                if ($srt_pass2 === "") {
+                    $srt_pass2 = generateRandomString(16);
+                }
 
                 $sls = "
 srt {                
@@ -323,7 +329,7 @@ srt {
     }
 }
 ";
-                $service = 'ffmpeg -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1" -c copy -f mpeg srt://127.0.0.1/shree/bhatt/ji';
+                $service = 'ffmpeg -fflags nobuffer -i udp://@239.255.254.254:39000 -c copy -f mpeg srt://127.0.0.1/shree/bhatt/ji';
                 $file = "/var/www/encoder-srt.sh";
                 file_put_contents($file, $service);
 
@@ -357,3 +363,10 @@ function update_firewall() {}
 function update_network() {}
 
 function update_firmware() {}
+
+function generateRandomString($length = 16)
+{
+    $bytes = random_bytes(ceil($length / 2));
+    $randomString = bin2hex($bytes);
+    return substr($randomString, 0, $length);
+}
