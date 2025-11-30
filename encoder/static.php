@@ -33,9 +33,9 @@ function update_service($which_service)
             'password' => 'live',
         ],
         'srt' => [
-            'stream_id_1' => "'".generateRandomString(16)."'",
-            'stream_id_2' => "'".generateRandomString(16)."'",
-            'stream_id_3' => "'".generateRandomString(16)."'",
+            'stream_id_1' => 'forever',
+            'stream_id_2' => 'steaming',
+            'stream_id_3' => 'partner',
         ],
         'udp' => 'udp://@224.1.1.1:8000',
         'custom' => '',
@@ -51,9 +51,9 @@ function update_service($which_service)
     $input_source = $data['input'];
     $input_rtmp_mount = $data['rtmp']['mount'];
     $input_rtmp_pass = $data['rtmp']['password'];
-    $srt_pass1 = $data['stream_id_1']['pass1'];
-    $srt_pass2 = $data['stream_id_2']['pass2'];
-    $srt_pass3 = $data['stream_id_3']['pass3'];
+    $srt_pass1 = $data['srt']['stream_id_1'];
+    $srt_pass2 = $data['srt']['stream_id_2'];
+    $srt_pass3 = $data['srt']['stream_id_3'];
 
     switch ($input_source) {
         case "hdmi":

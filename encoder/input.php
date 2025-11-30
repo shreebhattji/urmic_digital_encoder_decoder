@@ -14,9 +14,9 @@ $defaults = [
         'password' => 'live',
     ],
     'srt' => [
-        'stream_id_1' => 'har',
-        'stream_id_2' => 'har',
-        'stream_id_3' => 'mahadev',
+        'stream_id_1' => 'forever',
+        'stream_id_2' => 'steaming',
+        'stream_id_3' => 'partner',
     ],
     'udp' => 'udp://@224.1.1.1:8000',
     'custom' => ''
