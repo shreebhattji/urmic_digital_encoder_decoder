@@ -296,9 +296,6 @@ SyslogIdentifier=srt
 WantedBy=multi-user.target
 EOL
 
-cat > /etc/srt/srt.sh<< 'EOL'
-/etc/srt/srt -c /var/www/html/sls.conf
-EOL
 EOL
 
 cat > /etc/nginx/sites-available/default<< 'EOL'
