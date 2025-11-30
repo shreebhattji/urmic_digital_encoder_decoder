@@ -70,7 +70,7 @@ function update_service($which_service)
             $input .= "ffmpeg -hwaccel auto -stream_loop -1 -re -i rtmp://127.0.0.1:1935/" . $$input_rtmp_mount . "/" . $input_rtmp_pass;
             break;
         case "srt":
-            $input .= "ffmpeg -hwaccel auto -stream_loop -1 -re -i srt://127.0.0.1:1937/" . $srt_pass1 . "/" . $srt_pass2 . "/" . $srt_pass3;
+            $input .= "ffmpeg -hwaccel auto -stream_loop -1 -re -i srt://127.0.0.1:1937/shree/bhatt/" . $srt_pass3;
             break;
     }
     $input .= "  ";
@@ -327,7 +327,7 @@ srt {
     }
 }
 ";
-                $service = 'ffmpeg -fflags nobuffer -i udp://@239.255.254.254:39000 -c copy -f mpeg srt://127.0.0.1/shree/bhatt/ji';
+                $service = 'ffmpeg -fflags nobuffer -i udp://@239.255.254.254:39000 -c copy -f mpeg srt://127.0.0.1/'.$srt_pass1.'/'.$srt_pass2.'/ji';
                 $file = "/var/www/encoder-srt.sh";
                 file_put_contents($file, $service);
 
