@@ -15,9 +15,9 @@ function update_service($which_service)
     $input_rtmp_mount = "";
     $input_rtmp_pass = "";
     $output = "";
-    $srt_pass1 = "";
-    $srt_pass2 = "";
-    $srt_pass3 = "";
+    $srt_pass1 = generateRandomString(16);
+    $srt_pass2 = generateRandomString(16);
+    $srt_pass3 = generateRandomString(16);
     $rtmp_multiple[] = [];
     $srt_multiple[] = [];
     $defaults = [
@@ -290,14 +290,6 @@ http {
                     if ($srt_multiple[$i]['enabled'] == 1) {
                         $srt_push .= " " . $srt_multiple[$i]['url'];
                     }
-                }
-
-                if ($srt_pass1 == "") {
-                    $srt_pass1 = generateRandomString(16);
-                }
-                
-                if ($srt_pass2 == "") {
-                    $srt_pass2 = generateRandomString(16);
                 }
 
                 $sls = "
