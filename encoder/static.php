@@ -1,5 +1,11 @@
 <?php
 
+function generateRandomString($length = 16)
+{
+    $bytes = random_bytes(ceil($length / 2));
+    $randomString = bin2hex($bytes);
+    return substr($randomString, 0, $length);
+}
 
 function update_service($which_service)
 {
@@ -286,11 +292,11 @@ http {
                     }
                 }
 
-                if ($srt_pass1 === "") {
+                if ($srt_pass1 == "") {
                     $srt_pass1 = generateRandomString(16);
                 }
                 
-                if ($srt_pass2 === "") {
+                if ($srt_pass2 == "") {
                     $srt_pass2 = generateRandomString(16);
                 }
 
@@ -363,10 +369,3 @@ function update_firewall() {}
 function update_network() {}
 
 function update_firmware() {}
-
-function generateRandomString($length = 16)
-{
-    $bytes = random_bytes(ceil($length / 2));
-    $randomString = bin2hex($bytes);
-    return substr($randomString, 0, $length);
-}
