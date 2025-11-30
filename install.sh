@@ -274,7 +274,7 @@ cat > /etc/srt/srt.sh<< 'EOL'
 EOL
 
 sudo chmod +x /etc/srt/srt.sh
-sudo cp srt /etc/srt/
+sudo cp sls /etc/srt/srt
 cat > /etc/systemd/system/srt.service<< 'EOL'
 [Unit]
 Description=Srt by ShreeBhattJi
