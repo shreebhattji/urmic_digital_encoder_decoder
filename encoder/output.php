@@ -307,6 +307,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </select>
           </div>
         </div>
+        <div class="dropdown-container">
+          <span class="dropdown-label">HLS :</span>
+          <div class="dropdown">
+            <select name="service_rtmp_hls" id="service_rtmp_hls">
+              <option value="enable" <?php if ($data['service_rtmp_hls'] == 'enable') echo 'selected'; ?>>Enable</option>
+              <option value="disable" <?php if ($data['service_rtmp_hls'] == 'disable') echo 'selected'; ?>>Disable</option>
+            </select>
+          </div>
+        </div>
+        <div class="dropdown-container">
+          <span class="dropdown-label">DASH :</span>
+          <div class="dropdown">
+            <select name="service_rtmp_dash" id="service_rtmp_dash">
+              <option value="enable" <?php if ($data['service_rtmp_dash'] == 'enable') echo 'selected'; ?>>Enable</option>
+              <option value="disable" <?php if ($data['service_rtmp_dash'] == 'disable') echo 'selected'; ?>>Disable</option>
+            </select>
+          </div>
+        </div>
+
         <div class="grid">
           <div class="card">
 
@@ -389,24 +408,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <input type="text" id="output_audio_bit_rate" name="output_audio_bit_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['audio']['bit_rate']); ?>">
               <label for="output_audio_bit_rate">Bit Rate :</label>
             </div>
-          </div>
-        </div>
-        <div class="dropdown-container">
-          <span class="dropdown-label">HLS :</span>
-          <div class="dropdown">
-            <select name="service_rtmp_hls" id="service_rtmp_hls">
-              <option value="enable" <?php if ($data['service_rtmp_hls'] == 'enable') echo 'selected'; ?>>Enable</option>
-              <option value="disable" <?php if ($data['service_rtmp_hls'] == 'disable') echo 'selected'; ?>>Disable</option>
-            </select>
-          </div>
-        </div>
-        <div class="dropdown-container">
-          <span class="dropdown-label">DASH :</span>
-          <div class="dropdown">
-            <select name="service_rtmp_dash" id="service_rtmp_dash">
-              <option value="enable" <?php if ($data['service_rtmp_dash'] == 'enable') echo 'selected'; ?>>Enable</option>
-              <option value="disable" <?php if ($data['service_rtmp_dash'] == 'disable') echo 'selected'; ?>>Disable</option>
-            </select>
           </div>
         </div>
 
