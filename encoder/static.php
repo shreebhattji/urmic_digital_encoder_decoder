@@ -57,20 +57,20 @@ function update_service($which_service)
 
     switch ($input_source) {
         case "hdmi":
-            $input = "ffmpeg -thread_queue_size 512 -f v4l2 -input_format mjpeg -framerate " . $data['hdmi']['framerate'] . " -video_size " . $data['hdmi']['resolution'] . " -i /dev/video0 " .
-                "-f alsa -i " . $data['hdmi']['audio_source'] . ' -init_hw_device qsv=hw:/dev/dri/renderD128 -filter_hw_device hw   -fflags +genpts -use_wallclock_as_timestamps 1   -vf "format=nv12,hwupload=extra_hw_frames=64,format=qsv" ';
+            $input = "ffmpeg -hide_banner -f v4l2 -input_format mjpeg -framerate " . $data['hdmi']['framerate'] . " -video_size " . $data['hdmi']['resolution'] . " -i /dev/video0 " .
+                "-f alsa -i " . $data['hdmi']['audio_source'];
             break;
         case "url":
-            $input .= "ffmpeg -hwaccel auto -stream_loop -1 -re -i " . $data['url'];
+            $input .= "ffmpeg -hide_banner -stream_loop -1 -re -i " . $data['url'];
             break;
         case "udp":
-            $input .= 'ffmpeg -hwaccel auto -stream_loop -1 -re -i "' . $data['udp'];
+            $input .= 'ffmpeg -hide_banner -stream_loop -1 -re -i "' . $data['udp'];
             break;
         case "rtmp":
-            $input .= "ffmpeg -hwaccel auto -stream_loop -1 -re -i rtmp://127.0.0.1:1935/" . $$input_rtmp_mount . "/" . $input_rtmp_pass;
+            $input .= "ffmpeg -hide_banner -stream_loop -1 -re -i rtmp://127.0.0.1:1935/" . $$input_rtmp_mount . "/" . $input_rtmp_pass;
             break;
         case "srt":
-            $input .= "ffmpeg -hwaccel auto -stream_loop -1 -re -i srt://127.0.0.1:1937/shree/bhatt/" . $srt_pass3;
+            $input .= "ffmpeg -hide_banner -stream_loop -1 -re -i srt://127.0.0.1:1937/shree/bhatt/" . $srt_pass3;
             break;
     }
     $input .= "  ";
@@ -133,8 +133,7 @@ function update_service($which_service)
 
     switch ($which_service) {
         case 'input':
-            $input .=  ' -c:v h264_qsv -b:v ' . $data['video']['data_rate'] . ' -maxrate ' . $data['video']['data_rate'] . ' -bufsize 11M -g ' . $data['video']['gop'] . ' -af "aresample=async=1:first_pts=0" ' .
-                ' -c:a ' . $data['audio']['format'] . ' -ar ' . $data['audio']['sample_rate'] . ' -b:a ' . $data['audio']['bit_rate'] . ' -f mpegts udp://@239.255.254.254:39000';
+            $input .=  " -f mpegts udp://239.255.254.254:39000?localaddr=127.0.0.1";
 
             $service = $input;
             $file = "/var/www/encoder-main.sh";
@@ -261,7 +260,7 @@ http {
             file_put_contents($file, $nginx);
 
             if ($service_rtmp_multiple === "enable") {
-                $rtmp = 'ffmpeg -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1" -c:v copy -c:a aac -f flv rtmp://127.0.0.1:1935/shree/bhattji';
+                $rtmp = 'ffmpeg  -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1" -c:v copy -c:a aac -f flv rtmp://127.0.0.1:1935/shree/bhattji';
                 $file = "/var/www/encoder-rtmp.sh";
                 file_put_contents($file, $rtmp);
                 exec('sudo cp /var/www/nginx.conf /etc/nginx/nginx.conf');
