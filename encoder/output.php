@@ -307,34 +307,89 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </select>
           </div>
         </div>
-        <div class="dropdown-container">
-          <span class="dropdown-label">Resolution :</span>
-          <div class="dropdown">
-            <select name="output_resolution" id="rtmp_output_resolution">
-              <option value="720x480" <?php if ($data['video']['resolution'] == '720x480') echo 'selected'; ?>>480p 720x480 NTSC DVD</option>
-              <option value="720x576" <?php if ($data['video']['resolution'] == '720x576') echo 'selected'; ?>>576p 720x576 PAL DVD</option>
-              <option value="1280x720" <?php if ($data['video']['resolution'] == '1280x720') echo 'selected'; ?>>720p 1280x720 HD</option>
-              <option value="1920x1080" <?php if ($data['video']['resolution'] == '1920x1080') echo 'selected'; ?>>1080p 1920x1080 FHD</option>
-              <option value="2560x1440" <?php if ($data['video']['resolution'] == '2560x1440') echo 'selected'; ?>>2k 2560x1440 QHD</option>
-              <option value="2048x1080" <?php if ($data['video']['resolution'] == '2048x1080') echo 'selected'; ?>>2k 2048x1080 DCI 2K</option>
-              <option value="3840x2160" <?php if ($data['video']['resolution'] == '3840x2160') echo 'selected'; ?>>4k 3840x2160 UHD</option>
-              <option value="4096x2160" <?php if ($data['video']['resolution'] == '4096x2160') echo 'selected'; ?>>4k 4096x2160 DCI 4K</option>
-              <option value="7680x4320" <?php if ($data['video']['resolution'] == '7680x4320') echo 'selected'; ?>>8k 7680x4320 UHD 8K</option>
-              <option value="8192x4320" <?php if ($data['video']['resolution'] == '8192x4320') echo 'selected'; ?>>8k 8192x4320 DCI 8K</option>
-            </select>
+        <div class="grid">
+          <div class="card">
+
+            <div class="dropdown-container">
+              <span class="dropdown-label">Resolution :</span>
+              <div class="dropdown">
+                <select name="output_resolution" id="rtmp_output_resolution">
+                  <option value="720x480" <?php if ($data['video']['resolution'] == '720x480') echo 'selected'; ?>>480p 720x480 NTSC DVD</option>
+                  <option value="720x576" <?php if ($data['video']['resolution'] == '720x576') echo 'selected'; ?>>576p 720x576 PAL DVD</option>
+                  <option value="1280x720" <?php if ($data['video']['resolution'] == '1280x720') echo 'selected'; ?>>720p 1280x720 HD</option>
+                  <option value="1920x1080" <?php if ($data['video']['resolution'] == '1920x1080') echo 'selected'; ?>>1080p 1920x1080 FHD</option>
+                  <option value="2560x1440" <?php if ($data['video']['resolution'] == '2560x1440') echo 'selected'; ?>>2k 2560x1440 QHD</option>
+                  <option value="2048x1080" <?php if ($data['video']['resolution'] == '2048x1080') echo 'selected'; ?>>2k 2048x1080 DCI 2K</option>
+                  <option value="3840x2160" <?php if ($data['video']['resolution'] == '3840x2160') echo 'selected'; ?>>4k 3840x2160 UHD</option>
+                  <option value="4096x2160" <?php if ($data['video']['resolution'] == '4096x2160') echo 'selected'; ?>>4k 4096x2160 DCI 4K</option>
+                  <option value="7680x4320" <?php if ($data['video']['resolution'] == '7680x4320') echo 'selected'; ?>>8k 7680x4320 UHD 8K</option>
+                  <option value="8192x4320" <?php if ($data['video']['resolution'] == '8192x4320') echo 'selected'; ?>>8k 8192x4320 DCI 8K</option>
+                </select>
+              </div>
+            </div>
+            <div class="input-group">
+              <input type="text" id="rtmp_video_framerate" name="rtmp_video_framerate" placeholder="25" value="<?php echo htmlspecialchars($data['video']['framerate']); ?>">
+              <label for="rtmp_video_framerate">Framerate :</label>
+            </div>
+            <div class="input-group">
+              <input type="text" id="rtmp_data_rate" name="rtmp_data_rate" placeholder="4M" value="<?php echo htmlspecialchars($data['video']['data_rate']); ?>">
+              <label for="rtmp_data_rate">Data Rate :</label>
+            </div>
+            <div class="input-group">
+              <input type="text" id="rtmp_gop" name="rtmp_gop" placeholder="12" value="<?php echo htmlspecialchars($data['video']['gop']); ?>">
+              <label for="rtmp_gop">GOP :</label>
+            </div>
           </div>
-        </div>
-        <div class="input-group">
-          <input type="text" id="rtmp_video_framerate" name="rtmp_video_framerate" placeholder="25" value="<?php echo htmlspecialchars($data['video']['framerate']); ?>">
-          <label for="rtmp_video_framerate">Framerate :</label>
-        </div>
-        <div class="input-group">
-          <input type="text" id="rtmp_data_rate" name="rtmp_data_rate" placeholder="4M" value="<?php echo htmlspecialchars($data['video']['data_rate']); ?>">
-          <label for="rtmp_data_rate">Data Rate :</label>
-        </div>
-        <div class="input-group">
-          <input type="text" id="rtmp_gop" name="rtmp_gop" placeholder="12" value="<?php echo htmlspecialchars($data['video']['gop']); ?>">
-          <label for="rtmp_gop">GOP :</label>
+          <div class="card">
+            <div class="dropdown-container">
+              <span class="dropdown-label">Output Audio Formate :</span>
+              <div class="dropdown">
+                <select name="output_audio_formate" id="output_audio_formate">
+                  <option value="mp2" <?php if ($data['audio']['format'] == 'mp2') echo 'selected'; ?>>mp2</option>
+                  <option value="mp3" <?php if ($data['audio']['format'] == 'mp3') echo 'selected'; ?>>mp3</option>
+                  <option value="aac" <?php if ($data['audio']['format'] == 'aac') echo 'selected'; ?>>aac</option>
+                  <option value="ac3" <?php if ($data['audio']['format'] == 'ac3') echo 'selected'; ?>>ac3</option>
+                </select>
+              </div>
+            </div>
+            <div class="dropdown-container">
+              <span class="dropdown-label">DB Gain :</span>
+              <div class="dropdown">
+                <select name="output_audio_db_gain" id="output_audio_db_gain">
+                  <option value="mp2" <?php if ($data['audio']['db_gain'] == '-25dB') echo 'selected'; ?>>-25dB</option>
+                  <option value="mp2" <?php if ($data['audio']['db_gain'] == '-20dB') echo 'selected'; ?>>-20dB</option>
+                  <option value="mp2" <?php if ($data['audio']['db_gain'] == '-6dB') echo 'selected'; ?>>-15dB</option>
+                  <option value="mp2" <?php if ($data['audio']['db_gain'] == '-6dB') echo 'selected'; ?>>-10dB</option>
+                  <option value="mp2" <?php if ($data['audio']['db_gain'] == '-6dB') echo 'selected'; ?>>-6dB</option>
+                  <option value="mp2" <?php if ($data['audio']['db_gain'] == '-5dB') echo 'selected'; ?>>-5dB</option>
+                  <option value="mp2" <?php if ($data['audio']['db_gain'] == '-4dB') echo 'selected'; ?>>-4dB</option>
+                  <option value="mp2" <?php if ($data['audio']['db_gain'] == '-3dB') echo 'selected'; ?>>-3dB</option>
+                  <option value="mp2" <?php if ($data['audio']['db_gain'] == '-2dB') echo 'selected'; ?>>-2dB</option>
+                  <option value="mp2" <?php if ($data['audio']['db_gain'] == '-1dB') echo 'selected'; ?>>-1dB</option>
+                  <option value="mp2" <?php if ($data['audio']['db_gain'] == '0dB') echo 'selected'; ?>>0dB</option>
+                  <option value="mp2" <?php if ($data['audio']['db_gain'] == '1dB') echo 'selected'; ?>>1dB</option>
+                  <option value="mp2" <?php if ($data['audio']['db_gain'] == '2dB') echo 'selected'; ?>>2dB</option>
+                  <option value="mp2" <?php if ($data['audio']['db_gain'] == '3dB') echo 'selected'; ?>>3dB</option>
+                  <option value="mp2" <?php if ($data['audio']['db_gain'] == '4dB') echo 'selected'; ?>>4dB</option>
+                  <option value="mp2" <?php if ($data['audio']['db_gain'] == '5dB') echo 'selected'; ?>>5dB</option>
+                  <option value="mp2" <?php if ($data['audio']['db_gain'] == '6dB') echo 'selected'; ?>>6dB</option>
+                  <option value="mp2" <?php if ($data['audio']['db_gain'] == '6dB') echo 'selected'; ?>>10dB</option>
+                  <option value="mp2" <?php if ($data['audio']['db_gain'] == '6dB') echo 'selected'; ?>>15dB</option>
+                  <option value="mp2" <?php if ($data['audio']['db_gain'] == '6dB') echo 'selected'; ?>>20dB</option>
+                  <option value="mp2" <?php if ($data['audio']['db_gain'] == '25dB') echo 'selected'; ?>>25dB</option>
+                </select>
+              </div>
+            </div>
+            <p></p>
+            <div class="input-group">
+              <input type="text" id="output_audio_sample_rate" name="output_audio_sample_rate" placeholder="48000" value="<?php echo htmlspecialchars($data['audio']['sample_rate']); ?>">
+              <label for="output_audio_sample_rate">Sample Rate :</label>
+            </div>
+            <div class="input-group">
+              <input type="text" id="output_audio_bit_rate" name="output_audio_bit_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['audio']['bit_rate']); ?>">
+              <label for="output_audio_bit_rate">Bit Rate :</label>
+            </div>
+          </div>
         </div>
         <div class="dropdown-container">
           <span class="dropdown-label">HLS :</span>
@@ -354,29 +409,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </select>
           </div>
         </div>
-        <div class="card wide">
-          <?php for ($i = 1; $i <= 11; $i++):
-            $r = $data['rtmp_multiple'][$i];
-          ?>
-            <div class="input-container">
-              <div class="input-group">
-                <input type="text" id="rtmp_<?php echo $i; ?>" name="rtmp_<?php echo $i; ?>" placeholder="rtmp" value="<?php echo htmlspecialchars($r['url']); ?>">
-                <label for="rtmp_<?php echo $i; ?>">RTMP URL <?php echo $i; ?></label>
-              </div>
-              <div class="input-group">
-                <input type="text" id="rtmp_<?php echo $i; ?>_name" name="rtmp_<?php echo $i; ?>_name" placeholder="Rtmp Name <?php echo $i; ?>" value="<?php echo htmlspecialchars($r['name']); ?>">
-                <label for="rtmp_<?php echo $i; ?>_name">Rtmp Name <?php echo $i; ?></label>
-              </div>
-              <div class="checkbox-group">
-                <input type="checkbox" id="rtmp_<?php echo $i; ?>_enable" name="rtmp_<?php echo $i; ?>_enable" <?php if (!empty($r['enabled'])) echo 'checked'; ?>>
-                <label for="rtmp_<?php echo $i; ?>_enable">Enable or Disable</label>
-              </div>
+
+        <?php for ($i = 1; $i <= 11; $i++):
+          $r = $data['rtmp_multiple'][$i];
+        ?>
+          <div class="input-container">
+            <div class="input-group">
+              <input type="text" id="rtmp_<?php echo $i; ?>" name="rtmp_<?php echo $i; ?>" placeholder="rtmp" value="<?php echo htmlspecialchars($r['url']); ?>">
+              <label for="rtmp_<?php echo $i; ?>">RTMP URL <?php echo $i; ?></label>
             </div>
-          <?php endfor; ?>
-          <div style="text-align:center; width:100%; margin-top:12px;">
-            <button type="submit" name="rtmp" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Save RTMP</button>
+            <div class="input-group">
+              <input type="text" id="rtmp_<?php echo $i; ?>_name" name="rtmp_<?php echo $i; ?>_name" placeholder="Rtmp Name <?php echo $i; ?>" value="<?php echo htmlspecialchars($r['name']); ?>">
+              <label for="rtmp_<?php echo $i; ?>_name">Rtmp Name <?php echo $i; ?></label>
+            </div>
+            <div class="checkbox-group">
+              <input type="checkbox" id="rtmp_<?php echo $i; ?>_enable" name="rtmp_<?php echo $i; ?>_enable" <?php if (!empty($r['enabled'])) echo 'checked'; ?>>
+              <label for="rtmp_<?php echo $i; ?>_enable">Enable or Disable</label>
+            </div>
           </div>
+        <?php endfor; ?>
+        <div style="text-align:center; width:100%; margin-top:12px;">
+          <button type="submit" name="rtmp" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Save RTMP</button>
         </div>
+
       </div>
 
       <div class="card wide">
@@ -391,6 +446,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
         </div>
         <div class="card">
+
           <div class="dropdown-container">
             <span class="dropdown-label">Resolution :</span>
             <div class="dropdown">
@@ -420,8 +476,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="text" id="srt_gop" name="srt_gop" placeholder="12" value="<?php echo htmlspecialchars($data['video']['gop']); ?>">
             <label for="srt_gop">GOP :</label>
           </div>
-        </div>
-        <div class="card">
           <div class="dropdown-container">
             <span class="dropdown-label">Output Audio Formate :</span>
             <div class="dropdown">
@@ -470,8 +524,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="text" id="output_audio_bit_rate" name="output_audio_bit_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['audio']['bit_rate']); ?>">
             <label for="output_audio_bit_rate">Bit Rate :</label>
           </div>
-        </div>
-        <div class="card wide">
 
           <?php for ($i = 1; $i <= 11; $i++):
             $s = $data['srt_multiple'][$i];
@@ -495,50 +547,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="submit" name="srt" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Save SRT</button>
           </div>
         </div>
-      </div>
 
-      <div class="card wide">
-        <h3>UDP</h3>
-        <div class="dropdown-container">
-          <span class="dropdown-label">Service Status :</span>
-          <div class="dropdown">
-            <select name="service_udp" id="service_udp">
-              <option value="enable" <?php if ($data['service_udp'] == 'enable') echo 'selected'; ?>>Enable</option>
-              <option value="disable" <?php if ($data['service_udp'] == 'disable') echo 'selected'; ?>>Disable</option>
-            </select>
+        <div class="card wide">
+          <h3>UDP</h3>
+          <div class="dropdown-container">
+            <span class="dropdown-label">Service Status :</span>
+            <div class="dropdown">
+              <select name="service_udp" id="service_udp">
+                <option value="enable" <?php if ($data['service_udp'] == 'enable') echo 'selected'; ?>>Enable</option>
+                <option value="disable" <?php if ($data['service_udp'] == 'disable') echo 'selected'; ?>>Disable</option>
+              </select>
+            </div>
+          </div>
+          <div class="input-group">
+            <input type="text" id="udp" name="udp" placeholder="udp" value="<?php echo htmlspecialchars($data['udp']); ?>">
+            <label for="udp">UDP Primary URL</label>
+          </div>
+          <div style="text-align:center; width:100%; margin-top:12px;">
+            <button type="submit" name="udp" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Save UDP</button>
           </div>
         </div>
-        <div class="input-group">
-          <input type="text" id="udp" name="udp" placeholder="udp" value="<?php echo htmlspecialchars($data['udp']); ?>">
-          <label for="udp">UDP Primary URL</label>
-        </div>
-        <div style="text-align:center; width:100%; margin-top:12px;">
-          <button type="submit" name="udp" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Save UDP</button>
-        </div>
-      </div>
 
-      <div class="card wide">
-        <h3>CUSTOM OUTPUT</h3>
-        <div class="dropdown-container">
-          <span class="dropdown-label">Service Status :</span>
-          <div class="dropdown">
-            <select name="service_custom" id="service_custom">
-              <option value="enable" <?php if ($data['service_custom'] == 'enable') echo 'selected'; ?>>Enable</option>
-              <option value="disable" <?php if ($data['service_custom'] == 'disable') echo 'selected'; ?>>Disable</option>
-            </select>
+        <div class="card wide">
+          <h3>CUSTOM OUTPUT</h3>
+          <div class="dropdown-container">
+            <span class="dropdown-label">Service Status :</span>
+            <div class="dropdown">
+              <select name="service_custom" id="service_custom">
+                <option value="enable" <?php if ($data['service_custom'] == 'enable') echo 'selected'; ?>>Enable</option>
+                <option value="disable" <?php if ($data['service_custom'] == 'disable') echo 'selected'; ?>>Disable</option>
+              </select>
+            </div>
+          </div>
+          <div class="input-group">
+            <input type="text" id="custom_output" name="custom_output" placeholder="custom" value="<?php echo htmlspecialchars($data['custom_output']); ?>">
+            <label for="custom_output">Custom Output</label>
+          </div>
+          <div style="text-align:center; width:100%; margin-top:12px;">
+            <button type="submit" name="custom" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Save Custom</button>
           </div>
         </div>
-        <div class="input-group">
-          <input type="text" id="custom_output" name="custom_output" placeholder="custom" value="<?php echo htmlspecialchars($data['custom_output']); ?>">
-          <label for="custom_output">Custom Output</label>
-        </div>
-        <div style="text-align:center; width:100%; margin-top:12px;">
-          <button type="submit" name="custom" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Save Custom</button>
-        </div>
       </div>
-    </div>
 
-    <br><br><br>
+      <br><br><br>
 </form>
 
 <?php
