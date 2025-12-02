@@ -107,50 +107,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
   }
   if (isset($_POST['display'])) {
-  update_service("display");
+    update_service("display");
   }
 
   if (isset($_POST['rtmp'])) {
-  update_service("rtmp");
+    update_service("rtmp");
   }
 
   if (isset($_POST['srt'])) {
-  update_service("srt");
+    update_service("srt");
   }
 
   if (isset($_POST['udo'])) {
-  update_service("udo");
+    update_service("udo");
   }
 
   if (isset($_POST['custom'])) {
-  update_service("custom");
+    update_service("custom");
   }
-
-
 }
 ?>
 <form method="POST">
   <div class="containerindex">
     <div class="grid">
       <div class="card">
-        <h3>Video Setting</h3>
-        <div class="dropdown-container">
-          <span class="dropdown-label">Resolution :</span>
-          <div class="dropdown">
-            <select name="output_resolution" id="output_resolution">
-              <option value="720x480" <?php if ($data['video']['resolution'] == '720x480') echo 'selected'; ?>>480p 720x480 NTSC DVD</option>
-              <option value="720x576" <?php if ($data['video']['resolution'] == '720x576') echo 'selected'; ?>>576p 720x576 PAL DVD</option>
-              <option value="1280x720" <?php if ($data['video']['resolution'] == '1280x720') echo 'selected'; ?>>720p 1280x720 HD</option>
-              <option value="1920x1080" <?php if ($data['video']['resolution'] == '1920x1080') echo 'selected'; ?>>1080p 1920x1080 FHD</option>
-              <option value="2560x1440" <?php if ($data['video']['resolution'] == '2560x1440') echo 'selected'; ?>>2k 2560x1440 QHD</option>
-              <option value="2048x1080" <?php if ($data['video']['resolution'] == '2048x1080') echo 'selected'; ?>>2k 2048x1080 DCI 2K</option>
-              <option value="3840x2160" <?php if ($data['video']['resolution'] == '3840x2160') echo 'selected'; ?>>4k 3840x2160 UHD</option>
-              <option value="4096x2160" <?php if ($data['video']['resolution'] == '4096x2160') echo 'selected'; ?>>4k 4096x2160 DCI 4K</option>
-              <option value="7680x4320" <?php if ($data['video']['resolution'] == '7680x4320') echo 'selected'; ?>>8k 7680x4320 UHD 8K</option>
-              <option value="8192x4320" <?php if ($data['video']['resolution'] == '8192x4320') echo 'selected'; ?>>8k 8192x4320 DCI 8K</option>
-            </select>
-          </div>
-        </div>
         <div class="dropdown-container">
           <span class="dropdown-label">Formate :</span>
           <div class="dropdown">
@@ -325,6 +305,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <option value="enable" <?php if ($data['service_rtmp_multiple'] == 'enable') echo 'selected'; ?>>Enable</option>
               <option value="disable" <?php if ($data['service_rtmp_multiple'] == 'disable') echo 'selected'; ?>>Disable</option>
             </select>
+          </div>
+        </div>
+        <h3>Video Setting</h3>
+        <div class="dropdown-container">
+          <span class="dropdown-label">Resolution :</span>
+          <div class="dropdown">
+            <select name="output_resolution" id="rtmp_output_resolution">
+              <option value="720x480" <?php if ($data['video']['resolution'] == '720x480') echo 'selected'; ?>>480p 720x480 NTSC DVD</option>
+              <option value="720x576" <?php if ($data['video']['resolution'] == '720x576') echo 'selected'; ?>>576p 720x576 PAL DVD</option>
+              <option value="1280x720" <?php if ($data['video']['resolution'] == '1280x720') echo 'selected'; ?>>720p 1280x720 HD</option>
+              <option value="1920x1080" <?php if ($data['video']['resolution'] == '1920x1080') echo 'selected'; ?>>1080p 1920x1080 FHD</option>
+              <option value="2560x1440" <?php if ($data['video']['resolution'] == '2560x1440') echo 'selected'; ?>>2k 2560x1440 QHD</option>
+              <option value="2048x1080" <?php if ($data['video']['resolution'] == '2048x1080') echo 'selected'; ?>>2k 2048x1080 DCI 2K</option>
+              <option value="3840x2160" <?php if ($data['video']['resolution'] == '3840x2160') echo 'selected'; ?>>4k 3840x2160 UHD</option>
+              <option value="4096x2160" <?php if ($data['video']['resolution'] == '4096x2160') echo 'selected'; ?>>4k 4096x2160 DCI 4K</option>
+              <option value="7680x4320" <?php if ($data['video']['resolution'] == '7680x4320') echo 'selected'; ?>>8k 7680x4320 UHD 8K</option>
+              <option value="8192x4320" <?php if ($data['video']['resolution'] == '8192x4320') echo 'selected'; ?>>8k 8192x4320 DCI 8K</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <input type="text" id="rtmp_video_framerate" name="rtmp_video_framerate" placeholder="25" value="<?php echo htmlspecialchars($data['video']['framerate']); ?>">
+            <label for="rtmp_video_framerate">Framerate :</label>
+          </div>
+          <div class="input-group">
+            <input type="text" id="rtmp_data_rate" name="rtmp_data_rate" placeholder="4M" value="<?php echo htmlspecialchars($data['video']['data_rate']); ?>">
+            <label for="rtmp_data_rate">Data Rate :</label>
+          </div>
+          <div class="input-group">
+            <input type="text" id="rtmp_gop" name="rtmp_gop" placeholder="12" value="<?php echo htmlspecialchars($data['video']['gop']); ?>">
+            <label for="rtmp_gop">GOP :</label>
           </div>
         </div>
         <div class="dropdown-container">

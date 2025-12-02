@@ -57,7 +57,7 @@ function update_service($which_service)
 
     switch ($input_source) {
         case "hdmi":
-            $input = "ffmpeg -hide_banner -f v4l2 -input_format mjpeg -framerate " . $data['hdmi']['framerate'] . " -video_size " . $data['hdmi']['resolution'] . " -i /dev/video0 " .
+            $input = "ffmpeg -hide_banner -f v4l2 -thread_queue_size 512 -input_format mjpeg -framerate " . $data['hdmi']['framerate'] . " -video_size " . $data['hdmi']['resolution'] . " -i /dev/video0 " .
                 "-f alsa -i " . $data['hdmi']['audio_source'];
             break;
         case "url":
