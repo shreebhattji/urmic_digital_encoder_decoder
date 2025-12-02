@@ -307,7 +307,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </select>
           </div>
         </div>
-        <h3>Video Setting</h3>
         <div class="dropdown-container">
           <span class="dropdown-label">Resolution :</span>
           <div class="dropdown">
@@ -324,18 +323,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <option value="8192x4320" <?php if ($data['video']['resolution'] == '8192x4320') echo 'selected'; ?>>8k 8192x4320 DCI 8K</option>
             </select>
           </div>
-          <div class="input-group">
-            <input type="text" id="rtmp_video_framerate" name="rtmp_video_framerate" placeholder="25" value="<?php echo htmlspecialchars($data['video']['framerate']); ?>">
-            <label for="rtmp_video_framerate">Framerate :</label>
-          </div>
-          <div class="input-group">
-            <input type="text" id="rtmp_data_rate" name="rtmp_data_rate" placeholder="4M" value="<?php echo htmlspecialchars($data['video']['data_rate']); ?>">
-            <label for="rtmp_data_rate">Data Rate :</label>
-          </div>
-          <div class="input-group">
-            <input type="text" id="rtmp_gop" name="rtmp_gop" placeholder="12" value="<?php echo htmlspecialchars($data['video']['gop']); ?>">
-            <label for="rtmp_gop">GOP :</label>
-          </div>
+        </div>
+        <div class="input-group">
+          <input type="text" id="rtmp_video_framerate" name="rtmp_video_framerate" placeholder="25" value="<?php echo htmlspecialchars($data['video']['framerate']); ?>">
+          <label for="rtmp_video_framerate">Framerate :</label>
+        </div>
+        <div class="input-group">
+          <input type="text" id="rtmp_data_rate" name="rtmp_data_rate" placeholder="4M" value="<?php echo htmlspecialchars($data['video']['data_rate']); ?>">
+          <label for="rtmp_data_rate">Data Rate :</label>
+        </div>
+        <div class="input-group">
+          <input type="text" id="rtmp_gop" name="rtmp_gop" placeholder="12" value="<?php echo htmlspecialchars($data['video']['gop']); ?>">
+          <label for="rtmp_gop">GOP :</label>
         </div>
         <div class="dropdown-container">
           <span class="dropdown-label">HLS :</span>
