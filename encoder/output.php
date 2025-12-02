@@ -354,27 +354,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </select>
           </div>
         </div>
-
-        <?php for ($i = 1; $i <= 11; $i++):
-          $r = $data['rtmp_multiple'][$i];
-        ?>
-          <div class="input-container">
-            <div class="input-group">
-              <input type="text" id="rtmp_<?php echo $i; ?>" name="rtmp_<?php echo $i; ?>" placeholder="rtmp" value="<?php echo htmlspecialchars($r['url']); ?>">
-              <label for="rtmp_<?php echo $i; ?>">RTMP URL <?php echo $i; ?></label>
+        <div class="card wide">
+          <?php for ($i = 1; $i <= 11; $i++):
+            $r = $data['rtmp_multiple'][$i];
+          ?>
+            <div class="input-container">
+              <div class="input-group">
+                <input type="text" id="rtmp_<?php echo $i; ?>" name="rtmp_<?php echo $i; ?>" placeholder="rtmp" value="<?php echo htmlspecialchars($r['url']); ?>">
+                <label for="rtmp_<?php echo $i; ?>">RTMP URL <?php echo $i; ?></label>
+              </div>
+              <div class="input-group">
+                <input type="text" id="rtmp_<?php echo $i; ?>_name" name="rtmp_<?php echo $i; ?>_name" placeholder="Rtmp Name <?php echo $i; ?>" value="<?php echo htmlspecialchars($r['name']); ?>">
+                <label for="rtmp_<?php echo $i; ?>_name">Rtmp Name <?php echo $i; ?></label>
+              </div>
+              <div class="checkbox-group">
+                <input type="checkbox" id="rtmp_<?php echo $i; ?>_enable" name="rtmp_<?php echo $i; ?>_enable" <?php if (!empty($r['enabled'])) echo 'checked'; ?>>
+                <label for="rtmp_<?php echo $i; ?>_enable">Enable or Disable</label>
+              </div>
             </div>
-            <div class="input-group">
-              <input type="text" id="rtmp_<?php echo $i; ?>_name" name="rtmp_<?php echo $i; ?>_name" placeholder="Rtmp Name <?php echo $i; ?>" value="<?php echo htmlspecialchars($r['name']); ?>">
-              <label for="rtmp_<?php echo $i; ?>_name">Rtmp Name <?php echo $i; ?></label>
-            </div>
-            <div class="checkbox-group">
-              <input type="checkbox" id="rtmp_<?php echo $i; ?>_enable" name="rtmp_<?php echo $i; ?>_enable" <?php if (!empty($r['enabled'])) echo 'checked'; ?>>
-              <label for="rtmp_<?php echo $i; ?>_enable">Enable or Disable</label>
-            </div>
+          <?php endfor; ?>
+          <div style="text-align:center; width:100%; margin-top:12px;">
+            <button type="submit" name="rtmp" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Save RTMP</button>
           </div>
-        <?php endfor; ?>
-        <div style="text-align:center; width:100%; margin-top:12px;">
-          <button type="submit" name="rtmp" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Save RTMP</button>
         </div>
       </div>
 
@@ -470,27 +471,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="output_audio_bit_rate">Bit Rate :</label>
           </div>
         </div>
+        <div class="card wide">
 
-        <?php for ($i = 1; $i <= 11; $i++):
-          $s = $data['srt_multiple'][$i];
-        ?>
-          <div class="input-container">
-            <div class="input-group">
-              <input type="text" id="srt_<?php echo $i; ?>" name="srt_<?php echo $i; ?>" placeholder="srt" value="<?php echo htmlspecialchars($s['url']); ?>">
-              <label for="srt_<?php echo $i; ?>">SRT URL <?php echo $i; ?></label>
+          <?php for ($i = 1; $i <= 11; $i++):
+            $s = $data['srt_multiple'][$i];
+          ?>
+            <div class="input-container">
+              <div class="input-group">
+                <input type="text" id="srt_<?php echo $i; ?>" name="srt_<?php echo $i; ?>" placeholder="srt" value="<?php echo htmlspecialchars($s['url']); ?>">
+                <label for="srt_<?php echo $i; ?>">SRT URL <?php echo $i; ?></label>
+              </div>
+              <div class="input-group">
+                <input type="text" id="srt_<?php echo $i; ?>_name" name="srt_<?php echo $i; ?>_name" placeholder="Srt Name <?php echo $i; ?>" value="<?php echo htmlspecialchars($s['name']); ?>">
+                <label for="srt_<?php echo $i; ?>_name">SRT Name <?php echo $i; ?></label>
+              </div>
+              <div class="checkbox-group">
+                <input type="checkbox" id="srt_<?php echo $i; ?>_enable" name="srt_<?php echo $i; ?>_enable" <?php if (!empty($s['enabled'])) echo 'checked'; ?>>
+                <label for="srt_<?php echo $i; ?>_enable">Enable or Disable</label>
+              </div>
             </div>
-            <div class="input-group">
-              <input type="text" id="srt_<?php echo $i; ?>_name" name="srt_<?php echo $i; ?>_name" placeholder="Srt Name <?php echo $i; ?>" value="<?php echo htmlspecialchars($s['name']); ?>">
-              <label for="srt_<?php echo $i; ?>_name">SRT Name <?php echo $i; ?></label>
-            </div>
-            <div class="checkbox-group">
-              <input type="checkbox" id="srt_<?php echo $i; ?>_enable" name="srt_<?php echo $i; ?>_enable" <?php if (!empty($s['enabled'])) echo 'checked'; ?>>
-              <label for="srt_<?php echo $i; ?>_enable">Enable or Disable</label>
-            </div>
+          <?php endfor; ?>
+          <div style="text-align:center; width:100%; margin-top:12px;">
+            <button type="submit" name="srt" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Save SRT</button>
           </div>
-        <?php endfor; ?>
-        <div style="text-align:center; width:100%; margin-top:12px;">
-          <button type="submit" name="srt" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Save SRT</button>
         </div>
       </div>
 
