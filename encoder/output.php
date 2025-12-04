@@ -705,7 +705,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </select>
               </div>
             </div>
-
             <div class="dropdown-container">
               <span class="dropdown-label">DB Gain :</span>
               <div class="dropdown">
@@ -751,13 +750,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div class="input-group">
           <input type="text" id="udp0" name="udp0" placeholder="udp0" value="<?php echo htmlspecialchars($data['udp0']); ?>">
-          <label for="udp0">UDP0 Primary URL</label>
+          <label for="udp0">UDP0 IP</label>
         </div>
 
         <div style="text-align:center; width:100%; margin-top:12px;">
           <button type="submit" name="udp0" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Save udp0</button>
         </div>
       </div>
+
       <div class="card wide">
         <h3>udp1 Output</h3>
         <div class="dropdown-container">
