@@ -168,6 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $new['udp0']['audio_data_rate'] = $get('udp0_audio_data_rate', $defaults['udp0']['audio_data_rate']);
   $new['udp0']['audio_db_gain'] = $get('udp0_audio_db_gain', $defaults['udp0']['audio_db_gain']);
   $new['udp0']['audio_sample_rate'] = $get('udp0_audio_sample_rate', $defaults['udp0']['audio_sample_rate']);
+  $new['udp0']['udp'] = $get('udp0_ip', $defaults['udp0']['udp']);
 
   $new['udp1']['formate'] = $get('udp1_formate', $defaults['udp1']['formate']);
   $new['udp1']['resolution'] = $get('udp1_resolution', $defaults['udp1']['resolution']);
@@ -179,6 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $new['udp1']['audio_data_rate'] = $get('udp1_audio_data_rate', $defaults['udp1']['audio_data_rate']);
   $new['udp1']['audio_db_gain'] = $get('udp1_audio_db_gain', $defaults['udp1']['audio_db_gain']);
   $new['udp1']['audio_sample_rate'] = $get('udp1_audio_sample_rate', $defaults['udp1']['audio_sample_rate']);
+  $new['udp1']['udp'] = $get('udp1_ip', $defaults['udp1']['udp']);
 
   $new['udp2']['formate'] = $get('udp2_formate', $defaults['udp2']['formate']);
   $new['udp2']['resolution'] = $get('udp2_resolution', $defaults['udp2']['resolution']);
@@ -190,6 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $new['udp2']['audio_data_rate'] = $get('udp2_audio_data_rate', $defaults['udp2']['audio_data_rate']);
   $new['udp2']['audio_db_gain'] = $get('udp2_audio_db_gain', $defaults['udp2']['audio_db_gain']);
   $new['udp2']['audio_sample_rate'] = $get('udp2_audio_sample_rate', $defaults['udp2']['audio_sample_rate']);
+  $new['udp2']['udp'] = $get('udp2_ip', $defaults['udp2']['udp']);
 
   $new['srt0']['formate'] = $get('srt0_resolution', $defaults['srt0']['formate']);
   $new['srt0']['resolution'] = $get('srt0_resolution', $defaults['srt0']['resolution']);
@@ -749,8 +752,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <label for="udp0_extra">Extra :</label>
         </div>
         <div class="input-group">
-          <input type="text" id="udp0" name="udp0" placeholder="udp0" value="<?php echo htmlspecialchars($data['udp0']); ?>">
-          <label for="udp0">UDP0 IP</label>
+          <input type="text" id="udp0_ip" name="udp0_ip" placeholder="udp0_ip" value="<?php echo htmlspecialchars($data['udp0']['udp']); ?>">
+          <label for="udp0_ip">UDP0 IP</label>
         </div>
 
         <div style="text-align:center; width:100%; margin-top:12px;">
@@ -869,8 +872,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <label for="udp1_extra">Extra :</label>
         </div>
         <div class="input-group">
-          <input type="text" id="udp1" name="udp1" placeholder="udp1" value="<?php echo htmlspecialchars($data['udp1']); ?>">
-          <label for="udp1">udp1 Primary URL</label>
+          <input type="text" id="udp1_ip" name="udp1_ip" placeholder="udp1_ip" value="<?php echo htmlspecialchars($data['udp1']['udp']); ?>">
+          <label for="udp1_ip">udp1 IP</label>
         </div>
 
         <div style="text-align:center; width:100%; margin-top:12px;">
@@ -988,8 +991,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <label for="udp2_extra">Extra :</label>
         </div>
         <div class="input-group">
-          <input type="text" id="udp2" name="udp2" placeholder="udp2" value="<?php echo htmlspecialchars($data['udp2']); ?>">
-          <label for="udp2">udp2 Primary URL</label>
+          <input type="text" id="udp2_ip" name="udp2_ip" placeholder="udp2_ip" value="<?php echo htmlspecialchars($data['udp2']['udp']); ?>">
+          <label for="udp2_ip">UDP2 IP</label>
         </div>
 
         <div style="text-align:center; width:100%; margin-top:12px;">
