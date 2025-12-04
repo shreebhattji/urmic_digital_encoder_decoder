@@ -442,7 +442,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
           </div>
           <div class="card">
-
             <div class="dropdown-container">
               <span class="dropdown-label">DB Gain :</span>
               <div class="dropdown">
@@ -471,6 +470,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </select>
               </div>
             </div>
+            <p></p>
             <div class="input-group">
               <input type="text" id="rtmp0_audio_data_rate" name="rtmp0_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['audio']['bit_rate']); ?>">
               <label for="rtmp0_audio_data_rate">Bit Rate :</label>
@@ -600,6 +600,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </select>
               </div>
             </div>
+            <p></p>
             <div class="input-group">
               <input type="text" id="rtmp1_audio_data_rate" name="rtmp1_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['audio']['bit_rate']); ?>">
               <label for="rtmp1_audio_data_rate">Bit Rate :</label>
@@ -733,6 +734,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </select>
               </div>
             </div>
+            <p></p>
             <div class="input-group">
               <input type="text" id="udp0_audio_data_rate" name="udp0_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['audio']['bit_rate']); ?>">
               <label for="udp0_audio_data_rate">Bit Rate :</label>
