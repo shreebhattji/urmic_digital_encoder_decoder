@@ -442,10 +442,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
           </div>
           <div class="card">
-            <div class="input-group">
-              <input type="text" id="rtmp0_audio_data_rate" name="rtmp0_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['audio']['bit_rate']); ?>">
-              <label for="rtmp0_audio_data_rate">Bit Rate :</label>
-            </div>
 
             <div class="dropdown-container">
               <span class="dropdown-label">DB Gain :</span>
@@ -475,7 +471,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </select>
               </div>
             </div>
-            <p></p>
+            <div class="input-group">
+              <input type="text" id="rtmp0_audio_data_rate" name="rtmp0_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['audio']['bit_rate']); ?>">
+              <label for="rtmp0_audio_data_rate">Bit Rate :</label>
+            </div>
             <div class="input-group">
               <input type="text" id="rtmp0_audio_sample_rate" name="rtmp0_audio_sample_rate" placeholder="48000" value="<?php echo htmlspecialchars($data['rtmp0']['audio_sample_rate']); ?>">
               <label for="rtmp0_audio_sample_rate">Sample Rate :</label>
@@ -573,11 +572,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
           </div>
           <div class="card">
-            <div class="input-group">
-              <input type="text" id="rtmp1_audio_data_rate" name="rtmp1_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['audio']['bit_rate']); ?>">
-              <label for="rtmp1_audio_data_rate">Bit Rate :</label>
-            </div>
-
             <div class="dropdown-container">
               <span class="dropdown-label">DB Gain :</span>
               <div class="dropdown">
@@ -606,7 +600,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </select>
               </div>
             </div>
-            <p></p>
+            <div class="input-group">
+              <input type="text" id="rtmp1_audio_data_rate" name="rtmp1_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['audio']['bit_rate']); ?>">
+              <label for="rtmp1_audio_data_rate">Bit Rate :</label>
+            </div>
             <div class="input-group">
               <input type="text" id="rtmp1_audio_sample_rate" name="rtmp1_audio_sample_rate" placeholder="48000" value="<?php echo htmlspecialchars($data['rtmp1']['audio_sample_rate']); ?>">
               <label for="rtmp1_audio_sample_rate">Sample Rate :</label>
@@ -708,11 +705,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               </div>
             </div>
 
-            <div class="input-group">
-              <input type="text" id="udp0_audio_data_rate" name="udp0_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['audio']['bit_rate']); ?>">
-              <label for="udp0_audio_data_rate">Bit Rate :</label>
-            </div>
-
             <div class="dropdown-container">
               <span class="dropdown-label">DB Gain :</span>
               <div class="dropdown">
@@ -741,7 +733,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </select>
               </div>
             </div>
-            <p></p>
+            <div class="input-group">
+              <input type="text" id="udp0_audio_data_rate" name="udp0_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['audio']['bit_rate']); ?>">
+              <label for="udp0_audio_data_rate">Bit Rate :</label>
+            </div>
             <div class="input-group">
               <input type="text" id="udp0_audio_sample_rate" name="udp0_audio_sample_rate" placeholder="48000" value="<?php echo htmlspecialchars($data['udp0']['audio_sample_rate']); ?>">
               <label for="udp0_audio_sample_rate">Sample Rate :</label>
@@ -828,11 +823,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               </div>
             </div>
 
-            <div class="input-group">
-              <input type="text" id="udp1_audio_data_rate" name="udp1_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['audio']['bit_rate']); ?>">
-              <label for="udp1_audio_data_rate">Bit Rate :</label>
-            </div>
-
             <div class="dropdown-container">
               <span class="dropdown-label">DB Gain :</span>
               <div class="dropdown">
@@ -863,6 +853,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <p></p>
             <div class="input-group">
+              <input type="text" id="udp1_audio_data_rate" name="udp1_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['audio']['bit_rate']); ?>">
+              <label for="udp1_audio_data_rate">Bit Rate :</label>
+            </div>
+            <div class="input-group">
               <input type="text" id="udp1_audio_sample_rate" name="udp1_audio_sample_rate" placeholder="48000" value="<?php echo htmlspecialchars($data['udp1']['audio_sample_rate']); ?>">
               <label for="udp1_audio_sample_rate">Sample Rate :</label>
             </div>
@@ -881,7 +875,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <button type="submit" name="udp1" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Save udp1</button>
         </div>
       </div>
-            <div class="card wide">
+      <div class="card wide">
         <h3>udp2 Output</h3>
         <div class="dropdown-container">
           <span class="dropdown-label">Service Status :</span>
@@ -948,11 +942,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               </div>
             </div>
 
-            <div class="input-group">
-              <input type="text" id="udp2_audio_data_rate" name="udp2_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['audio']['bit_rate']); ?>">
-              <label for="udp2_audio_data_rate">Bit Rate :</label>
-            </div>
-
             <div class="dropdown-container">
               <span class="dropdown-label">DB Gain :</span>
               <div class="dropdown">
@@ -983,6 +972,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <p></p>
             <div class="input-group">
+              <input type="text" id="udp2_audio_data_rate" name="udp2_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['audio']['bit_rate']); ?>">
+              <label for="udp2_audio_data_rate">Bit Rate :</label>
+            </div>
+            <div class="input-group">
               <input type="text" id="udp2_audio_sample_rate" name="udp2_audio_sample_rate" placeholder="48000" value="<?php echo htmlspecialchars($data['udp2']['audio_sample_rate']); ?>">
               <label for="udp2_audio_sample_rate">Sample Rate :</label>
             </div>
@@ -1002,7 +995,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
       </div>
 
-           <div class="card wide">
+      <div class="card wide">
         <h3>SRT Output</h3>
         <div class="dropdown-container">
           <span class="dropdown-label">Service Status :</span>
@@ -1069,11 +1062,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               </div>
             </div>
 
-            <div class="input-group">
-              <input type="text" id="srt_audio_data_rate" name="srt_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['audio']['bit_rate']); ?>">
-              <label for="srt_audio_data_rate">Bit Rate :</label>
-            </div>
-
             <div class="dropdown-container">
               <span class="dropdown-label">DB Gain :</span>
               <div class="dropdown">
@@ -1103,6 +1091,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               </div>
             </div>
             <p></p>
+            <div class="input-group">
+              <input type="text" id="srt_audio_data_rate" name="srt_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['audio']['bit_rate']); ?>">
+              <label for="srt_audio_data_rate">Bit Rate :</label>
+            </div>
             <div class="input-group">
               <input type="text" id="srt_audio_sample_rate" name="srt_audio_sample_rate" placeholder="48000" value="<?php echo htmlspecialchars($data['srt']['audio_sample_rate']); ?>">
               <label for="srt_audio_sample_rate">Sample Rate :</label>
