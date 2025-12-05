@@ -89,15 +89,29 @@ Environment=PATH=/usr/bin:/usr/local/bin
 WantedBy=multi-user.target
 EOL
 
-cat > /etc/systemd/system/encoder-rtmp.service<< 'EOL'
+cat > /etc/systemd/system/encoder-rtmp0.service<< 'EOL'
 [Unit]
 Description= RTMP Encoder by ShreeBhattJi
-Requires=nginx.service
-After=nginx.service
 
 
 [Service]
-ExecStart=/bin/bash /var/www/encoder-rtmp.sh
+ExecStart=/bin/bash /var/www/encoder-rtmp0.sh
+WorkingDirectory=/var/www/
+Restart=always
+User=root
+Environment=PATH=/usr/bin:/usr/local/bin
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+cat > /etc/systemd/system/encoder-rtmp1.service<< 'EOL'
+[Unit]
+Description= RTMP Encoder by ShreeBhattJi
+
+
+[Service]
+ExecStart=/bin/bash /var/www/encoder-rtmp1.sh
 WorkingDirectory=/var/www/
 Restart=always
 User=root
@@ -110,8 +124,6 @@ EOL
 cat > /etc/systemd/system/encoder-srt.service<< 'EOL'
 [Unit]
 Description= SRT Encoder by ShreeBhattJi
-Requires=nginx.service
-After=nginx.service
 
 
 [Service]
@@ -125,15 +137,45 @@ Environment=PATH=/usr/bin:/usr/local/bin
 WantedBy=multi-user.target
 EOL
 
-cat > /etc/systemd/system/encoder-udp.service<< 'EOL'
+cat > /etc/systemd/system/encoder-udp0.service<< 'EOL'
 [Unit]
 Description= UDP Encoder by ShreeBhattJi
-Requires=nginx.service
-After=nginx.service
 
 
 [Service]
-ExecStart=/bin/bash /var/www/encoder-udp.sh
+ExecStart=/bin/bash /var/www/encoder-udp0.sh
+WorkingDirectory=/var/www/
+Restart=always
+User=root
+Environment=PATH=/usr/bin:/usr/local/bin
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+cat > /etc/systemd/system/encoder-udp1.service<< 'EOL'
+[Unit]
+Description= UDP Encoder by ShreeBhattJi
+
+
+[Service]
+ExecStart=/bin/bash /var/www/encoder-udp1.sh
+WorkingDirectory=/var/www/
+Restart=always
+User=root
+Environment=PATH=/usr/bin:/usr/local/bin
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+cat > /etc/systemd/system/encoder-udp2.service<< 'EOL'
+[Unit]
+Description= UDP Encoder by ShreeBhattJi
+
+
+[Service]
+ExecStart=/bin/bash /var/www/encoder-udp2.sh
 WorkingDirectory=/var/www/
 Restart=always
 User=root
@@ -316,6 +358,8 @@ EOL
 rm /var/www/html/index.nginx-debian.html;
 sudo mkdir -p /var/www/html/hls/shree;
 sudo mkdir -p /var/www/html/dash/shree;
+sudo mkdir -p /var/www/html/hls/shreeshree;
+sudo mkdir -p /var/www/html/dash/shreeshree;
 sudo mkdir -p /var/www/encoder;
 cp -r html/* /var/www/html/
 sudo cp -r encoder/* /var/www/encoder/
@@ -325,18 +369,15 @@ sudo systemctl enable apache2
 sudo systemctl restart apache2
 
 sudo chmod +x /usr/local/bin/nginx_system_monitor_sampler.py
+
 sudo systemctl daemon-reload
 sudo systemctl enable --now system-monitor.service
 sudo systemctl status system-monitor.service --no-pager
-sudo systemctl enable --now encoder-main.service
-sudo systemctl status encoder-main.service --no-pager
-sudo systemctl enable --now srt.service
-sudo systemctl status srt.service --no-pager
-
 sudo systemctl enable --now nginx.service
 sudo systemctl status nginx.service --no-pager
+
 sudo chmod 777 -R /var/www
 sudo chown -R www-data:www-data /var/www
 sudo ufw allow proto udp to 224.0.0.0/4
 sudo ufw route allow proto udp to 224.0.0.0/4
-sudo ufw deny out to 239.255.254.254 port 39000 proto udp
+sudo ufw deny out to 239.255.254.254 port 39000 proto u

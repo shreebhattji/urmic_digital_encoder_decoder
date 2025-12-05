@@ -18,8 +18,10 @@ function update_service($which_service)
     $srt_pass1 = "";
     $srt_pass2 = "";
     $srt_pass3 = "";
-    $rtmp_multiple[] = [];
+    $rtmp_multiple0[] = [];
+    $rtmp_multiple1[] = [];
     $srt_multiple[] = [];
+
     $defaults = [
         'input' => 'url',
         'hdmi' => [
@@ -78,36 +80,103 @@ function update_service($which_service)
     $jsonFile = __DIR__ . '/output.json';
 
     $defaults = [
-        'video' => [
-            'resolution' => '1920x1080',
-            'format' => 'h264_qsv',
-            'framerate' => '25',
-            'data_rate' => '3.3M',
-            'gop' => '12'
-        ],
-        'audio' => [
-            'format' => 'aac',
-            'sample_rate' => '48000',
-            'bit_rate' => '96k',
-            'db_gain' => '0dB'
-        ],
         'service_display' => 'disable',
-        'output_display' => '1920x1080@60.00',
-        'output_display_audio' => '0,3',
-        'service_rtmp_multiple' => 'disable',
-        'service_rtmp_hls' => 'disable',
-        'service_rtmp_dash' => 'disable',
+        'service_rtmp0_multiple' => 'disable',
+        'service_rtmp0_hls' => 'disable',
+        'service_rtmp0_dash' => 'disable',
+        'service_rtmp1_multiple' => 'disable',
+        'service_rtmp1_hls' => 'disable',
+        'service_rtmp1_dash' => 'disable',
+        'service_udp0' => 'disable',
+        'service_udp1' => 'disable',
+        'service_udp2' => 'disable',
         'service_srt_multiple' => 'disable',
-        'service_udp' => 'disable',
         'service_custom' => 'disable',
-        'rtmp_multiple' => [],
+
+        'rtmp_multiple0' => [],
+        'rtmp_multiple1' => [],
         'srt_multiple'  => [],
-        'udp' => '',
+        'rtmp0' => [
+            'resolution' => '1920x1080',
+            'data_rate' => '6M',
+            'framerate' => '30',
+            'gop' => '30',
+            'extra' => '',
+            'audio_data_rate' => '128k',
+            'audio_db_gain' => '0dB',
+            'audio_sample_rate' => '48000'
+        ],
+        'rtmp1' => [
+            'resolution' => '720x576',
+            'data_rate' => '1.5M',
+            'framerate' => '25',
+            'gop' => '25',
+            'extra' => '',
+            'audio_data_rate' => '96k',
+            'audio_db_gain' => '0dB',
+            'audio_sample_rate' => '48000'
+        ],
+        'udp0' => [
+            'udp' => '',
+            'formate' => '',
+            'resolution' => '',
+            'data_rate' => '',
+            'framerate' => '',
+            'gop' => '',
+            'extra' => '',
+            'audio_formate' => '',
+            'audio_data_rate' => '',
+            'audio_db_gain' => '',
+            'audio_sample_rate' => ''
+        ],
+        'udp1' => [
+            'udp' => '',
+            'formate' => '',
+            'resolution' => '',
+            'data_rate' => '',
+            'framerate' => '',
+            'gop' => '',
+            'extra' => '',
+            'audio_formate' => '',
+            'audio_data_rate' => '',
+            'audio_db_gain' => '',
+            'audio_sample_rate' => ''
+        ],
+        'udp2' => [
+            'udp' => '',
+            'formate' => '',
+            'resolution' => '',
+            'data_rate' => '',
+            'framerate' => '',
+            'gop' => '',
+            'extra' => '',
+            'audio_formate' => '',
+            'audio_data_rate' => '',
+            'audio_db_gain' => '',
+            'audio_sample_rate' => ''
+        ],
+        'srt0' => [
+            'formate' => '',
+            'resolution' => '',
+            'data_rate' => '',
+            'framerate' => '',
+            'gop' => '',
+            'extra' => '',
+            'audio_formate' => '',
+            'audio_data_rate' => '',
+            'audio_db_gain' => '',
+            'audio_sample_rate' => ''
+        ],
+
+        'display' => '1920x1080@60.00',
+        'display_audio' => '0,3',
+
         'custom_output' => ''
     ];
 
     for ($i = 1; $i <= 11; $i++) {
-        $defaults['rtmp_multiple'][$i] = ['url' => '', 'name' => '', 'enabled' => false];
+        $defaults['rtmp_multiple0'][$i] = ['url' => '', 'name' => '', 'enabled' => false];
+        $defaults['rtmp_multiple1'][$i] = ['url' => '', 'name' => '', 'enabled' => false];
         $defaults['srt_multiple'][$i]  = ['url' => '', 'name' => '', 'enabled' => false];
     }
 
@@ -121,19 +190,25 @@ function update_service($which_service)
     }
 
     $service_display = $data['service_display'];
-    $service_rtmp_multiple = $data['service_rtmp_multiple'];
-    $service_rtmp_hls = $data['service_rtmp_hls'];
-    $service_rtmp_dash = $data['service_rtmp_dash'];
-    $service_srt_multiple = $data['service_srt_multiple'];
-    $service_udp = $data['service_udp'];
+    $service_rtmp0_multiple = $data['service_rtmp0_multiple'];
+    $service_rtmp0_hls = $data['service_rtmp0_hls'];
+    $service_rtmp0_dash = $data['service_rtmp0_dash'];
+    $service_rtmp1_multiple = $data['service_rtmp1_multiple'];
+    $service_rtmp1_hls = $data['service_rtmp1_hls'];
+    $service_rtmp1_dash = $data['service_rtmp1_dash'];
+    $service_udp0 = $data['service_udp0'];
+    $service_udp1 = $data['service_udp1'];
+    $service_udp2 = $data['service_udp2'];
     $service_custom = $data['service_custom'];
-    $rtmp_multiple = $data['rtmp_multiple'];
+    $service_srt_multiple = $data['service_srt_multiple'];
+    $rtmp_multiple0 = $data['rtmp_multiple0'];
+    $rtmp_multiple1 = $data['rtmp_multiple1'];
     $srt_multiple = $data['srt_multiple'];
 
 
     switch ($which_service) {
         case 'input':
-            $input .=  " -f mpegts udp://239.255.254.254:39000?localaddr=127.0.0.1";
+            $input .=  " -c:v copy -c:a copy -f mpegts udp://@239.255.254.254:39000?localaddr=127.0.0.1";
 
             $service = $input;
             $file = "/var/www/encoder-main.sh";
@@ -142,39 +217,67 @@ function update_service($which_service)
             } else {
                 echo "Error writing file.";
             }
-            exec('sudo systemctl restart encoder-main');
+            if ($service_display === "enable") {
+                exec('sudo systemctl restart encoder-main');
+            }
             break;
         case 'display';
             break;
-        case 'rtmp';
-            if ($service_rtmp_hls === "enable") {
-                $hls = "
+        case 'rtmp0';
+        case 'rtmp1';
+            if ($service_rtmp0_hls === "enable") {
+                $hls0 = "
       hls on;
       hls_path /var/www/html/hls/shree;
       hls_fragment 3;
       hls_playlist_length 60;
 ";
             } else {
-                $hls = "
+                $hls0 = "
 ";
             }
-            if ($service_rtmp_dash === "enable") {
-                $dash = "
+            if ($service_rtmp0_dash === "enable") {
+                $dash0 = "
       dash on;
       dash_path /var/www/html/dash/shree; 
 ";
             } else {
-                $dash = "
+                $dash0 = "
+";
+            }
+            if ($service_rtmp1_hls === "enable") {
+                $hls1 = "
+      hls on;
+      hls_path /var/www/html/hls/shreeshree;
+      hls_fragment 3;
+      hls_playlist_length 60;
+";
+            } else {
+                $hls1 = "
+";
+            }
+            if ($service_rtmp1_dash === "enable") {
+                $dash1 = "
+      dash on;
+      dash_path /var/www/html/dash/shreeshree; 
+";
+            } else {
+                $dash1 = "
 ";
             }
 
-
-            $rtmp_push = "";
-
+            $rtmp_push0 = "";
             for ($i = 1; $i <= 11; $i++) {
-                if ($rtmp_multiple[$i]['enabled'] == 1) {
-                    $rtmp_push .= "
-      push " . $rtmp_multiple[$i]['url'] . ";";
+                if ($rtmp_multiple0[$i]['enabled'] == 1) {
+                    $rtmp_push0 .= "
+      push " . $rtmp_multiple0[$i]['url'] . ";";
+                }
+            }
+            $rtmp_push1 = "";
+            for ($i = 1; $i <= 11; $i++) {
+                if ($rtmp_multiple1[$i]['enabled'] == 1) {
+                    $rtmp_push0 .= "
+      push " . $rtmp_multiple1[$i]['url'] . ";";
                 }
             }
 
@@ -188,13 +291,15 @@ events {
     worker_connections 2048;
     multi_accept on;
 }
-";
-            if ($input_source === "rtmp") {
-                $nginx .= "    
+
 rtmp {
   server {
     listen 1935;
     chunk_size 4096;
+
+    ";
+            if ($input_source === "rtmp") {
+                $nginx .= "    
 
     application " . $input_rtmp_mount . " {
       live on;
@@ -203,37 +308,31 @@ rtmp {
       wait_video on;
     }
 
-    application shree {
-      live on;
-      record off;
-      meta off;
-      wait_video on;
-      allow publish 127.0.0.1;
-      deny publish all;
-      " . $rtmp_push . "
-    }
-  }
-}
-    ";
-            } else {
-                $nginx .= "    
-rtmp {
-  server {
-    listen 1935;
-    chunk_size 4096;
+";
+            }
+            $nginx .= "    
 
     application shree {
       live on;
       record off;
       meta off;
       wait_video on;
-      " . $rtmp_push . "
-      " . $hls . "
-      " . $dash . "
+      " . $hls0 . "
+      " . $dash0 . "
+      " . $rtmp_push0 . "
+    }
+    application shreeshree {
+      live on;
+      record off;
+      meta off;
+      wait_video on;
+      " . $hls1 . "
+      " . $dash1 . "
+      " . $rtmp_push1 . "
     }
   }
 }";
-            }
+
             $nginx .= "
 
 http {
@@ -258,26 +357,61 @@ http {
             ";
             $file = "/var/www/nginx.conf";
             file_put_contents($file, $nginx);
-
-            if ($service_rtmp_multiple === "enable") {
-                $rtmp = 'ffmpeg  -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1" -c:v copy -c:a aac -f flv rtmp://127.0.0.1:1935/shree/bhattji';
-                $file = "/var/www/encoder-rtmp.sh";
-                file_put_contents($file, $rtmp);
-                exec('sudo cp /var/www/nginx.conf /etc/nginx/nginx.conf');
-                exec("sudo nginx -t 2>&1", $output, $status);
-                if ($status === 0) {
-                    exec("sudo systemctl restart nginx 2>&1", $o, $s);
-                    exec('sudo systemctl enable encoder-rtmp');
-                    exec('sudo systemctl restart encoder-rtmp');
-                } else {
-                    exec('sudo cp /var/www/nginx.conf /etc/nginx/');
-                    exec("sudo systemctl restart nginx");
-                    exec('sudo systemctl stop encoder-rtmp');
-                    exec('sudo systemctl disable encoder-rtmp');
-                }
+            exec('sudo cp /var/www/nginx.conf /etc/nginx/nginx.conf');
+            exec("sudo nginx -t 2>&1", $output, $status);
+            if ($status === 0) {
+                exec("sudo systemctl restart nginx 2>&1", $o, $s);
             } else {
-                exec('sudo systemctl stop encoder-rtmp');
-                exec('sudo systemctl disable encoder-rtmp');
+                exec('sudo cp /var/www/default_nginx.conf.conf /etc/nginx/nginx.conf');
+                exec("sudo systemctl restart nginx");
+            }
+
+            if ($service_rtmp0_multiple === "enable") {
+                $rtmp = 'ffmpeg  -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1" '
+                .' -c:v h264 '
+                .' -vf "scale="'.str_replace("x",":",$data['rtmp0']['resolution'])
+                .'" -b:v '.$data['rtmp0']['data_rate']
+                .' -maxrate '.$data['rtmp0']['data_rate']
+                .' -bufsize '.$data['rtmp0']['data_rate']
+                .' -r '.$data['rtmp0']['framerate']
+                .' -g '.$data['rtmp0']['gop']
+                .' -c:a aac -b:a '.$data['rtmp0']['audio_data_rate']
+                .' '.$data['rtmp0']['audio_db_gain']
+                .' -ar '.$data['rtmp0']['audio_sample_rate']
+                .' '.$data['rtmp0']['extra'] 
+                .' -f flv rtmp://127.0.0.1/shree/bhattji';
+
+                $file = "/var/www/encoder-rtmp0.sh";
+                file_put_contents($file, $rtmp);
+                exec('sudo systemctl enable encoder-rtmp0');
+                exec('sudo systemctl restart encoder-rtmp0');
+            } else {
+                exec('sudo systemctl stop encoder-rtmp0');
+                exec('sudo systemctl disable encoder-rtmp0');
+            }
+
+            if ($service_rtmp0_multiple === "enable") {
+                $rtmp = 'ffmpeg  -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1" '
+                .' -c:v h264_qsv '
+                .' -vf "scale="'.str_replace("x",":",$data['rtmp1']['resolution'])
+                .'" -b:v '.$data['rtmp1']['data_rate']
+                .' -maxrate '.$data['rtmp1']['data_rate']
+                .' -bufsize '.$data['rtmp1']['data_rate']
+                .' -r '.$data['rtmp1']['framerate']
+                .' -g '.$data['rtmp1']['gop']
+                .' -c:a aac -b:a '.$data['rtmp1']['audio_data_rate']
+                .' '.$data['rtmp1']['audio_db_gain']
+                .' -ar '.$data['rtmp1']['audio_sample_rate']
+                .' '.$data['rtmp1']['extra'] 
+                .' -f flv rtmp://127.0.0.1/shreeshree/bhattji';
+
+                $file = "/var/www/encoder-rtmp1.sh";
+                file_put_contents($file, $rtmp);
+                exec('sudo systemctl enable encoder-rtmp1');
+                exec('sudo systemctl restart encoder-rtmp1');
+            } else {
+                exec('sudo systemctl stop encoder-rtmp1');
+                exec('sudo systemctl disable encoder-rtmp1');
             }
             break;
         case "srt";
@@ -326,7 +460,7 @@ srt {
     }
 }
 ";
-                $service = 'ffmpeg -fflags nobuffer -i udp://@239.255.254.254:39000 -c copy -f mpeg srt://127.0.0.1/'.$srt_pass1.'/'.$srt_pass2.'/ji';
+                $service = 'ffmpeg -fflags nobuffer -i udp://@239.255.254.254:39000 -c copy -f mpeg srt://127.0.0.1/' . $srt_pass1 . '/' . $srt_pass2 . '/ji';
                 $file = "/var/www/encoder-srt.sh";
                 file_put_contents($file, $service);
 
@@ -336,6 +470,7 @@ srt {
                 exec('sudo systemctl restart srt');
                 exec('sudo systemctl enable encoder-srt');
                 exec('sudo systemctl restart encoder-srt');
+
             } else {
                 exec('sudo systemctl disable srt');
                 exec('sudo systemctl stop srt');
