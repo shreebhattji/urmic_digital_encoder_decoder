@@ -10,6 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             case 'main':
                 switch ($data[1]) {
                     case 'restart':
+                        exec('sudo systemctl enable encoder-main');
                         exec('sudo systemctl restart encoder-main');
                         break;
                     case 'enable':
@@ -22,32 +23,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         break;
                 }
                 break;
-            case 'rtmp':
+            case 'rtmp0':
                 switch ($data[1]) {
                     case 'restart':
-                        exec('sudo systemctl enable nginx');
-                        exec('sudo systemctl restart nginx');
                         exec('sudo systemctl enable encoder-rtmp');
                         exec('sudo systemctl restart encoder-rtmp');
                         break;
                     case 'enable':
-                        exec('sudo systemctl enable nginx');
-                        exec('sudo systemctl restart nginx');
                         exec('sudo systemctl enable encoder-rtmp');
                         exec('sudo systemctl restart encoder-rtmp');
                         break;
                     case 'disable':
-                        exec('sudo systemctl stop nginx');
-                        exec('sudo systemctl disable nginx');
                         exec('sudo systemctl stop encoder-rtmp');
                         exec('sudo systemctl disable encoder-rtmp');
+                        break;
+                }
+                break;
+            case 'rtmp1':
+                switch ($data[1]) {
+                    case 'restart':
+                        exec('sudo systemctl enable encoder-rtmp1');
+                        exec('sudo systemctl restart encoder-rtmp1');
+                        break;
+                    case 'enable':
+                        exec('sudo systemctl enable encoder-rtmp1');
+                        exec('sudo systemctl restart encoder-rtmp1');
+                        break;
+                    case 'disable':
+                        exec('sudo systemctl stop encoder-rtmp1');
+                        exec('sudo systemctl disable encoder-rtmp1');
                         break;
                 }
                 break;
             case 'srt':
                 switch ($data[1]) {
                     case 'restart':
+                        exec('sudo systemctl enable srt');
                         exec('sudo systemctl restart srt');
+                        exec('sudo systemctl enable encoder-srt');
                         exec('sudo systemctl restart encoder-srt');
                         break;
                     case 'enable':
@@ -64,18 +77,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         break;
                 }
                 break;
-            case 'udp':
+            case 'udp0':
                 switch ($data[1]) {
                     case 'restart':
-                        exec('sudo systemctl restart encoder-udp');
+                        exec('sudo systemctl restart encoder-udp0');
                         break;
                     case 'enable':
-                        exec('sudo systemctl enable encoder-udp');
-                        exec('sudo systemctl restart encoder-udp');
+                        exec('sudo systemctl enable encoder-udp0');
+                        exec('sudo systemctl restart encoder-udp0');
                         break;
                     case 'disable':
-                        exec('sudo systemctl stop encoder-udp');
-                        exec('sudo systemctl disable encoder-udp');
+                        exec('sudo systemctl stop encoder-udp0');
+                        exec('sudo systemctl disable encoder-udp0');
+                        break;
+                }
+            case 'udp1':
+                switch ($data[1]) {
+                    case 'restart':
+                        exec('sudo systemctl restart encoder-udp1');
+                        break;
+                    case 'enable':
+                        exec('sudo systemctl enable encoder-udp1');
+                        exec('sudo systemctl restart encoder-udp1');
+                        break;
+                    case 'disable':
+                        exec('sudo systemctl stop encoder-udp1');
+                        exec('sudo systemctl disable encoder-udp1');
+                        break;
+                }
+            case 'udp2':
+                switch ($data[1]) {
+                    case 'restart':
+                        exec('sudo systemctl restart encoder-udp2');
+                        break;
+                    case 'enable':
+                        exec('sudo systemctl enable encoder-udp2');
+                        exec('sudo systemctl restart encoder-udp2');
+                        break;
+                    case 'disable':
+                        exec('sudo systemctl stop encoder-udp2');
+                        exec('sudo systemctl disable encoder-udp2');
                         break;
                 }
                 break;
@@ -320,12 +361,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
 
                     <form method="post" class="service-buttons">
-                        <button type="submit" name="action" value="rtmp_restart" class="btn-restart">Restart</button>
+                        <button type="submit" name="action" value="rtmp0_restart" class="btn-restart">Restart</button>
 
                         <?php if ($serviceEnabled): ?>
-                            <button type="submit" name="action" value="rtmp_disable" class="btn-disable">Disable</button>
+                            <button type="submit" name="action" value="rtmp0_disable" class="btn-disable">Disable</button>
                         <?php else: ?>
-                            <button type="submit" name="action" value="rtmp_enable" class="btn-enable">Enable</button>
+                            <button type="submit" name="action" value="rtmp0_enable" class="btn-enable">Enable</button>
                         <?php endif; ?>
                     </form>
                 </div>
@@ -366,12 +407,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
 
                     <form method="post" class="service-buttons">
-                        <button type="submit" name="action" value="rtmp_restart" class="btn-restart">Restart</button>
+                        <button type="submit" name="action" value="rtmp1_restart" class="btn-restart">Restart</button>
 
                         <?php if ($serviceEnabled): ?>
-                            <button type="submit" name="action" value="rtmp_disable" class="btn-disable">Disable</button>
+                            <button type="submit" name="action" value="rtmp1_disable" class="btn-disable">Disable</button>
                         <?php else: ?>
-                            <button type="submit" name="action" value="rtmp_enable" class="btn-enable">Enable</button>
+                            <button type="submit" name="action" value="rtmp1_enable" class="btn-enable">Enable</button>
                         <?php endif; ?>
                     </form>
                 </div>
@@ -582,16 +623,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
 
+
         <div class="card wide">
-            <div class="hls-player-wrapper">
-                <video
-                    class="hls-video"
-                    controls
-                    autoplay
-                    playsinline
-                    src="http://127.0.0.1/hls/shree/bhattji.m3u8">
-                    Your browser does not support HTML5 HLS playback.
-                </video>
+            <div class="card-row">
+                <div class="card-left">
+                    <div class="hls-player-wrapper">
+                        <video
+                            class="hls-video"
+                            controls
+                            autoplay
+                            playsinline
+                            src="http://127.0.0.1/hls/shree/bhattji.m3u8">
+                            Your browser does not support HTML5 HLS playback.
+                        </video>
+                    </div>
+                </div>
+                <div class="card-right">
+                    <div class="hls-player-wrapper">
+                        <video
+                            class="hls-video"
+                            controls
+                            autoplay
+                            playsinline
+                            src="http://127.0.0.1/hls/shree/bhattji11.m3u8">
+                            Your browser does not support HTML5 HLS playback.
+                        </video>
+                    </div>
+                </div>
             </div>
         </div>
 
