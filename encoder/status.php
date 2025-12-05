@@ -434,35 +434,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ?>
 
             <div class="card-row">
-                <div class="card-left">
+                <div class="service-label">
+                    <strong>Service</strong>
+
+                    <?php if ($serviceEnabled): ?>
+                        <span class="badge badge-enabled">Enabled</span>
+                    <?php else: ?>
+                        <span class="badge badge-disabled">Disabled</span>
+                    <?php endif; ?>
                 </div>
-                <div class="card-right">
-                    <div class="service-label">
-                        <strong>Service</strong>
 
-                        <?php if ($serviceEnabled): ?>
-                            <span class="badge badge-enabled">Enabled</span>
-                        <?php else: ?>
-                            <span class="badge badge-disabled">Disabled</span>
-                        <?php endif; ?>
-                    </div>
+                <form method="post" class="service-buttons">
+                    <button type="submit" name="action" value="udp0_restart" class="btn-restart">
+                        Restart
+                    </button>
 
-                    <form method="post" class="service-buttons">
-                        <button type="submit" name="action" value="udp0_restart" class="btn-restart">
-                            Restart
+                    <?php if ($serviceEnabled): ?>
+                        <button type="submit" name="action" value="udp0_disable" class="btn-disable">
+                            Disable
                         </button>
-
-                        <?php if ($serviceEnabled): ?>
-                            <button type="submit" name="action" value="udp0_disable" class="btn-disable">
-                                Disable
-                            </button>
-                        <?php else: ?>
-                            <button type="submit" name="action" value="udp0_enable" class="btn-enable">
-                                Enable
-                            </button>
-                        <?php endif; ?>
-                    </form>
-                </div>
+                    <?php else: ?>
+                        <button type="submit" name="action" value="udp0_enable" class="btn-enable">
+                            Enable
+                        </button>
+                    <?php endif; ?>
+                </form>
             </div>
         </div>
         <div class="card">
@@ -478,35 +474,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ?>
 
             <div class="card-row">
-                <div class="card-left">
+                <div class="service-label">
+                    <strong>Service</strong>
+
+                    <?php if ($serviceEnabled): ?>
+                        <span class="badge badge-enabled">Enabled</span>
+                    <?php else: ?>
+                        <span class="badge badge-disabled">Disabled</span>
+                    <?php endif; ?>
                 </div>
-                <div class="card-right">
-                    <div class="service-label">
-                        <strong>Service</strong>
 
-                        <?php if ($serviceEnabled): ?>
-                            <span class="badge badge-enabled">Enabled</span>
-                        <?php else: ?>
-                            <span class="badge badge-disabled">Disabled</span>
-                        <?php endif; ?>
-                    </div>
+                <form method="post" class="service-buttons">
+                    <button type="submit" name="action" value="udp1_restart" class="btn-restart">
+                        Restart
+                    </button>
 
-                    <form method="post" class="service-buttons">
-                        <button type="submit" name="action" value="udp1_restart" class="btn-restart">
-                            Restart
+                    <?php if ($serviceEnabled): ?>
+                        <button type="submit" name="action" value="udp1_disable" class="btn-disable">
+                            Disable
                         </button>
-
-                        <?php if ($serviceEnabled): ?>
-                            <button type="submit" name="action" value="udp1_disable" class="btn-disable">
-                                Disable
-                            </button>
-                        <?php else: ?>
-                            <button type="submit" name="action" value="udp1_enable" class="btn-enable">
-                                Enable
-                            </button>
-                        <?php endif; ?>
-                    </form>
-                </div>
+                    <?php else: ?>
+                        <button type="submit" name="action" value="udp1_enable" class="btn-enable">
+                            Enable
+                        </button>
+                    <?php endif; ?>
+                </form>
             </div>
         </div>
         <div class="card">
@@ -522,35 +514,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ?>
 
             <div class="card-row">
-                <div class="card-left">
+                <div class="service-label">
+                    <strong>Service</strong>
+
+                    <?php if ($serviceEnabled): ?>
+                        <span class="badge badge-enabled">Enabled</span>
+                    <?php else: ?>
+                        <span class="badge badge-disabled">Disabled</span>
+                    <?php endif; ?>
                 </div>
-                <div class="card-right">
-                    <div class="service-label">
-                        <strong>Service</strong>
 
-                        <?php if ($serviceEnabled): ?>
-                            <span class="badge badge-enabled">Enabled</span>
-                        <?php else: ?>
-                            <span class="badge badge-disabled">Disabled</span>
-                        <?php endif; ?>
-                    </div>
+                <form method="post" class="service-buttons">
+                    <button type="submit" name="action" value="udp_restart" class="btn-restart">
+                        Restart
+                    </button>
 
-                    <form method="post" class="service-buttons">
-                        <button type="submit" name="action" value="udp_restart" class="btn-restart">
-                            Restart
+                    <?php if ($serviceEnabled): ?>
+                        <button type="submit" name="action" value="udp_disable" class="btn-disable">
+                            Disable
                         </button>
-
-                        <?php if ($serviceEnabled): ?>
-                            <button type="submit" name="action" value="udp_disable" class="btn-disable">
-                                Disable
-                            </button>
-                        <?php else: ?>
-                            <button type="submit" name="action" value="udp_enable" class="btn-enable">
-                                Enable
-                            </button>
-                        <?php endif; ?>
-                    </form>
-                </div>
+                    <?php else: ?>
+                        <button type="submit" name="action" value="udp_enable" class="btn-enable">
+                            Enable
+                        </button>
+                    <?php endif; ?>
+                </form>
             </div>
         </div>
         <div class="card">
