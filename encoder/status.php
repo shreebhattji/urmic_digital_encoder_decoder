@@ -287,7 +287,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <div class="card wide">
-            <h3>RTMP Server</h3>
+            <h3>RTMP0 Server</h3>
+            <?php
+            $status = shell_exec("sudo systemctl is-active encoder-rtmp 2>&1");
+            $status = trim($status);
+
+            if ($status === "active")
+                $serviceEnabled = true;
+            else
+                $serviceEnabled = false;
+
+            $m3u8_url       = 'https://example.com/live/stream.m3u8';
+            ?>
+
+            <div class="card-row">
+                <div class="card-left">
+                    <div class="input-wrapper">
+                        <input id="m3u8-link" type="text" readonly
+                            value="<?php echo htmlspecialchars($m3u8_url, ENT_QUOTES); ?>">
+                        <span class="copy-icon">📋</span>
+                    </div>
+                </div>
+                <div class="card-right">
+                    <div class="service-label">
+                        <strong>Service</strong>
+
+                        <?php if ($serviceEnabled): ?>
+                            <span class="badge badge-enabled">Enabled</span>
+                        <?php else: ?>
+                            <span class="badge badge-disabled">Disabled</span>
+                        <?php endif; ?>
+                    </div>
+
+                    <form method="post" class="service-buttons">
+                        <button type="submit" name="action" value="rtmp_restart" class="btn-restart">Restart</button>
+
+                        <?php if ($serviceEnabled): ?>
+                            <button type="submit" name="action" value="rtmp_disable" class="btn-disable">Disable</button>
+                        <?php else: ?>
+                            <button type="submit" name="action" value="rtmp_enable" class="btn-enable">Enable</button>
+                        <?php endif; ?>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="card wide">
+            <h3>RTMP1 Server</h3>
             <?php
             $status = shell_exec("sudo systemctl is-active encoder-rtmp 2>&1");
             $status = trim($status);
@@ -375,11 +421,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
         </div>
-        <div class="card wide">
-            <h3>Udp Service</h3>
+        <div class="card">
+            <h3>Udp0 Service</h3>
             <?php
-            $m3u8_url       = 'https://example.com/live/stream.m3u8';
-            $status = shell_exec("sudo systemctl is-active encoder-udp   2>&1");
+            $status = shell_exec("sudo systemctl is-active encoder-udp0   2>&1");
             $status = trim($status);
 
             if ($status === "active")
@@ -390,11 +435,94 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="card-row">
                 <div class="card-left">
-                    <div class="input-wrapper">
-                        <input id="m3u8-link" type="text" readonly
-                            value="<?php echo htmlspecialchars($m3u8_url, ENT_QUOTES); ?>">
-                        <span class="copy-icon">📋</span>
+                </div>
+                <div class="card-right">
+                    <div class="service-label">
+                        <strong>Service</strong>
+
+                        <?php if ($serviceEnabled): ?>
+                            <span class="badge badge-enabled">Enabled</span>
+                        <?php else: ?>
+                            <span class="badge badge-disabled">Disabled</span>
+                        <?php endif; ?>
                     </div>
+
+                    <form method="post" class="service-buttons">
+                        <button type="submit" name="action" value="udp0_restart" class="btn-restart">
+                            Restart
+                        </button>
+
+                        <?php if ($serviceEnabled): ?>
+                            <button type="submit" name="action" value="udp0_disable" class="btn-disable">
+                                Disable
+                            </button>
+                        <?php else: ?>
+                            <button type="submit" name="action" value="udp0_enable" class="btn-enable">
+                                Enable
+                            </button>
+                        <?php endif; ?>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <h3>Udp1 Service</h3>
+            <?php
+            $status = shell_exec("sudo systemctl is-active encoder-udp1   2>&1");
+            $status = trim($status);
+
+            if ($status === "active")
+                $serviceEnabled = true;
+            else
+                $serviceEnabled = false;
+            ?>
+
+            <div class="card-row">
+                <div class="card-left">
+                </div>
+                <div class="card-right">
+                    <div class="service-label">
+                        <strong>Service</strong>
+
+                        <?php if ($serviceEnabled): ?>
+                            <span class="badge badge-enabled">Enabled</span>
+                        <?php else: ?>
+                            <span class="badge badge-disabled">Disabled</span>
+                        <?php endif; ?>
+                    </div>
+
+                    <form method="post" class="service-buttons">
+                        <button type="submit" name="action" value="udp1_restart" class="btn-restart">
+                            Restart
+                        </button>
+
+                        <?php if ($serviceEnabled): ?>
+                            <button type="submit" name="action" value="udp1_disable" class="btn-disable">
+                                Disable
+                            </button>
+                        <?php else: ?>
+                            <button type="submit" name="action" value="udp1_enable" class="btn-enable">
+                                Enable
+                            </button>
+                        <?php endif; ?>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <h3>Udp2 Service</h3>
+            <?php
+            $status = shell_exec("sudo systemctl is-active encoder-udp2   2>&1");
+            $status = trim($status);
+
+            if ($status === "active")
+                $serviceEnabled = true;
+            else
+                $serviceEnabled = false;
+            ?>
+
+            <div class="card-row">
+                <div class="card-left">
                 </div>
                 <div class="card-right">
                     <div class="service-label">
@@ -425,7 +553,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
         </div>
-        <div class="card wide">
+        <div class="card">
             <h3>Custom Output Service</h3>
             <?php
             $status = shell_exec("sudo systemctl is-active encoder-custom   2>&1");
@@ -473,7 +601,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     controls
                     autoplay
                     playsinline
-                    src="http://127.0.0.1/shree/bhattji.m3u8">
+                    src="http://127.0.0.1/hls/shree/bhattji.m3u8">
                     Your browser does not support HTML5 HLS playback.
                 </video>
             </div>
