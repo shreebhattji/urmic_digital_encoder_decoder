@@ -18,8 +18,8 @@ function update_service($which_service)
     $srt_pass1 = "";
     $srt_pass2 = "";
     $srt_pass3 = "";
-    $rtmp_multiple0[] = [];
-    $rtmp_multiple1[] = [];
+    $rtmp0_multiple[] = [];
+    $rtmp1_multiple[] = [];
     $srt_multiple[] = [];
 
     $defaults = [
@@ -93,8 +93,8 @@ function update_service($which_service)
         'service_srt_multiple' => 'disable',
         'service_custom' => 'disable',
 
-        'rtmp_multiple0' => [],
-        'rtmp_multiple1' => [],
+        'rtmp0_multiple' => [],
+        'rtmp1_multiple' => [],
         'srt_multiple'  => [],
         'rtmp0' => [
             'resolution' => '1920x1080',
@@ -175,8 +175,8 @@ function update_service($which_service)
     ];
 
     for ($i = 1; $i <= 11; $i++) {
-        $defaults['rtmp_multiple0'][$i] = ['url' => '', 'name' => '', 'enabled' => false];
-        $defaults['rtmp_multiple1'][$i] = ['url' => '', 'name' => '', 'enabled' => false];
+        $defaults['rtmp0_multiple'][$i] = ['url' => '', 'name' => '', 'enabled' => false];
+        $defaults['rtmp1_multiple'][$i] = ['url' => '', 'name' => '', 'enabled' => false];
         $defaults['srt_multiple'][$i]  = ['url' => '', 'name' => '', 'enabled' => false];
     }
 
@@ -201,8 +201,8 @@ function update_service($which_service)
     $service_udp2 = $data['service_udp2'];
     $service_custom = $data['service_custom'];
     $service_srt_multiple = $data['service_srt_multiple'];
-    $rtmp_multiple0 = $data['rtmp_multiple0'];
-    $rtmp_multiple1 = $data['rtmp_multiple1'];
+    $rtmp0_multiple = $data['rtmp0_multiple'];
+    $rtmp1_multiple = $data['rtmp1_multiple'];
     $srt_multiple = $data['srt_multiple'];
 
 
@@ -265,16 +265,16 @@ function update_service($which_service)
 
             $rtmp_push0 = "";
             for ($i = 1; $i <= 11; $i++) {
-                if ($rtmp_multiple0[$i]['enabled'] == 'true') {
+                if ($rtmp0_multiple[$i]['enabled'] == 'true') {
                     $rtmp_push0 .= "
-      push " . $rtmp_multiple0[$i]['url'] . ";";
+      push " . $rtmp0_multiple[$i]['url'] . ";";
                 }
             }
             $rtmp_push1 = "";
             for ($i = 1; $i <= 11; $i++) {
-                if ($rtmp_multiple1[$i]['enabled'] == 'true') {
+                if ($rtmp1_multiple[$i]['enabled'] == 'true') {
                     $rtmp_push1 .= "
-      push " . $rtmp_multiple1[$i]['url'] . ";";
+      push " . $rtmp1_multiple[$i]['url'] . ";";
                 }
             }
 
