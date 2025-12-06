@@ -364,7 +364,7 @@ http {
             }
 
             if ($service_rtmp0_multiple === "enable") {
-                $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000  -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
+                $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -re -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                     . ' -c:v h264_qsv '
                     . ' -vf "scale=' . str_replace("x", ":", $data['rtmp0']['resolution'])
                     . '" -b:v ' . $data['rtmp0']['data_rate']
@@ -388,7 +388,7 @@ http {
             }
 
             if ($service_rtmp1_multiple === "enable") {
-                $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000  -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
+                $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -re -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                     . ' -c:v h264_qsv '
                     . ' -vf "scale=' . str_replace("x", ":", $data['rtmp1']['resolution'])
                     . '" -b:v ' . $data['rtmp1']['data_rate']
