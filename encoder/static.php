@@ -217,9 +217,7 @@ function update_service($which_service)
             } else {
                 echo "Error writing file.";
             }
-            if ($service_display === "enable") {
-                exec('sudo systemctl restart encoder-main');
-            }
+            exec('sudo systemctl restart encoder-main');
             break;
         case 'display';
             break;
