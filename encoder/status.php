@@ -330,7 +330,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="card wide">
             <h3>RTMP0 Server</h3>
             <?php
-            $status = shell_exec("sudo systemctl is-active encoder-rtmp 2>&1");
+            $status = shell_exec("sudo systemctl is-active encoder-rtmp0 2>&1");
             $status = trim($status);
 
             if ($status === "active")
@@ -376,7 +376,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="card wide">
             <h3>RTMP1 Server</h3>
             <?php
-            $status = shell_exec("sudo systemctl is-active encoder-rtmp 2>&1");
+            $status = shell_exec("sudo systemctl is-active encoder-rtmp1 2>&1");
             $status = trim($status);
 
             if ($status === "active")
@@ -594,7 +594,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $serviceEnabled = false;
             ?>
 
-            <div class="card-row">
+            <div class="card-row">shree
                 <div class="service-label">
                     <strong>Service</strong>
 
@@ -645,7 +645,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             controls
                             autoplay
                             playsinline
-                            src="http://127.0.0.1/hls/shree/bhattji11.m3u8">
+                            src="http://127.0.0.1/hls/shreeshree/bhattji.m3u8">
                             Your browser does not support HTML5 HLS playback.
                         </video>
                     </div>
