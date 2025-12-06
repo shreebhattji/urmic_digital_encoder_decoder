@@ -42,51 +42,51 @@ $defaults = [
   ],
   'udp0' => [
     'udp' => '',
-    'formate' => '',
+    'format' => '',
     'resolution' => '',
     'data_rate' => '',
     'framerate' => '',
     'gop' => '',
     'extra' => '',
-    'audio_formate' => '',
+    'audio_format' => '',
     'audio_data_rate' => '',
     'audio_db_gain' => '',
     'audio_sample_rate' => ''
   ],
   'udp1' => [
     'udp' => '',
-    'formate' => '',
+    'format' => '',
     'resolution' => '',
     'data_rate' => '',
     'framerate' => '',
     'gop' => '',
     'extra' => '',
-    'audio_formate' => '',
+    'audio_format' => '',
     'audio_data_rate' => '',
     'audio_db_gain' => '',
     'audio_sample_rate' => ''
   ],
   'udp2' => [
     'udp' => '',
-    'formate' => '',
+    'format' => '',
     'resolution' => '',
     'data_rate' => '',
     'framerate' => '',
     'gop' => '',
     'extra' => '',
-    'audio_formate' => '',
+    'audio_format' => '',
     'audio_data_rate' => '',
     'audio_db_gain' => '',
     'audio_sample_rate' => ''
   ],
   'srt0' => [
-    'formate' => '',
+    'format' => '',
     'resolution' => '',
     'data_rate' => '',
     'framerate' => '',
     'gop' => '',
     'extra' => '',
-    'audio_formate' => '',
+    'audio_format' => '',
     'audio_data_rate' => '',
     'audio_db_gain' => '',
     'audio_sample_rate' => ''
@@ -158,49 +158,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $new['rtmp1']['audio_db_gain'] = $get('rtmp1_audio_db_gain', $defaults['rtmp1']['audio_db_gain']);
   $new['rtmp1']['audio_sample_rate'] = $get('rtmp1_audio_sample_rate', $defaults['rtmp1']['audio_sample_rate']);
 
-  $new['udp0']['formate'] = $get('udp0_formate', $defaults['udp0']['formate']);
+  $new['udp0']['format'] = $get('udp0_format', $defaults['udp0']['format']);
   $new['udp0']['resolution'] = $get('udp0_resolution', $defaults['udp0']['resolution']);
   $new['udp0']['data_rate'] = $get('udp0_data_rate', $defaults['udp0']['data_rate']);
   $new['udp0']['framerate'] = $get('udp0_framerate', $defaults['udp0']['framerate']);
   $new['udp0']['gop'] = $get('udp0_gop', $defaults['udp0']['gop']);
   $new['udp0']['extra'] = $get('udp0_extra', $defaults['udp0']['extra']);
-  $new['udp0']['audio_formate'] = $get('udp0_audio_formate', $defaults['udp0']['audio_formate']);
+  $new['udp0']['audio_format'] = $get('udp0_audio_format', $defaults['udp0']['audio_format']);
   $new['udp0']['audio_data_rate'] = $get('udp0_audio_data_rate', $defaults['udp0']['audio_data_rate']);
   $new['udp0']['audio_db_gain'] = $get('udp0_audio_db_gain', $defaults['udp0']['audio_db_gain']);
   $new['udp0']['audio_sample_rate'] = $get('udp0_audio_sample_rate', $defaults['udp0']['audio_sample_rate']);
   $new['udp0']['udp'] = $get('udp0_ip', $defaults['udp0']['udp']);
 
-  $new['udp1']['formate'] = $get('udp1_formate', $defaults['udp1']['formate']);
+  $new['udp1']['format'] = $get('udp1_format', $defaults['udp1']['format']);
   $new['udp1']['resolution'] = $get('udp1_resolution', $defaults['udp1']['resolution']);
   $new['udp1']['data_rate'] = $get('udp1_data_rate', $defaults['udp1']['data_rate']);
   $new['udp1']['framerate'] = $get('udp1_framerate', $defaults['udp1']['framerate']);
   $new['udp1']['gop'] = $get('udp1_gop', $defaults['udp1']['gop']);
   $new['udp1']['extra'] = $get('udp1_extra', $defaults['udp1']['extra']);
-  $new['udp1']['audio_formate'] = $get('udp1_audio_formate', $defaults['udp1']['audio_formate']);
+  $new['udp1']['audio_format'] = $get('udp1_audio_format', $defaults['udp1']['audio_format']);
   $new['udp1']['audio_data_rate'] = $get('udp1_audio_data_rate', $defaults['udp1']['audio_data_rate']);
   $new['udp1']['audio_db_gain'] = $get('udp1_audio_db_gain', $defaults['udp1']['audio_db_gain']);
   $new['udp1']['audio_sample_rate'] = $get('udp1_audio_sample_rate', $defaults['udp1']['audio_sample_rate']);
   $new['udp1']['udp'] = $get('udp1_ip', $defaults['udp1']['udp']);
 
-  $new['udp2']['formate'] = $get('udp2_formate', $defaults['udp2']['formate']);
+  $new['udp2']['format'] = $get('udp2_format', $defaults['udp2']['format']);
   $new['udp2']['resolution'] = $get('udp2_resolution', $defaults['udp2']['resolution']);
   $new['udp2']['data_rate'] = $get('udp2_data_rate', $defaults['udp2']['data_rate']);
   $new['udp2']['framerate'] = $get('udp2_framerate', $defaults['udp2']['framerate']);
   $new['udp2']['gop'] = $get('udp2_gop', $defaults['udp2']['gop']);
   $new['udp2']['extra'] = $get('udp2_extra', $defaults['udp2']['extra']);
-  $new['udp2']['audio_formate'] = $get('udp2_audio_formate', $defaults['udp2']['audio_formate']);
+  $new['udp2']['audio_format'] = $get('udp2_audio_format', $defaults['udp2']['audio_format']);
   $new['udp2']['audio_data_rate'] = $get('udp2_audio_data_rate', $defaults['udp2']['audio_data_rate']);
   $new['udp2']['audio_db_gain'] = $get('udp2_audio_db_gain', $defaults['udp2']['audio_db_gain']);
   $new['udp2']['audio_sample_rate'] = $get('udp2_audio_sample_rate', $defaults['udp2']['audio_sample_rate']);
   $new['udp2']['udp'] = $get('udp2_ip', $defaults['udp2']['udp']);
 
-  $new['srt0']['formate'] = $get('srt0_resolution', $defaults['srt0']['formate']);
+  $new['srt0']['format'] = $get('srt0_resolution', $defaults['srt0']['format']);
   $new['srt0']['resolution'] = $get('srt0_resolution', $defaults['srt0']['resolution']);
   $new['srt0']['data_rate'] = $get('srt0_data_rate', $defaults['srt0']['data_rate']);
   $new['srt0']['framerate'] = $get('srt0_framerate', $defaults['srt0']['framerate']);
   $new['srt0']['gop'] = $get('srt0_gop', $defaults['srt0']['gop']);
   $new['srt0']['extra'] = $get('srt0_extra', $defaults['srt0']['extra']);
-  $new['srt0']['audio_formate'] = $get('srt0_audio_formate', $defaults['srt0']['audio_formate']);
+  $new['srt0']['audio_format'] = $get('srt0_audio_format', $defaults['srt0']['audio_format']);
   $new['srt0']['audio_data_rate'] = $get('srt0_audio_data_rate', $defaults['srt0']['audio_data_rate']);
   $new['srt0']['audio_db_gain'] = $get('srt0_audio_db_gain', $defaults['srt0']['audio_db_gain']);
   $new['srt0']['audio_sample_rate'] = $get('srt0_audio_sample_rate', $defaults['srt0']['audio_sample_rate']);
@@ -475,7 +475,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <p></p>
             <div class="input-group">
-              <input type="text" id="rtmp0_audio_data_rate" name="rtmp0_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['audio']['bit_rate']); ?>">
+              <input type="text" id="rtmp0_audio_data_rate" name="rtmp0_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['rtmp0']['audio_data_rate']); ?>">
               <label for="rtmp0_audio_data_rate">Bit Rate :</label>
             </div>
             <div class="input-group">
@@ -605,7 +605,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <p></p>
             <div class="input-group">
-              <input type="text" id="rtmp1_audio_data_rate" name="rtmp1_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['audio']['bit_rate']); ?>">
+              <input type="text" id="rtmp1_audio_data_rate" name="rtmp1_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['rtmp1']['audio_data_rate']); ?>">
               <label for="rtmp1_audio_data_rate">Bit Rate :</label>
             </div>
             <div class="input-group">
@@ -647,9 +647,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="dropdown-container">
           <span class="dropdown-label">Service Status :</span>
           <div class="dropdown">
-            <select name="service_udp0_multiple" id="service_udp0_multiple">
-              <option value="enable" <?php if ($data['service_udp0_multiple'] == 'enable') echo 'selected'; ?>>Enable</option>
-              <option value="disable" <?php if ($data['service_udp0_multiple'] == 'disable') echo 'selected'; ?>>Disable</option>
+            <select name="service_udp0" id="service_udp0">
+              <option value="enable" <?php if ($data['service_udp0'] == 'enable') echo 'selected'; ?>>Enable</option>
+              <option value="disable" <?php if ($data['service_udp0'] == 'disable') echo 'selected'; ?>>Disable</option>
             </select>
           </div>
         </div>
@@ -657,9 +657,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="grid">
           <div class="card">
             <div class="dropdown-container">
-              <span class="dropdown-label">Formate :</span>
+              <span class="dropdown-label">format :</span>
               <div class="dropdown">
-                <select name="udp0_formate" id="udp0_formate">
+                <select name="udp0_format" id="udp0_format">
                   <option value="mpeg2video" <?php if ($data['udp0']['format'] == 'mpeg2video') echo 'selected'; ?>>mpeg2</option>
                   <option value="h264_qsv" <?php if ($data['udp0']['format'] == 'h264_qsv') echo 'selected'; ?>>h264</option>
                   <option value="h265" <?php if ($data['udp0']['format'] == 'h265') echo 'selected'; ?>>h265</option>
@@ -698,9 +698,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
           <div class="card">
             <div class="dropdown-container">
-              <span class="dropdown-label">Formate :</span>
+              <span class="dropdown-label">format :</span>
               <div class="dropdown">
-                <select name="udp0_audio_formate" id="udp0_audio_formate">
+                <select name="udp0_audio_format" id="udp0_audio_format">
                   <option value="mp2" <?php if ($data['udp0']['format'] == 'mp2') echo 'selected'; ?>>mp2</option>
                   <option value="mp3" <?php if ($data['udp0']['format'] == 'mp3') echo 'selected'; ?>>mp3</option>
                   <option value="aac" <?php if ($data['udp0']['format'] == 'aac') echo 'selected'; ?>>aac</option>
@@ -776,9 +776,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="grid">
           <div class="card">
             <div class="dropdown-container">
-              <span class="dropdown-label">Formate :</span>
+              <span class="dropdown-label">format :</span>
               <div class="dropdown">
-                <select name="udp1_formate" id="udp1_formate">
+                <select name="udp1_format" id="udp1_format">
                   <option value="mpeg2video" <?php if ($data['udp1']['format'] == 'mpeg2video') echo 'selected'; ?>>mpeg2</option>
                   <option value="h264_qsv" <?php if ($data['udp1']['format'] == 'h264_qsv') echo 'selected'; ?>>h264</option>
                   <option value="h265" <?php if ($data['udp1']['format'] == 'h265') echo 'selected'; ?>>h265</option>
@@ -817,9 +817,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
           <div class="card">
             <div class="dropdown-container">
-              <span class="dropdown-label">Formate :</span>
+              <span class="dropdown-label">format :</span>
               <div class="dropdown">
-                <select name="udp1_audio_formate" id="udp1_audio_formate">
+                <select name="udp1_audio_format" id="udp1_audio_format">
                   <option value="mp2" <?php if ($data['udp1']['format'] == 'mp2') echo 'selected'; ?>>mp2</option>
                   <option value="mp3" <?php if ($data['udp1']['format'] == 'mp3') echo 'selected'; ?>>mp3</option>
                   <option value="aac" <?php if ($data['udp1']['format'] == 'aac') echo 'selected'; ?>>aac</option>
@@ -895,9 +895,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="grid">
           <div class="card">
             <div class="dropdown-container">
-              <span class="dropdown-label">Formate :</span>
+              <span class="dropdown-label">format :</span>
               <div class="dropdown">
-                <select name="udp2_formate" id="udp2_formate">
+                <select name="udp2_format" id="udp2_format">
                   <option value="mpeg2video" <?php if ($data['udp2']['format'] == 'mpeg2video') echo 'selected'; ?>>mpeg2</option>
                   <option value="h264_qsv" <?php if ($data['udp2']['format'] == 'h264_qsv') echo 'selected'; ?>>h264</option>
                   <option value="h265" <?php if ($data['udp2']['format'] == 'h265') echo 'selected'; ?>>h265</option>
@@ -936,9 +936,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
           <div class="card">
             <div class="dropdown-container">
-              <span class="dropdown-label">Formate :</span>
+              <span class="dropdown-label">format :</span>
               <div class="dropdown">
-                <select name="udp2_audio_formate" id="udp2_audio_formate">
+                <select name="udp2_audio_format" id="udp2_audio_format">
                   <option value="mp2" <?php if ($data['udp2']['format'] == 'mp2') echo 'selected'; ?>>mp2</option>
                   <option value="mp3" <?php if ($data['udp2']['format'] == 'mp3') echo 'selected'; ?>>mp3</option>
                   <option value="aac" <?php if ($data['udp2']['format'] == 'aac') echo 'selected'; ?>>aac</option>
@@ -1015,9 +1015,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="grid">
           <div class="card">
             <div class="dropdown-container">
-              <span class="dropdown-label">Formate :</span>
+              <span class="dropdown-label">format :</span>
               <div class="dropdown">
-                <select name="srt_formate" id="srt_formate">
+                <select name="srt_format" id="srt_format">
                   <option value="mpeg2video" <?php if ($data['srt']['format'] == 'mpeg2video') echo 'selected'; ?>>mpeg2</option>
                   <option value="h264_qsv" <?php if ($data['srt']['format'] == 'h264_qsv') echo 'selected'; ?>>h264</option>
                   <option value="h265" <?php if ($data['srt']['format'] == 'h265') echo 'selected'; ?>>h265</option>
@@ -1056,9 +1056,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
           <div class="card">
             <div class="dropdown-container">
-              <span class="dropdown-label">Formate :</span>
+              <span class="dropdown-label">format :</span>
               <div class="dropdown">
-                <select name="srt_audio_formate" id="srt_audio_formate">
+                <select name="srt_audio_format" id="srt_audio_format">
                   <option value="mp2" <?php if ($data['srt']['format'] == 'mp2') echo 'selected'; ?>>mp2</option>
                   <option value="mp3" <?php if ($data['srt']['format'] == 'mp3') echo 'selected'; ?>>mp3</option>
                   <option value="aac" <?php if ($data['srt']['format'] == 'aac') echo 'selected'; ?>>aac</option>
