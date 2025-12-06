@@ -367,19 +367,19 @@ http {
             }
 
             if ($service_rtmp0_multiple === "enable") {
-                $rtmp = 'ffmpeg  -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1" '
-                .' -c:v h264 '
-                .' -vf "scale="'.str_replace("x",":",$data['rtmp0']['resolution'])
-                .'" -b:v '.$data['rtmp0']['data_rate']
-                .' -maxrate '.$data['rtmp0']['data_rate']
-                .' -bufsize '.$data['rtmp0']['data_rate']
-                .' -r '.$data['rtmp0']['framerate']
-                .' -g '.$data['rtmp0']['gop']
-                .' -c:a aac -b:a '.$data['rtmp0']['audio_data_rate']
-                .' '.$data['rtmp0']['audio_db_gain']
-                .' -ar '.$data['rtmp0']['audio_sample_rate']
-                .' '.$data['rtmp0']['extra'] 
-                .' -f flv rtmp://127.0.0.1/shree/bhattji';
+                $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1" '
+                    . ' -c:v h264 '
+                    . ' -vf "scale="' . str_replace("x", ":", $data['rtmp0']['resolution'])
+                    . '" -b:v ' . $data['rtmp0']['data_rate']
+                    . ' -maxrate ' . $data['rtmp0']['data_rate']
+                    . ' -bufsize ' . $data['rtmp0']['data_rate']
+                    . ' -r ' . $data['rtmp0']['framerate']
+                    . ' -g ' . $data['rtmp0']['gop']
+                    . ' -c:a aac -b:a ' . $data['rtmp0']['audio_data_rate']
+                    . ' ' . $data['rtmp0']['audio_db_gain']
+                    . ' -ar ' . $data['rtmp0']['audio_sample_rate']
+                    . ' ' . $data['rtmp0']['extra']
+                    . ' -f flv rtmp://127.0.0.1/shree/bhattji';
 
                 $file = "/var/www/encoder-rtmp0.sh";
                 file_put_contents($file, $rtmp);
@@ -390,20 +390,20 @@ http {
                 exec('sudo systemctl disable encoder-rtmp0');
             }
 
-            if ($service_rtmp0_multiple === "enable") {
-                $rtmp = 'ffmpeg  -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1" '
-                .' -c:v h264_qsv '
-                .' -vf "scale="'.str_replace("x",":",$data['rtmp1']['resolution'])
-                .'" -b:v '.$data['rtmp1']['data_rate']
-                .' -maxrate '.$data['rtmp1']['data_rate']
-                .' -bufsize '.$data['rtmp1']['data_rate']
-                .' -r '.$data['rtmp1']['framerate']
-                .' -g '.$data['rtmp1']['gop']
-                .' -c:a aac -b:a '.$data['rtmp1']['audio_data_rate']
-                .' '.$data['rtmp1']['audio_db_gain']
-                .' -ar '.$data['rtmp1']['audio_sample_rate']
-                .' '.$data['rtmp1']['extra'] 
-                .' -f flv rtmp://127.0.0.1/shreeshree/bhattji';
+            if ($service_rtmp1_multiple === "enable") {
+                $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1" '
+                    . ' -c:v h264_qsv '
+                    . ' -vf "scale="' . str_replace("x", ":", $data['rtmp1']['resolution'])
+                    . '" -b:v ' . $data['rtmp1']['data_rate']
+                    . ' -maxrate ' . $data['rtmp1']['data_rate']
+                    . ' -bufsize ' . $data['rtmp1']['data_rate']
+                    . ' -r ' . $data['rtmp1']['framerate']
+                    . ' -g ' . $data['rtmp1']['gop']
+                    . ' -c:a aac -b:a ' . $data['rtmp1']['audio_data_rate']
+                    . ' ' . $data['rtmp1']['audio_db_gain']
+                    . ' -ar ' . $data['rtmp1']['audio_sample_rate']
+                    . ' ' . $data['rtmp1']['extra']
+                    . ' -f flv rtmp://127.0.0.1/shreeshree/bhattji';
 
                 $file = "/var/www/encoder-rtmp1.sh";
                 file_put_contents($file, $rtmp);
@@ -460,7 +460,7 @@ srt {
     }
 }
 ";
-                $service = 'ffmpeg -fflags nobuffer -i udp://@239.255.254.254:39000 -c copy -f mpeg srt://127.0.0.1/' . $srt_pass1 . '/' . $srt_pass2 . '/ji';
+                $service = 'ffmpeg -hwaccel auto -fflags nobuffer -i udp://@239.255.254.254:39000 -c copy -f mpeg srt://127.0.0.1/' . $srt_pass1 . '/' . $srt_pass2 . '/ji';
                 $file = "/var/www/encoder-srt.sh";
                 file_put_contents($file, $service);
 
@@ -470,7 +470,6 @@ srt {
                 exec('sudo systemctl restart srt');
                 exec('sudo systemctl enable encoder-srt');
                 exec('sudo systemctl restart encoder-srt');
-
             } else {
                 exec('sudo systemctl disable srt');
                 exec('sudo systemctl stop srt');
@@ -479,9 +478,93 @@ srt {
             }
 
             break;
-        case "udp";
+        case "udp0";
+            if ($service_udp0 === "enable") {
+                $udp0 = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1" '
+                    . ' -c:v ' . $data['udp0']['formate']
+                    . ' -vf "scale="' . str_replace("x", ":", $data['udp0']['resolution'])
+                    . '" -b:v ' . $data['udp0']['data_rate']
+                    . ' -maxrate ' . $data['udp0']['data_rate']
+                    . ' -bufsize ' . $data['udp0']['data_rate']
+                    . ' -r ' . $data['udp0']['framerate']
+                    . ' -g ' . $data['udp0']['gop']
+                    . ' -c:a ' . $data['udp0']['audio_formate']
+                    . ' -b:a ' . $data['udp0']['audio_data_rate']
+                    . ' ' . $data['udp0']['audio_db_gain']
+                    . ' -ar ' . $data['udp0']['audio_sample_rate']
+                    . ' ' . $data['udp0']['extra']
+                    . ' -f mpegts ' . $data['udp0']['udp'];
+                $file = "/var/www/encoder-udp0.sh";
+                file_put_contents($file, $udp0);
+                exec('sudo systemctl enable encoder-udp0');
+                exec('sudo systemctl restart encoder-udp0');
+            } else {
+                exec('sudo systemctl stop encoder-udp0');
+                exec('sudo systemctl disable encoder-udp0');
+            }
+            break;
+        case "udp1";
+            if ($service_udp1 === "enable") {
+                $udp1 = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1" '
+                    . ' -c:v ' . $data['udp1']['formate']
+                    . ' -vf "scale="' . str_replace("x", ":", $data['udp1']['resolution'])
+                    . '" -b:v ' . $data['udp1']['data_rate']
+                    . ' -maxrate ' . $data['udp1']['data_rate']
+                    . ' -bufsize ' . $data['udp1']['data_rate']
+                    . ' -r ' . $data['udp1']['framerate']
+                    . ' -g ' . $data['udp1']['gop']
+                    . ' -c:a ' . $data['udp1']['audio_formate']
+                    . ' -b:a ' . $data['udp1']['audio_data_rate']
+                    . ' ' . $data['udp1']['audio_db_gain']
+                    . ' -ar ' . $data['udp1']['audio_sample_rate']
+                    . ' ' . $data['udp1']['extra']
+                    . ' -f mpegts ' . $data['udp1']['udp'];
+                $file = "/var/www/encoder-udp1.sh";
+                file_put_contents($file, $udp1);
+                exec('sudo systemctl enable encoder-udp1');
+                exec('sudo systemctl restart encoder-udp1');
+            } else {
+                exec('sudo systemctl stop encoder-udp1');
+                exec('sudo systemctl disable encoder-udp1');
+            }
+            break;
+        case "udp2";
+            if ($service_udp2 === "enable") {
+                $udp2 = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1" '
+                    . ' -c:v ' . $data['udp2']['formate']
+                    . ' -vf "scale="' . str_replace("x", ":", $data['udp2']['resolution'])
+                    . '" -b:v ' . $data['udp2']['data_rate']
+                    . ' -maxrate ' . $data['udp2']['data_rate']
+                    . ' -bufsize ' . $data['udp2']['data_rate']
+                    . ' -r ' . $data['udp2']['framerate']
+                    . ' -g ' . $data['udp2']['gop']
+                    . ' -c:a ' . $data['udp2']['audio_formate']
+                    . ' -b:a ' . $data['udp2']['audio_data_rate']
+                    . ' ' . $data['udp2']['audio_db_gain']
+                    . ' -ar ' . $data['udp2']['audio_sample_rate']
+                    . ' ' . $data['udp2']['extra']
+                    . ' -f mpegts ' . $data['udp2']['udp'];
+                $file = "/var/www/encoder-udp2.sh";
+                file_put_contents($file, $udp2);
+                exec('sudo systemctl enable encoder-udp2');
+                exec('sudo systemctl restart encoder-udp2');
+            } else {
+                exec('sudo systemctl stop encoder-udp2');
+                exec('sudo systemctl disable encoder-udp2');
+            }
             break;
         case "custom";
+            if ($service_custom === "enable") {
+                $custom = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1" '
+                    . $data['custom_output'];
+                $file = "/var/www/encoder-custom.sh";
+                file_put_contents($file, $custom);
+                exec('sudo systemctl enable encoder-custom');
+                exec('sudo systemctl restart encoder-custom');
+            } else {
+                exec('sudo systemctl stop encoder-custom');
+                exec('sudo systemctl disable encoder-custom');
+            }
             break;
         default:
             error_log("Error no input found");
