@@ -59,7 +59,7 @@ function update_service($which_service)
 
     switch ($input_source) {
         case "hdmi":
-            $input = "ffmpeg -hide_banner -f v4l2 -thread_queue_size 512 -input_format mjpeg -framerate " . $data['hdmi']['framerate'] . " -video_size " . $data['hdmi']['resolution'] . " -i /dev/video0 " .
+            $input = "ffmpeg -hwaccel auto -hide_banner -f v4l2 -thread_queue_size 512 -input_format mjpeg -framerate " . $data['hdmi']['framerate'] . " -video_size " . $data['hdmi']['resolution'] . " -i /dev/video0 " .
                 "-f alsa -i " . $data['hdmi']['audio_source'];
             break;
         case "url":
@@ -208,8 +208,7 @@ function update_service($which_service)
 
     switch ($which_service) {
         case 'input':
-            $input .=  " -c:v copy -c:a copy -f matroska udp://@239.255.254.254:39000?localaddr=127.0.0.1";
-
+            $input .=  " -c:v copy -c:a aac -b:a 128k -f matroska udp://@239.255.254.254:39000?localaddr=127.0.0.1";
             $service = $input;
             $file = "/var/www/encoder-main.sh";
             if (file_put_contents($file, $service) !== false) {
@@ -217,7 +216,7 @@ function update_service($which_service)
             } else {
                 echo "Error writing file.";
             }
-            exec('sudo systemctl restart encoder-main');
+            exec('sudo reboot');
             break;
         case 'display';
             break;
@@ -366,7 +365,7 @@ http {
 
             if ($service_rtmp0_multiple === "enable") {
                 $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
-                    . ' -c:v h264 '
+                    . ' -c:v h264_qsv '
                     . ' -vf "scale=' . str_replace("x", ":", $data['rtmp0']['resolution'])
                     . '" -b:v ' . $data['rtmp0']['data_rate']
                     . ' -maxrate ' . $data['rtmp0']['data_rate']
