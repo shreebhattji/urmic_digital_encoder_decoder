@@ -273,7 +273,7 @@ function update_service($which_service)
             $rtmp_push1 = "";
             for ($i = 1; $i <= 11; $i++) {
                 if ($rtmp_multiple1[$i]['enabled'] == 1) {
-                    $rtmp_push0 .= "
+                    $rtmp_push1 .= "
       push " . $rtmp_multiple1[$i]['url'] . ";";
                 }
             }
