@@ -885,9 +885,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="dropdown-container">
           <span class="dropdown-label">Service Status :</span>
           <div class="dropdown">
-            <select name="service_udp2_multiple" id="service_udp2_multiple">
-              <option value="enable" <?php if ($data['service_udp2_multiple'] == 'enable') echo 'selected'; ?>>Enable</option>
-              <option value="disable" <?php if ($data['service_udp2_multiple'] == 'disable') echo 'selected'; ?>>Disable</option>
+            <select name="service_udp2" id="service_udp2">
+              <option value="enable" <?php if ($data['service_udp2'] == 'enable') echo 'selected'; ?>>Enable</option>
+              <option value="disable" <?php if ($data['service_udp2'] == 'disable') echo 'selected'; ?>>Disable</option>
             </select>
           </div>
         </div>
