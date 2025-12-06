@@ -364,7 +364,7 @@ http {
             }
 
             if ($service_rtmp0_multiple === "enable") {
-                $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer  -flags low_delay -tune zerolatency -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
+                $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000  -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                     . ' -c:v h264_qsv '
                     . ' -vf "scale=' . str_replace("x", ":", $data['rtmp0']['resolution'])
                     . '" -b:v ' . $data['rtmp0']['data_rate']
@@ -388,7 +388,7 @@ http {
             }
 
             if ($service_rtmp1_multiple === "enable") {
-                $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
+                $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000  -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                     . ' -c:v h264_qsv '
                     . ' -vf "scale=' . str_replace("x", ":", $data['rtmp1']['resolution'])
                     . '" -b:v ' . $data['rtmp1']['data_rate']
@@ -457,7 +457,7 @@ srt {
     }
 }
 ";
-                $service = 'ffmpeg -hwaccel auto -fflags nobuffer -i udp://@239.255.254.254:39000 -c copy -f mpegts srt://127.0.0.1/' . $srt_pass1 . '/' . $srt_pass2 . '/ji';
+                $service = 'ffmpeg -hwaccel auto -fflags nobuffer -analyzeduration 3000000  -i udp://@239.255.254.254:39000 -c copy -f mpegts srt://127.0.0.1/' . $srt_pass1 . '/' . $srt_pass2 . '/ji';
                 $file = "/var/www/encoder-srt.sh";
                 file_put_contents($file, $service);
 
@@ -477,7 +477,7 @@ srt {
             break;
         case "udp0";
             if ($service_udp0 === "enable") {
-                $udp0 = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
+                $udp0 = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000  -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                     . ' -c:v ' . $data['udp0']['formate']
                     . ' -vf "scale=' . str_replace("x", ":", $data['udp0']['resolution'])
                     . '" -b:v ' . $data['udp0']['data_rate']
@@ -502,7 +502,7 @@ srt {
             break;
         case "udp1";
             if ($service_udp1 === "enable") {
-                $udp1 = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
+                $udp1 = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000  -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                     . ' -c:v ' . $data['udp1']['formate']
                     . ' -vf "scale=' . str_replace("x", ":", $data['udp1']['resolution'])
                     . '" -b:v ' . $data['udp1']['data_rate']
@@ -527,7 +527,7 @@ srt {
             break;
         case "udp2";
             if ($service_udp2 === "enable") {
-                $udp2 = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
+                $udp2 = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000  -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                     . ' -c:v ' . $data['udp2']['formate']
                     . ' -vf "scale=' . str_replace("x", ":", $data['udp2']['resolution'])
                     . '" -b:v ' . $data['udp2']['data_rate']
@@ -552,7 +552,7 @@ srt {
             break;
         case "custom";
             if ($service_custom === "enable") {
-                $custom = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
+                $custom = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000  -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                     . $data['custom_output'];
                 $file = "/var/www/encoder-custom.sh";
                 file_put_contents($file, $custom);
