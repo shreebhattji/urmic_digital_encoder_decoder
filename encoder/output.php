@@ -17,8 +17,8 @@ $defaults = [
   'service_srt_multiple' => 'disable',
   'service_custom' => 'disable',
 
-  'rtmp_multiple0' => [],
-  'rtmp_multiple1' => [],
+  'rtmp0_multiple' => [],
+  'rtmp1_multiple1' => [],
   'srt_multiple'  => [],
   'rtmp0' => [
     'resolution' => '1920x1080',
@@ -79,7 +79,7 @@ $defaults = [
     'audio_db_gain' => '0dB',
     'audio_sample_rate' => '48000'
   ],
-  'srt0' => [
+  'srt' => [
     'formate' => 'mpeg2video',
     'resolution' => '1920x1080',
     'data_rate' => '6M',
