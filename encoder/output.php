@@ -1097,7 +1097,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <p></p>
             <div class="input-group">
-              <input type="text" id="srt_audio_data_rate" name="srt_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['audio']['bit_rate']); ?>">
+              <input type="text" id="srt_audio_data_rate" name="srt_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['srt']['audio_data_rate']); ?>">
               <label for="srt_audio_data_rate">Bit Rate :</label>
             </div>
             <div class="input-group">
