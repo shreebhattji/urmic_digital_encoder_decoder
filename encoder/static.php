@@ -369,7 +369,7 @@ http {
             if ($service_rtmp0_multiple === "enable") {
                 $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1" '
                     . ' -c:v h264 '
-                    . ' -vf "scale="' . str_replace("x", ":", $data['rtmp0']['resolution'])
+                    . ' -vf "scale=' . str_replace("x", ":", $data['rtmp0']['resolution'])
                     . '" -b:v ' . $data['rtmp0']['data_rate']
                     . ' -maxrate ' . $data['rtmp0']['data_rate']
                     . ' -bufsize ' . $data['rtmp0']['data_rate']
@@ -393,7 +393,7 @@ http {
             if ($service_rtmp1_multiple === "enable") {
                 $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1" '
                     . ' -c:v h264_qsv '
-                    . ' -vf "scale="' . str_replace("x", ":", $data['rtmp1']['resolution'])
+                    . ' -vf "scale=' . str_replace("x", ":", $data['rtmp1']['resolution'])
                     . '" -b:v ' . $data['rtmp1']['data_rate']
                     . ' -maxrate ' . $data['rtmp1']['data_rate']
                     . ' -bufsize ' . $data['rtmp1']['data_rate']
@@ -482,7 +482,7 @@ srt {
             if ($service_udp0 === "enable") {
                 $udp0 = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1" '
                     . ' -c:v ' . $data['udp0']['formate']
-                    . ' -vf "scale="' . str_replace("x", ":", $data['udp0']['resolution'])
+                    . ' -vf "scale=' . str_replace("x", ":", $data['udp0']['resolution'])
                     . '" -b:v ' . $data['udp0']['data_rate']
                     . ' -maxrate ' . $data['udp0']['data_rate']
                     . ' -bufsize ' . $data['udp0']['data_rate']
@@ -507,7 +507,7 @@ srt {
             if ($service_udp1 === "enable") {
                 $udp1 = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1" '
                     . ' -c:v ' . $data['udp1']['formate']
-                    . ' -vf "scale="' . str_replace("x", ":", $data['udp1']['resolution'])
+                    . ' -vf "scale=' . str_replace("x", ":", $data['udp1']['resolution'])
                     . '" -b:v ' . $data['udp1']['data_rate']
                     . ' -maxrate ' . $data['udp1']['data_rate']
                     . ' -bufsize ' . $data['udp1']['data_rate']
@@ -532,7 +532,7 @@ srt {
             if ($service_udp2 === "enable") {
                 $udp2 = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1" '
                     . ' -c:v ' . $data['udp2']['formate']
-                    . ' -vf "scale="' . str_replace("x", ":", $data['udp2']['resolution'])
+                    . ' -vf "scale=' . str_replace("x", ":", $data['udp2']['resolution'])
                     . '" -b:v ' . $data['udp2']['data_rate']
                     . ' -maxrate ' . $data['udp2']['data_rate']
                     . ' -bufsize ' . $data['udp2']['data_rate']
