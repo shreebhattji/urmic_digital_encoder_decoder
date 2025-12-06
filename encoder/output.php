@@ -18,7 +18,7 @@ $defaults = [
   'service_custom' => 'disable',
 
   'rtmp0_multiple' => [],
-  'rtmp1_multiple1' => [],
+  'rtmp1_multiple' => [],
   'srt_multiple'  => [],
   'rtmp0' => [
     'resolution' => '1920x1080',
