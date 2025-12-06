@@ -208,7 +208,7 @@ function update_service($which_service)
 
     switch ($which_service) {
         case 'input':
-            $input .=  " -c:v copy -c:a aac -b:a 128k -f matroska udp://@239.255.254.254:39000?pkt_size=1316&localaddr=127.0.0.1";
+            $input .=  " -c:v copy -c:a aac -b:a 128k -f matroska udp://@239.255.254.254:39000?localaddr=127.0.0.1";
             $service = $input;
             $file = "/var/www/encoder-main.sh";
             if (file_put_contents($file, $service) !== false) {
