@@ -99,7 +99,8 @@ $defaults = [
 ];
 
 for ($i = 1; $i <= 11; $i++) {
-  $defaults['rtmp_multiple'][$i] = ['url' => '', 'name' => '', 'enabled' => false];
+  $defaults['rtmp0_multiple'][$i] = ['url' => '', 'name' => '', 'enabled' => false];
+  $defaults['rtmp1_multiple'][$i] = ['url' => '', 'name' => '', 'enabled' => false];
   $defaults['srt_multiple'][$i]  = ['url' => '', 'name' => '', 'enabled' => false];
 }
 
