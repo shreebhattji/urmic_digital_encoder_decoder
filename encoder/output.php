@@ -194,16 +194,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $new['udp2']['audio_sample_rate'] = $get('udp2_audio_sample_rate', $defaults['udp2']['audio_sample_rate']);
   $new['udp2']['udp'] = $get('udp2_ip', $defaults['udp2']['udp']);
 
-  $new['srt0']['format'] = $get('srt0_resolution', $defaults['srt0']['format']);
-  $new['srt0']['resolution'] = $get('srt0_resolution', $defaults['srt0']['resolution']);
-  $new['srt0']['data_rate'] = $get('srt0_data_rate', $defaults['srt0']['data_rate']);
-  $new['srt0']['framerate'] = $get('srt0_framerate', $defaults['srt0']['framerate']);
-  $new['srt0']['gop'] = $get('srt0_gop', $defaults['srt0']['gop']);
-  $new['srt0']['extra'] = $get('srt0_extra', $defaults['srt0']['extra']);
-  $new['srt0']['audio_format'] = $get('srt0_audio_format', $defaults['srt0']['audio_format']);
-  $new['srt0']['audio_data_rate'] = $get('srt0_audio_data_rate', $defaults['srt0']['audio_data_rate']);
-  $new['srt0']['audio_db_gain'] = $get('srt0_audio_db_gain', $defaults['srt0']['audio_db_gain']);
-  $new['srt0']['audio_sample_rate'] = $get('srt0_audio_sample_rate', $defaults['srt0']['audio_sample_rate']);
+  $new['srt']['format'] = $get('srt_resolution', $defaults['srt']['format']);
+  $new['srt']['resolution'] = $get('srt_resolution', $defaults['srt']['resolution']);
+  $new['srt']['data_rate'] = $get('srt_data_rate', $defaults['srt']['data_rate']);
+  $new['srt']['framerate'] = $get('srt_framerate', $defaults['srt']['framerate']);
+  $new['srt']['gop'] = $get('srt_gop', $defaults['srt']['gop']);
+  $new['srt']['extra'] = $get('srt_extra', $defaults['srt']['extra']);
+  $new['srt']['audio_format'] = $get('srt_audio_format', $defaults['srt']['audio_format']);
+  $new['srt']['audio_data_rate'] = $get('srt_audio_data_rate', $defaults['srt']['audio_data_rate']);
+  $new['srt']['audio_db_gain'] = $get('srt_audio_db_gain', $defaults['srt']['audio_db_gain']);
+  $new['srt']['audio_sample_rate'] = $get('srt_audio_sample_rate', $defaults['srt']['audio_sample_rate']);
 
   $new['custom_output'] = $get('custom_output', '');
 
@@ -222,8 +222,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if ($new['udp2']['gop'] !== '' && !ctype_digit((string)$new['udp2']['gop'])) {
     $errors[] = "UDP2 GOP must be an integer.";
   }
-  if ($new['srt0']['gop'] !== '' && !ctype_digit((string)$new['srt0']['gop'])) {
-    $errors[] = "SRT0 GOP must be an integer.";
+  if ($new['srt']['gop'] !== '' && !ctype_digit((string)$new['srt']['gop'])) {
+    $errors[] = "srt GOP must be an integer.";
   }
 
 
