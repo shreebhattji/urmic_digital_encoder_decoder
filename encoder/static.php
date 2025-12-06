@@ -117,55 +117,55 @@ function update_service($which_service)
             'audio_sample_rate' => '48000'
         ],
         'udp0' => [
-            'udp' => '',
-            'formate' => '',
-            'resolution' => '',
-            'data_rate' => '',
-            'framerate' => '',
-            'gop' => '',
+            'udp' => 'udp://@224.1.1.1:8001',
+            'formate' => 'h264_qsv',
+            'resolution' => '1280x720',
+            'data_rate' => '2.2M',
+            'framerate' => '25',
+            'gop' => '25',
             'extra' => '',
-            'audio_formate' => '',
-            'audio_data_rate' => '',
-            'audio_db_gain' => '',
-            'audio_sample_rate' => ''
+            'audio_formate' => 'aac',
+            'audio_data_rate' => '128k',
+            'audio_db_gain' => '0dB',
+            'audio_sample_rate' => '48000'
         ],
         'udp1' => [
-            'udp' => '',
-            'formate' => '',
-            'resolution' => '',
-            'data_rate' => '',
-            'framerate' => '',
-            'gop' => '',
+            'udp' => 'udp://@224.1.1.1:8001',
+            'formate' => 'h264_qsv',
+            'resolution' => '720x576',
+            'data_rate' => '1.5M',
+            'framerate' => '25',
+            'gop' => '25',
             'extra' => '',
-            'audio_formate' => '',
-            'audio_data_rate' => '',
-            'audio_db_gain' => '',
-            'audio_sample_rate' => ''
+            'audio_formate' => 'mp2',
+            'audio_data_rate' => '128k',
+            'audio_db_gain' => '0dB',
+            'audio_sample_rate' => '48000'
         ],
         'udp2' => [
-            'udp' => '',
-            'formate' => '',
-            'resolution' => '',
-            'data_rate' => '',
-            'framerate' => '',
-            'gop' => '',
+            'udp' => 'udp://@224.1.1.1:8002',
+            'formate' => 'mpeg2video',
+            'resolution' => '720x576',
+            'data_rate' => '3M',
+            'framerate' => '25',
+            'gop' => '25',
             'extra' => '',
-            'audio_formate' => '',
-            'audio_data_rate' => '',
-            'audio_db_gain' => '',
-            'audio_sample_rate' => ''
+            'audio_formate' => 'mp2',
+            'audio_data_rate' => '96k',
+            'audio_db_gain' => '0dB',
+            'audio_sample_rate' => '48000'
         ],
         'srt0' => [
-            'formate' => '',
-            'resolution' => '',
-            'data_rate' => '',
-            'framerate' => '',
-            'gop' => '',
+            'formate' => 'mpeg2video',
+            'resolution' => '1920x1080',
+            'data_rate' => '6M',
+            'framerate' => '50',
+            'gop' => '50',
             'extra' => '',
-            'audio_formate' => '',
-            'audio_data_rate' => '',
-            'audio_db_gain' => '',
-            'audio_sample_rate' => ''
+            'audio_formate' => 'aac',
+            'audio_data_rate' => '256k',
+            'audio_db_gain' => '0dB',
+            'audio_sample_rate' => '48000'
         ],
 
         'display' => '1920x1080@60.00',
@@ -364,7 +364,7 @@ http {
             }
 
             if ($service_rtmp0_multiple === "enable") {
-                $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
+                $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer  -flags low_delay -tune zerolatency -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                     . ' -c:v h264_qsv '
                     . ' -vf "scale=' . str_replace("x", ":", $data['rtmp0']['resolution'])
                     . '" -b:v ' . $data['rtmp0']['data_rate']
@@ -373,7 +373,7 @@ http {
                     . ' -r ' . $data['rtmp0']['framerate']
                     . ' -g ' . $data['rtmp0']['gop']
                     . ' -c:a aac -b:a ' . $data['rtmp0']['audio_data_rate']
-                    . ' ' . $data['rtmp0']['audio_db_gain']
+                    . ' -af "volume=' . $data['rtmp0']['audio_db_gain'] . '"'
                     . ' -ar ' . $data['rtmp0']['audio_sample_rate']
                     . ' ' . $data['rtmp0']['extra']
                     . ' -f flv rtmp://127.0.0.1/shree/bhattji';
@@ -397,7 +397,7 @@ http {
                     . ' -r ' . $data['rtmp1']['framerate']
                     . ' -g ' . $data['rtmp1']['gop']
                     . ' -c:a aac -b:a ' . $data['rtmp1']['audio_data_rate']
-                    . ' ' . $data['rtmp1']['audio_db_gain']
+                    . ' -af "volume=' . $data['rtmp1']['audio_db_gain'] . '"'
                     . ' -ar ' . $data['rtmp1']['audio_sample_rate']
                     . ' ' . $data['rtmp1']['extra']
                     . ' -f flv rtmp://127.0.0.1/shreeshree/bhattji';
@@ -457,7 +457,7 @@ srt {
     }
 }
 ";
-                $service = 'ffmpeg -hwaccel auto -fflags nobuffer -i udp://@239.255.254.254:39000 -c copy -f mpeg srt://127.0.0.1/' . $srt_pass1 . '/' . $srt_pass2 . '/ji';
+                $service = 'ffmpeg -hwaccel auto -fflags nobuffer -i udp://@239.255.254.254:39000 -c copy -f mpegts srt://127.0.0.1/' . $srt_pass1 . '/' . $srt_pass2 . '/ji';
                 $file = "/var/www/encoder-srt.sh";
                 file_put_contents($file, $service);
 
@@ -487,7 +487,7 @@ srt {
                     . ' -g ' . $data['udp0']['gop']
                     . ' -c:a ' . $data['udp0']['audio_formate']
                     . ' -b:a ' . $data['udp0']['audio_data_rate']
-                    . ' ' . $data['udp0']['audio_db_gain']
+                    . ' -af "volume=' . $data['udp0']['audio_db_gain'] . '"'
                     . ' -ar ' . $data['udp0']['audio_sample_rate']
                     . ' ' . $data['udp0']['extra']
                     . ' -f mpegts ' . $data['udp0']['udp'];
@@ -512,7 +512,7 @@ srt {
                     . ' -g ' . $data['udp1']['gop']
                     . ' -c:a ' . $data['udp1']['audio_formate']
                     . ' -b:a ' . $data['udp1']['audio_data_rate']
-                    . ' ' . $data['udp1']['audio_db_gain']
+                    . ' -af "volume=' . $data['udp1']['audio_db_gain'] . '"'
                     . ' -ar ' . $data['udp1']['audio_sample_rate']
                     . ' ' . $data['udp1']['extra']
                     . ' -f mpegts ' . $data['udp1']['udp'];
@@ -537,7 +537,7 @@ srt {
                     . ' -g ' . $data['udp2']['gop']
                     . ' -c:a ' . $data['udp2']['audio_formate']
                     . ' -b:a ' . $data['udp2']['audio_data_rate']
-                    . ' ' . $data['udp2']['audio_db_gain']
+                    . ' -af "volume=' . $data['udp2']['audio_db_gain'] . '"'
                     . ' -ar ' . $data['udp2']['audio_sample_rate']
                     . ' ' . $data['udp2']['extra']
                     . ' -f mpegts ' . $data['udp2']['udp'];

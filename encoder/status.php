@@ -26,16 +26,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             case 'rtmp0':
                 switch ($data[1]) {
                     case 'restart':
-                        exec('sudo systemctl enable encoder-rtmp');
-                        exec('sudo systemctl restart encoder-rtmp');
+                        exec('sudo systemctl enable encoder-rtmp0');
+                        exec('sudo systemctl restart encoder-rtmp0');
                         break;
                     case 'enable':
-                        exec('sudo systemctl enable encoder-rtmp');
-                        exec('sudo systemctl restart encoder-rtmp');
+                        exec('sudo systemctl enable encoder-rtmp0');
+                        exec('sudo systemctl restart encoder-rtmp0');
                         break;
                     case 'disable':
-                        exec('sudo systemctl stop encoder-rtmp');
-                        exec('sudo systemctl disable encoder-rtmp');
+                        exec('sudo systemctl stop encoder-rtmp0');
+                        exec('sudo systemctl disable encoder-rtmp0');
                         break;
                 }
                 break;
