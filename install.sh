@@ -396,4 +396,4 @@ sudo chmod 777 -R /var/www
 sudo chown -R www-data:www-data /var/www
 sudo ufw allow proto udp to 224.0.0.0/4
 sudo ufw route allow proto udp to 224.0.0.0/4
-sudo ufw deny out to 239.255.254.254 port 39000 proto u
+sudo ufw deny out to 239.255.254.254 port 39000 proto udp

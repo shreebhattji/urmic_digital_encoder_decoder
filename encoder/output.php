@@ -79,7 +79,7 @@ $defaults = [
     'audio_db_gain' => '',
     'audio_sample_rate' => ''
   ],
-  'srt0' => [
+  'srt' => [
     'format' => '',
     'resolution' => '',
     'data_rate' => '',
@@ -738,7 +738,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <p></p>
             <div class="input-group">
-              <input type="text" id="udp0_audio_data_rate" name="udp0_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['audio']['bit_rate']); ?>">
+              <input type="text" id="udp0_audio_data_rate" name="udp0_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['udp0']['audio_data_rate']); ?>">
               <label for="udp0_audio_data_rate">Bit Rate :</label>
             </div>
             <div class="input-group">
@@ -766,9 +766,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="dropdown-container">
           <span class="dropdown-label">Service Status :</span>
           <div class="dropdown">
-            <select name="service_udp1_multiple" id="service_udp1_multiple">
-              <option value="enable" <?php if ($data['service_udp1_multiple'] == 'enable') echo 'selected'; ?>>Enable</option>
-              <option value="disable" <?php if ($data['service_udp1_multiple'] == 'disable') echo 'selected'; ?>>Disable</option>
+            <select name="service_udp1" id="service_udp1">
+              <option value="enable" <?php if ($data['service_udp1'] == 'enable') echo 'selected'; ?>>Enable</option>
+              <option value="disable" <?php if ($data['service_udp1'] == 'disable') echo 'selected'; ?>>Disable</option>
             </select>
           </div>
         </div>
@@ -858,7 +858,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <p></p>
             <div class="input-group">
-              <input type="text" id="udp1_audio_data_rate" name="udp1_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['audio']['bit_rate']); ?>">
+              <input type="text" id="udp1_audio_data_rate" name="udp1_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['udp1']['audio_data_rate']); ?>">
               <label for="udp1_audio_data_rate">Bit Rate :</label>
             </div>
             <div class="input-group">
@@ -977,7 +977,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <p></p>
             <div class="input-group">
-              <input type="text" id="udp2_audio_data_rate" name="udp2_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['audio']['bit_rate']); ?>">
+              <input type="text" id="udp2_audio_data_rate" name="udp2_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['udp2']['audio_data_rate']); ?>">
               <label for="udp2_audio_data_rate">Bit Rate :</label>
             </div>
             <div class="input-group">
