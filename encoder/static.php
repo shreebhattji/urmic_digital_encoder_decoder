@@ -93,8 +93,8 @@ function update_service($which_service)
         'service_srt_multiple' => 'disable',
         'service_custom' => 'disable',
 
-        'rtmp0_multiple' => [],
-        'rtmp1_multiple1' => [],
+        'rtmp_multiple0' => [],
+        'rtmp_multiple1' => [],
         'srt_multiple'  => [],
         'rtmp0' => [
             'resolution' => '1920x1080',
