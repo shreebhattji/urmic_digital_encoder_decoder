@@ -59,8 +59,8 @@ function update_service($which_service)
 
     switch ($input_source) {
         case "hdmi":
-            $input = "ffmpeg -hwaccel auto -hide_banner -f v4l2 -thread_queue_size 512 -input_format mjpeg -framerate " . $data['hdmi']['framerate'] . " -video_size " . $data['hdmi']['resolution'] . " -i /dev/video0 " .
-                "-f alsa -i " . $data['hdmi']['audio_source'];
+            $input = "ustreamer   --device /dev/video0   --format MJPEG   --resolution " . $data['hdmi']['resolution'] . " -f " . $data['hdmi']['framerate'] .' --workers 3   --host 0.0.0.0   --port 9090 &';
+            $input .= "ffmpeg -i http://127.0.0.1:9090/stream -f alsa -i " . $data['hdmi']['audio_source'] ;
             break;
         case "url":
             $input .= "ffmpeg -hide_banner -stream_loop -1 -re -i " . $data['url'];
@@ -208,7 +208,7 @@ function update_service($which_service)
 
     switch ($which_service) {
         case 'input':
-            $input .=  " -c:v copy -c:a aac -b:a 128k -f matroska udp://@239.255.254.254:39000?localaddr=127.0.0.1";
+            $input .=  " -c:v copy -c:a aac -b:a 128k -f  udp://@239.255.254.254:39000?localaddr=127.0.0.1&ttl=1";
             $service = $input;
             $file = "/var/www/encoder-main.sh";
             if (file_put_contents($file, $service) !== false) {
