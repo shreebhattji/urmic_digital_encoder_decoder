@@ -218,7 +218,7 @@ function update_service($which_service)
 
     switch ($which_service) {
         case 'input':
-            $input .=   "ffmpeg -hide_banner -stream_loop -1 -i http://127.0.0.1:9090/stream -f alsa -i " . $data['hdmi']['audio_source'] ." -c:a aac -b:a 128k -f mpegts udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1";
+            $input .=   "ffmpeg -hide_banner -stream_loop -1 -f alsa -i " . $data['hdmi']['audio_source'] . " -c:a aac -b:a 256k -f mpegts udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1";
             $service = $input;
             $file = "/var/www/encoder-main.sh";
             if (file_put_contents($file, $service) !== false) {
@@ -373,19 +373,34 @@ http {
             }
 
             if ($service_rtmp0_multiple === "enable") {
-                $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
-                    . ' -c:v h264_qsv '
-                    . ' -vf "scale=' . str_replace("x", ":", $data['rtmp0']['resolution'])
-                    . '" -b:v ' . $data['rtmp0']['data_rate']
-                    . ' -maxrate ' . $data['rtmp0']['data_rate']
-                    . ' -bufsize ' . $data['rtmp0']['data_rate']
-                    . ' -r ' . $data['rtmp0']['framerate']
-                    . ' -g ' . $data['rtmp0']['gop']
-                    . ' -c:a aac -b:a ' . $data['rtmp0']['audio_data_rate']
-                    . ' -af "volume=' . $data['rtmp0']['audio_db_gain'] . '"'
-                    . ' -ar ' . $data['rtmp0']['audio_sample_rate']
-                    . ' ' . $data['rtmp0']['extra']
-                    . ' -f flv rtmp://127.0.0.1/shree/bhattji';
+                if ($input_source == 'hdmi')
+                    $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i http://127.0.0.1:9090/stream -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
+                        . ' -c:v h264_qsv '
+                        . ' -vf "scale=' . str_replace("x", ":", $data['rtmp0']['resolution'])
+                        . '" -b:v ' . $data['rtmp0']['data_rate']
+                        . ' -maxrate ' . $data['rtmp0']['data_rate']
+                        . ' -bufsize ' . $data['rtmp0']['data_rate']
+                        . ' -r ' . $data['rtmp0']['framerate']
+                        . ' -g ' . $data['rtmp0']['gop']
+                        . ' -c:a aac -b:a ' . $data['rtmp0']['audio_data_rate']
+                        . ' -af "volume=' . $data['rtmp0']['audio_db_gain'] . '"'
+                        . ' -ar ' . $data['rtmp0']['audio_sample_rate']
+                        . ' ' . $data['rtmp0']['extra']
+                        . ' -f flv rtmp://127.0.0.1/shree/bhattji';
+                else
+                    $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
+                        . ' -c:v h264_qsv '
+                        . ' -vf "scale=' . str_replace("x", ":", $data['rtmp0']['resolution'])
+                        . '" -b:v ' . $data['rtmp0']['data_rate']
+                        . ' -maxrate ' . $data['rtmp0']['data_rate']
+                        . ' -bufsize ' . $data['rtmp0']['data_rate']
+                        . ' -r ' . $data['rtmp0']['framerate']
+                        . ' -g ' . $data['rtmp0']['gop']
+                        . ' -c:a aac -b:a ' . $data['rtmp0']['audio_data_rate']
+                        . ' -af "volume=' . $data['rtmp0']['audio_db_gain'] . '"'
+                        . ' -ar ' . $data['rtmp0']['audio_sample_rate']
+                        . ' ' . $data['rtmp0']['extra']
+                        . ' -f flv rtmp://127.0.0.1/shree/bhattji';
 
                 $file = "/var/www/encoder-rtmp0.sh";
                 file_put_contents($file, $rtmp);
@@ -397,19 +412,34 @@ http {
             }
 
             if ($service_rtmp1_multiple === "enable") {
-                $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
-                    . ' -c:v h264_qsv '
-                    . ' -vf "scale=' . str_replace("x", ":", $data['rtmp1']['resolution'])
-                    . '" -b:v ' . $data['rtmp1']['data_rate']
-                    . ' -maxrate ' . $data['rtmp1']['data_rate']
-                    . ' -bufsize ' . $data['rtmp1']['data_rate']
-                    . ' -r ' . $data['rtmp1']['framerate']
-                    . ' -g ' . $data['rtmp1']['gop']
-                    . ' -c:a aac -b:a ' . $data['rtmp1']['audio_data_rate']
-                    . ' -af "volume=' . $data['rtmp1']['audio_db_gain'] . '"'
-                    . ' -ar ' . $data['rtmp1']['audio_sample_rate']
-                    . ' ' . $data['rtmp1']['extra']
-                    . ' -f flv rtmp://127.0.0.1/shreeshree/bhattji';
+                if ($input_source == 'hdmi')
+                    $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i http://127.0.0.1:9090/stream -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
+                        . ' -c:v h264_qsv '
+                        . ' -vf "scale=' . str_replace("x", ":", $data['rtmp1']['resolution'])
+                        . '" -b:v ' . $data['rtmp1']['data_rate']
+                        . ' -maxrate ' . $data['rtmp1']['data_rate']
+                        . ' -bufsize ' . $data['rtmp1']['data_rate']
+                        . ' -r ' . $data['rtmp1']['framerate']
+                        . ' -g ' . $data['rtmp1']['gop']
+                        . ' -c:a aac -b:a ' . $data['rtmp1']['audio_data_rate']
+                        . ' -af "volume=' . $data['rtmp1']['audio_db_gain'] . '"'
+                        . ' -ar ' . $data['rtmp1']['audio_sample_rate']
+                        . ' ' . $data['rtmp1']['extra']
+                        . ' -f flv rtmp://127.0.0.1/shreeshree/bhattji';
+                else
+                    $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
+                        . ' -c:v h264_qsv '
+                        . ' -vf "scale=' . str_replace("x", ":", $data['rtmp1']['resolution'])
+                        . '" -b:v ' . $data['rtmp1']['data_rate']
+                        . ' -maxrate ' . $data['rtmp1']['data_rate']
+                        . ' -bufsize ' . $data['rtmp1']['data_rate']
+                        . ' -r ' . $data['rtmp1']['framerate']
+                        . ' -g ' . $data['rtmp1']['gop']
+                        . ' -c:a aac -b:a ' . $data['rtmp1']['audio_data_rate']
+                        . ' -af "volume=' . $data['rtmp1']['audio_db_gain'] . '"'
+                        . ' -ar ' . $data['rtmp1']['audio_sample_rate']
+                        . ' ' . $data['rtmp1']['extra']
+                        . ' -f flv rtmp://127.0.0.1/shreeshree/bhattji';
 
                 $file = "/var/www/encoder-rtmp1.sh";
                 file_put_contents($file, $rtmp);
