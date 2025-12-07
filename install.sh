@@ -198,52 +198,6 @@ Environment=PATH=/usr/bin:/usr/local/bin
 WantedBy=multi-user.target
 EOL
 
-cat > /etc/systemd/system/mediamtx.service<< 'EOL'
-[Unit]
-Description= UDP Encoder by ShreeBhattJi
-
-
-[Service]
-WorkingDirectory=/var/lib/mediamtx
-ExecStart=/usr/local/bin/mediamtx -f /etc/mediamtx.yml
-Restart=on-failure
-RestartSec=5
-WatchdogSec=30
-LimitNOFILE=65536
-User=root
-
-[Install]
-WantedBy=multi-user.target
-EOL
-
-cat > /etc/systemd/system/ustreamer.service<< 'EOL'
-[Unit]
-Description= UDP Encoder by ShreeBhattJi
-
-
-[Service]
-ExecStart=/bin/bash /var/www/ustreamer.sh
-WorkingDirectory=/var/www/
-Restart=always
-User=root
-Environment=PATH=/usr/bin:/usr/local/bin
-
-[Install]
-WantedBy=multi-user.target
-EOL
-
-
-sudo mv mediamtx /usr/local/bin/mediamtx
-sudo chmod +x /usr/local/bin/mediamtx
-sudo mkdir -p /var/lib/mediamtx
-
-# /etc/mediamtx.yml
-cat > /etc/mediamtx.yml<< 'EOL'
-paths:
-  mystream:
-    publish: yes
-EOL
-
 # graph monitor setup
 cat > /etc/systemd/system/system-monitor.service<< 'EOL'
 [Unit]
@@ -415,7 +369,6 @@ server {
 EOL
 
 rm /var/www/html/index.nginx-debian.html;
-sudo mkdir -p /var/lib/mediamtx;
 sudo mkdir -p /var/www/html/hls/shree;
 sudo mkdir -p /var/www/html/dash/shree;
 sudo mkdir -p /var/www/html/hls/shreeshree;
@@ -435,8 +388,6 @@ sudo systemctl enable --now system-monitor.service
 sudo systemctl status system-monitor.service --no-pager
 sudo systemctl enable --now nginx.service
 sudo systemctl status nginx.service --no-pager
-sudo systemctl enable --now mediamtx.service
-sudo systemctl restart mediamtx.service --no-pager
 
 sudo chmod 777 -R /var/www
 sudo chown -R www-data:www-data /var/www

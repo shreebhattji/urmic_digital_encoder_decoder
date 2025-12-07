@@ -63,15 +63,7 @@ function update_service($which_service)
 
     switch ($input_source) {
         case "hdmi":
-            $ustreamer = "ustreamer   --device /dev/video0   --format MJPEG   --resolution " . $data['hdmi']['resolution'] . " -f " . $data['hdmi']['framerate'] . ' --workers 3   --host 0.0.0.0   --port 9090 ';
-            $file = "/var/www/ustreamer.sh";
-            if (file_put_contents($file, $ustreamer) !== false) {
-                echo "File saved.";
-            } else {
-                echo "Error writing file.";
-            }
-            exec('sudo systemctl enable ustreamer');
-            exec('sudo systemctl restart ustreamer');
+            $input .= "ffmpeg -hide_banner -stream_loop -1 -re -i " . $data['url'];
             break;
         case "url":
             $input .= "ffmpeg -hide_banner -stream_loop -1 -re -i " . $data['url'];
@@ -218,10 +210,7 @@ function update_service($which_service)
 
     switch ($which_service) {
         case 'input':
-            if ($input_source == 'hdmi')
-                $input =   "ffmpeg -hide_banner -stream_loop -1 -f alsa -i " . $hdmi_source . " -c:a aac -b:a 256k -f mpegts udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1";
-            else
-                $input .=   " -c:v copy -c:a copy -f mpegts udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1";
+            $input .=   ' -c:v copy -c:a copy -f mpegts "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1" ';
             $service = $input;
             $file = "/var/www/encoder-main.sh";
             if (file_put_contents($file, $service) !== false) {
