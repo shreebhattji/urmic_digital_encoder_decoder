@@ -3,6 +3,7 @@
 $jsonFile = __DIR__ . '/input.json';
 $defaults = [
     'input' => 'url',
+    'use_common_backend' => 'use_common_backend',
     'hdmi' => [
         'resolution' => '1920x1080',
         'audio_source' => 'hw:1,0',
@@ -19,7 +20,17 @@ $defaults = [
         'stream_id_3' => 'partner',
     ],
     'udp' => 'udp://@224.1.1.1:8000',
-    'custom' => ''
+    'custom' => '',
+    'common_backend' => [
+        'resolution' => '1920x1080',
+        'data_rate' => '5M',
+        'framerate' => '30',
+        'gop' => '30',
+        'audio_db_gain' => '0dB',
+        'audio_data_rate' => '256k',
+        'audio_sample_rate' => '',
+        'extra' => ''
+    ],
 ];
 
 if (file_exists($jsonFile)) {
@@ -39,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $new = [
         'input' => $posted('input', $defaults['input']),
+        'use_common_backend' => $posted('common_backend', $defaults['use_common_backend']),
         'hdmi' => [
             'resolution' => $posted('hdmi_resolution', $defaults['hdmi']['resolution']),
             'audio_source' => $posted('hdmi_audio_source', $defaults['hdmi']['audio_source']),
@@ -55,8 +67,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'stream_id_3' => $posted('srt_stream_id_3', $defaults['srt']['stream_id_3']),
         ],
         'udp' => $posted('udp', $defaults['udp']),
-        'custom' => $posted('custom', $defaults['custom'])
-
+        'custom' => $posted('custom', $defaults['custom']),
+        'common_backend' => [
+            'resolution' => $posted('common_backend_resolution', $defaults['srt']['stream_id_1']),
+            'data_rate' => $posted('common_backend_data_rate', $defaults['srt']['stream_id_1']),
+            'framerate' => $posted('common_backend_framerate', $defaults['srt']['stream_id_1']),
+            'gop' => $posted('common_backend_gop', $defaults['srt']['stream_id_1']),
+            'audio_db_gain' => $posted('common_backend_audio_db_gain', $defaults['srt']['stream_id_1']),
+            'audio_data_rate' => $posted('common_backend_audio_data_rate', $defaults['srt']['stream_id_1']),
+            'audio_sample_rate' => $posted('common_backend_audio_sample_rate', $defaults['srt']['stream_id_1']),
+            'extra' => $posted('common_backend_extra', $defaults['srt']['stream_id_1']),
+        ]
     ];
 
     // write JSON with exclusive lock and pretty print
@@ -87,6 +108,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 echo "<option value=\"" . htmlspecialchars($o) . "\" $sel>" . htmlspecialchars($o) . "</option>";
                             }
                             ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="dropdown-container">
+                    <span class="dropdown-label">Common BackEnd :</span>
+                    <div class="dropdown">
+                        <select name="use_common_backend" id="use_common_backend">
+                            <option value="copy_input" <?php if ($data['use_common_backend'] == 'copy_input') echo 'selected'; ?>>Copy Input</option>
+                            <option value="use_common_backend" <?php if ($data['use_common_backend'] == 'use_common_backend') echo 'selected'; ?>>Use Common Backend</option>
+                            <option value="transcode_every_time" <?php if ($data['use_common_backend'] == 'transcode_every_time') echo 'selected'; ?>>Use input Every time</option>
                         </select>
                     </div>
                 </div>
@@ -197,76 +228,76 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="dropdown-container">
                             <span class="dropdown-label">Resolution :</span>
                             <div class="dropdown">
-                                <select name="common_input_resolution" id="common_input_resolution">
-                                    <option value="720x480" <?php if ($data['common_input']['resolution'] == '720x480') echo 'selected'; ?>>480p 720x480 NTSC DVD</option>
-                                    <option value="720x576" <?php if ($data['common_input']['resolution'] == '720x576') echo 'selected'; ?>>576p 720x576 PAL DVD</option>
-                                    <option value="1280x720" <?php if ($data['common_input']['resolution'] == '1280x720') echo 'selected'; ?>>720p 1280x720 HD</option>
-                                    <option value="1920x1080" <?php if ($data['common_input']['resolution'] == '1920x1080') echo 'selected'; ?>>1080p 1920x1080 FHD</option>
-                                    <option value="2560x1440" <?php if ($data['common_input']['resolution'] == '2560x1440') echo 'selected'; ?>>2k 2560x1440 QHD</option>
-                                    <option value="2048x1080" <?php if ($data['common_input']['resolution'] == '2048x1080') echo 'selected'; ?>>2k 2048x1080 DCI 2K</option>
-                                    <option value="3840x2160" <?php if ($data['common_input']['resolution'] == '3840x2160') echo 'selected'; ?>>4k 3840x2160 UHD</option>
-                                    <option value="4096x2160" <?php if ($data['common_input']['resolution'] == '4096x2160') echo 'selected'; ?>>4k 4096x2160 DCI 4K</option>
-                                    <option value="7680x4320" <?php if ($data['common_input']['resolution'] == '7680x4320') echo 'selected'; ?>>8k 7680x4320 UHD 8K</option>
-                                    <option value="8192x4320" <?php if ($data['common_input']['resolution'] == '8192x4320') echo 'selected'; ?>>8k 8192x4320 DCI 8K</option>
+                                <select name="common_backend_resolution" id="common_backend_resolution">
+                                    <option value="720x480" <?php if ($data['common_backend']['resolution'] == '720x480') echo 'selected'; ?>>480p 720x480 NTSC DVD</option>
+                                    <option value="720x576" <?php if ($data['common_backend']['resolution'] == '720x576') echo 'selected'; ?>>576p 720x576 PAL DVD</option>
+                                    <option value="1280x720" <?php if ($data['common_backend']['resolution'] == '1280x720') echo 'selected'; ?>>720p 1280x720 HD</option>
+                                    <option value="1920x1080" <?php if ($data['common_backend']['resolution'] == '1920x1080') echo 'selected'; ?>>1080p 1920x1080 FHD</option>
+                                    <option value="2560x1440" <?php if ($data['common_backend']['resolution'] == '2560x1440') echo 'selected'; ?>>2k 2560x1440 QHD</option>
+                                    <option value="2048x1080" <?php if ($data['common_backend']['resolution'] == '2048x1080') echo 'selected'; ?>>2k 2048x1080 DCI 2K</option>
+                                    <option value="3840x2160" <?php if ($data['common_backend']['resolution'] == '3840x2160') echo 'selected'; ?>>4k 3840x2160 UHD</option>
+                                    <option value="4096x2160" <?php if ($data['common_backend']['resolution'] == '4096x2160') echo 'selected'; ?>>4k 4096x2160 DCI 4K</option>
+                                    <option value="7680x4320" <?php if ($data['common_backend']['resolution'] == '7680x4320') echo 'selected'; ?>>8k 7680x4320 UHD 8K</option>
+                                    <option value="8192x4320" <?php if ($data['common_backend']['resolution'] == '8192x4320') echo 'selected'; ?>>8k 8192x4320 DCI 8K</option>
                                 </select>
                             </div>
                         </div>
                         <div class="input-group">
-                            <input type="text" id="common_input_data_rate" name="common_input_data_rate" placeholder="5M" value="<?php echo htmlspecialchars($data['common_input']['data_rate']); ?>">
-                            <label for="common_input_data_rate">Data Rate :</label>
+                            <input type="text" id="common_backend_data_rate" name="common_backend_data_rate" placeholder="5M" value="<?php echo htmlspecialchars($data['common_backend']['data_rate']); ?>">
+                            <label for="common_backend_data_rate">Data Rate :</label>
                         </div>
                         <div class="input-group">
-                            <input type="text" id="common_input_framerate" name="common_input_framerate" placeholder="25" value="<?php echo htmlspecialchars($data['common_input']['framerate']); ?>">
-                            <label for="common_input_framerate">Framerate :</label>
+                            <input type="text" id="common_backend_framerate" name="common_backend_framerate" placeholder="25" value="<?php echo htmlspecialchars($data['common_backend']['framerate']); ?>">
+                            <label for="common_backend_framerate">Framerate :</label>
                         </div>
                         <div class="input-group">
-                            <input type="text" id="common_input_gop" name="common_input_gop" placeholder="12" value="<?php echo htmlspecialchars($data['common_input']['gop']); ?>">
-                            <label for="common_input_gop">GOP :</label>
+                            <input type="text" id="common_backend_gop" name="common_backend_gop" placeholder="12" value="<?php echo htmlspecialchars($data['common_backend']['gop']); ?>">
+                            <label for="common_backend_gop">GOP :</label>
                         </div>
                     </div>
                     <div class="card">
                         <div class="dropdown-container">
                             <span class="dropdown-label">DB Gain :</span>
                             <div class="dropdown">
-                                <select name="common_input_audio_db_gain" id="common_input_audio_db_gain">
-                                    <option value="-25dB" <?php if ($data['common_input']['audio_db_gain'] == '-25dB') echo 'selected'; ?>>-25dB</option>
-                                    <option value="-20dB" <?php if ($data['common_input']['audio_db_gain'] == '-20dB') echo 'selected'; ?>>-20dB</option>
-                                    <option value="-15dB" <?php if ($data['common_input']['audio_db_gain'] == '-15dB') echo 'selected'; ?>>-15dB</option>
-                                    <option value="-10dB" <?php if ($data['common_input']['audio_db_gain'] == '-10dB') echo 'selected'; ?>>-10dB</option>
-                                    <option value="-6dB" <?php if ($data['common_input']['audio_db_gain'] == '-6dB') echo 'selected'; ?>>-6dB</option>
-                                    <option value="-5dB" <?php if ($data['common_input']['audio_db_gain'] == '-5dB') echo 'selected'; ?>>-5dB</option>
-                                    <option value="-4dB" <?php if ($data['common_input']['audio_db_gain'] == '-4dB') echo 'selected'; ?>>-4dB</option>
-                                    <option value="-3dB" <?php if ($data['common_input']['audio_db_gain'] == '-3dB') echo 'selected'; ?>>-3dB</option>
-                                    <option value="-2dB" <?php if ($data['common_input']['audio_db_gain'] == '-2dB') echo 'selected'; ?>>-2dB</option>
-                                    <option value="-1dB" <?php if ($data['common_input']['audio_db_gain'] == '-1dB') echo 'selected'; ?>>-1dB</option>
-                                    <option value="0dB" <?php if ($data['common_input']['audio_db_gain'] == '0dB') echo 'selected'; ?>>0dB</option>
-                                    <option value="1dB" <?php if ($data['common_input']['audio_db_gain'] == '1dB') echo 'selected'; ?>>1dB</option>
-                                    <option value="2dB" <?php if ($data['common_input']['audio_db_gain'] == '2dB') echo 'selected'; ?>>2dB</option>
-                                    <option value="3dB" <?php if ($data['common_input']['audio_db_gain'] == '3dB') echo 'selected'; ?>>3dB</option>
-                                    <option value="4dB" <?php if ($data['common_input']['audio_db_gain'] == '4dB') echo 'selected'; ?>>4dB</option>
-                                    <option value="5dB" <?php if ($data['common_input']['audio_db_gain'] == '5dB') echo 'selected'; ?>>5dB</option>
-                                    <option value="6dB" <?php if ($data['common_input']['audio_db_gain'] == '6dB') echo 'selected'; ?>>6dB</option>
-                                    <option value="10dB" <?php if ($data['common_input']['audio_db_gain'] == '10dB') echo 'selected'; ?>>10dB</option>
-                                    <option value="15dB" <?php if ($data['common_input']['audio_db_gain'] == '15dB') echo 'selected'; ?>>15dB</option>
-                                    <option value="20dB" <?php if ($data['common_input']['audio_db_gain'] == '20dB') echo 'selected'; ?>>20dB</option>
-                                    <option value="25dB" <?php if ($data['common_input']['audio_db_gain'] == '25dB') echo 'selected'; ?>>25dB</option>
+                                <select name="common_backend_audio_db_gain" id="common_backend_audio_db_gain">
+                                    <option value="-25dB" <?php if ($data['common_backend']['audio_db_gain'] == '-25dB') echo 'selected'; ?>>-25dB</option>
+                                    <option value="-20dB" <?php if ($data['common_backend']['audio_db_gain'] == '-20dB') echo 'selected'; ?>>-20dB</option>
+                                    <option value="-15dB" <?php if ($data['common_backend']['audio_db_gain'] == '-15dB') echo 'selected'; ?>>-15dB</option>
+                                    <option value="-10dB" <?php if ($data['common_backend']['audio_db_gain'] == '-10dB') echo 'selected'; ?>>-10dB</option>
+                                    <option value="-6dB" <?php if ($data['common_backend']['audio_db_gain'] == '-6dB') echo 'selected'; ?>>-6dB</option>
+                                    <option value="-5dB" <?php if ($data['common_backend']['audio_db_gain'] == '-5dB') echo 'selected'; ?>>-5dB</option>
+                                    <option value="-4dB" <?php if ($data['common_backend']['audio_db_gain'] == '-4dB') echo 'selected'; ?>>-4dB</option>
+                                    <option value="-3dB" <?php if ($data['common_backend']['audio_db_gain'] == '-3dB') echo 'selected'; ?>>-3dB</option>
+                                    <option value="-2dB" <?php if ($data['common_backend']['audio_db_gain'] == '-2dB') echo 'selected'; ?>>-2dB</option>
+                                    <option value="-1dB" <?php if ($data['common_backend']['audio_db_gain'] == '-1dB') echo 'selected'; ?>>-1dB</option>
+                                    <option value="0dB" <?php if ($data['common_backend']['audio_db_gain'] == '0dB') echo 'selected'; ?>>0dB</option>
+                                    <option value="1dB" <?php if ($data['common_backend']['audio_db_gain'] == '1dB') echo 'selected'; ?>>1dB</option>
+                                    <option value="2dB" <?php if ($data['common_backend']['audio_db_gain'] == '2dB') echo 'selected'; ?>>2dB</option>
+                                    <option value="3dB" <?php if ($data['common_backend']['audio_db_gain'] == '3dB') echo 'selected'; ?>>3dB</option>
+                                    <option value="4dB" <?php if ($data['common_backend']['audio_db_gain'] == '4dB') echo 'selected'; ?>>4dB</option>
+                                    <option value="5dB" <?php if ($data['common_backend']['audio_db_gain'] == '5dB') echo 'selected'; ?>>5dB</option>
+                                    <option value="6dB" <?php if ($data['common_backend']['audio_db_gain'] == '6dB') echo 'selected'; ?>>6dB</option>
+                                    <option value="10dB" <?php if ($data['common_backend']['audio_db_gain'] == '10dB') echo 'selected'; ?>>10dB</option>
+                                    <option value="15dB" <?php if ($data['common_backend']['audio_db_gain'] == '15dB') echo 'selected'; ?>>15dB</option>
+                                    <option value="20dB" <?php if ($data['common_backend']['audio_db_gain'] == '20dB') echo 'selected'; ?>>20dB</option>
+                                    <option value="25dB" <?php if ($data['common_backend']['audio_db_gain'] == '25dB') echo 'selected'; ?>>25dB</option>
                                 </select>
                             </div>
                         </div>
                         <p></p>
                         <div class="input-group">
-                            <input type="text" id="common_input_audio_data_rate" name="common_input_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['common_input']['audio_data_rate']); ?>">
-                            <label for="common_input_audio_data_rate">Bit Rate :</label>
+                            <input type="text" id="common_backend_audio_data_rate" name="common_backend_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['common_backend']['audio_data_rate']); ?>">
+                            <label for="common_backend_audio_data_rate">Bit Rate :</label>
                         </div>
                         <div class="input-group">
-                            <input type="text" id="common_input_audio_sample_rate" name="common_input_audio_sample_rate" placeholder="48000" value="<?php echo htmlspecialchars($data['common_input']['audio_sample_rate']); ?>">
-                            <label for="rtmp1_audio_sampcommon_input_audio_sample_ratele_rate">Sample Rate :</label>
+                            <input type="text" id="common_backend_audio_sample_rate" name="common_backend_audio_sample_rate" placeholder="48000" value="<?php echo htmlspecialchars($data['common_backend']['audio_sample_rate']); ?>">
+                            <label for="common_backend_audio_sample_rate">Sample Rate :</label>
                         </div>
                     </div>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="common_input_extra" name="common_input_extra" value="<?php echo htmlspecialchars($data['common_input']['extra']); ?>">
-                    <label for="common_input_extra">Extra :</label>
+                    <input type="text" id="common_backend_extra" name="common_backend_extra" value="<?php echo htmlspecialchars($data['common_backend']['extra']); ?>">
+                    <label for="common_backend_extra">Extra :</label>
                 </div>
             </div>
 
