@@ -59,6 +59,7 @@ function update_service($which_service)
     $srt_pass1 = $data['srt']['stream_id_1'];
     $srt_pass2 = $data['srt']['stream_id_2'];
     $srt_pass3 = $data['srt']['stream_id_3'];
+    $hdmi_source = $data['hdmi']['audio_source'];
 
     switch ($input_source) {
         case "hdmi":
@@ -215,10 +216,12 @@ function update_service($which_service)
     $rtmp1_multiple = $data['rtmp1_multiple'];
     $srt_multiple = $data['srt_multiple'];
 
-
     switch ($which_service) {
         case 'input':
-            $input .=   "ffmpeg -hide_banner -stream_loop -1 -f alsa -i " . $data['hdmi']['audio_source'] . " -c:a aac -b:a 256k -f mpegts udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1";
+            if ($input_source == 'hdmi')
+                $input =   "ffmpeg -hide_banner -stream_loop -1 -f alsa -i " . $hdmi_source . " -c:a aac -b:a 256k -f mpegts udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1";
+            else
+                $input .=   " -c:v copy -c:a copy -f mpegts udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1";
             $service = $input;
             $file = "/var/www/encoder-main.sh";
             if (file_put_contents($file, $service) !== false) {
