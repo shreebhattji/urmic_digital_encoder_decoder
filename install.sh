@@ -201,6 +201,22 @@ Environment=PATH=/usr/bin:/usr/local/bin
 WantedBy=multi-user.target
 EOL
 
+cat > /etc/systemd/system/ustreamer.service<< 'EOL'
+[Unit]
+Description= UDP Encoder by ShreeBhattJi
+
+
+[Service]
+ExecStart=/bin/bash /var/www/ustreamer.sh
+WorkingDirectory=/var/www/
+Restart=always
+User=root
+Environment=PATH=/usr/bin:/usr/local/bin
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
 # graph monitor setup
 cat > /etc/systemd/system/system-monitor.service<< 'EOL'
 [Unit]
