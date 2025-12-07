@@ -21,6 +21,7 @@ $defaults = [
   'rtmp1_multiple' => [],
   'srt_multiple'  => [],
   'rtmp0' => [
+    'common_backend'=>'use_common_backend',
     'resolution' => '1920x1080',
     'data_rate' => '6M',
     'framerate' => '30',
@@ -31,6 +32,7 @@ $defaults = [
     'audio_sample_rate' => '48000'
   ],
   'rtmp1' => [
+    'common_backend'=>'transcode',
     'resolution' => '720x576',
     'data_rate' => '1.5M',
     'framerate' => '25',
@@ -41,6 +43,7 @@ $defaults = [
     'audio_sample_rate' => '48000'
   ],
   'udp0' => [
+    'common_backend'=>'use_common_backend',
     'udp' => 'udp://@224.1.1.1:8001',
     'formate' => 'h264_qsv',
     'resolution' => '1280x720',
@@ -54,6 +57,7 @@ $defaults = [
     'audio_sample_rate' => '48000'
   ],
   'udp1' => [
+    'common_backend'=>'transcode',
     'udp' => 'udp://@224.1.1.1:8001',
     'formate' => 'h264_qsv',
     'resolution' => '720x576',
@@ -67,6 +71,7 @@ $defaults = [
     'audio_sample_rate' => '48000'
   ],
   'udp2' => [
+    'common_backend'=>'transcode',
     'udp' => 'udp://@224.1.1.1:8002',
     'formate' => 'mpeg2video',
     'resolution' => '720x576',
@@ -80,6 +85,7 @@ $defaults = [
     'audio_sample_rate' => '48000'
   ],
   'srt' => [
+    'common_backend'=>'use_common_backend',
     'formate' => 'mpeg2video',
     'resolution' => '1920x1080',
     'data_rate' => '6M',
