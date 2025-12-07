@@ -60,7 +60,7 @@ function update_service($which_service)
     switch ($input_source) {
         case "hdmi":
             $input = "ustreamer   --device /dev/video0   --format MJPEG   --resolution " . $data['hdmi']['resolution'] . " -f " . $data['hdmi']['framerate'] .' --workers 3   --host 0.0.0.0   --port 9090 &';
-            $input .= "ffmpeg -i http://127.0.0.1:9090/stream -f alsa -i " . $data['hdmi']['audio_source'] ;
+            $input .= " ffmpeg -i http://127.0.0.1:9090/stream -f alsa -i " . $data['hdmi']['audio_source'] ;
             break;
         case "url":
             $input .= "ffmpeg -hide_banner -stream_loop -1 -re -i " . $data['url'];
