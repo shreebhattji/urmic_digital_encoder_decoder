@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $posted = function ($k, $default = '') {
         return isset($_POST[$k]) ? trim((string)$_POST[$k]) : $default;
     };
-
+    global $defaults;
     $new = [
         'input' => $posted('input', $defaults['input']),
         'use_common_backend' => $posted('common_backend', $defaults['use_common_backend']),
@@ -247,11 +247,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <label for="common_backend_data_rate">Data Rate :</label>
                         </div>
                         <div class="input-group">
-                            <input type="text" id="common_backend_framerate" name="common_backend_framerate" placeholder="25" value="<?php echo htmlspecialchars($data['common_backend']['framerate']); ?>">
+                            <input type="text" id="common_backend_framerate" name="common_backend_framerate" placeholder="30" value="<?php echo htmlspecialchars($data['common_backend']['framerate']); ?>">
                             <label for="common_backend_framerate">Framerate :</label>
                         </div>
                         <div class="input-group">
-                            <input type="text" id="common_backend_gop" name="common_backend_gop" placeholder="12" value="<?php echo htmlspecialchars($data['common_backend']['gop']); ?>">
+                            <input type="text" id="common_backend_gop" name="common_backend_gop" placeholder="30" value="<?php echo htmlspecialchars($data['common_backend']['gop']); ?>">
                             <label for="common_backend_gop">GOP :</label>
                         </div>
                     </div>
