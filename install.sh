@@ -216,6 +216,23 @@ User=root
 WantedBy=multi-user.target
 EOL
 
+cat > /etc/systemd/system/ustreamer.service<< 'EOL'
+[Unit]
+Description= UDP Encoder by ShreeBhattJi
+
+
+[Service]
+ExecStart=/bin/bash /var/www/ustreamer.sh
+WorkingDirectory=/var/www/
+Restart=always
+User=root
+Environment=PATH=/usr/bin:/usr/local/bin
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+
 sudo mv mediamtx /usr/local/bin/mediamtx
 sudo chmod +x /usr/local/bin/mediamtx
 sudo mkdir -p /var/lib/mediamtx
