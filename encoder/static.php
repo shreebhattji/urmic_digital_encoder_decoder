@@ -104,9 +104,9 @@ function update_service($which_service)
             switch ($input_source) {
                 case "hdmi":
                     $input .= "ffmpeg -hwaccel auto -hide_banner -f v4l2 -thread_queue_size 512 -input_format mjpeg -video_size " . $data['hdmi']['resolution']
-                        . " -framerate " . $data['hdmi']['framerate'] . " -f alsa -i " . $data['hdmi']['audio_source']
+                        . " -framerate " . $data['hdmi']['framerate'] . " -i /dev/video0 -f alsa -i " . $data['hdmi']['audio_source']
                         . " -c:v h264_qsv "
-                        . ' -vf "scale=' . $common_backend_resolution
+                        . ' -vf "scale=' . $common_backend_resolution.'"'
                         . " -b:v " . $common_backend_data_rate
                         . " -maxrate " . $common_backend_data_rate
                         . " -bufsize 12M"
@@ -287,7 +287,7 @@ function update_service($which_service)
             'audio_sample_rate' => '48000'
         ],
         'srt' => [
-            'formate' => 'mpeg2video',
+            'formate' => 'h264_qsv',
             'resolution' => '1920x1080',
             'data_rate' => '6M',
             'framerate' => '50',
@@ -510,7 +510,7 @@ http {
                     case "transcode":
                         $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v h264_qsv '
-                            . ' -vf "scale=' . str_replace("x", ":", $data['rtmp0']['resolution'])
+                            . ' -vf "scale=' . str_replace("x", ":", $data['rtmp0']['resolution']).'"'
                             . '" -b:v ' . $data['rtmp0']['data_rate']
                             . ' -maxrate ' . $data['rtmp0']['data_rate']
                             . ' -bufsize ' . $data['rtmp0']['data_rate']

@@ -21,7 +21,7 @@ $defaults = [
   'rtmp1_multiple' => [],
   'srt_multiple'  => [],
   'rtmp0' => [
-    'common_backend'=>'use_common_backend',
+    'common_backend' => 'use_common_backend',
     'resolution' => '1920x1080',
     'data_rate' => '6M',
     'framerate' => '30',
@@ -32,7 +32,7 @@ $defaults = [
     'audio_sample_rate' => '48000'
   ],
   'rtmp1' => [
-    'common_backend'=>'transcode',
+    'common_backend' => 'transcode',
     'resolution' => '720x576',
     'data_rate' => '1.5M',
     'framerate' => '25',
@@ -43,7 +43,7 @@ $defaults = [
     'audio_sample_rate' => '48000'
   ],
   'udp0' => [
-    'common_backend'=>'use_common_backend',
+    'common_backend' => 'use_common_backend',
     'udp' => 'udp://@224.1.1.1:8001',
     'formate' => 'h264_qsv',
     'resolution' => '1280x720',
@@ -57,7 +57,7 @@ $defaults = [
     'audio_sample_rate' => '48000'
   ],
   'udp1' => [
-    'common_backend'=>'transcode',
+    'common_backend' => 'transcode',
     'udp' => 'udp://@224.1.1.1:8001',
     'formate' => 'h264_qsv',
     'resolution' => '720x576',
@@ -71,7 +71,7 @@ $defaults = [
     'audio_sample_rate' => '48000'
   ],
   'udp2' => [
-    'common_backend'=>'transcode',
+    'common_backend' => 'transcode',
     'udp' => 'udp://@224.1.1.1:8002',
     'formate' => 'mpeg2video',
     'resolution' => '720x576',
@@ -85,7 +85,7 @@ $defaults = [
     'audio_sample_rate' => '48000'
   ],
   'srt' => [
-    'common_backend'=>'use_common_backend',
+    'common_backend' => 'use_common_backend',
     'formate' => 'mpeg2video',
     'resolution' => '1920x1080',
     'data_rate' => '6M',
@@ -155,6 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $new['rtmp0']['audio_data_rate'] = $get('rtmp0_audio_data_rate', $defaults['rtmp0']['audio_data_rate']);
   $new['rtmp0']['audio_db_gain'] = $get('rtmp0_audio_db_gain', $defaults['rtmp0']['audio_db_gain']);
   $new['rtmp0']['audio_sample_rate'] = $get('rtmp0_audio_sample_rate', $defaults['rtmp0']['audio_sample_rate']);
+  $new['rtmp0']['common_backend'] = $get('rtmp0_common_backend', $defaults['rtmp0']['common_backend']);
 
   $new['rtmp1']['resolution'] = $get('rtmp1_resolution', $defaults['rtmp1']['resolution']);
   $new['rtmp1']['data_rate'] = $get('rtmp1_data_rate', $defaults['rtmp1']['data_rate']);
@@ -164,6 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $new['rtmp1']['audio_data_rate'] = $get('rtmp1_audio_data_rate', $defaults['rtmp1']['audio_data_rate']);
   $new['rtmp1']['audio_db_gain'] = $get('rtmp1_audio_db_gain', $defaults['rtmp1']['audio_db_gain']);
   $new['rtmp1']['audio_sample_rate'] = $get('rtmp1_audio_sample_rate', $defaults['rtmp1']['audio_sample_rate']);
+  $new['rtmp1']['common_backend'] = $get('rtmp1_common_backend', $defaults['rtmp1']['common_backend']);
 
   $new['udp0']['format'] = $get('udp0_format', $defaults['udp0']['format']);
   $new['udp0']['resolution'] = $get('udp0_resolution', $defaults['udp0']['resolution']);
@@ -176,6 +178,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $new['udp0']['audio_db_gain'] = $get('udp0_audio_db_gain', $defaults['udp0']['audio_db_gain']);
   $new['udp0']['audio_sample_rate'] = $get('udp0_audio_sample_rate', $defaults['udp0']['audio_sample_rate']);
   $new['udp0']['udp'] = $get('udp0_ip', $defaults['udp0']['udp']);
+  $new['udp0']['common_backend'] = $get('udp0_common_backend', $defaults['udp0']['common_backend']);
 
   $new['udp1']['format'] = $get('udp1_format', $defaults['udp1']['format']);
   $new['udp1']['resolution'] = $get('udp1_resolution', $defaults['udp1']['resolution']);
@@ -188,6 +191,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $new['udp1']['audio_db_gain'] = $get('udp1_audio_db_gain', $defaults['udp1']['audio_db_gain']);
   $new['udp1']['audio_sample_rate'] = $get('udp1_audio_sample_rate', $defaults['udp1']['audio_sample_rate']);
   $new['udp1']['udp'] = $get('udp1_ip', $defaults['udp1']['udp']);
+  $new['udp1']['common_backend'] = $get('udp1_common_backend', $defaults['udp1']['common_backend']);
 
   $new['udp2']['format'] = $get('udp2_format', $defaults['udp2']['format']);
   $new['udp2']['resolution'] = $get('udp2_resolution', $defaults['udp2']['resolution']);
@@ -200,6 +204,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $new['udp2']['audio_db_gain'] = $get('udp2_audio_db_gain', $defaults['udp2']['audio_db_gain']);
   $new['udp2']['audio_sample_rate'] = $get('udp2_audio_sample_rate', $defaults['udp2']['audio_sample_rate']);
   $new['udp2']['udp'] = $get('udp2_ip', $defaults['udp2']['udp']);
+  $new['udp2']['common_backend'] = $get('udp2_common_backend', $defaults['udp2']['common_backend']);
 
   $new['srt']['format'] = $get('srt_resolution', $defaults['srt']['format']);
   $new['srt']['resolution'] = $get('srt_resolution', $defaults['srt']['resolution']);
@@ -211,6 +216,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $new['srt']['audio_data_rate'] = $get('srt_audio_data_rate', $defaults['srt']['audio_data_rate']);
   $new['srt']['audio_db_gain'] = $get('srt_audio_db_gain', $defaults['srt']['audio_db_gain']);
   $new['srt']['audio_sample_rate'] = $get('srt_audio_sample_rate', $defaults['srt']['audio_sample_rate']);
+  $new['srt']['common_backend'] = $get('srt_common_backend', $defaults['srt']['common_backend']);
 
   $new['custom_output'] = $get('custom_output', '');
 
@@ -418,6 +424,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </select>
           </div>
         </div>
+        <div class="dropdown-container">
+          <span class="dropdown-label">Common Backend :</span>
+          <div class="dropdown">
+            <select name="rtmp0_common_backend" id="rtmp0_common_backend">
+              <option value="enable" <?php if ($data['rtmp0']['common_backend'] == 'enable') echo 'selected'; ?>>Enable</option>
+              <option value="disable" <?php if ($data['rtmp0']['common_backend'] == 'disable') echo 'selected'; ?>>Disable</option>
+            </select>
+          </div>
+        </div>
 
         <div class="grid">
           <div class="card">
@@ -548,6 +563,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </select>
           </div>
         </div>
+        <div class="dropdown-container">
+          <span class="dropdown-label">Common Backend :</span>
+          <div class="dropdown">
+            <select name="rtmp1_common_backend" id="rtmp1_common_backend">
+              <option value="enable" <?php if ($data['rtmp1']['common_backend'] == 'enable') echo 'selected'; ?>>Enable</option>
+              <option value="disable" <?php if ($data['rtmp1']['common_backend'] == 'disable') echo 'selected'; ?>>Disable</option>
+            </select>
+          </div>
+        </div>
 
         <div class="grid">
           <div class="card">
@@ -657,6 +681,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <select name="service_udp0" id="service_udp0">
               <option value="enable" <?php if ($data['service_udp0'] == 'enable') echo 'selected'; ?>>Enable</option>
               <option value="disable" <?php if ($data['service_udp0'] == 'disable') echo 'selected'; ?>>Disable</option>
+            </select>
+          </div>
+        </div>
+        <div class="dropdown-container">
+          <span class="dropdown-label">Common Backend :</span>
+          <div class="dropdown">
+            <select name="udp0_common_backend" id="udp0_common_backend">
+              <option value="enable" <?php if ($data['udp0']['common_backend'] == 'enable') echo 'selected'; ?>>Enable</option>
+              <option value="disable" <?php if ($data['udp0']['common_backend'] == 'disable') echo 'selected'; ?>>Disable</option>
             </select>
           </div>
         </div>
@@ -779,6 +812,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </select>
           </div>
         </div>
+        <div class="dropdown-container">
+          <span class="dropdown-label">Common Backend :</span>
+          <div class="dropdown">
+            <select name="udp1_common_backend" id="udp1_common_backend">
+              <option value="enable" <?php if ($data['udp1']['common_backend'] == 'enable') echo 'selected'; ?>>Enable</option>
+              <option value="disable" <?php if ($data['udp1']['common_backend'] == 'disable') echo 'selected'; ?>>Disable</option>
+            </select>
+          </div>
+        </div>
 
         <div class="grid">
           <div class="card">
@@ -895,6 +937,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <select name="service_udp2" id="service_udp2">
               <option value="enable" <?php if ($data['service_udp2'] == 'enable') echo 'selected'; ?>>Enable</option>
               <option value="disable" <?php if ($data['service_udp2'] == 'disable') echo 'selected'; ?>>Disable</option>
+            </select>
+          </div>
+        </div>
+        <div class="dropdown-container">
+          <span class="dropdown-label">Common Backend :</span>
+          <div class="dropdown">
+            <select name="udp2_common_backend" id="udp2_common_backend">
+              <option value="enable" <?php if ($data['udp2']['common_backend'] == 'enable') echo 'selected'; ?>>Enable</option>
+              <option value="disable" <?php if ($data['udp2']['common_backend'] == 'disable') echo 'selected'; ?>>Disable</option>
             </select>
           </div>
         </div>
@@ -1015,6 +1066,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <select name="service_srt_multiple" id="service_srt_multiple">
               <option value="enable" <?php if ($data['service_srt_multiple'] == 'enable') echo 'selected'; ?>>Enable</option>
               <option value="disable" <?php if ($data['service_srt_multiple'] == 'disable') echo 'selected'; ?>>Disable</option>
+            </select>
+          </div>
+        </div>
+        <div class="dropdown-container">
+          <span class="dropdown-label">Common Backend :</span>
+          <div class="dropdown">
+            <select name="srt_common_backend" id="srt_common_backend">
+              <option value="enable" <?php if ($data['srt']['common_backend'] == 'enable') echo 'selected'; ?>>Enable</option>
+              <option value="disable" <?php if ($data['srt']['common_backend'] == 'disable') echo 'selected'; ?>>Disable</option>
             </select>
           </div>
         </div>
