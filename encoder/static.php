@@ -216,7 +216,6 @@ function update_service($which_service)
             } else {
                 echo "Error writing file.";
             }
-            exec('sudo reboot');
             break;
         case 'display';
             break;
