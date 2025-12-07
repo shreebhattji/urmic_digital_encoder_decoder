@@ -28,7 +28,7 @@ $defaults = [
         'gop' => '30',
         'audio_db_gain' => '0dB',
         'audio_data_rate' => '256k',
-        'audio_sample_rate' => '',
+        'audio_sample_rate' => '48000',
         'extra' => ''
     ],
 ];
@@ -69,14 +69,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'udp' => $posted('udp', $defaults['udp']),
         'custom' => $posted('custom', $defaults['custom']),
         'common_backend' => [
-            'resolution' => $posted('common_backend_resolution', $defaults['srt']['stream_id_1']),
-            'data_rate' => $posted('common_backend_data_rate', $defaults['srt']['stream_id_1']),
-            'framerate' => $posted('common_backend_framerate', $defaults['srt']['stream_id_1']),
-            'gop' => $posted('common_backend_gop', $defaults['srt']['stream_id_1']),
-            'audio_db_gain' => $posted('common_backend_audio_db_gain', $defaults['srt']['stream_id_1']),
-            'audio_data_rate' => $posted('common_backend_audio_data_rate', $defaults['srt']['stream_id_1']),
-            'audio_sample_rate' => $posted('common_backend_audio_sample_rate', $defaults['srt']['stream_id_1']),
-            'extra' => $posted('common_backend_extra', $defaults['srt']['stream_id_1']),
+            'resolution' => $posted('common_backend_resolution', $defaults['common_backend']['resolution']),
+            'data_rate' => $posted('common_backend_data_rate', $defaults['common_backend']['data_rate']),
+            'framerate' => $posted('common_backend_framerate', $defaults['common_backend']['framerate']),
+            'gop' => $posted('common_backend_gop', $defaults['common_backend']['gop']),
+            'audio_db_gain' => $posted('common_backend_audio_db_gain', $defaults['common_backend']['audio_db_gain']),
+            'audio_data_rate' => $posted('common_backend_audio_data_rate', $defaults['common_backend']['audio_data_rate']),
+            'audio_sample_rate' => $posted('common_backend_audio_sample_rate', $defaults['common_backend']['audio_sample_rate']),
+            'extra' => $posted('common_backend_extra', $defaults['common_backend']['extra']),
         ]
     ];
 
@@ -286,7 +286,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                         <p></p>
                         <div class="input-group">
-                            <input type="text" id="common_backend_audio_data_rate" name="common_backend_audio_data_rate" placeholder="96k" value="<?php echo htmlspecialchars($data['common_backend']['audio_data_rate']); ?>">
+                            <input type="text" id="common_backend_audio_data_rate" name="common_backend_audio_data_rate" placeholder="256k" value="<?php echo htmlspecialchars($data['common_backend']['audio_data_rate']); ?>">
                             <label for="common_backend_audio_data_rate">Bit Rate :</label>
                         </div>
                         <div class="input-group">
