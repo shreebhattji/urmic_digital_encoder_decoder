@@ -108,7 +108,7 @@
             color: #9fb2d6;
             display: flex;
             justify-content: space-between;
-            font-size: 13px;
+            font-size: 11px;
         }
 
         @media (max-width: 640px) {
@@ -261,7 +261,7 @@
         }
 
         .dropdown-label {
-            font-size: 23px;
+            font-size: 13px;
             font-weight: 500;
             color: #1e293b;
         }
@@ -279,7 +279,7 @@
             padding: 12px 40px 12px 16px;
             border: none;
             border-radius: 12px;
-            font-size: 16px;
+            font-size: 13px;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -342,7 +342,7 @@
             top: 50%;
             transform: translateY(-50%);
             color: #64748b;
-            font-size: 16px;
+            font-size: 13px;
             pointer-events: none;
             transition: 0.3s ease all;
             background: white;
@@ -372,7 +372,7 @@
         }
 
         .checkbox-group label {
-            font-size: 14px;
+            font-size: 13px;
             color: #1e293b;
             cursor: pointer;
         }
