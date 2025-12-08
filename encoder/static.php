@@ -510,6 +510,7 @@ http {
 
                 switch ($use_common_backend_rtmp0) {
                     case "use_common_backend":
+                        error_log("use_common_backend");
                         $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v copy '
                             . ' -c:a copy '
@@ -517,6 +518,7 @@ http {
                         break;
 
                     case "transcode":
+                        error_log("transcode");
                         $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v h264_qsv '
                             . ' -vf "scale=' . str_replace("x", ":", $data['rtmp0']['resolution']) . '"'
@@ -530,6 +532,9 @@ http {
                             . ' -ar ' . $data['rtmp0']['audio_sample_rate']
                             . ' ' . $data['rtmp0']['extra']
                             . ' -f flv rtmp://127.0.0.1/shree/bhattji';
+                        break;
+                    default:
+                        error_log("service_rtmp0_multiple");
                         break;
                 }
                 $file = "/var/www/encoder-rtmp0.sh";
@@ -546,12 +551,14 @@ http {
 
                 switch ($use_common_backend_rtmp1) {
                     case "use_common_backend":
+                        error_log("use_common_backend 1");
                         $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v copy '
                             . ' -c:a copy '
                             . ' -f flv rtmp://127.0.0.1/shreeshree/bhattji';
                         break;
                     case "transcode":
+                        error_log("transcode 1");
                         $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v h264_qsv '
                             . ' -vf "scale=' . str_replace("x", ":", $data['rtmp1']['resolution'])
@@ -565,7 +572,9 @@ http {
                             . ' -ar ' . $data['rtmp1']['audio_sample_rate']
                             . ' ' . $data['rtmp1']['extra']
                             . ' -f flv rtmp://127.0.0.1/shreeshree/bhattji';
-
+                        break;
+                    default:
+                        error_log("service_rtmp1_multiple");
                         break;
                 }
 
