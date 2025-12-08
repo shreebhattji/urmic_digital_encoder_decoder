@@ -548,6 +548,7 @@ http {
             }
 
             if ($service_rtmp1_multiple === "enable") {
+                error_log("service_rtmp1_multiple enable");
 
                 switch ($use_common_backend_rtmp1) {
                     case "enable":
