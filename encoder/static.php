@@ -228,7 +228,7 @@ function update_service($which_service)
         'rtmp1_multiple' => [],
         'srt_multiple'  => [],
         'rtmp0' => [
-            'common_backend' => 'use_common_backend',
+            'common_backend' => 'enable',
             'resolution' => '1920x1080',
             'data_rate' => '6M',
             'framerate' => '30',
@@ -239,7 +239,7 @@ function update_service($which_service)
             'audio_sample_rate' => '48000'
         ],
         'rtmp1' => [
-            'common_backend' => 'transcode',
+            'common_backend' => 'disable',
             'resolution' => '720x576',
             'data_rate' => '1.5M',
             'framerate' => '25',
@@ -250,7 +250,7 @@ function update_service($which_service)
             'audio_sample_rate' => '48000'
         ],
         'udp0' => [
-            'common_backend' => 'transcode',
+            'common_backend' => 'disable',
             'udp' => 'udp://@224.1.1.1:8001',
             'format' => 'h264_qsv',
             'resolution' => '1280x720',
@@ -264,7 +264,7 @@ function update_service($which_service)
             'audio_sample_rate' => '48000'
         ],
         'udp1' => [
-            'common_backend' => 'transcode',
+            'common_backend' => 'disable',
             'udp' => 'udp://@224.1.1.1:8001',
             'format' => 'h264_qsv',
             'resolution' => '720x576',
@@ -278,7 +278,7 @@ function update_service($which_service)
             'audio_sample_rate' => '48000'
         ],
         'udp2' => [
-            'common_backend' => 'transcode',
+            'common_backend' => 'disable',
             'udp' => 'udp://@224.1.1.1:8002',
             'format' => 'mpeg2video',
             'resolution' => '720x576',
@@ -292,7 +292,7 @@ function update_service($which_service)
             'audio_sample_rate' => '48000'
         ],
         'srt' => [
-            'common_backend' => 'use_common_backend',
+            'common_backend' => 'enable',
             'format' => 'mpeg2video',
             'resolution' => '1920x1080',
             'data_rate' => '6M',
@@ -509,7 +509,7 @@ http {
             if ($service_rtmp0_multiple === "enable") {
 
                 switch ($use_common_backend_rtmp0) {
-                    case "use_common_backend":
+                    case "enable":
                         error_log("use_common_backend");
                         $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v copy '
@@ -517,7 +517,7 @@ http {
                             . ' -f flv rtmp://127.0.0.1/shree/bhattji';
                         break;
 
-                    case "transcode":
+                    case "disable":
                         error_log("transcode");
                         $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v h264_qsv '
@@ -550,14 +550,14 @@ http {
             if ($service_rtmp1_multiple === "enable") {
 
                 switch ($use_common_backend_rtmp1) {
-                    case "use_common_backend":
+                    case "enable":
                         error_log("use_common_backend 1");
                         $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v copy '
                             . ' -c:a copy '
                             . ' -f flv rtmp://127.0.0.1/shreeshree/bhattji';
                         break;
-                    case "transcode":
+                    case "disable":
                         error_log("transcode 1");
                         $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v h264_qsv '
