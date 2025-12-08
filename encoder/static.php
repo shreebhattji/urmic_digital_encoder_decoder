@@ -106,7 +106,7 @@ function update_service($which_service)
                     $input .= "ffmpeg -hwaccel auto -hide_banner -f v4l2 -thread_queue_size 512 -input_format mjpeg -video_size " . $data['hdmi']['resolution']
                         . " -framerate " . $data['hdmi']['framerate'] . " -i /dev/video0 -f alsa -i " . $data['hdmi']['audio_source']
                         . " -c:v h264_qsv "
-                        . ' -vf "scale=' . $common_backend_resolution.'"'
+                        . ' -vf "scale=' . $common_backend_resolution . '"'
                         . " -b:v " . $common_backend_data_rate
                         . " -maxrate " . $common_backend_data_rate
                         . " -bufsize 12M"
@@ -228,6 +228,7 @@ function update_service($which_service)
         'rtmp1_multiple' => [],
         'srt_multiple'  => [],
         'rtmp0' => [
+            'common_backend' => 'use_common_backend',
             'resolution' => '1920x1080',
             'data_rate' => '6M',
             'framerate' => '30',
@@ -238,6 +239,7 @@ function update_service($which_service)
             'audio_sample_rate' => '48000'
         ],
         'rtmp1' => [
+            'common_backend' => 'transcode',
             'resolution' => '720x576',
             'data_rate' => '1.5M',
             'framerate' => '25',
@@ -248,52 +250,56 @@ function update_service($which_service)
             'audio_sample_rate' => '48000'
         ],
         'udp0' => [
+            'common_backend' => 'transcode',
             'udp' => 'udp://@224.1.1.1:8001',
-            'formate' => 'h264_qsv',
+            'format' => 'h264_qsv',
             'resolution' => '1280x720',
             'data_rate' => '2.2M',
             'framerate' => '25',
             'gop' => '25',
             'extra' => '',
-            'audio_formate' => 'aac',
+            'audio_format' => 'aac',
             'audio_data_rate' => '128k',
             'audio_db_gain' => '0dB',
             'audio_sample_rate' => '48000'
         ],
         'udp1' => [
+            'common_backend' => 'transcode',
             'udp' => 'udp://@224.1.1.1:8001',
-            'formate' => 'h264_qsv',
+            'format' => 'h264_qsv',
             'resolution' => '720x576',
             'data_rate' => '1.5M',
             'framerate' => '25',
             'gop' => '25',
             'extra' => '',
-            'audio_formate' => 'mp2',
+            'audio_format' => 'mp2',
             'audio_data_rate' => '128k',
             'audio_db_gain' => '0dB',
             'audio_sample_rate' => '48000'
         ],
         'udp2' => [
+            'common_backend' => 'transcode',
             'udp' => 'udp://@224.1.1.1:8002',
-            'formate' => 'mpeg2video',
+            'format' => 'mpeg2video',
             'resolution' => '720x576',
             'data_rate' => '3M',
             'framerate' => '25',
             'gop' => '25',
             'extra' => '',
-            'audio_formate' => 'mp2',
+            'audio_format' => 'mp2',
             'audio_data_rate' => '96k',
             'audio_db_gain' => '0dB',
             'audio_sample_rate' => '48000'
         ],
         'srt' => [
-            'formate' => 'h264_qsv',
+            'common_backend' => 'use_common_backend',
+            'format' => 'mpeg2video',
             'resolution' => '1920x1080',
             'data_rate' => '6M',
             'framerate' => '50',
             'gop' => '50',
             'extra' => '',
-            'audio_formate' => 'aac',
+            'audio_format' => 'aac',
             'audio_data_rate' => '256k',
             'audio_db_gain' => '0dB',
             'audio_sample_rate' => '48000'
@@ -337,8 +343,11 @@ function update_service($which_service)
     $rtmp1_multiple = $data['rtmp1_multiple'];
     $srt_multiple = $data['srt_multiple'];
     $input_transcode_every_time = 'https://cdn.urmic.org/unavailable.mp4';
-    $use_common_backend_rtmp0 = "use_common_backend";
-    $use_common_backend_rtmp1 = "use_common_backend";
+    $use_common_backend_rtmp0 = $data['rtmp0']['common_backend'];
+    $use_common_backend_rtmp1 = $data['rtmp1']['common_backend'];
+    $use_common_backend_udp0 = $data['udp0']['common_backend'];
+    $use_common_backend_udp1 = $data['udp1']['common_backend'];
+    $use_common_backend_udp2 = $data['udp2']['common_backend'];
     switch ($which_service) {
         case 'input':
 
@@ -510,7 +519,7 @@ http {
                     case "transcode":
                         $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v h264_qsv '
-                            . ' -vf "scale=' . str_replace("x", ":", $data['rtmp0']['resolution']).'"'
+                            . ' -vf "scale=' . str_replace("x", ":", $data['rtmp0']['resolution']) . '"'
                             . '" -b:v ' . $data['rtmp0']['data_rate']
                             . ' -maxrate ' . $data['rtmp0']['data_rate']
                             . ' -bufsize ' . $data['rtmp0']['data_rate']
