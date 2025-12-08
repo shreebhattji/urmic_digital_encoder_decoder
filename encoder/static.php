@@ -584,6 +584,7 @@ http {
                 exec('sudo systemctl enable encoder-rtmp1');
                 exec('sudo systemctl restart encoder-rtmp1');
             } else {
+                error_log("service_rtmp1_multiple disable");
                 exec('sudo systemctl stop encoder-rtmp1');
                 exec('sudo systemctl disable encoder-rtmp1');
             }
