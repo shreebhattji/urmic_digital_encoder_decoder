@@ -537,11 +537,11 @@ http {
                         error_log("service_rtmp0_multiple");
                         break;
                 }
+
                 $file = "/var/www/encoder-rtmp0.sh";
                 file_put_contents($file, $rtmp);
                 exec('sudo systemctl enable encoder-rtmp0');
                 exec('sudo systemctl restart encoder-rtmp0');
-                break;
             } else {
                 exec('sudo systemctl stop encoder-rtmp0');
                 exec('sudo systemctl disable encoder-rtmp0');
