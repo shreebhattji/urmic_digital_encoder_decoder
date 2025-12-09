@@ -14,7 +14,7 @@ function setptsFromMs($ms)
     // format with up to 3 decimals (avoid scientific notation)
     $secFormatted = number_format($sec, 3, '.', '');
 
-    return 'setpts=PTS+{'.$secFormatted.'}/TB';
+    return 'setpts=PTS+'.$secFormatted.'/TB';
 }
 
 function adelayFromMs($ms, $channels = 2)
