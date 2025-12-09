@@ -141,7 +141,8 @@ function update_service($which_service)
         case "use_common_backend":
             switch ($input_source) {
                 case "hdmi":
-                    error_log("hdmi common_backend", $hdmi_delay_video);
+                    error_log("hdmi common_backend". $hdmi_delay_video);
+                    error_log("value of hdmi_delay_video :". $hdmi_delay_video);
                     $input .= "ffmpeg -hwaccel auto -hide_banner -f v4l2 -thread_queue_size 512 -input_format mjpeg -video_size " . $data['hdmi']['resolution']
                         . " -framerate " . $data['hdmi']['framerate'] . " -i /dev/video0 -f alsa -i " . $data['hdmi']['audio_source']
                         . " -c:v h264_qsv ";
