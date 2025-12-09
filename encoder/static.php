@@ -23,7 +23,7 @@ function adelayFromMs($ms, $channels = 2)
     $parts = array_fill(0, $channels, (string)$ms);
     $pattern = implode('|', $parts);
 
-    return ' -af "adelay=' . $pattern . '" ';
+    return 'adelay=' . $pattern;
 }
 
 
@@ -141,8 +141,8 @@ function update_service($which_service)
         case "use_common_backend":
             switch ($input_source) {
                 case "hdmi":
-                    error_log("hdmi common_backend". $hdmi_delay_video);
-                    error_log("value of hdmi_delay_video :". $hdmi_delay_video);
+                    error_log("hdmi common_backend" . $hdmi_delay_video);
+                    error_log("value of hdmi_delay_video :" . $hdmi_delay_video);
                     $input .= "ffmpeg -hwaccel auto -hide_banner -f v4l2 -thread_queue_size 512 -input_format mjpeg -video_size " . $data['hdmi']['resolution']
                         . " -framerate " . $data['hdmi']['framerate'] . " -i /dev/video0 -f alsa -i " . $data['hdmi']['audio_source']
                         . " -c:v h264_qsv ";
@@ -161,7 +161,9 @@ function update_service($which_service)
                         . ' -ar ' . $common_backend_audio_sample_rate
                         . ' ' . $common_backend_extra;
                     if ($hdmi_delay_audio != "")
-                        $input .= adelayFromMs($hdmi_delay_audio, 2);
+                        $input .= ' -af "volume=' . $common_backend_audio_db_gain . ',' . adelayFromMs($hdmi_delay_audio, 2) . '"';
+                    else
+                        $input .= ' -af "volume=' . $common_backend_audio_db_gain . '"';
                     $input .= " -f mpegts "
                         . ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1"';
                     break;
