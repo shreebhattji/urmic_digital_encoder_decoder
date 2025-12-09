@@ -14,7 +14,7 @@ function setptsFromMs($ms)
     // format with up to 3 decimals (avoid scientific notation)
     $secFormatted = number_format($sec, 3, '.', '');
 
-    return 'setpts=PTS+'.$secFormatted.'/TB';
+    return 'setpts=PTS+' . $secFormatted . '/TB';
 }
 
 function adelayFromMs($ms, $channels = 2)
@@ -99,7 +99,7 @@ function update_service($which_service)
     $common_backend_audio_data_rate = $data['common_backend']['audio_data_rate'];
     $common_backend_audio_sample_rate = $data['common_backend']['audio_sample_rate'];
     $common_backend_extra = $data['common_backend']['extra'];
-
+    $common_backend_resolution = str_replace("x", ":", $common_backend_resolution);
     $hdmi_delay_video = $data['hdmi']['video_delay'];
     $hdmi_delay_audio = $data['hdmi']['audio_delay'];
 
@@ -598,7 +598,7 @@ http {
                     case "disable":
                         $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v h264_qsv '
-                            . ' -vf "scale=' . str_replace("x", ":", $data['rtmp1']['resolution'])
+                            . ' -vf "scale=' . str_replace("x", ":", $data['rtmp1']['resolution']) . '"'
                             . '" -b:v ' . $data['rtmp1']['data_rate']
                             . ' -maxrate ' . $data['rtmp1']['data_rate']
                             . ' -bufsize ' . $data['rtmp1']['data_rate']
@@ -675,13 +675,13 @@ srt {
 ";
                 switch ($use_common_backend_srt) {
                     case "enable":
-                        $service = 'ffmpeg -hwaccel auto   -i -hwaccel auto -hide_banner   -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" ' .
+                        $service = 'ffmpeg -hide_banner   -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" ' .
                             ' -c:v copy' .
-                            ' -c:a copy' .
+                            ' -c:a copy -g 30 -pkt_size 1316 -flush_packets 0 ' .
                             ' -f mpegts srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji';
                         break;
                     case "disable":
-                        $service = 'ffmpeg -hwaccel auto   -i -hwaccel auto -hide_banner   -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
+                        $service = 'ffmpeg -hide_banner   -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v ' . $data['srt']['formate']
                             . ' -vf "scale=' . str_replace("x", ":", $data['srt']['resolution']) . '"'
                             . '" -b:v ' . $data['srt']['data_rate']
@@ -694,7 +694,7 @@ srt {
                             . ' -af "volume=' . $data['srt']['audio_db_gain'] . '"'
                             . ' -ar ' . $data['srt']['audio_sample_rate']
                             . ' ' . $data['srt']['extra']
-                            . ' -f mpegts srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji';
+                            . ' -pkt_size 1316 -flush_packets 0 -f mpegts srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji';
                         break;
                 }
                 $file = "/var/www/encoder-srt.sh";
@@ -761,7 +761,7 @@ srt {
                     case "disable":
                         $udp1 = 'ffmpeg -hwaccel auto -hide_banner   -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v ' . $data['udp1']['formate']
-                            . ' -vf "scale=' . str_replace("x", ":", $data['udp1']['resolution'])
+                            . ' -vf "scale=' . str_replace("x", ":", $data['udp1']['resolution']) . '"'
                             . '" -b:v ' . $data['udp1']['data_rate']
                             . ' -maxrate ' . $data['udp1']['data_rate']
                             . ' -bufsize ' . $data['udp1']['data_rate']
@@ -796,7 +796,7 @@ srt {
                     case "disable":
                         $udp2 = 'ffmpeg -hwaccel auto -hide_banner   -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v ' . $data['udp2']['formate']
-                            . ' -vf "scale=' . str_replace("x", ":", $data['udp2']['resolution'])
+                            . ' -vf "scale=' . str_replace("x", ":", $data['udp2']['resolution']) . '"'
                             . '" -b:v ' . $data['udp2']['data_rate']
                             . ' -maxrate ' . $data['udp2']['data_rate']
                             . ' -bufsize ' . $data['udp2']['data_rate']
