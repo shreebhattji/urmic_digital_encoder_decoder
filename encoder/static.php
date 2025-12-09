@@ -392,7 +392,6 @@ function update_service($which_service)
 
     switch ($which_service) {
         case 'input':
-
             $input .= "  ";
             $file = "/var/www/encoder-main.sh";
             if (file_put_contents($file, $input) !== false) {
@@ -401,7 +400,6 @@ function update_service($which_service)
                 echo "Error writing file.";
             }
             exec("sudo systemctl restart encoder-main");
-
             break;
         case 'display';
             break;
