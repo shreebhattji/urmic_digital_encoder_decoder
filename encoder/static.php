@@ -111,7 +111,7 @@ function update_service($which_service)
                         . " -video_size " . $data['hdmi']['resolution']
                         . " -framerate " . $data['hdmi']['framerate']
                         . " -f alsa -i " . $data['hdmi']['audio_source']
-                        . " -c:v h264_qsv -b:v 5M -maxrate 5M -bufsize 12M -c:a aac -b:a 265k -ar 48000 ";
+                        . " -c:v h264_qsv -b:v 5M -maxrate 5M -bufsize 12M -c:a aac -b:a 265k -ar 48000 -tune zerolatency ";
                     if ($hdmi_delay_video != "")
                         $input .= "-vf " . setptsFromMs($hdmi_delay_video);
 
@@ -157,7 +157,7 @@ function update_service($which_service)
                         $input .= ' -af "volume=' . $common_backend_audio_db_gain . ',' . adelayFromMs($hdmi_delay_audio, 2) . '"';
                     else
                         $input .= ' -af "volume=' . $common_backend_audio_db_gain . '"';
-                    $input .= " -f mpegts "
+                    $input .= " -tune zerolatency -f mpegts "
                         . ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1"';
                     break;
                 case "url":
