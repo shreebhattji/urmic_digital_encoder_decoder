@@ -173,12 +173,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="video_delay" name="video_delay" value="<?php echo htmlspecialchars($data['hdmi']['video_delay']); ?>" placeholder=" ">
-                    <label for="video_delay">Video Delay in ms : </label>
+                    <input type="text" id="hdmi_video_delay" name="hdmi_video_delay" value="<?php echo htmlspecialchars($data['hdmi']['video_delay']); ?>" placeholder=" ">
+                    <label for="hdmi_video_delay">Video Delay in ms : </label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="audio_delay" name="audio_delay" value="<?php echo htmlspecialchars($data['hdmi']['audio_delay']); ?>" placeholder=" ">
-                    <label for="audio_delay">Audio Delay in ms : </label>
+                    <input type="text" id="hdmi_audio_delay" name="hdmi_audio_delay" value="<?php echo htmlspecialchars($data['hdmi']['audio_delay']); ?>" placeholder=" ">
+                    <label for="hdmi_audio_delay">Audio Delay in ms : </label>
                 </div>
 
             </div>
