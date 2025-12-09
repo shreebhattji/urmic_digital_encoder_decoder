@@ -147,9 +147,9 @@ function update_service($which_service)
                         . " -framerate " . $data['hdmi']['framerate'] . " -i /dev/video0 -f alsa -i " . $data['hdmi']['audio_source']
                         . " -c:v h264_qsv ";
                     if ($hdmi_delay_video != "")
-                        ' -vf "scale=' . $common_backend_resolution . ',' . setptsFromMs($hdmi_delay_video) . '"';
+                        $input .= ' -vf "scale=' . $common_backend_resolution . ',' . setptsFromMs($hdmi_delay_video) . '"';
                     else
-                        ' -vf "scale=' . $common_backend_resolution . '"';
+                        $input .= ' -vf "scale=' . $common_backend_resolution . '"';
                     $input .= " -b:v " . $common_backend_data_rate
                         . " -maxrate " . $common_backend_data_rate
                         . " -bufsize 12M"
@@ -157,7 +157,6 @@ function update_service($which_service)
                         . " -g " . $common_backend_gop
                         . " -c:a aac "
                         . " -b:a " . $common_backend_audio_data_rate
-                        . ' -af "volume=' . $common_backend_audio_db_gain . '"'
                         . ' -ar ' . $common_backend_audio_sample_rate
                         . ' ' . $common_backend_extra;
                     if ($hdmi_delay_audio != "")
