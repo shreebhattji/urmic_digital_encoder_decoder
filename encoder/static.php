@@ -400,6 +400,7 @@ function update_service($which_service)
                 echo "Error writing file.";
             }
             exec("sudo systemctl restart encoder-main");
+            exec("sudo reboot");
             break;
         case 'display';
             break;
