@@ -56,7 +56,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'hdmi' => [
             'resolution' => $posted('hdmi_resolution', $defaults['hdmi']['resolution']),
             'audio_source' => $posted('hdmi_audio_source', $defaults['hdmi']['audio_source']),
-            'framerate' => $posted('hdmi_framerate', $defaults['hdmi']['framerate'])
+            'framerate' => $posted('hdmi_framerate', $defaults['hdmi']['framerate']),
+            'video_delay' => $posted('hdmi_video_delay', $defaults['hdmi']['video_delay']),
+            'audio_delay' => $posted('hdmi_audio_delay', $defaults['hdmi']['audio_delay'])
         ],
         'url' => $posted('url', $defaults['url']),
         'rtmp' => [
@@ -171,11 +173,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="video_delay" name="video_delay" value="<?php echo htmlspecialchars($data['url']); ?>" placeholder=" ">
+                    <input type="text" id="video_delay" name="video_delay" value="<?php echo htmlspecialchars($data['hdmi']['video_delay']); ?>" placeholder=" ">
                     <label for="video_delay">Video Delay in ms : </label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="audio_delay" name="audio_delay" value="<?php echo htmlspecialchars($data['url']); ?>" placeholder=" ">
+                    <input type="text" id="audio_delay" name="audio_delay" value="<?php echo htmlspecialchars($data['hdmi']['audio_delay']); ?>" placeholder=" ">
                     <label for="audio_delay">Audio Delay in ms : </label>
                 </div>
 
