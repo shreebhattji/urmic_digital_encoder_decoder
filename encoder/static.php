@@ -103,6 +103,9 @@ function update_service($which_service)
     $hdmi_delay_video = $data['hdmi']['video_delay'];
     $hdmi_delay_audio = $data['hdmi']['audio_delay'];
 
+    error_log("video delay", $hdmi_delay_video);
+    error_log("video delay value" . setptsFromMs($hdmi_delay_video));
+
     switch ($use_common_backend) {
         case "copy_input":
             switch ($input_source) {
