@@ -206,7 +206,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $new['udp2']['udp'] = $get('udp2_ip', $defaults['udp2']['udp']);
   $new['udp2']['common_backend'] = $get('udp2_common_backend', $defaults['udp2']['common_backend']);
 
-  $new['srt']['format'] = $get('srt_resolution', $defaults['srt']['format']);
+  $new['srt']['format'] = $get('srt_format', $defaults['srt']['format']);
   $new['srt']['resolution'] = $get('srt_resolution', $defaults['srt']['resolution']);
   $new['srt']['data_rate'] = $get('srt_data_rate', $defaults['srt']['data_rate']);
   $new['srt']['framerate'] = $get('srt_framerate', $defaults['srt']['framerate']);

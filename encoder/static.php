@@ -6,6 +6,26 @@ function generateRandomString($length = 16)
     $randomString = bin2hex($bytes);
     return substr($randomString, 0, $length);
 }
+function setptsFromMs($ms)
+{
+    // convert ms → seconds
+    $sec = $ms / 1000;
+
+    // format with up to 3 decimals (avoid scientific notation)
+    $secFormatted = number_format($sec, 3, '.', '');
+
+    return "setpts=PTS+{$secFormatted}/TB";
+}
+
+function adelayFromMs($ms, $channels = 2)
+{
+    // build "ms|ms|ms..." pattern for each audio channel
+    $parts = array_fill(0, $channels, (string)$ms);
+    $pattern = implode('|', $parts);
+
+    return ' -af "adelay=' . $pattern . '" ';
+}
+
 
 function update_service($which_service)
 {
@@ -28,7 +48,9 @@ function update_service($which_service)
         'hdmi' => [
             'resolution' => '1920x1080',
             'audio_source' => 'hw:1,0',
-            'framerate' => '30'
+            'framerate' => '30',
+            'video_delay' => '300',
+            'audio_delay' => ''
         ],
         'url' => 'https://cdn.urmic.org/unavailable.mp4',
         'rtmp' => [
@@ -78,13 +100,25 @@ function update_service($which_service)
     $common_backend_audio_sample_rate = $data['common_backend']['audio_sample_rate'];
     $common_backend_extra = $data['common_backend']['extra'];
 
+    $hdmi_delay_video = $data['hdmi']['video_delay'];
+    $hdmi_delay_audio = $data['hdmi']['audio_delay'];
+
     switch ($use_common_backend) {
         case "copy_input":
             switch ($input_source) {
                 case "hdmi":
-                    $input .= "ffmpeg -hwaccel auto -hide_banner -f v4l2 -thread_queue_size 512 -input_format mjpeg -video_size " . $data['hdmi']['resolution']
-                        . " -framerate " . $data['hdmi']['framerate'] . " -f alsa -i " . $data['hdmi']['audio_source'] .
-                        " -c:v h264_qsv -b:v 5M -maxrate 5M -bufsize 12M -c:a aac -b:a 265k -ar 48000 -f mpegts " . ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1"';
+                    $input .= "ffmpeg -hwaccel auto -hide_banner -f v4l2 -thread_queue_size 512 -input_format mjpeg "
+                        . " -video_size " . $data['hdmi']['resolution']
+                        . " -framerate " . $data['hdmi']['framerate']
+                        . " -f alsa -i " . $data['hdmi']['audio_source']
+                        . " -c:v h264_qsv -b:v 5M -maxrate 5M -bufsize 12M -c:a aac -b:a 265k -ar 48000 ";
+                    if ($hdmi_delay_video != "")
+                        $input .= "-vf " . setptsFromMs($hdmi_delay_video);
+
+                    if ($hdmi_delay_audio != "")
+                        $input .= adelayFromMs($hdmi_delay_audio, 2);
+
+                    $input .= " -f mpegts " . ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1"';
                     break;
                 case "url":
                     $input .= "ffmpeg -hide_banner -stream_loop -1 -re -i " . $data['url'] . " -c:v copy -c:a copy -f mpegts " . ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1"';
@@ -105,9 +139,12 @@ function update_service($which_service)
                 case "hdmi":
                     $input .= "ffmpeg -hwaccel auto -hide_banner -f v4l2 -thread_queue_size 512 -input_format mjpeg -video_size " . $data['hdmi']['resolution']
                         . " -framerate " . $data['hdmi']['framerate'] . " -i /dev/video0 -f alsa -i " . $data['hdmi']['audio_source']
-                        . " -c:v h264_qsv "
-                        . ' -vf "scale=' . $common_backend_resolution . '"'
-                        . " -b:v " . $common_backend_data_rate
+                        . " -c:v h264_qsv ";
+                    if ($hdmi_delay_video != "")
+                        ' -vf "scale=' . $common_backend_resolution . ',' . setptsFromMs($hdmi_delay_video) . '"';
+                    else
+                        ' -vf "scale=' . $common_backend_resolution . '"';
+                    $input .= " -b:v " . $common_backend_data_rate
                         . " -maxrate " . $common_backend_data_rate
                         . " -bufsize 12M"
                         . " -r " . $common_backend_framerate
@@ -116,7 +153,10 @@ function update_service($which_service)
                         . " -b:a " . $common_backend_audio_data_rate
                         . ' -af "volume=' . $common_backend_audio_db_gain . '"'
                         . ' -ar ' . $common_backend_audio_sample_rate
-                        . ' ' . $common_backend_extra . " -f mpegts "
+                        . ' ' . $common_backend_extra;
+                    if ($hdmi_delay_audio != "")
+                        $input .= adelayFromMs($hdmi_delay_audio, 2);
+                    $input .= " -f mpegts "
                         . ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1"';
                     break;
                 case "url":
@@ -326,7 +366,6 @@ function update_service($which_service)
         $data = $defaults;
     }
 
-
     $service_display = $data['service_display'];
     $service_rtmp0_multiple = $data['service_rtmp0_multiple'];
     $service_rtmp0_hls = $data['service_rtmp0_hls'];
@@ -348,6 +387,8 @@ function update_service($which_service)
     $use_common_backend_udp0 = $data['udp0']['common_backend'];
     $use_common_backend_udp1 = $data['udp1']['common_backend'];
     $use_common_backend_udp2 = $data['udp2']['common_backend'];
+    $use_common_backend_srt = $data['srt']['common_backend'];
+
     switch ($which_service) {
         case 'input':
 
@@ -359,6 +400,7 @@ function update_service($which_service)
                 echo "Error writing file.";
             }
             exec("sudo systemctl restart encoder-main");
+            exec("sudo reboot");
 
             break;
         case 'display';
@@ -618,19 +660,45 @@ srt {
             
             record_hls off;
             record_hls_segment_duration 10;
-            
+            ";
+                if ($srt_push != "")
+                    $sls .= "
             relay {
                 type push;
                 mode all; #all; hash
                 reconnect_interval 10;
                 idle_streams_timeout -1;
                 upstreams " . $srt_push . " ;
-            }
+            }";
+                $sls .= "
         }
     }
 }
 ";
-                $service = 'ffmpeg -hwaccel auto   -i udp://@239.255.254.254:39000 -c copy -f mpegts srt://127.0.0.1/' . $srt_pass1 . '/' . $srt_pass2 . '/ji';
+                switch ($use_common_backend_srt) {
+                    case "enable":
+                        $service = 'ffmpeg -hwaccel auto   -i -hwaccel auto -hide_banner   -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" ' .
+                            ' -c:v copy' .
+                            ' -c:a copy' .
+                            ' -f mpegts srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji';
+                        break;
+                    case "disable":
+                        $service = 'ffmpeg -hwaccel auto   -i -hwaccel auto -hide_banner   -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
+                            . ' -c:v ' . $data['srt']['formate']
+                            . ' -vf "scale=' . str_replace("x", ":", $data['srt']['resolution']) . '"'
+                            . '" -b:v ' . $data['srt']['data_rate']
+                            . ' -maxrate ' . $data['srt']['data_rate']
+                            . ' -bufsize ' . $data['udp0']['data_rate']
+                            . ' -r ' . $data['srt']['srt']
+                            . ' -g ' . $data['srt']['gop']
+                            . ' -c:a ' . $data['srt']['audio_formate']
+                            . ' -b:a ' . $data['srt']['audio_data_rate']
+                            . ' -af "volume=' . $data['srt']['audio_db_gain'] . '"'
+                            . ' -ar ' . $data['srt']['audio_sample_rate']
+                            . ' ' . $data['srt']['extra']
+                            . ' -f mpegts srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji';
+                        break;
+                }
                 $file = "/var/www/encoder-srt.sh";
                 file_put_contents($file, $service);
 
@@ -660,7 +728,7 @@ srt {
                     case "disable":
                         $udp0 = 'ffmpeg -hwaccel auto -hide_banner   -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v ' . $data['udp0']['formate']
-                            . ' -vf "scale=' . str_replace("x", ":", $data['udp0']['resolution'])
+                            . ' -vf "scale=' . str_replace("x", ":", $data['udp0']['resolution']) . '"'
                             . '" -b:v ' . $data['udp0']['data_rate']
                             . ' -maxrate ' . $data['udp0']['data_rate']
                             . ' -bufsize ' . $data['udp0']['data_rate']
