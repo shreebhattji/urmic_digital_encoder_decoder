@@ -110,7 +110,7 @@ function update_service($which_service)
                     $input .= "ffmpeg -hwaccel auto -hide_banner -f v4l2 -thread_queue_size 512 -input_format mjpeg "
                         . " -video_size " . $data['hdmi']['resolution']
                         . " -framerate " . $data['hdmi']['framerate']
-                        . " -f alsa -i " . $data['hdmi']['audio_source']
+                        . " -fflags +genpts -use_wallclock_as_timestamps 1 -f alsa -i " . $data['hdmi']['audio_source']
                         . " -c:v h264_qsv -b:v 5M -maxrate 5M -bufsize 12M -c:a aac -b:a 265k -ar 48000 -tune zerolatency ";
                     if ($hdmi_delay_video != "")
                         $input .= "-vf " . setptsFromMs($hdmi_delay_video);
@@ -138,7 +138,7 @@ function update_service($which_service)
             switch ($input_source) {
                 case "hdmi":
                     $input .= "ffmpeg -hwaccel auto -hide_banner -f v4l2 -thread_queue_size 512 -input_format mjpeg -video_size " . $data['hdmi']['resolution']
-                        . " -framerate " . $data['hdmi']['framerate'] . " -i /dev/video0 -f alsa -i " . $data['hdmi']['audio_source']
+                        . " -framerate " . $data['hdmi']['framerate'] . " -i /dev/video0 -fflags +genpts -use_wallclock_as_timestamps 1 -f alsa -i " . $data['hdmi']['audio_source']
                         . " -c:v h264_qsv ";
                     if ($hdmi_delay_video != "")
                         $input .= ' -vf "scale=' . $common_backend_resolution . ',' . setptsFromMs($hdmi_delay_video) . '"';
