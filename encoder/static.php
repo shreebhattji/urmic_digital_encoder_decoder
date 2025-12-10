@@ -676,20 +676,20 @@ srt {
 ";
                 switch ($use_common_backend_srt) {
                     case "enable":
-                        $service = 'ffmpeg -hide_banner  -fflags +discardcorrupt -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" ' .
-                            ' -c:v copy' .
+                        $service = 'ffmpeg -hide_banner  -fflags +discardcorrupt -re -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" ' .
+                            ' -c:v copy -flags2 +local_header' .
                             ' -c:a copy -g 30 -pkt_size 1316 -flush_packets 0 ' .
                             ' -f mpegts srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji';
                         break;
                     case "disable":
-                        $service = 'ffmpeg -hide_banner -fflags +discardcorrupt  -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
+                        $service = 'ffmpeg -hide_banner -fflags +discardcorrupt -re -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v ' . $data['srt']['formate']
                             . ' -vf "scale=' . str_replace("x", ":", $data['srt']['resolution']) . '"'
                             . '" -b:v ' . $data['srt']['data_rate']
                             . ' -maxrate ' . $data['srt']['data_rate']
                             . ' -bufsize ' . $data['udp0']['data_rate']
                             . ' -r ' . $data['srt']['srt']
-                            . ' -g ' . $data['srt']['gop']
+                            . ' -g ' . $data['srt']['gop'] . ' -flags2 +local_header '
                             . ' -c:a ' . $data['srt']['audio_formate']
                             . ' -b:a ' . $data['srt']['audio_data_rate']
                             . ' -af "volume=' . $data['srt']['audio_db_gain'] . '"'
