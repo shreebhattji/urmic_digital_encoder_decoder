@@ -111,7 +111,7 @@ function update_service($which_service)
                         . " -video_size " . $data['hdmi']['resolution']
                         . " -framerate " . $data['hdmi']['framerate']
                         . " -fflags +genpts -use_wallclock_as_timestamps 1 -re -f alsa -thread_queue_size 512 -i " . $data['hdmi']['audio_source']
-                        . " -c:v h264_qsv -b:v 5M -maxrate 5M -bufsize 12M -c:a aac -b:a 265k -ar 48000 -tune zerolatency ";
+                        . " -c:v h264_qsv -pix_fmt yuv420p -profile:v baseline  -b:v 5M -maxrate 5M -bufsize 12M -c:a aac -b:a 265k -ar 48000 -tune zerolatency ";
                     if ($hdmi_delay_video != "")
                         $input .= "-vf " . setptsFromMs($hdmi_delay_video);
 
@@ -146,7 +146,7 @@ function update_service($which_service)
                         $input .= ' -vf "scale=' . $common_backend_resolution . '"';
                     $input .= " -b:v " . $common_backend_data_rate
                         . " -maxrate " . $common_backend_data_rate
-                        . " -bufsize 12M"
+                        . " -bufsize 12M -pix_fmt yuv420p -profile:v baseline "
                         . " -r " . $common_backend_framerate
                         . " -g " . $common_backend_gop
                         . " -c:a aac "
