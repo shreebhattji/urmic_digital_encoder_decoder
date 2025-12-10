@@ -97,6 +97,7 @@ WorkingDirectory=/var/www/
 Restart=always
 User=root
 Environment=PATH=/usr/bin:/usr/local/bin
+RestartSec=30
 
 [Install]
 WantedBy=multi-user.target
@@ -113,6 +114,7 @@ WorkingDirectory=/var/www/
 Restart=always
 User=root
 Environment=PATH=/usr/bin:/usr/local/bin
+RestartSec=30
 
 [Install]
 WantedBy=multi-user.target
@@ -129,6 +131,7 @@ WorkingDirectory=/var/www/
 Restart=always
 User=root
 Environment=PATH=/usr/bin:/usr/local/bin
+RestartSec=30
 
 [Install]
 WantedBy=multi-user.target
@@ -145,6 +148,7 @@ WorkingDirectory=/var/www/
 Restart=always
 User=root
 Environment=PATH=/usr/bin:/usr/local/bin
+RestartSec=30
 
 [Install]
 WantedBy=multi-user.target
@@ -161,6 +165,7 @@ WorkingDirectory=/var/www/
 Restart=always
 User=root
 Environment=PATH=/usr/bin:/usr/local/bin
+RestartSec=30
 
 [Install]
 WantedBy=multi-user.target
@@ -177,6 +182,7 @@ WorkingDirectory=/var/www/
 Restart=always
 User=root
 Environment=PATH=/usr/bin:/usr/local/bin
+RestartSec=30
 
 [Install]
 WantedBy=multi-user.target
@@ -193,6 +199,7 @@ WorkingDirectory=/var/www/
 Restart=always
 User=root
 Environment=PATH=/usr/bin:/usr/local/bin
+RestartSec=30
 
 [Install]
 WantedBy=multi-user.target
