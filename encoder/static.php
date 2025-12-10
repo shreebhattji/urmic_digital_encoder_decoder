@@ -157,7 +157,7 @@ function update_service($which_service)
                         $input .= ' -af "volume=' . $common_backend_audio_db_gain . ',' . adelayFromMs($hdmi_delay_audio, 2) . '"';
                     else
                         $input .= ' -af "volume=' . $common_backend_audio_db_gain . '"';
-                    $input .= " -tune zerolatency -f mpegts "
+                    $input .= " -tune zerolatency  -pkt_size 1316 -f mpegts "
                         . ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1"';
                     break;
                 case "url":
@@ -173,7 +173,7 @@ function update_service($which_service)
                         . " -b:a " . $common_backend_audio_data_rate
                         . ' -af "volume=' . $common_backend_audio_db_gain . '"'
                         . ' -ar ' . $common_backend_audio_sample_rate
-                        . ' ' . $common_backend_extra . " -f mpegts "
+                        . ' ' . $common_backend_extra . " -tune zerolatency  -pkt_size 1316  -f mpegts "
                         . ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1"';
                     break;
                 case "udp":
@@ -189,7 +189,7 @@ function update_service($which_service)
                         . " -b:a " . $common_backend_audio_data_rate
                         . ' -af "volume=' . $common_backend_audio_db_gain . '"'
                         . ' -ar ' . $common_backend_audio_sample_rate
-                        . ' ' . $common_backend_extra . " -f mpegts "
+                        . ' ' . $common_backend_extra . " -tune zerolatency  -pkt_size 1316  -f mpegts "
                         . ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1"';
                     break;
                 case "rtmp":
@@ -205,7 +205,7 @@ function update_service($which_service)
                         . " -b:a " . $common_backend_audio_data_rate
                         . ' -af "volume=' . $common_backend_audio_db_gain . '"'
                         . ' -ar ' . $common_backend_audio_sample_rate
-                        . ' ' . $common_backend_extra . " -f mpegts "
+                        . ' ' . $common_backend_extra . " -tune zerolatency  -pkt_size 1316  -f mpegts "
                         . ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1"';
 
                     break;
@@ -222,7 +222,7 @@ function update_service($which_service)
                         . " -b:a " . $common_backend_audio_data_rate
                         . ' -af "volume=' . $common_backend_audio_db_gain . '"'
                         . ' -ar ' . $common_backend_audio_sample_rate
-                        . ' ' . $common_backend_extra . " -f mpegts "
+                        . ' ' . $common_backend_extra . " -tune zerolatency  -pkt_size 1316  -f mpegts "
                         . ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1"';
 
                     break;
