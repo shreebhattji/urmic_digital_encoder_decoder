@@ -647,7 +647,7 @@ srt {
              
     server {
         listen 1937; 
-        latency 1000; #ms
+        latency 2000; #ms
 
         domain_player shree;
         domain_publisher " . $srt_pass1 . " ;
@@ -679,7 +679,7 @@ srt {
                         $service = 'ffmpeg -hide_banner  -fflags +discardcorrupt -re -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" ' .
                             ' -c:v copy -flags2 +local_header' .
                             ' -c:a copy -g 30 -pkt_size 1316 -flush_packets 0 ' .
-                            ' -f mpegts srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji';
+                            ' -f mpegts srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji?latency=2000';
                         break;
                     case "disable":
                         $service = 'ffmpeg -hide_banner -fflags +discardcorrupt -re -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
@@ -695,7 +695,7 @@ srt {
                             . ' -af "volume=' . $data['srt']['audio_db_gain'] . '"'
                             . ' -ar ' . $data['srt']['audio_sample_rate']
                             . ' ' . $data['srt']['extra']
-                            . ' -pkt_size 1316 -flush_packets 0 -f mpegts srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji';
+                            . ' -pkt_size 1316 -flush_packets 0 -f mpegts srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji?latency=2000';
                         break;
                 }
                 $file = "/var/www/encoder-srt.sh";
