@@ -555,7 +555,7 @@ http {
                         $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v copy '
                             . ' -c:a copy '
-                            . ' -f flv rtmp://127.0.0.1/shree/bhattji';
+                            . ' -f flv "rtmp://127.0.0.1/shree/bhattji"';
                         break;
 
                     case "disable":
@@ -571,7 +571,7 @@ http {
                             . ' -af "volume=' . $data['rtmp0']['audio_db_gain'] . '"'
                             . ' -ar ' . $data['rtmp0']['audio_sample_rate']
                             . ' ' . $data['rtmp0']['extra']
-                            . ' -f flv rtmp://127.0.0.1/shree/bhattji';
+                            . ' -f flv "rtmp://127.0.0.1/shree/bhattji"';
                         break;
                     default:
                         error_log("service_rtmp0_multiple");
@@ -594,7 +594,7 @@ http {
                         $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v copy '
                             . ' -c:a copy '
-                            . ' -f flv rtmp://127.0.0.1/shreeshree/bhattji';
+                            . ' -f flv "rtmp://127.0.0.1/shreeshree/bhattji"';
                         break;
                     case "disable":
                         $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
@@ -609,7 +609,7 @@ http {
                             . ' -af "volume=' . $data['rtmp1']['audio_db_gain'] . '"'
                             . ' -ar ' . $data['rtmp1']['audio_sample_rate']
                             . ' ' . $data['rtmp1']['extra']
-                            . ' -f flv rtmp://127.0.0.1/shreeshree/bhattji';
+                            . ' -f flv "rtmp://127.0.0.1/shreeshree/bhattji"';
                         break;
                     default:
                         error_log("service_rtmp1_multiple");
@@ -679,7 +679,7 @@ srt {
                         $service = 'ffmpeg -hide_banner  -fflags +discardcorrupt -re -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" ' .
                             ' -c:v copy ' .
                             ' -c:a copy -pkt_size 1316 -flush_packets 0 ' .
-                            ' -f mpegts srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji&latency=2000';
+                            ' -f mpegts "srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji&latency=2000"';
                         break;
                         $service = 'ffmpeg -hide_banner -fflags +discardcorrupt -re -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v ' . $data['srt']['formate']
@@ -694,7 +694,7 @@ srt {
                             . ' -af "volume=' . $data['srt']['audio_db_gain'] . '"'
                             . ' -ar ' . $data['srt']['audio_sample_rate']
                             . ' ' . $data['srt']['extra']
-                            . ' -pkt_size 1316 -flush_packets 0 -f mpegts srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji&latency=2000';
+                            . ' -pkt_size 1316 -flush_packets 0 -f mpegts "srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji&latency=2000"';
                         break;
                 }
                 $file = "/var/www/encoder-srt.sh";
