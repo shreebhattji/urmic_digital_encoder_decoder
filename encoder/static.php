@@ -111,7 +111,7 @@ function update_service($which_service)
                         . " -video_size " . $data['hdmi']['resolution']
                         . " -framerate " . $data['hdmi']['framerate']
                         . " -fflags +genpts -use_wallclock_as_timestamps 1 -re -f alsa -thread_queue_size 512 -i " . $data['hdmi']['audio_source']
-                        . " -c:v h264_qsv -pix_fmt yuv420p -profile:v baseline  -b:v 5M -maxrate 5M -bufsize 12M -c:a aac -b:a 265k -ar 48000 -tune zerolatency ";
+                        . " -c:v h264_qsv -pix_fmt yuv420p -profile:v high  -b:v 5M -maxrate 5M -bufsize 12M -c:a aac -b:a 265k -ar 48000 -tune zerolatency ";
                     if ($hdmi_delay_video != "")
                         $input .= "-vf " . setptsFromMs($hdmi_delay_video);
 
@@ -146,7 +146,7 @@ function update_service($which_service)
                         $input .= ' -vf "scale=' . $common_backend_resolution . '"';
                     $input .= " -b:v " . $common_backend_data_rate
                         . " -maxrate " . $common_backend_data_rate
-                        . " -bufsize 12M -pix_fmt yuv420p -profile:v baseline "
+                        . " -bufsize 12M -pix_fmt yuv420p -profile:v high "
                         . " -r " . $common_backend_framerate
                         . " -g " . $common_backend_gop
                         . " -c:a aac "
@@ -679,7 +679,7 @@ srt {
                         $service = 'ffmpeg -hide_banner  -fflags +discardcorrupt -re -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" ' .
                             ' -c:v copy -flags2 +local_header' .
                             ' -c:a copy -g 30 -pkt_size 1316 -flush_packets 0 ' .
-                            ' -f mpegts srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji?latency=2000';
+                            ' -f mpegts srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji&latency=2000';
                         break;
                     case "disable":
                         $service = 'ffmpeg -hide_banner -fflags +discardcorrupt -re -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
@@ -695,7 +695,7 @@ srt {
                             . ' -af "volume=' . $data['srt']['audio_db_gain'] . '"'
                             . ' -ar ' . $data['srt']['audio_sample_rate']
                             . ' ' . $data['srt']['extra']
-                            . ' -pkt_size 1316 -flush_packets 0 -f mpegts srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji?latency=2000';
+                            . ' -pkt_size 1316 -flush_packets 0 -f mpegts srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji&latency=2000';
                         break;
                 }
                 $file = "/var/www/encoder-srt.sh";
