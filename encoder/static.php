@@ -118,19 +118,19 @@ function update_service($which_service)
                     if ($hdmi_delay_audio != "")
                         $input .= adelayFromMs($hdmi_delay_audio, 2);
 
-                    $input .= " -f mpegts " . ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1"';
+                    $input .= " -f mpegts " . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
                     break;
                 case "url":
-                    $input .= "ffmpeg -hide_banner -stream_loop -1 -re -i " . $data['url'] . " -c:v copy -c:a copy -f mpegts " . ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1"';
+                    $input .= "ffmpeg -hide_banner -stream_loop -1 -re -i " . $data['url'] . " -c:v copy -c:a copy -f mpegts " .  ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
                     break;
                 case "udp":
-                    $input .= 'ffmpeg -hide_banner -stream_loop -1 -re -i "' . $data['udp'] . " -c:v copy -c:a copy -f mpegts " . ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1"';
+                    $input .= 'ffmpeg -hide_banner -stream_loop -1 -re -i "' . $data['udp'] . " -c:v copy -c:a copy -f mpegts " . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
                     break;
                 case "rtmp":
-                    $input .= "ffmpeg -hide_banner -stream_loop -1 -re -i rtmp://127.0.0.1:1935/" . $$input_rtmp_mount . "/" . $input_rtmp_pass .  " -c:v copy -c:a copy -f mpegts " . ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1"';
+                    $input .= "ffmpeg -hide_banner -stream_loop -1 -re -i rtmp://127.0.0.1:1935/" . $$input_rtmp_mount . "/" . $input_rtmp_pass .  " -c:v copy -c:a copy -f mpegts " . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
                     break;
                 case "srt":
-                    $input .= "ffmpeg -hide_banner -stream_loop -1 -re -i srt://127.0.0.1:1937/shree/bhatt/" . $srt_pass3 . " -c:v copy -c:a copy -f mpegts " . ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1"';;
+                    $input .= "ffmpeg -hide_banner -stream_loop -1 -re -i srt://127.0.0.1:1937/shree/bhatt/" . $srt_pass3 . " -c:v copy -c:a copy -f mpegts " . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
                     break;
             }
             break;
@@ -158,7 +158,7 @@ function update_service($which_service)
                     else
                         $input .= ' -af "volume=' . $common_backend_audio_db_gain . '"';
                     $input .= " -tune zerolatency  -pkt_size 1316 -f mpegts "
-                        . ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1"';
+                        . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
                     break;
                 case "url":
                     $input .= "ffmpeg -hide_banner -stream_loop -1 -re -i " . $data['url']
@@ -174,7 +174,7 @@ function update_service($which_service)
                         . ' -af "volume=' . $common_backend_audio_db_gain . '"'
                         . ' -ar ' . $common_backend_audio_sample_rate
                         . ' ' . $common_backend_extra . " -tune zerolatency  -pkt_size 1316  -f mpegts "
-                        . ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1"';
+                        . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
                     break;
                 case "udp":
                     $input .= 'ffmpeg -hide_banner -stream_loop -1 -re -i "' . $data['udp']
@@ -190,7 +190,7 @@ function update_service($which_service)
                         . ' -af "volume=' . $common_backend_audio_db_gain . '"'
                         . ' -ar ' . $common_backend_audio_sample_rate
                         . ' ' . $common_backend_extra . " -tune zerolatency  -pkt_size 1316  -f mpegts "
-                        . ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1"';
+                        . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
                     break;
                 case "rtmp":
                     $input .= "ffmpeg -hide_banner -stream_loop -1 -re -i rtmp://127.0.0.1:1935/" . $$input_rtmp_mount . "/" . $input_rtmp_pass
@@ -206,7 +206,7 @@ function update_service($which_service)
                         . ' -af "volume=' . $common_backend_audio_db_gain . '"'
                         . ' -ar ' . $common_backend_audio_sample_rate
                         . ' ' . $common_backend_extra . " -tune zerolatency  -pkt_size 1316  -f mpegts "
-                        . ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1"';
+                        . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
 
                     break;
                 case "srt":
@@ -223,7 +223,7 @@ function update_service($which_service)
                         . ' -af "volume=' . $common_backend_audio_db_gain . '"'
                         . ' -ar ' . $common_backend_audio_sample_rate
                         . ' ' . $common_backend_extra . " -tune zerolatency  -pkt_size 1316  -f mpegts "
-                        . ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1&ttl=1"';
+                        . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
 
                     break;
             }
