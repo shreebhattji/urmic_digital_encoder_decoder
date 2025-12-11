@@ -600,7 +600,7 @@ http {
                         $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v h264_qsv '
                             . ' -vf "scale=' . str_replace("x", ":", $data['rtmp1']['resolution']) . '"'
-                            . '" -b:v ' . $data['rtmp1']['data_rate']
+                            . ' -b:v ' . $data['rtmp1']['data_rate']
                             . ' -maxrate ' . $data['rtmp1']['data_rate']
                             . ' -bufsize ' . $data['rtmp1']['data_rate']
                             . ' -r ' . $data['rtmp1']['framerate']
