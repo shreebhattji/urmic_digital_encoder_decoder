@@ -706,6 +706,10 @@ srt {
                 exec('sudo systemctl restart srt');
                 exec('sudo systemctl enable encoder-srt');
                 exec('sudo systemctl restart encoder-srt');
+                if ($service_rtmp0_multiple)
+                    exec('sudo systemctl restart encoder-rtmp0');
+                if ($service_rtmp1_multiple)
+                    exec('sudo systemctl restart encoder-rtmp1');
             } else {
                 exec('sudo systemctl disable srt');
                 exec('sudo systemctl stop srt');
