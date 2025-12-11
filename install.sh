@@ -73,7 +73,6 @@ EOL
 cat > /etc/systemd/system/encoder-display.service<< 'EOL'
 [Unit]
 Description= Display Encoder by ShreeBhattJi
-Requires=encoder-main.service
 
 [Service]
 ExecStart=/bin/bash /var/www/encoder-display.sh
@@ -89,7 +88,6 @@ EOL
 cat > /etc/systemd/system/encoder-rtmp0.service<< 'EOL'
 [Unit]
 Description= RTMP Encoder by ShreeBhattJi
-Requires=encoder-main.service
 
 [Service]
 ExecStart=/bin/bash /var/www/encoder-rtmp0.sh
@@ -106,7 +104,6 @@ EOL
 cat > /etc/systemd/system/encoder-rtmp1.service<< 'EOL'
 [Unit]
 Description= RTMP Encoder by ShreeBhattJi
-Requires=encoder-main.service
 
 [Service]
 ExecStart=/bin/bash /var/www/encoder-rtmp1.sh
@@ -123,7 +120,6 @@ EOL
 cat > /etc/systemd/system/encoder-srt.service<< 'EOL'
 [Unit]
 Description= SRT Encoder by ShreeBhattJi
-Requires=encoder-main.service
 
 [Service]
 ExecStart=/bin/bash /var/www/encoder-srt.sh
@@ -140,7 +136,6 @@ EOL
 cat > /etc/systemd/system/encoder-udp0.service<< 'EOL'
 [Unit]
 Description= UDP Encoder by ShreeBhattJi
-Requires=encoder-main.service
 
 [Service]
 ExecStart=/bin/bash /var/www/encoder-udp0.sh
@@ -157,7 +152,6 @@ EOL
 cat > /etc/systemd/system/encoder-udp1.service<< 'EOL'
 [Unit]
 Description= UDP Encoder by ShreeBhattJi
-Requires=encoder-main.service
 
 [Service]
 ExecStart=/bin/bash /var/www/encoder-udp1.sh
@@ -174,7 +168,6 @@ EOL
 cat > /etc/systemd/system/encoder-udp2.service<< 'EOL'
 [Unit]
 Description= UDP Encoder by ShreeBhattJi
-Requires=encoder-main.service
 
 [Service]
 ExecStart=/bin/bash /var/www/encoder-udp2.sh
@@ -191,7 +184,6 @@ EOL
 cat > /etc/systemd/system/encoder-custom.service<< 'EOL'
 [Unit]
 Description= UDP Encoder by ShreeBhattJi
-Requires=encoder-main.service
 
 [Service]
 ExecStart=/bin/bash /var/www/encoder-custom.sh
