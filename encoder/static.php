@@ -111,7 +111,7 @@ function update_service($which_service)
                         . " -video_size " . $data['hdmi']['resolution']
                         . " -framerate " . $data['hdmi']['framerate']
                         . " -fflags +genpts -use_wallclock_as_timestamps 1 -re -f alsa -thread_queue_size 512 -i " . $data['hdmi']['audio_source']
-                        . " -c:v h264_qsv -pix_fmt yuv420p  -profile:v high  -b:v 5M -maxrate 5M -bufsize 12M -c:a aac -b:a 265k -ac 2 -ar 48000 -tune zerolatency ";
+                        . " -c:v h264_qsv -pix_fmt yuv420p  -profile:v high  -b:v 5M -maxrate 5M -bufsize 12M -c:a aac -b:a 265k  -ar 48000 -tune zerolatency ";
                     if ($hdmi_delay_video != "")
                         $input .= "-vf " . setptsFromMs($hdmi_delay_video);
 
@@ -151,7 +151,7 @@ function update_service($which_service)
                         . " -g " . $common_backend_gop
                         . " -c:a aac "
                         . " -b:a " . $common_backend_audio_data_rate
-                        . ' -ac 2 -ar ' . $common_backend_audio_sample_rate
+                        . '  -ar ' . $common_backend_audio_sample_rate
                         . ' ' . $common_backend_extra;
                     if ($hdmi_delay_audio != "")
                         $input .= ' -af "volume=' . $common_backend_audio_db_gain . ',' . adelayFromMs($hdmi_delay_audio, 2) . '"';
@@ -172,7 +172,7 @@ function update_service($which_service)
                         . " -c:a aac "
                         . " -b:a " . $common_backend_audio_data_rate
                         . ' -af "volume=' . $common_backend_audio_db_gain . '"'
-                        . ' -ac 2 -ar ' . $common_backend_audio_sample_rate
+                        . '  -ar ' . $common_backend_audio_sample_rate
                         . ' ' . $common_backend_extra . " -tune zerolatency  -pkt_size 1316  -f mpegts "
                         . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
                     break;
@@ -188,7 +188,7 @@ function update_service($which_service)
                         . " -c:a aac "
                         . " -b:a " . $common_backend_audio_data_rate
                         . ' -af "volume=' . $common_backend_audio_db_gain . '"'
-                        . ' -ac 2 -ar ' . $common_backend_audio_sample_rate
+                        . '  -ar ' . $common_backend_audio_sample_rate
                         . ' ' . $common_backend_extra . " -tune zerolatency  -pkt_size 1316  -f mpegts "
                         . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
                     break;
@@ -204,7 +204,7 @@ function update_service($which_service)
                         . " -c:a aac "
                         . " -b:a " . $common_backend_audio_data_rate
                         . ' -af "volume=' . $common_backend_audio_db_gain . '"'
-                        . ' -ac 2 -ar ' . $common_backend_audio_sample_rate
+                        . '  -ar ' . $common_backend_audio_sample_rate
                         . ' ' . $common_backend_extra . " -tune zerolatency  -pkt_size 1316  -f mpegts "
                         . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
 
@@ -221,7 +221,7 @@ function update_service($which_service)
                         . " -c:a aac "
                         . " -b:a " . $common_backend_audio_data_rate
                         . ' -af "volume=' . $common_backend_audio_db_gain . '"'
-                        . ' -ac 2 -ar ' . $common_backend_audio_sample_rate
+                        . '  -ar ' . $common_backend_audio_sample_rate
                         . ' ' . $common_backend_extra . " -tune zerolatency  -pkt_size 1316  -f mpegts "
                         . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
 
