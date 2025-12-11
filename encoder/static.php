@@ -154,9 +154,9 @@ function update_service($which_service)
                         . '  -ar ' . $common_backend_audio_sample_rate
                         . ' ' . $common_backend_extra;
                     if ($hdmi_delay_audio != "")
-                        $input .= ' -af "acompressor=threshold=-6dB:ratio=6:attack=5:release=100,alimiter=limit=-1,volume=' . $common_backend_audio_db_gain . ',' . adelayFromMs($hdmi_delay_audio, 2) . '"';
+                        $input .= ' -af "volume=' . $common_backend_audio_db_gain . ',' . adelayFromMs($hdmi_delay_audio, 2) . '"';
                     else
-                        $input .= ' -af "acompressor=threshold=-6dB:ratio=6:attack=5:release=100,alimiter=limit=-1,volume=' . $common_backend_audio_db_gain . '"';
+                        $input .= ' -af "volume=' . $common_backend_audio_db_gain . '"';
                     $input .= " -tune zerolatency  -pkt_size 1316 -f mpegts "
                         . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
                     break;
