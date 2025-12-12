@@ -11,9 +11,6 @@ $https = false;
 function alert_and_back($message)
 {
     global $https;
-    $domain = trim($_POST['domain'] ?? '');
-    $subdomains_raw = trim($_POST['subdomains'] ?? '');
-    $email = trim($_POST['email'] ?? '');
 
 
     $jsonFile = __DIR__ . '/domain.json';
@@ -28,7 +25,9 @@ function alert_and_back($message)
 
 
     global $FORM_PAGE;
-
+    global $domain;
+    global $subdomains_raw;
+    global $email;
     // SAFELY escape entire message for JavaScript (supports newlines, quotes, etc.)
     $msg = json_encode($message, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
@@ -54,6 +53,9 @@ function alert_and_back($message)
     </script>";
     exit;
 }
+$domain = trim($_POST['domain'] ?? '');
+$subdomains_raw = trim($_POST['subdomains'] ?? '');
+$email = trim($_POST['email'] ?? '');
 
 $staging = ($_POST['staging'] ?? "0") === "1" ? 1 : 0;
 
