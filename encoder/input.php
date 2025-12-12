@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="dropdown">
                         <select name="input">
                             <?php
-                            $opts = ['hdmi', 'url', 'rtmp server', 'srt server', 'udp', 'custom'];
+                            $opts = ['hdmi', 'url', 'rtmp', 'srt', 'udp', 'custom'];
                             foreach ($opts as $o) {
                                 $sel = ($data['input'] === $o) ? 'selected' : '';
                                 echo "<option value=\"" . htmlspecialchars($o) . "\" $sel>" . htmlspecialchars($o) . "</option>";
