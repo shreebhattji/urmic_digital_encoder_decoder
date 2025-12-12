@@ -367,17 +367,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             else
                 $serviceEnabled = false;
 
-            $m3u8_url       = 'https://example.com/live/stream.m3u8';
             ?>
 
             <div class="card-row">
-                <div class="card-left">
-                    <div class="input-wrapper">
-                        <input id="m3u8-link" type="text" readonly
-                            value="<?php echo htmlspecialchars($m3u8_url, ENT_QUOTES); ?>">
-                        <span class="copy-icon">📋</span>
-                    </div>
-                </div>
                 <div class="card-right">
                     <div class="service-label">
                         <strong>Service</strong>
@@ -413,17 +405,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             else
                 $serviceEnabled = false;
 
-            $m3u8_url       = 'https://example.com/live/stream.m3u8';
             ?>
 
             <div class="card-row">
-                <div class="card-left">
-                    <div class="input-wrapper">
-                        <input id="m3u8-link" type="text" readonly
-                            value="<?php echo htmlspecialchars($m3u8_url, ENT_QUOTES); ?>">
-                        <span class="copy-icon">📋</span>
-                    </div>
-                </div>
                 <div class="card-right">
                     <div class="service-label">
                         <strong>Service</strong>
@@ -450,7 +434,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="card wide">
             <h3>SRT Server</h3>
             <?php
-            $m3u8_url       = 'https://example.com/live/stream.m3u8';
             $status = shell_exec("sudo systemctl is-active encoder-srt 2>&1");
             $status = trim($status);
 
@@ -461,13 +444,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ?>
 
             <div class="card-row">
-                <div class="card-left">
-                    <div class="input-wrapper">
-                        <input id="m3u8-link" type="text" readonly
-                            value="<?php echo htmlspecialchars($m3u8_url, ENT_QUOTES); ?>">
-                        <span class="copy-icon">📋</span>
-                    </div>
-                </div>
                 <div class="card-right">
                     <div class="service-label">
                         <strong>Service</strong>
