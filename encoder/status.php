@@ -1,6 +1,35 @@
 <?php include 'header.php'; ?>
 <?php
 
+$domain = "";
+$https = false;
+
+$jsonFile = __DIR__ . '/domain.json';
+
+if (file_exists($jsonFile)) {
+    $raw = file_get_contents($jsonFile);
+    $data = json_decode($raw, true);
+    $domain = $data['domain'];
+    $https = $data['https'];
+} else {
+    $domain = $_SERVER['SERVER_NAME'];
+}
+
+$jsonFile = __DIR__ . '/output.json';
+if (file_exists($jsonFile)) {
+    $raw = file_get_contents($jsonFile);
+    $data = json_decode($raw, true);
+}
+
+$service_rtmp0_multiple = $data['service_rtmp0_multiple'];
+$service_rtmp0_hls = $data['service_rtmp0_hls'];
+$service_rtmp0_dash = $data['service_rtmp0_dash'];
+$service_rtmp1_multiple = $data['service_rtmp0_multiple'];
+$service_rtmp1_hls = $data['service_rtmp0_hls'];
+$service_rtmp1_dash = $data['service_rtmp0_dash'];
+$service_srt_multiple = $data['service_srt_multiple'];
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($_POST['action'])) {
@@ -594,7 +623,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $serviceEnabled = false;
             ?>
 
-            <div class="card-row">shree
+            <div class="card-row">
                 <div class="service-label">
                     <strong>Service</strong>
 
@@ -622,6 +651,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </form>
             </div>
         </div>
+        <div class="card wide">
+            <h3>Output Links</h3>
+            <h4>Encoder IP</h4>
+            <?php echo "<h5>http://".$domain."</h5>"; ?> 
+            <?php if($https) echo "<h5>https://".$domain."</h5>"; ?> 
+        </div>
+        <br>
+        <br>
+        <br>
 
     </div>
 </div>

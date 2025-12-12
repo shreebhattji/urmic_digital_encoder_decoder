@@ -7,9 +7,26 @@
 //  - staging (0 or 1)
 
 $FORM_PAGE = "domain.php"; // redirect back to your form
-
+$https = false;
 function alert_and_back($message)
 {
+    global $https;
+    $domain = trim($_POST['domain'] ?? '');
+    $subdomains_raw = trim($_POST['subdomains'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+
+
+    $jsonFile = __DIR__ . '/domain.json';
+    $new = [
+        'domain' => $domain,
+        'subdomain' => $subdomains_raw,
+        'email' => $email,
+        'https' => $https
+    ];
+    $json = json_encode($new, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    file_put_contents($jsonFile, $json, LOCK_EX);
+
+
     global $FORM_PAGE;
 
     // SAFELY escape entire message for JavaScript (supports newlines, quotes, etc.)
@@ -38,20 +55,7 @@ function alert_and_back($message)
     exit;
 }
 
-// Read POST values
-$domain = trim($_POST['domain'] ?? '');
-$subdomains_raw = trim($_POST['subdomains'] ?? '');
-$email = trim($_POST['email'] ?? '');
 $staging = ($_POST['staging'] ?? "0") === "1" ? 1 : 0;
-
-$jsonFile = __DIR__ . '/domain.json';
-$new = [
-    'domain' => $domain,
-    'subdomain' => $subdomains_raw,
-    'email' => $email,
-];
-$json = json_encode($new, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-file_put_contents($jsonFile, $json, LOCK_EX);
 
 // Validation helpers
 function valid_domain_name($d)
@@ -135,6 +139,6 @@ exec("sudo systemctl reload nginx 2>&1", $reload_out, $reload_rc);
 if ($reload_rc !== 0) {
     alert_and_back("Cert created, nginx tested OK, but reload failed:\n" . implode("\n", $reload_out));
 }
-
+$https = true;
 // Success
 alert_and_back("Certificate installed successfully for:\n" . implode(", ", $domains));
