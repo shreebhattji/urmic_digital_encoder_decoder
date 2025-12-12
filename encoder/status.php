@@ -633,7 +633,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             controls
                             autoplay
                             playsinline
-                            src="<?php echo  "http://".$_SERVER['SERVER_NAME']."/hls/shree/bhattji.m3u8"; ?>">
+                            src="<?php echo  "https://live.newzroom.in/hls/shree/bhattji.m3u8"; ?>">
                             Your browser does not support HTML5 HLS playback.
                         </video>
                     </div>
@@ -645,7 +645,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             controls
                             autoplay
                             playsinline
-                            src="<?php echo  "http://".$_SERVER['SERVER_NAME']."/hls/shreeshree/bhattji.m3u8"; ?>">
+                            src="<?php echo  "https://live.newzroom.in/hls/shreeshree/bhattji.m3u8"; ?>">
                             Your browser does not support HTML5 HLS playback.
                         </video>
                     </div>
