@@ -37,15 +37,15 @@ $text .= "</h5>";
 if ($service_rtmp0_multiple == 'enable') {
     $text .= "<h5>rtmp://" . $domain . "/shree/bhattji<br>";
     if ($service_rtmp0_dash == 'enable') {
-        $text .= "http://" . $domain . "/hls/shree/bhattji.m3u8";
+        $text .= "http://" . $domain . "/hls/shree/bhattji.m3u8<br>";
         if ($https) {
-            $text .= "https://" . $domain . "/hls/shree/bhattji.m3u8";
+            $text .= "https://" . $domain . "/hls/shree/bhattji.m3u8<br><br>";
         }
     }
     if ($service_rtmp0_dash == 'enable') {
-        $text .= "http://" . $domain . "/dash/shree/bhattji.mpd";
+        $text .= "http://" . $domain . "/dash/shree/bhattji.mpd<br>";
         if ($https) {
-            $text .= "https://" . $domain . "/dash/shree/bhattji.mpd";
+            $text .= "https://" . $domain . "/dash/shree/bhattji.mpd<br>";
         }
     }
     $text .= "</h5>";
@@ -53,15 +53,15 @@ if ($service_rtmp0_multiple == 'enable') {
 if ($service_rtmp1_multiple == 'enable') {
     $text .= "<h5>rtmp://" . $domain . "/shreeshree/bhattji<br>";
     if ($service_rtmp1_dash == 'enable') {
-        $text .= "http://" . $domain . "/hls/shreeshree/bhattji.m3u8";
+        $text .= "http://" . $domain . "/hls/shreeshree/bhattji.m3u8<br>";
         if ($https) {
-            $text .= "https://" . $domain . "/hls/shreeshree/bhattji.m3u8";
+            $text .= "https://" . $domain . "/hls/shreeshree/bhattji.m3u8<br><br>";
         }
     }
     if ($service_rtmp1_dash == 'enable') {
-        $text .= "http://" . $domain . "/dash/shreeshree/bhattji.mpd";
+        $text .= "http://" . $domain . "/dash/shreeshree/bhattji.mpd<br>";
         if ($https) {
-            $text .= "https://" . $domain . "/dash/shreeshree/bhattji.mpd";
+            $text .= "https://" . $domain . "/dash/shreeshree/bhattji.mpd<br>";
         }
     }
     $text .= "</h5>";
