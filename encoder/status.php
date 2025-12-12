@@ -29,6 +29,47 @@ $service_rtmp1_hls = $data['service_rtmp0_hls'];
 $service_rtmp1_dash = $data['service_rtmp0_dash'];
 $service_srt_multiple = $data['service_srt_multiple'];
 
+$text = "<h3>Encoder</h3>";
+$text .= "<h5>http://" . $domain;
+if ($https) $text .= "<br>https://" . $domain;
+$text .= "</h5>";
+
+if ($service_rtmp0_multiple == 'enable') {
+    $text .= "<h5>rtmp://" . $domain . "/shree/bhattji<br>";
+    if ($service_rtmp0_dash == 'enable') {
+        $text .= "http://" . $domain . "/hls/shree/bhattji.m3u8";
+        if ($https) {
+            $text .= "https://" . $domain . "/hls/shree/bhattji.m3u8";
+        }
+    }
+    if ($service_rtmp0_dash == 'enable') {
+        $text .= "http://" . $domain . "/dash/shree/bhattji.mpd";
+        if ($https) {
+            $text .= "https://" . $domain . "/dash/shree/bhattji.mpd";
+        }
+    }
+    $text .= "</h5>";
+}
+if ($service_rtmp1_multiple == 'enable') {
+    $text .= "<h5>rtmp://" . $domain . "/shreeshree/bhattji<br>";
+    if ($service_rtmp1_dash == 'enable') {
+        $text .= "http://" . $domain . "/hls/shreeshree/bhattji.m3u8";
+        if ($https) {
+            $text .= "https://" . $domain . "/hls/shreeshree/bhattji.m3u8";
+        }
+    }
+    if ($service_rtmp1_dash == 'enable') {
+        $text .= "http://" . $domain . "/dash/shreeshree/bhattji.mpd";
+        if ($https) {
+            $text .= "https://" . $domain . "/dash/shreeshree/bhattji.mpd";
+        }
+    }
+    $text .= "</h5>";
+}
+
+if($service_srt_multiple){
+    $text .= "<h5>srt://" . $domain . "/shree/bhatt/ji</h5><br><br>";
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -629,9 +670,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div class="card wide">
             <h3>Output Links</h3>
-            <h4>Encoder IP</h4>
-            <?php global $domain;echo "<h5>http://". $domain."</h5>"; ?> 
-            <?php global $domain;if($https) echo "<h5>https://".$domain."</h5>"; ?> 
+            <?php echo $text; ?>
         </div>
         <br>
         <br>
