@@ -654,8 +654,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="card wide">
             <h3>Output Links</h3>
             <h4>Encoder IP</h4>
-            <?php echo "<h5>http://".$domain."</h5>"; ?> 
-            <?php if($https) echo "<h5>https://".$domain."</h5>"; ?> 
+            <?php global $domain;echo "<h5>http://". $domain."</h5>"; ?> 
+            <?php global $domain;if($https) echo "<h5>https://".$domain."</h5>"; ?> 
         </div>
         <br>
         <br>
