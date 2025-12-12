@@ -137,7 +137,7 @@ if (file_exists($jsonFile)) {
                         <input id="domain" name="domain" type="text" placeholder="example.com" required pattern="^[A-Za-z0-9.-]{1,253}$" value="<?php if ($data['domain'] !== "example.com") echo $data['domain']; ?>" />
 
                         <label for="subdomains" class="muted">Subdomains</label>
-                        <input id="subdomains" name="subdomains" type="text" placeholder="example.com (optional)" value="<?php if ($data['domain'] !== "www.example.com") echo $data['subdomain']; ?>" />
+                        <input id="subdomains" name="subdomains" type="text" placeholder="example.com (optional)" value="<?php if ($data['subdomain'] !== "www.example.com") echo $data['subdomain']; ?>" />
 
                         <label for="email">Contact email (for Let\'s Encrypt notices)</label>
                         <input id="email" name="email" type="email" placeholder="your_name@example.com" value="<?php if ($data['email'] !== "name@example.com") echo $data['email']; ?>" required />
