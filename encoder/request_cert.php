@@ -8,7 +8,8 @@
 
 $FORM_PAGE = "domain.php"; // redirect back to your form
 
-function alert_and_back($message) {
+function alert_and_back($message)
+{
     global $FORM_PAGE;
 
     // SAFELY escape entire message for JavaScript (supports newlines, quotes, etc.)
@@ -43,8 +44,18 @@ $subdomains_raw = trim($_POST['subdomains'] ?? '');
 $email = trim($_POST['email'] ?? '');
 $staging = ($_POST['staging'] ?? "0") === "1" ? 1 : 0;
 
+$jsonFile = __DIR__ . '/domain.json';
+$new = [
+    'domain' => $domain,
+    'subdomain' => $subdomains_raw,
+    'email' => $email,
+];
+$json = json_encode($new, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+file_put_contents($jsonFile, $json, LOCK_EX);
+
 // Validation helpers
-function valid_domain_name($d) {
+function valid_domain_name($d)
+{
     return (bool) preg_match(
         '/^(?=.{1,253}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i',
         $d
@@ -97,8 +108,8 @@ foreach ($domains as $d) {
 // Build certbot command
 $certbot = "/usr/bin/certbot";
 $cmd = "sudo $certbot --nginx --agree-tos --non-interactive --email "
-     . escapeshellarg($email)
-     . " $dargs";
+    . escapeshellarg($email)
+    . " $dargs";
 
 if ($staging === 1) {
     $cmd .= " --staging";
@@ -127,5 +138,3 @@ if ($reload_rc !== 0) {
 
 // Success
 alert_and_back("Certificate installed successfully for:\n" . implode(", ", $domains));
-
-?>

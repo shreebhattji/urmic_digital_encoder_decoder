@@ -623,36 +623,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
 
-
-        <div class="card wide">
-            <div class="card-row">
-                <div class="card-left">
-                    <div class="hls-player-wrapper">
-                        <video
-                            class="hls-video"
-                            controls
-                            autoplay
-                            playsinline
-                            src="<?php echo  "https://live.newzroom.in/hls/shree/bhattji.m3u8"; ?>">
-                            Your browser does not support HTML5 HLS playback.
-                        </video>
-                    </div>
-                </div>
-                <div class="card-right">
-                    <div class="hls-player-wrapper">
-                        <video
-                            class="hls-video"
-                            controls
-                            autoplay
-                            playsinline
-                            src="<?php echo  "https://live.newzroom.in/hls/shreeshree/bhattji.m3u8"; ?>">
-                            Your browser does not support HTML5 HLS playback.
-                        </video>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 </div>
 
