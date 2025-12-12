@@ -60,6 +60,7 @@ $staging = ($_POST['staging'] ?? "0") === "1" ? 1 : 0;
 // Validation helpers
 function valid_domain_name($d)
 {
+    $d = trim($d); // important!
     return (bool) preg_match(
         '/^(?=.{1,253}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i',
         $d
