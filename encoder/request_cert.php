@@ -11,7 +11,9 @@ $https = false;
 function alert_and_back($message)
 {
     global $https;
-
+    global $domain;
+    global $subdomains_raw;
+    global $email;
 
     $jsonFile = __DIR__ . '/domain.json';
     $new = [
@@ -25,9 +27,6 @@ function alert_and_back($message)
 
 
     global $FORM_PAGE;
-    global $domain;
-    global $subdomains_raw;
-    global $email;
     // SAFELY escape entire message for JavaScript (supports newlines, quotes, etc.)
     $msg = json_encode($message, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
