@@ -54,7 +54,7 @@ switch ($_POST['action']) {
                     accept=".bin"
                     required><br><br>
 
-                <button type="submit">Restore</button>
+                <button type="submit" name="action" value="restore" class="green-btn">Restore</button>
 
             </form>
         </div>
@@ -65,7 +65,7 @@ switch ($_POST['action']) {
         </div>
         <div class="card wide">
             <form method="post" class="form-center" onsubmit="return confirmReboot();">
-                <button type="submit" name="action" value="reboot" class="blueviolet-btn">Reboot</button>
+                <button type="submit" name="action" value="reboot" class="green-btn">Reboot</button>
             </form>
         </div>
         <div class="card wide">

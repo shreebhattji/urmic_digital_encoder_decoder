@@ -378,18 +378,7 @@
         }
 
         .green-btn {
-            background-color: greenyellow;
-            color: white;
-            font-weight: bold;
-            padding: 10px 20px;
-            border: none;
-            width: 33%;
-            border-radius: 7px;
-            cursor: pointer;
-        }
-
-        .blueviolet-btn {
-            background-color: blueviolet;
+            background-color: green;
             color: white;
             font-weight: bold;
             padding: 10px 20px;
