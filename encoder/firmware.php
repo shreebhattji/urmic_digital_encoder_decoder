@@ -23,10 +23,16 @@ switch ($_POST['action']) {
     function confirmReboot() {
         return confirm("Are you sure you want to reboot?");
     }
+
     function confirmReset() {
         return confirm("All settings will be gone . Are you sure you want to reset ?");
     }
+
     function confirmUpdate() {
+        return confirm("Newer version will be downloaded and installed Do not turn off power , this is irreversible are you sure to continue ? ");
+    }
+
+    function confirmbackup() {
         return confirm("Newer version will be downloaded and installed Do not turn off power , this is irreversible are you sure to continue ? ");
     }
 </script>
@@ -36,6 +42,26 @@ switch ($_POST['action']) {
     <div class="grid">
         <div class="card wide">
             Currunt Firmware Version :- 1.0
+        </div>
+        <div class="card wide">
+            <form method="post" class="form-center" enctype="multipart/form-data"
+                onsubmit="return confirm('Are you sure you want to restore using this file ? All settings will be restored as per backup file .')">
+
+                <label>Select restore file (.bin only):</label><br><br>
+
+                <input type="file"
+                    name="shree_bhattji_encoder.bin"
+                    accept=".bin"
+                    required><br><br>
+
+                <button type="submit">Restore</button>
+
+            </form>
+        </div>
+        <div class="card wide">
+            <form method="post" class="form-center" onsubmit="return confirmbackup();">
+                <button type="submit" name="action" value="backup" class="green-btn">Download Backup File</button>
+            </form>
         </div>
         <div class="card wide">
             <form method="post" class="form-center" onsubmit="return confirmReboot();">

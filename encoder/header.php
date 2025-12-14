@@ -377,6 +377,17 @@
             cursor: pointer;
         }
 
+        .green-btn {
+            background-color: greenyellow;
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: none;
+            width: 33%;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
         .blueviolet-btn {
             background-color: blueviolet;
             color: white;
@@ -430,7 +441,7 @@
 
 <body>
     <!-- Three stacked headers -->
-    <header class="top-header-1"><a href="index.php" style="color:white; text-decoration:none;">URMI Universal Encoder / Decoder</a></header>
+    <header class="top-header-1"><a href="index.php" style="color:white; text-decoration:none;">URMI Universal Digital Encoder / Decoder</a></header>
     <header class="top-header-2">
         <nav aria-label="Top navigation">
             <a href="https://learn.urmic.org/" target="_blank">Tutorials</a>
