@@ -377,6 +377,17 @@
             cursor: pointer;
         }
 
+        .blueviolet-btn {
+            background-color: blueviolet;
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: none;
+            width: 33%;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
         .red-btn {
             background-color: red;
             color: white;
