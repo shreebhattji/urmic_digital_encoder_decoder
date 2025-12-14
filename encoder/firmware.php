@@ -44,12 +44,12 @@ switch ($_POST['action']) {
         </div>
         <div class="card wide">
             <form method="post" class="form-center" onsubmit="return confirmReset();">
-                <button type="submit" name="action" value="update" class="red-btn">Update or Reset Firmware</button>
+                <button type="submit" name="action" value="reset" class="red-btn">Reset Settings</button>
             </form>
         </div>
         <div class="card wide">
-            <form method="post" class="form-center" onsubmit="return confirmReboot();">
-                <button type="submit" name="action" value="reset" class="red-btn">Reset Settings</button>
+            <form method="post" class="form-center" onsubmit="return confirmUpdate();">
+                <button type="submit" name="action" value="update" class="red-btn">Update or Reset Firmware</button>
             </form>
         </div>
         <br>
