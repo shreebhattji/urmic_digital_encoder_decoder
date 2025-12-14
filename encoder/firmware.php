@@ -19,6 +19,18 @@ switch ($_POST['action']) {
         break;
 }
 ?>
+<script>
+    function confirmReboot() {
+        return confirm("Are you sure you want to reboot?");
+    }
+    function confirmReset() {
+        return confirm("All settings will be gone . Are you sure you want to reset ?");
+    }
+    function confirmUpdate() {
+        return confirm("Newer version will be downloaded and installed Do not turn off power , this is irreversible are you sure to continue ? ");
+    }
+</script>
+
 
 <div class="containerindex">
     <div class="grid">
@@ -26,17 +38,17 @@ switch ($_POST['action']) {
             Currunt Firmware Version :- 1.0
         </div>
         <div class="card wide">
-            <form method="post" class="form-center">
+            <form method="post" class="form-center" onsubmit="return confirmReboot();">
                 <button type="submit" name="action" value="reboot" class="blueviolet-btn">Reboot</button>
             </form>
         </div>
         <div class="card wide">
-            <form method="post" class="form-center">
+            <form method="post" class="form-center" onsubmit="return confirmReset();">
                 <button type="submit" name="action" value="update" class="red-btn">Update or Reset Firmware</button>
             </form>
         </div>
         <div class="card wide">
-            <form method="post" class="form-center" onsubmit="return confirm('Are you sure you want to reset all settings?');">
+            <form method="post" class="form-center" onsubmit="return confirmReboot();">
                 <button type="submit" name="action" value="reset" class="red-btn">Reset Settings</button>
             </form>
         </div>
