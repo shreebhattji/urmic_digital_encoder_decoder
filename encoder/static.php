@@ -117,6 +117,10 @@ function update_service($which_service)
     $hdmi_delay_video = $data['hdmi']['video_delay'];
     $hdmi_delay_audio = $data['hdmi']['audio_delay'];
 
+    if ($srt_pass1 === "")
+        $srt_pass1 = generateRandomString(16);
+    if ($srt_pass2 === "")
+        $srt_pass2 = generateRandomString(16);
     switch ($use_common_backend) {
         case "copy_input":
             switch ($input_source) {
@@ -742,8 +746,6 @@ function update_network()
             $raw = file_get_contents($jsonFile);
             $data = json_decode($raw, true);
         }
-
-
     }
 }
 
@@ -810,6 +812,11 @@ function update_service_backend($service)
     $input_rtmp_mount = $data['rtmp']['mount'];
     $srt_pass1 = $data['srt']['stream_id_1'];
     $srt_pass2 = $data['srt']['stream_id_2'];
+
+    if ($srt_pass1 === "")
+        $srt_pass1 = generateRandomString(16);
+    if ($srt_pass2 === "")
+        $srt_pass2 = generateRandomString(16);
 
     $jsonFile = __DIR__ . '/output.json';
 
