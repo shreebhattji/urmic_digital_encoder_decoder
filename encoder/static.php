@@ -522,7 +522,7 @@ function update_service($which_service)
                             . ' -af "volume=' . $data['srt']['audio_db_gain'] . '"'
                             . ' -ar ' . $data['srt']['audio_sample_rate']
                             . ' ' . $data['srt']['extra']
-                            . ' -pkt_size 1316 -flush_packets 0 -f mpegts "srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji&latency=2000"';
+                            . ' -pkt_size 1316 -flush_packets 0 -f mpegts "srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji"';
                         break;
                 }
                 $file = "/var/www/encoder-srt.sh";
