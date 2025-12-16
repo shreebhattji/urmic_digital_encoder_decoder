@@ -8,8 +8,8 @@ $defaults = [
         'resolution' => '1920x1080',
         'audio_source' => 'hw:1,0',
         'framerate' => '30',
-        'video_delay'=>'300',
-        'audio_delay'=>''
+        'video_delay' => '300',
+        'audio_delay' => ''
     ],
     'url' => 'https://cdn.urmic.org/unavailable.mp4',
     'rtmp' => [
@@ -172,6 +172,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </select>
                     </div>
                 </div>
+                <br>
+                <br>
                 <div class="input-group">
                     <input type="text" id="hdmi_video_delay" name="hdmi_video_delay" value="<?php echo htmlspecialchars($data['hdmi']['video_delay']); ?>" placeholder=" ">
                     <label for="hdmi_video_delay">Video Delay in ms : </label>

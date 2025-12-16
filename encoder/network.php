@@ -8,7 +8,6 @@ $defaults = [
         'mode' => 'dhcp',
         'modev6' => 'auto',
         'network_primary_ip' => '',
-        'network_primary_subnet' => '',
         'network_primary_gateway' => '',
         'network_primary_vlan' => '',
         'network_primary_dns1' => '',
@@ -24,7 +23,6 @@ $defaults = [
         'mode' => 'disabled',
         'modev6' => 'disabled',
         'network_secondary_ip' => '',
-        'network_secondary_subnet' => '',
         'network_secondary_gateway' => '',
         'network_secondary_vlan' => '',
         'network_secondary_dns1' => '',
@@ -164,6 +162,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = $new;
             $success = 'Saved.';
         }
+
+        update_network();
     }
 }
 ?>
@@ -187,12 +187,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <br>
                 <div class="input-group">
-                    <input type="text" id="network_primary_ip" name="network_primary_ip" placeholder="Address" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['ip']); ?>">
+                    <input
+                        type="text"
+                        id="network_primary_ip"
+                        name="network_primary_ip"
+                        placeholder="192.168.2.111/24"
+                        pattern="^(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\/(?:8|16|20|24|28)$"
+                        value="<?php echo htmlspecialchars($data['primary']['ip']); ?>">
                     <label for="network_primary_ip">Address</label>
-                </div>
-                <div class="input-group">
-                    <input type="text" id="network_primary_subnet" name="network_primary_subnet" pattern="^([0-9]|[12][0-9]|3[0-2])$|^((25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(25[0-5]|2[0-4]\d|1?\d{1,2})$" placeholder="255.255.255.0" value="<?php echo htmlspecialchars($data['primary']['subnet']); ?>">
-                    <label for="network_primary_subnet">Subnet</label>
                 </div>
                 <div class="input-group">
                     <input type="text" id="network_primary_gateway" name="network_primary_gateway" pattern="^([0-9a-fA-F]{1,4}:){2,7}[0-9a-fA-F]{1,4}$" placeholder="Gateway" value="<?php echo htmlspecialchars($data['primary']['gateway']); ?>">
@@ -263,27 +265,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <br>
                 <div class="input-group">
-                    <input type="text" id="network_secondary_ip" name="network_secondary_ip" placeholder="Address" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['ip']); ?>">
+                    <input
+                        type="text"
+                        id="network_secondary_ip"
+                        name="network_secondary_ip"
+                        placeholder="192.168.1.111/24"
+                        pattern="^(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\/(?:8|16|20|24|28)$"
+                        value="<?php echo htmlspecialchars($data['secondary']['ip']); ?>">
                     <label for="network_secondary_ip">Address</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_secondary_subnet" name="network_secondary_subnet" pattern="^([0-9]|[12][0-9]|3[0-2])$|^((25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(25[0-5]|2[0-4]\d|1?\d{1,2})$" placeholder="255.255.255.0" value="<?php echo htmlspecialchars($data['primary']['subnet']); ?>">
-                    <label for="network_secondary_subnet">Subnet</label>
-                </div>
-                <div class="input-group">
-                    <input type="text" id="network_secondary_gateway" name="network_secondary_gateway" pattern="^([0-9a-fA-F]{1,4}:){2,7}[0-9a-fA-F]{1,4}$" placeholder="Gateway" value="<?php echo htmlspecialchars($data['primary']['gateway']); ?>">
+                    <input type="text" id="network_secondary_gateway" name="network_secondary_gateway" pattern="^([0-9a-fA-F]{1,4}:){2,7}[0-9a-fA-F]{1,4}$" placeholder="Gateway" value="<?php echo htmlspecialchars($data['secondary']['gateway']); ?>">
                     <label for="network_secondary_gateway">Gateway</label>
                 </div>
                 <div class="input-group">
-                    <input type="number" min="1" max="4094" id="network_secondary_vlan" name="network_secondary_vlan" placeholder="Vlan" value="<?php echo htmlspecialchars($data['primary']['vlan']); ?>">
+                    <input type="number" min="1" max="4094" id="network_secondary_vlan" name="network_secondary_vlan" placeholder="Vlan" value="<?php echo htmlspecialchars($data['secondary']['vlan']); ?>">
                     <label for="network_secondary_vlan">Vlan</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_secondary_dns1" name="network_secondary_dns1" placeholder="1.1.1.1" value="<?php echo htmlspecialchars($data['primary']['vlan']); ?>">
+                    <input type="text" id="network_secondary_dns1" name="network_secondary_dns1" placeholder="1.1.1.1" value="<?php echo htmlspecialchars($data['secondary']['vlan']); ?>">
                     <label for="network_secondary_dns1">DNS1</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_secondary_dns2" name="network_secondary_dns2" placeholder="8.8.8.8" value="<?php echo htmlspecialchars($data['primary']['vlan']); ?>">
+                    <input type="text" id="network_secondary_dns2" name="network_secondary_dns2" placeholder="8.8.8.8" value="<?php echo htmlspecialchars($data['secondary']['vlan']); ?>">
                     <label for="network_secondary_dns2">DNS2</label>
                 </div>
                 <div class="dropdown-container">
@@ -324,55 +328,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <br>
             </div>
         </div>
-        <div class="card wide">
-            <h3>Firewall</h3>
-            <br>
-            <div class="dropdown-container">
-                <span class="dropdown-label">Service Status :</span>
-                <div class="dropdown">
-                    <select name="service_firewall" id="display">
-                        <option value="enable" <?php if ($data['service_firewall'] == 'enable') echo 'selected'; ?>>Enable</option>
-                        <option value="disable" <?php if ($data['service_firewall'] == 'disable') echo 'selected'; ?>>Disable</option>
-                    </select>
-                </div>
-            </div>
-            <br>
-            <br>
-            <div class="input-group">
-                <input type="text" id="ip1" name="ip1" placeholder="IP1" value="<?php echo htmlspecialchars($data['ips'][0] ?? ''); ?>">
-                <label for="ip1">IP1</label>
-            </div>
-            <div class="input-group">
-                <input type="text" id="ip2" name="ip2" placeholder="IP2" value="<?php echo htmlspecialchars($data['ips'][1] ?? ''); ?>">
-                <label for="ip2">IP2</label>
-            </div>
-            <div class="input-group">
-                <input type="text" id="ip3" name="ip3" placeholder="IP3" value="<?php echo htmlspecialchars($data['ips'][2] ?? ''); ?>">
-                <label for="ip3">IP3</label>
-            </div>
-            <div class="input-group">
-                <input type="text" id="ip4" name="ip4" placeholder="IP4" value="<?php echo htmlspecialchars($data['ips'][3] ?? ''); ?>">
-                <label for="ip4">IP4</label>
-            </div>
-            <div class="input-group">
-                <input type="text" id="ip5" name="ip5" placeholder="IP5" value="<?php echo htmlspecialchars($data['ips'][4] ?? ''); ?>">
-                <label for="ip5">IP5</label>
-            </div>
-            <div class="input-group">
-                <input type="text" id="ip6" name="ip6" placeholder="IP6" value="<?php echo htmlspecialchars($data['ips'][4] ?? ''); ?>">
-                <label for="ip6">IP6</label>
-            </div>
-            <div class="input-group">
-                <input type="text" id="ip7" name="ip7" placeholder="IP7" value="<?php echo htmlspecialchars($data['ips'][4] ?? ''); ?>">
-                <label for="ip7">IP7</label>
-            </div>
-        </div>
-
         <div style="text-align:center; width:100%; margin-top:12px;">
             <button type="submit" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Save</button>
         </div>
-        <br>
-        <br>
         <br>
         <br>
         <br>

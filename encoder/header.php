@@ -449,6 +449,7 @@
             <a href="input.php">Input</a>
             <a href="output.php">Output</a>
             <a href="network.php">Network</a>
+            <a href="firewall.php">Firewall</a>
             <a href="firmware.php">Firmware</a>
         </nav>
     </header>

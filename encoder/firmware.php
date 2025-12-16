@@ -13,11 +13,15 @@ switch ($_POST['action']) {
                 unlink($file);
             }
         }
+        deleteDir('/var/www/encoder/setup');
         break;
     case 'reboot':
         exec('sudo reboot');
         break;
 }
+
+$board_id = trim(@file_get_contents('/sys/class/dmi/id/board_serial'));
+
 ?>
 <script>
     function confirmReboot() {
@@ -41,7 +45,11 @@ switch ($_POST['action']) {
 <div class="containerindex">
     <div class="grid">
         <div class="card wide">
-            Currunt Firmware Version :- 1.0
+            Device Licence Info :- <br>
+            Device ID :- <?php global $board_id;
+                            echo $board_id ?><br>
+            Reseller ID :- <br>
+            Project Name :- <br>
         </div>
         <div class="card wide">
             <form method="post" class="form-center" enctype="multipart/form-data"
