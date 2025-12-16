@@ -211,6 +211,7 @@ function update_service($which_service)
                         . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
                     break;
                 case "rtmp":
+                    update_service_backend('rtmp');
                     $input .= "ffmpeg -hide_banner -stream_loop -1 -re -i rtmp://127.0.0.1:1935/" . $$input_rtmp_mount . "/" . $input_rtmp_pass
                         . " -c:v h264_qsv "
                         . ' -vf "scale=' . $common_backend_resolution . '"'
@@ -228,6 +229,7 @@ function update_service($which_service)
 
                     break;
                 case "srt":
+                    update_service_backend('srt');
                     $input .= "ffmpeg -hide_banner -stream_loop -1 -re -i srt://127.0.0.1:1937?streamid=shree/bhatt/" . $srt_pass3
                         . " -c:v h264_qsv "
                         . ' -vf "scale=' . $common_backend_resolution . '"'
@@ -261,6 +263,7 @@ function update_service($which_service)
                     $input_transcode_every_time =  "rtmp://127.0.0.1:1935/" . $$input_rtmp_mount . "/" . $input_rtmp_pass;
                     break;
                 case "srt":
+                    update_service_backend('srt');
                     $input_transcode_every_time =  "srt://127.0.0.1?streamid=shree/bhatt/" . $srt_pass3;
                     break;
             }
