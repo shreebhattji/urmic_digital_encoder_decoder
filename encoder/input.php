@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     global $defaults;
     $new = [
         'input' => $posted('input', $defaults['input']),
-        'use_common_backend' => $posted('common_backend', $defaults['use_common_backend']),
+        'use_common_backend' => $posted('use_common_backend', $defaults['use_common_backend']),
         'hdmi' => [
             'resolution' => $posted('hdmi_resolution', $defaults['hdmi']['resolution']),
             'audio_source' => $posted('hdmi_audio_source', $defaults['hdmi']['audio_source']),
