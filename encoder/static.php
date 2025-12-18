@@ -55,6 +55,7 @@ function update_service($which_service)
     $rtmp0_multiple[] = [];
     $rtmp1_multiple[] = [];
     $srt_multiple[] = [];
+    $input_transcode_every_time = 'https://cdn.urmic.org/unavailable.mp4';
 
     $defaults = [
         'input' => 'url',
@@ -116,7 +117,6 @@ function update_service($which_service)
     $common_backend_resolution = str_replace("x", ":", $common_backend_resolution);
     $hdmi_delay_video = $data['hdmi']['video_delay'];
     $hdmi_delay_audio = $data['hdmi']['audio_delay'];
-    $input_transcode_every_time = "";
 
     if ($srt_pass1 == "")
         $srt_pass1 = generateRandomString(16);
@@ -405,7 +405,6 @@ function update_service($which_service)
     $rtmp0_multiple = $data['rtmp0_multiple'];
     $rtmp1_multiple = $data['rtmp1_multiple'];
     $srt_multiple = $data['srt_multiple'];
-    $input_transcode_every_time = 'https://cdn.urmic.org/unavailable.mp4';
 
     $use_common_backend_rtmp0 = $data['rtmp0']['common_backend'];
     $use_common_backend_rtmp1 = $data['rtmp1']['common_backend'];
@@ -563,7 +562,7 @@ function update_service($which_service)
                             . ' -pkt_size 1316 -flush_packets 0 -f mpegts "srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji"';
                         break;
                 }
-                
+
                 $file = "/var/www/encoder-srt.sh";
                 file_put_contents($file, $service);
 
