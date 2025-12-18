@@ -116,12 +116,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
                 <div class="dropdown-container">
-                    <span class="dropdown-label">Common BackEnd :</span>
+                    <span class="dropdown-label">Input Transcode Settings :</span>
                     <div class="dropdown">
                         <select name="use_common_backend" id="use_common_backend">
                             <option value="copy_input" <?php if ($data['use_common_backend'] == 'copy_input') echo 'selected'; ?>>Copy Input</option>
                             <option value="use_common_backend" <?php if ($data['use_common_backend'] == 'use_common_backend') echo 'selected'; ?>>Use Common Backend</option>
-                            <option value="transcode_every_time" <?php if ($data['use_common_backend'] == 'transcode_every_time') echo 'selected'; ?>>Use input Every time</option>
+                            <option value="transcode_every_time" <?php if ($data['use_common_backend'] == 'transcode_every_time') echo 'selected'; ?>>Do not transcode input</option>
                         </select>
                     </div>
                 </div>

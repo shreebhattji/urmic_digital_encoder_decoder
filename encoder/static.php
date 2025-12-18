@@ -116,6 +116,7 @@ function update_service($which_service)
     $common_backend_resolution = str_replace("x", ":", $common_backend_resolution);
     $hdmi_delay_video = $data['hdmi']['video_delay'];
     $hdmi_delay_audio = $data['hdmi']['audio_delay'];
+    $input_transcode_every_time = "";
 
     if ($srt_pass1 == "")
         $srt_pass1 = generateRandomString(16);
@@ -254,17 +255,18 @@ function update_service($which_service)
                     echo "<script>alert('HDMI can no use same input multiple time');</script>";
                     break;
                 case "url":
-                    $input_transcode_every_time =  $data['url'];
+                    $input_transcode_every_time = $data['url'];
                     break;
                 case "udp":
-                    $input_transcode_every_time =  $data['udp'];
+                    $input_transcode_every_time = $data['udp'];
                     break;
                 case "rtmp":
-                    $input_transcode_every_time =  "rtmp://127.0.0.1:1935/" . $$input_rtmp_mount . "/" . $input_rtmp_pass;
+                    update_service_backend('rtmp');
+                    $input_transcode_every_time = "rtmp://127.0.0.1:1935/shree/bhattji";
                     break;
                 case "srt":
                     update_service_backend('srt');
-                    $input_transcode_every_time =  "srt://127.0.0.1?streamid=shree/bhatt/" . $srt_pass3;
+                    $input_transcode_every_time = "srt://127.0.0.1?streamid=shree/bhatt/ji";
                     break;
             }
             break;
@@ -404,6 +406,7 @@ function update_service($which_service)
     $rtmp1_multiple = $data['rtmp1_multiple'];
     $srt_multiple = $data['srt_multiple'];
     $input_transcode_every_time = 'https://cdn.urmic.org/unavailable.mp4';
+
     $use_common_backend_rtmp0 = $data['rtmp0']['common_backend'];
     $use_common_backend_rtmp1 = $data['rtmp1']['common_backend'];
     $use_common_backend_udp0 = $data['udp0']['common_backend'];
@@ -411,19 +414,47 @@ function update_service($which_service)
     $use_common_backend_udp2 = $data['udp2']['common_backend'];
     $use_common_backend_srt = $data['srt']['common_backend'];
 
+    $display_resolution  = $data['display'];
+    $display_audio  = $data['display_audio'];
+
     switch ($which_service) {
         case 'input':
-            $input .= "  ";
-            $file = "/var/www/encoder-main.sh";
-            if (file_put_contents($file, $input) !== false) {
-                echo "File saved.";
+            if ($use_common_backend == "") {
+                exec("sudo systemctl stop encoder-main");
+                exec("sudo systemctl disable encoder-main");
             } else {
-                echo "Error writing file.";
+                $input .= "  ";
+                $file = "/var/www/encoder-main.sh";
+                if (file_put_contents($file, $input) !== false) {
+                    echo "File saved.";
+                } else {
+                    echo "Error writing file.";
+                }
+                exec("sudo systemctl enable encoder-main");
+                exec("sudo systemctl restart encoder-main");
+                exec("sudo reboot");
             }
-            exec("sudo systemctl restart encoder-main");
-            exec("sudo reboot");
             break;
         case 'display';
+            $display = "";
+            if ($service_display === "enable") {
+                exec("sudo systemctl stop encoder-display");
+                exec("sudo systemctl disable encoder-display");
+            } else {
+                switch ($use_common_backend) {
+                    case "copy_input":
+                    case "use_common_backend":
+                        $display = "mpv --fs --hwdec=auto --audio-aa=alsa/plughw:" . $display_audio . ' "' . $input_transcode_every_time . '"';
+                        break;
+                    case "transcode_every_time":
+                        $display = "mpv --fs --hwdec=auto --audio-device=alsa/plughw:" . $display_audio . ' "' . $input_transcode_every_time . '"';
+                        break;
+                }
+                $file = "/var/www/encoder-rtmp0.sh";
+                file_put_contents($file, $display);
+                exec("sudo systemctl enable encoder-display");
+                exec("sudo systemctl restart encoder-display");
+            }
             break;
         case 'rtmp0';
         case 'rtmp1';
@@ -532,6 +563,7 @@ function update_service($which_service)
                             . ' -pkt_size 1316 -flush_packets 0 -f mpegts "srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji"';
                         break;
                 }
+                
                 $file = "/var/www/encoder-srt.sh";
                 file_put_contents($file, $service);
 
