@@ -438,9 +438,6 @@ function update_service($which_service)
         case 'display';
             $display = "";
             if ($service_display === "enable") {
-                exec("sudo systemctl stop encoder-display");
-                exec("sudo systemctl disable encoder-display");
-            } else {
                 switch ($use_common_backend) {
                     case "copy_input":
                     case "use_common_backend":
@@ -450,10 +447,13 @@ function update_service($which_service)
                         $display = "mpv --fs --hwdec=auto --audio-device=alsa/plughw:" . $display_audio . ' "' . $input_transcode_every_time . '"';
                         break;
                 }
-                $file = "/var/www/encoder-rtmp0.sh";
+                $file = "/var/www/encoder-display.sh";
                 file_put_contents($file, $display);
                 exec("sudo systemctl enable encoder-display");
                 exec("sudo systemctl restart encoder-display");
+            } else {
+                exec("sudo systemctl stop encoder-display");
+                exec("sudo systemctl disable encoder-display");
             }
             break;
         case 'rtmp0';
