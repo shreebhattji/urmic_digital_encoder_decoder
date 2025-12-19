@@ -440,12 +440,14 @@ function update_service($which_service)
                 switch ($use_common_backend) {
                     case "copy_input":
                     case "use_common_backend":
-                        $display = "mpv --fs --hwdec=auto --audio-aa=alsa/plughw:" . $display_audio . ' "' . $input_transcode_every_time . '"';
+                        $display = "mpv --fs --hwdec=auto --audio-device=alsa/plughw:" . $display_audio . ' "' . $input_transcode_every_time . '"';
                         break;
                     case "transcode_every_time":
                         $display = "mpv --fs --hwdec=auto --audio-device=alsa/plughw:" . $display_audio . ' "' . $input_transcode_every_time . '"';
                         break;
                 }
+                
+
                 $file = "/var/www/encoder-display.sh";
                 file_put_contents($file, $display);
                 exec("sudo systemctl enable encoder-display");
@@ -459,33 +461,38 @@ function update_service($which_service)
         case 'rtmp1';
             update_service_backend("rtmp");
             if ($service_rtmp0_multiple === "enable") {
+                $rtmp = "ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i ";
+                if ($use_common_backend === "transcode_every_time") {
+                    $rtmp .= $input_transcode_every_time;
+                } else {
+                    $rtmp .= ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" ';
+                    switch ($use_common_backend_rtmp0) {
+                        case "enable":
+                            $rtmp .= ' '
+                                . ' -c:v copy '
+                                . ' -c:a aac '
+                                . ' -f flv "rtmp://127.0.0.1/shree/bhattji"';
+                            break;
 
-                switch ($use_common_backend_rtmp0) {
-                    case "enable":
-                        $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
-                            . ' -c:v copy '
-                            . ' -c:a copy '
-                            . ' -f flv "rtmp://127.0.0.1/shree/bhattji"';
-                        break;
-
-                    case "disable":
-                        $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
-                            . ' -c:v h264_qsv '
-                            . ' -vf "scale=' . str_replace("x", ":", $data['rtmp0']['resolution']) . '"'
-                            . '" -b:v ' . $data['rtmp0']['data_rate']
-                            . ' -maxrate ' . $data['rtmp0']['data_rate']
-                            . ' -bufsize ' . $data['rtmp0']['data_rate']
-                            . ' -r ' . $data['rtmp0']['framerate']
-                            . ' -g ' . $data['rtmp0']['gop']
-                            . ' -c:a aac -b:a ' . $data['rtmp0']['audio_data_rate']
-                            . ' -af "volume=' . $data['rtmp0']['audio_db_gain'] . '"'
-                            . ' -ar ' . $data['rtmp0']['audio_sample_rate']
-                            . ' ' . $data['rtmp0']['extra']
-                            . ' -f flv "rtmp://127.0.0.1/shree/bhattji"';
-                        break;
-                    default:
-                        error_log("service_rtmp0_multiple");
-                        break;
+                        case "disable":
+                            $rtmp .= ' '
+                                . ' -c:v h264_qsv '
+                                . ' -vf "scale=' . str_replace("x", ":", $data['rtmp0']['resolution']) . '"'
+                                . '" -b:v ' . $data['rtmp0']['data_rate']
+                                . ' -maxrate ' . $data['rtmp0']['data_rate']
+                                . ' -bufsize ' . $data['rtmp0']['data_rate']
+                                . ' -r ' . $data['rtmp0']['framerate']
+                                . ' -g ' . $data['rtmp0']['gop']
+                                . ' -c:a aac -b:a ' . $data['rtmp0']['audio_data_rate']
+                                . ' -af "volume=' . $data['rtmp0']['audio_db_gain'] . '"'
+                                . ' -ar ' . $data['rtmp0']['audio_sample_rate']
+                                . ' ' . $data['rtmp0']['extra']
+                                . ' -f flv "rtmp://127.0.0.1/shree/bhattji"';
+                            break;
+                        default:
+                            error_log("service_rtmp0_multiple");
+                            break;
+                    }
                 }
 
                 $file = "/var/www/encoder-rtmp0.sh";
