@@ -429,6 +429,9 @@ function update_service($which_service)
                 } else {
                     echo "Error writing file.";
                 }
+                $cmd = 'sudo /bin/sed -i \'s|^GRUB_CMDLINE_LINUX_DEFAULT=.*|GRUB_CMDLINE_LINUX_DEFAULT="quiet video='.$display_resolution.'"|\' /etc/default/grub 2>&1';
+                exec($cmd);
+                exec("sudo update-grub");
                 exec("sudo systemctl enable encoder-main");
                 exec("sudo systemctl restart encoder-main");
                 exec("sudo reboot");
@@ -446,7 +449,7 @@ function update_service($which_service)
                         $display = "mpv --fs --hwdec=auto --audio-device=alsa/plughw:" . $display_audio . ' "' . $input_transcode_every_time . '"';
                         break;
                 }
-                
+
 
                 $file = "/var/www/encoder-display.sh";
                 file_put_contents($file, $display);
