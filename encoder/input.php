@@ -50,6 +50,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         return isset($_POST[$k]) ? trim((string)$_POST[$k]) : $default;
     };
     global $defaults;
+    if ($posted('use_common_backend', $defaults['use_common_backend']) === "transcode_every_time") {
+        switch ($posted('input', $defaults['input'])) {
+            case "rtmp":
+                $defaults['rtmp']['password'] = "bhattji";
+                $posted['rtmp']['password'] = "bhattji";
+                break;
+            case "srt":
+                $defaults['srt']['stream_id_3'] = "ji";
+                $posted['srt']['stream_id_3'] = "ji";
+                break;
+        }
+    }
     $new = [
         'input' => $posted('input', $defaults['input']),
         'use_common_backend' => $posted('use_common_backend', $defaults['use_common_backend']),
