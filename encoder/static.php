@@ -451,7 +451,6 @@ function update_service($which_service)
                 file_put_contents($file, $display);
                 exec("sudo systemctl enable encoder-display");
                 exec("sudo systemctl restart encoder-display");
-                exec("sudo reboot");
             } else {
                 exec("sudo systemctl stop encoder-display");
                 exec("sudo systemctl disable encoder-display");
