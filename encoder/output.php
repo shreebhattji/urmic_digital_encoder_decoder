@@ -313,67 +313,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <span class="dropdown-label">Resolution :</span>
           <div class="dropdown">
             <select name="display" id="display">
-              <!-- 4K (4096x2160p) -->
-              <option value="4096x2160@23.98" <?php if ($data['display'] == '4096x2160@23.98') echo 'selected'; ?>>4096x2160@23.98</option>
-              <option value="4096x2160@24.00" <?php if ($data['display'] == '4096x2160@24.00') echo 'selected'; ?>>4096x2160@24.00</option>
-              <option value="4096x2160@25.00" <?php if ($data['display'] == '4096x2160@25.00') echo 'selected'; ?>>4096x2160@25.00</option>
-              <option value="4096x2160@29.97" <?php if ($data['display'] == '4096x2160@29.97') echo 'selected'; ?>>4096x2160@29.97</option>
-              <option value="4096x2160@30.00" <?php if ($data['display'] == '4096x2160@30.00') echo 'selected'; ?>>4096x2160@30.00</option>
-              <option value="4096x2160@47.95" <?php if ($data['display'] == '4096x2160@47.95') echo 'selected'; ?>>4096x2160@47.95</option>
-              <option value="4096x2160@48.00" <?php if ($data['display'] == '4096x2160@48.00') echo 'selected'; ?>>4096x2160@48.00</option>
-              <option value="4096x2160@50.00" <?php if ($data['display'] == '4096x2160@50.00') echo 'selected'; ?>>4096x2160@50.00</option>
-              <option value="4096x2160@59.94" <?php if ($data['display'] == '4096x2160@59.94') echo 'selected'; ?>>4096x2160@59.94</option>
-              <option value="4096x2160@60.00" <?php if ($data['display'] == '4096x2160@60.00') echo 'selected'; ?>>4096x2160@60.00</option>
-
-              <!-- UltraHD (3840x2160p) -->
-              <option value="3840x2160@23.98" <?php if ($data['display'] == '3840x2160@23.98') echo 'selected'; ?>>3840x2160@23.98</option>
-              <option value="3840x2160@24.00" <?php if ($data['display'] == '3840x2160@24.00') echo 'selected'; ?>>3840x2160@24.00</option>
-              <option value="3840x2160@25.00" <?php if ($data['display'] == '3840x2160@25.00') echo 'selected'; ?>>3840x2160@25.00</option>
-              <option value="3840x2160@29.97" <?php if ($data['display'] == '3840x2160@29.97') echo 'selected'; ?>>3840x2160@29.97</option>
-              <option value="3840x2160@30.00" <?php if ($data['display'] == '3840x2160@30.00') echo 'selected'; ?>>3840x2160@30.00</option>
-              <option value="3840x2160@50.00" <?php if ($data['display'] == '3840x2160@50.00') echo 'selected'; ?>>3840x2160@50.00</option>
-              <option value="3840x2160@59.94" <?php if ($data['display'] == '3840x2160@59.94') echo 'selected'; ?>>3840x2160@59.94</option>
-              <option value="3840x2160@60.00" <?php if ($data['display'] == '3840x2160@60.00') echo 'selected'; ?>>3840x2160@60.00</option>
-
-              <!-- 2K (2048x1080p) -->
-              <option value="2048x1080@23.98" <?php if ($data['display'] == '2048x1080@23.98') echo 'selected'; ?>>2048x1080@23.98</option>
-              <option value="2048x1080@24.00" <?php if ($data['display'] == '2048x1080@24.00') echo 'selected'; ?>>2048x1080@24.00</option>
-              <option value="2048x1080@25.00" <?php if ($data['display'] == '2048x1080@25.00') echo 'selected'; ?>>2048x1080@25.00</option>
-              <option value="2048x1080@29.97" <?php if ($data['display'] == '2048x1080@29.97') echo 'selected'; ?>>2048x1080@29.97</option>
-              <option value="2048x1080@30.00" <?php if ($data['display'] == '2048x1080@30.00') echo 'selected'; ?>>2048x1080@30.00</option>
-              <option value="2048x1080@47.95" <?php if ($data['display'] == '2048x1080@47.95') echo 'selected'; ?>>2048x1080@47.95</option>
-              <option value="2048x1080@48.00" <?php if ($data['display'] == '2048x1080@48.00') echo 'selected'; ?>>2048x1080@48.00</option>
-              <option value="2048x1080@50.00" <?php if ($data['display'] == '2048x1080@50.00') echo 'selected'; ?>>2048x1080@50.00</option>
-              <option value="2048x1080@59.94" <?php if ($data['display'] == '2048x1080@59.94') echo 'selected'; ?>>2048x1080@59.94</option>
-              <option value="2048x1080@60.00" <?php if ($data['display'] == '2048x1080@60.00') echo 'selected'; ?>>2048x1080@60.00</option>
-
-              <!-- FHD (1920x1080p) -->
-              <option value="1920x1080@23.98" <?php if ($data['display'] == '1920x1080@23.98') echo 'selected'; ?>>1920x1080@23.98</option>
-              <option value="1920x1080@24.00" <?php if ($data['display'] == '1920x1080@24.00') echo 'selected'; ?>>1920x1080@24.00</option>
-              <option value="1920x1080@25.00" <?php if ($data['display'] == '1920x1080@25.00') echo 'selected'; ?>>1920x1080@25.00</option>
-              <option value="1920x1080@29.97" <?php if ($data['display'] == '1920x1080@29.97') echo 'selected'; ?>>1920x1080@29.97</option>
-              <option value="1920x1080@30.00" <?php if ($data['display'] == '1920x1080@30.00') echo 'selected'; ?>>1920x1080@30.00</option>
-              <option value="1920x1080@50.00" <?php if ($data['display'] == '1920x1080@50.00') echo 'selected'; ?>>1920x1080@50.00</option>
-              <option value="1920x1080@59.94" <?php if ($data['display'] == '1920x1080@59.94') echo 'selected'; ?>>1920x1080@59.94</option>
               <option value="1920x1080@60.00" <?php if ($data['display'] == '1920x1080@60.00') echo 'selected'; ?>>1920x1080@60.00</option>
-
-              <!-- FHD Interlaced (1920x1080i) -->
-              <option value="1920x1080i@50.00" <?php if ($data['display'] == '1920x1080i@50.00') echo 'selected'; ?>>1920x1080i@50.00</option>
-              <option value="1920x1080i@59.94" <?php if ($data['display'] == '1920x1080i@59.94') echo 'selected'; ?>>1920x1080i@59.94</option>
+              <option value="1920x1080@59.94" <?php if ($data['display'] == '1920x1080@59.94') echo 'selected'; ?>>1920x1080@59.94</option>
               <option value="1920x1080i@60.00" <?php if ($data['display'] == '1920x1080i@60.00') echo 'selected'; ?>>1920x1080i@60.00</option>
+              <option value="1920x1080i@59.94" <?php if ($data['display'] == '1920x1080i@59.94') echo 'selected'; ?>>1920x1080i@59.94</option>
+              <option value="1920x1080@50.00" <?php if ($data['display'] == '1920x1080@50.00') echo 'selected'; ?>>1920x1080@50.00</option>
+              <option value="1920x1080i@50.00" <?php if ($data['display'] == '1920x1080i@50.00') echo 'selected'; ?>>1920x1080i@50.00</option>
+              <option value="1920x1080@30.00" <?php if ($data['display'] == '1920x1080@30.00') echo 'selected'; ?>>1920x1080@30.00</option>
+              <option value="1920x1080@29.97" <?php if ($data['display'] == '1920x1080@29.97') echo 'selected'; ?>>1920x1080@29.97</option>
+              <option value="1920x1080@25.00" <?php if ($data['display'] == '1920x1080@25.00') echo 'selected'; ?>>1920x1080@25.00</option>
+              <option value="1920x1080@24.00" <?php if ($data['display'] == '1920x1080@24.00') echo 'selected'; ?>>1920x1080@24.00</option>
+              <option value="1920x1080@23.98" <?php if ($data['display'] == '1920x1080@23.98') echo 'selected'; ?>>1920x1080@23.98</option>
 
-              <!-- HD (1280x720p) -->
-              <option value="1280x720@50.00" <?php if ($data['display'] == '1280x720@50.00') echo 'selected'; ?>>1280x720@50.00</option>
-              <option value="1280x720@59.94" <?php if ($data['display'] == '1280x720@59.94') echo 'selected'; ?>>1280x720@59.94</option>
+              <option value="1600x1200@60.00" <?php if ($data['display'] == '1600x1200@60.00') echo 'selected'; ?>>1600x1200@60.00</option>
+              <option value="1680x1050@59.88" <?php if ($data['display'] == '1680x1050@59.88') echo 'selected'; ?>>1680x1050@59.88</option>
+              <option value="1280x1024@60.02" <?php if ($data['display'] == '1280x1024@60.02') echo 'selected'; ?>>1280x1024@60.02</option>
+              <option value="1360x768@60.02" <?php if ($data['display'] == '1360x768@60.02') echo 'selected'; ?>>1360x768@60.02</option>
+
               <option value="1280x720@60.00" <?php if ($data['display'] == '1280x720@60.00') echo 'selected'; ?>>1280x720@60.00</option>
+              <option value="1280x720@59.94" <?php if ($data['display'] == '1280x720@59.94') echo 'selected'; ?>>1280x720@59.94</option>
+              <option value="1280x720@50.00" <?php if ($data['display'] == '1280x720@50.00') echo 'selected'; ?>>1280x720@50.00</option>
+              <option value="1280x720@30.00" <?php if ($data['display'] == '1280x720@30.00') echo 'selected'; ?>>1280x720@30.00</option>
+              <option value="1280x720@29.97" <?php if ($data['display'] == '1280x720@29.97') echo 'selected'; ?>>1280x720@29.97</option>
+              <option value="1280x720@25.00" <?php if ($data['display'] == '1280x720@25.00') echo 'selected'; ?>>1280x720@25.00</option>
+              <option value="1280x720@24.00" <?php if ($data['display'] == '1280x720@24.00') echo 'selected'; ?>>1280x720@24.00</option>
+              <option value="1280x720@23.98" <?php if ($data['display'] == '1280x720@23.98') echo 'selected'; ?>>1280x720@23.98</option>
 
-              <!-- SD Progressive -->
-              <option value="720x576@50.00" <?php if ($data['display'] == '720x576@50.00') echo 'selected'; ?>>720x576@50.00</option>
-              <option value="720x480@59.94" <?php if ($data['display'] == '720x480@59.94') echo 'selected'; ?>>720x480@59.94</option>
+              <option value="1024x768@60.00" <?php if ($data['display'] == '1024x768@60.00') echo 'selected'; ?>>1024x768@60.00</option>
+              <option value="800x600@60.32" <?php if ($data['display'] == '800x600@60.32') echo 'selected'; ?>>800x600@60.32</option>
 
-              <!-- SD Interlaced -->
-              <option value="720x576i@25.00" <?php if ($data['display'] == '720x576i@25.00') echo 'selected'; ?>>720x576i@25.00</option>
-              <option value="720x480i@29.97" <?php if ($data['display'] == '720x480i@29.97') echo 'selected'; ?>>720x480i@29.97</option>
+              <option value="720x576i@50.00" <?php if ($data['display'] == '720x576i@50.00') echo 'selected'; ?>>720x576i@50.00</option>
+              <option value="720x480i@60.00" <?php if ($data['display'] == '720x480i@60.00') echo 'selected'; ?>>720x480i@60.00</option>
+              <option value="720x480i@59.94" <?php if ($data['display'] == '720x480i@59.94') echo 'selected'; ?>>720x480i@59.94</option>
+
+              <option value="640x480@60.00" <?php if ($data['display'] == '640x480@60.00') echo 'selected'; ?>>640x480@60.00</option>
+              <option value="640x480@59.94" <?php if ($data['display'] == '640x480@59.94') echo 'selected'; ?>>640x480@59.94</option>
             </select>
           </div>
         </div>
