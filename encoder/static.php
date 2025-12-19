@@ -440,16 +440,12 @@ function update_service($which_service)
                 switch ($use_common_backend) {
                     case "copy_input":
                     case "use_common_backend":
-                        $display = "mpv --fs --hwdec=auto --audio-device=alsa/plughw:" . $display_audio . ' "' . $input_transcode_every_time . '"';
+                        $display = "mpv --vo=drm --drm-mode=" . $display_resolution . " --fs --keepaspect=no --audio-device=alsa/plughw:" . $display_audio . ' "' . $input_transcode_every_time . '"';
                         break;
                     case "transcode_every_time":
-                        $display = "mpv --fs --hwdec=auto --audio-device=alsa/plughw:" . $display_audio . ' "' . $input_transcode_every_time . '"';
+                        $display = "mpv --vo=drm --drm-mode=" . $display_resolution . " --fs --keepaspect=no --audio-device=alsa/plughw:" . $display_audio . ' "' . $input_transcode_every_time . '"';
                         break;
                 }
-
-                $cmd = 'sudo /bin/sed -i \'s|^GRUB_CMDLINE_LINUX_DEFAULT=.*|GRUB_CMDLINE_LINUX_DEFAULT="quiet video='.$display_resolution.'"|\' /etc/default/grub 2>&1';
-                exec($cmd);
-                exec("sudo update-grub");
 
                 $file = "/var/www/encoder-display.sh";
                 file_put_contents($file, $display);
