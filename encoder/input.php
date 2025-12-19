@@ -53,15 +53,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($posted('use_common_backend', $defaults['use_common_backend']) === "transcode_every_time") {
         switch ($posted('input', $defaults['input'])) {
             case "rtmp":
-                $defaults['rtmp']['password'] = "bhattji";
-                $posted['rtmp']['password'] = "bhattji";
+                $rtmp_pass = "bhattji";
                 break;
             case "srt":
-                $defaults['srt']['stream_id_3'] = "ji";
-                $posted['srt']['stream_id_3'] = "ji";
+                $srt_pass_3 = "ji";
+                break;
+        }
+    } else {
+        switch ($posted('input', $defaults['input'])) {
+            case "rtmp":
+                $rtmp_pass = $posted('rtmp_password', $defaults['rtmp']['password']);
+                break;
+            case "srt":
+                $srt_pass_3 = $posted('srt_stream_id_3', $defaults['srt']['stream_id_3']);
                 break;
         }
     }
+
     $new = [
         'input' => $posted('input', $defaults['input']),
         'use_common_backend' => $posted('use_common_backend', $defaults['use_common_backend']),
@@ -75,12 +83,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'url' => $posted('url', $defaults['url']),
         'rtmp' => [
             'mount' => $posted('rtmp_mount', $defaults['rtmp']['mount']),
-            'password' => $posted('rtmp_password', $defaults['rtmp']['password']),
+            'password' => $rtmp_pass,
         ],
         'srt' => [
             'stream_id_1' => $posted('srt_stream_id_1', $defaults['srt']['stream_id_1']),
             'stream_id_2' => $posted('srt_stream_id_2', $defaults['srt']['stream_id_2']),
-            'stream_id_3' => $posted('srt_stream_id_3', $defaults['srt']['stream_id_3']),
+            'stream_id_3' => $srt_pass_3,
         ],
         'udp' => $posted('udp', $defaults['udp']),
         'custom' => $posted('custom', $defaults['custom']),
