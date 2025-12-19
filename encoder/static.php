@@ -429,9 +429,6 @@ function update_service($which_service)
                 } else {
                     echo "Error writing file.";
                 }
-                $cmd = 'sudo /bin/sed -i \'s|^GRUB_CMDLINE_LINUX_DEFAULT=.*|GRUB_CMDLINE_LINUX_DEFAULT="quiet video='.$display_resolution.'"|\' /etc/default/grub 2>&1';
-                exec($cmd);
-                exec("sudo update-grub");
                 exec("sudo systemctl enable encoder-main");
                 exec("sudo systemctl restart encoder-main");
                 exec("sudo reboot");
@@ -450,11 +447,15 @@ function update_service($which_service)
                         break;
                 }
 
+                $cmd = 'sudo /bin/sed -i \'s|^GRUB_CMDLINE_LINUX_DEFAULT=.*|GRUB_CMDLINE_LINUX_DEFAULT="quiet video='.$display_resolution.'"|\' /etc/default/grub 2>&1';
+                exec($cmd);
+                exec("sudo update-grub");
 
                 $file = "/var/www/encoder-display.sh";
                 file_put_contents($file, $display);
                 exec("sudo systemctl enable encoder-display");
                 exec("sudo systemctl restart encoder-display");
+                exec("sudo reboot");
             } else {
                 exec("sudo systemctl stop encoder-display");
                 exec("sudo systemctl disable encoder-display");
