@@ -369,7 +369,7 @@ function update_service($which_service)
             'audio_sample_rate' => '48000'
         ],
 
-        'display' => '1920x1080@60.00',
+        'display_resolution' => '720x576',
         'display_audio' => '0,3',
 
         'custom_output' => ''
@@ -413,7 +413,7 @@ function update_service($which_service)
     $use_common_backend_udp2 = $data['udp2']['common_backend'];
     $use_common_backend_srt = $data['srt']['common_backend'];
 
-    $display_resolution  = $data['display'];
+    $display_resolution  = $data['display_resolution'];
     $display_audio  = $data['display_audio'];
 
     switch ($which_service) {

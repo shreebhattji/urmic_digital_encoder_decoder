@@ -98,7 +98,7 @@ $defaults = [
     'audio_sample_rate' => '48000'
   ],
 
-  'display' => '720x576',
+  'display_resolution' => '720x576',
   'display_audio' => '0,3',
 
   'custom_output' => ''
@@ -143,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $new['service_srt_multiple'] = $get('service_srt_multiple', $defaults['service_srt_multiple']);
   $new['service_custom'] = $get('service_custom', $defaults['service_custom']);
 
-  $new['display'] = $get('display', $defaults['display']);
+  $new['display_resolution'] = $get('display_resolution', $defaults['display_resolution']);
   $new['display_audio'] = $get('display_audio', $defaults['display_audio']);
 
 
@@ -312,18 +312,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="dropdown-container">
           <span class="dropdown-label">Resolution :</span>
           <div class="dropdown">
-            <select name="display" id="display">
-              <option value="1920x1080" <?php if ($data['display'] == '1920x1080') echo 'selected'; ?>>1920x1080</option>
-              <option value="1600x1200" <?php if ($data['display'] == '1600x1200') echo 'selected'; ?>>1600x1200</option>
-              <option value="1680x1050" <?php if ($data['display'] == '1680x1050') echo 'selected'; ?>>1680x1050</option>
-              <option value="1360x768" <?php if ($data['display'] == '1360x768')  echo 'selected'; ?>>1360x768</option>
-              <option value="1280x1024" <?php if ($data['display'] == '1280x1024') echo 'selected'; ?>>1280x1024</option>
-              <option value="1280x720" <?php if ($data['display'] == '1280x720')  echo 'selected'; ?>>1280x720</option>
-              <option value="1024x768" <?php if ($data['display'] == '1024x768')  echo 'selected'; ?>>1024x768</option>
-              <option value="800x600" <?php if ($data['display'] == '800x600')   echo 'selected'; ?>>800x600</option>
-              <option value="720x576" <?php if ($data['display'] == '720x576')   echo 'selected'; ?>>720x576</option>
-              <option value="720x480" <?php if ($data['display'] == '720x480')   echo 'selected'; ?>>720x480</option>
-              <option value="640x480" <?php if ($data['display'] == '640x480')   echo 'selected'; ?>>640x480</option>
+            <select name="display_resolution" id="display_resolution">
+              <option value="1920x1080" <?php if ($data['display_resolution'] == '1920x1080') echo 'selected'; ?>>1920x1080</option>
+              <option value="1600x1200" <?php if ($data['display_resolution'] == '1600x1200') echo 'selected'; ?>>1600x1200</option>
+              <option value="1680x1050" <?php if ($data['display_resolution'] == '1680x1050') echo 'selected'; ?>>1680x1050</option>
+              <option value="1360x768" <?php if ($data['display_resolution'] == '1360x768')  echo 'selected'; ?>>1360x768</option>
+              <option value="1280x1024" <?php if ($data['display_resolution'] == '1280x1024') echo 'selected'; ?>>1280x1024</option>
+              <option value="1280x720" <?php if ($data['display_resolution'] == '1280x720')  echo 'selected'; ?>>1280x720</option>
+              <option value="1024x768" <?php if ($data['display_resolution'] == '1024x768')  echo 'selected'; ?>>1024x768</option>
+              <option value="800x600" <?php if ($data['display_resolution'] == '800x600')   echo 'selected'; ?>>800x600</option>
+              <option value="720x576" <?php if ($data['display_resolution'] == '720x576')   echo 'selected'; ?>>720x576</option>
+              <option value="720x480" <?php if ($data['display_resolution'] == '720x480')   echo 'selected'; ?>>720x480</option>
+              <option value="640x480" <?php if ($data['display_resolution'] == '640x480')   echo 'selected'; ?>>640x480</option>
             </select>
           </div>
         </div>
