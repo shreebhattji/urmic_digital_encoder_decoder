@@ -87,9 +87,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if($new['use_common_backend']=='transcode_every_time'){
         switch($new['input']){
-            case 'rtmp':
-                $new['rtmp']['password']="bhattji";
-                break;
             case 'srt':
                 $new['srt']['stream_id_3']="ji";
                 break;

@@ -848,6 +848,7 @@ function update_service_backend($service)
         if (!is_array($data)) $data = $defaults;
     }
 
+    $use_common_backend = $data['use_common_backend'];
     $input_source = $data['input'];
     $input_rtmp_mount = $data['rtmp']['mount'];
     $srt_pass1 = $data['srt']['stream_id_1'];
@@ -1044,6 +1045,11 @@ function update_service_backend($service)
                 }
             }
 
+            $rtmp_input_copy = "";
+            if ($use_common_backend == 'transcode_every_time') {
+                $rtmp_input_copy = "push rtmp://127.0.0.1/shree/bhattji;";
+            }
+
             $nginx = "
 user www-data;
 worker_processes auto;
@@ -1069,6 +1075,9 @@ rtmp {
       record off;
       meta off;
       wait_video on;
+      deny play all;
+      allow publish all;
+      " . $rtmp_input_copy . "
     }
 
 ";
@@ -1080,6 +1089,9 @@ rtmp {
       record off;
       meta off;
       wait_video on;
+      allow publish 127.0.0.1;
+      deny publish all;
+      allow play all;
 
       " . $hls0 . "
       " . $dash0 . "
