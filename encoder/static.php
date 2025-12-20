@@ -440,10 +440,10 @@ function update_service($which_service)
                 switch ($use_common_backend) {
                     case "copy_input":
                     case "use_common_backend":
-                        $display = "mpv --vo=drm --drm-mode=" . $display_resolution . " --fs --keepaspect=no --audio-device=alsa/plughw:" . $display_audio . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
+                        $display = "mpv --vo=drm --drm-mode=" . $display_resolution . " --fs --keepaspect=no --audio-device=alsa/plughw:" . $display_audio . ' --audio-format=s16 --audio-samplerate=48000 --audio-channels=stereo --audio-spdif=no  "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
                         break;
                     case "transcode_every_time":
-                        $display = "mpv --vo=drm --drm-mode=" . $display_resolution . " --fs --keepaspect=no --audio-device=alsa/plughw:" . $display_audio . ' "' . $input_transcode_every_time . '"';
+                        $display = "mpv --vo=drm --drm-mode=" . $display_resolution . " --fs --keepaspect=no --audio-device=alsa/plughw:" . $display_audio . ' --audio-format=s16 --audio-samplerate=48000 --audio-channels=stereo --audio-spdif=no  "' . $input_transcode_every_time . '"';
                         break;
                 }
 
