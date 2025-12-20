@@ -128,7 +128,7 @@ $board_id = trim(@file_get_contents('/sys/class/dmi/id/board_serial'));
     }
 
     function confirmbackup() {
-        return confirm("Newer version will be downloaded and installed Do not turn off power , this is irreversible are you sure to continue ? ");
+        return confirm("Are you sure you want to download backup ? ");
     }
 </script>
 

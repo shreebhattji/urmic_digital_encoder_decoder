@@ -374,8 +374,10 @@ sudo mkdir -p /var/www/html/dash/shree;
 sudo mkdir -p /var/www/html/hls/shreeshree;
 sudo mkdir -p /var/www/html/dash/shreeshree;
 sudo mkdir -p /var/www/encoder;
-cp -r html/* /var/www/html/
+sudo cp -r html/* /var/www/html/
 sudo cp -r encoder/* /var/www/encoder/
+sudo cp private.pem /var/www/
+sudo cp public.pem /var/www/
 
 sudo a2enmod ssl
 sudo systemctl enable apache2
