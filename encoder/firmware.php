@@ -126,7 +126,7 @@ include 'header.php';
     <div class="grid">
         <div class="card wide">
             Device Licence Info :- <br>
-            Device ID :- <?php echo trim(@file_get_contents('/sys/class/dmi/id/product_uuid')) ?><br>
+            Device ID :- <?php echo trim(file_get_contents('/sys/class/dmi/id/product_uuid')); ?><br>
             Reseller ID :- <br>
             Project Name :- <br>
         </div>
