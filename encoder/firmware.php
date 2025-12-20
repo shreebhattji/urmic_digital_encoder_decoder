@@ -37,16 +37,6 @@ switch ($_POST['action']) {
         $zip = new ZipArchive();
         $zip->open($tmpZip, ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
-        $files = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($sourceDir, FilesystemIterator::SKIP_DOTS)
-        );
-
-        foreach ($files as $file) {
-            $zip->addFile(
-                $file->getRealPath(),
-                substr($file->getRealPath(), strlen($sourceDir) + 1)
-            );
-        }
 
         /* Add JSON files if exist */
         foreach ($jsonFiles as $json) {
