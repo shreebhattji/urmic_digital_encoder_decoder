@@ -1,8 +1,5 @@
 <?php
 
-
-$board_id = trim(@file_get_contents('/sys/class/dmi/id/board_serial'));
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     switch ($_POST['action']) {
         case 'update':
@@ -129,7 +126,7 @@ include 'header.php';
     <div class="grid">
         <div class="card wide">
             Device Licence Info :- <br>
-            Device ID :- <?php echo $board_id ?><br>
+            Device ID :- <?php echo trim(@file_get_contents('/sys/class/dmi/id/product_uuid')) ?><br>
             Reseller ID :- <br>
             Project Name :- <br>
         </div>
