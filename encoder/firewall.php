@@ -93,79 +93,67 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </style>
 <div class="containerindex">
     <div class="grid">
-        <h2>Firewall Rules</h2>
+        <div class="card wide">
+            <h2>Allow Rules</h2>
+            <form method="post">
+                <table id="rulesTable">
+                    <thead>
+                        <tr>
+                            <th>IP Address</th>
+                            <th>Port</th>
+                            <th>Protocol</th>
+                            <th>Description</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-        <form method="post">
-            <table id="rulesTable">
-                <thead>
-                    <tr>
-                        <th>IP Version</th>
-                        <th>IP Address</th>
-                        <th>Port</th>
-                        <th>Protocol</th>
-                        <th>Description</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    <?php if ($rules): foreach ($rules as $r): ?>
+                        <?php if ($rules): foreach ($rules as $r): ?>
+                                <tr>
+                                    <td><input type="text" name="ip_address[]" value="<?= htmlspecialchars($r['ip_address']) ?>"></td>
+                                    <td><input type="number" name="port[]" value="<?= htmlspecialchars($r['port']) ?>"></td>
+                                    <td>
+                                        <select name="protocol[]">
+                                            <option value="tcp" <?= $r['protocol'] == 'tcp' ? 'selected' : '' ?>>TCP</option>
+                                            <option value="udp" <?= $r['protocol'] == 'udp' ? 'selected' : '' ?>>UDP</option>
+                                            <option value="any" <?= $r['protocol'] == 'any' ? 'selected' : '' ?>>ANY</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" name="description[]" value="<?= htmlspecialchars($r['description']) ?>"></td>
+                                    <td class="actions">
+                                        <button type="button" class="btn-remove" onclick="removeRow(this)">Remove</button>
+                                    </td>
+                                </tr>
+                            <?php endforeach;
+                        else: ?>
                             <tr>
-                                <td>
-                                    <select name="ip_version[]">
-                                        <option value="ipv4" <?= $r['ip_version'] == 'ipv4' ? 'selected' : '' ?>>IPv4</option>
-                                        <option value="ipv6" <?= $r['ip_version'] == 'ipv6' ? 'selected' : '' ?>>IPv6</option>
-                                    </select>
-                                </td>
-                                <td><input type="text" name="ip_address[]" value="<?= htmlspecialchars($r['ip_address']) ?>"></td>
-                                <td><input type="number" name="port[]" value="<?= htmlspecialchars($r['port']) ?>"></td>
+                                <td><input type="text" name="ip_address[]" placeholder="192.168.1.0/24 or 2001:db8::/64"></td>
+                                <td><input type="text" name="port[]" placeholder="1-65535 or any"></td>
                                 <td>
                                     <select name="protocol[]">
-                                        <option value="tcp" <?= $r['protocol'] == 'tcp' ? 'selected' : '' ?>>TCP</option>
-                                        <option value="udp" <?= $r['protocol'] == 'udp' ? 'selected' : '' ?>>UDP</option>
-                                        <option value="any" <?= $r['protocol'] == 'any' ? 'selected' : '' ?>>ANY</option>
+                                        <option value="tcp">TCP</option>
+                                        <option value="udp">UDP</option>
+                                        <option value="any">ANY</option>
                                     </select>
                                 </td>
-                                <td><input type="text" name="description[]" value="<?= htmlspecialchars($r['description']) ?>"></td>
+                                <td><input type="text" name="description[]"></td>
                                 <td class="actions">
                                     <button type="button" class="btn-remove" onclick="removeRow(this)">Remove</button>
                                 </td>
                             </tr>
-                        <?php endforeach;
-                    else: ?>
-                        <tr>
-                            <td>
-                                <select name="ip_version[]">
-                                    <option value="ipv4">IPv4</option>
-                                    <option value="ipv6">IPv6</option>
-                                </select>
-                            </td>
-                            <td><input type="text" name="ip_address[]" placeholder="192.168.1.10 or 2001:db8::1"></td>
-                            <td><input type="number" name="port[]" placeholder="1-65535"></td>
-                            <td>
-                                <select name="protocol[]">
-                                    <option value="tcp">TCP</option>
-                                    <option value="udp">UDP</option>
-                                    <option value="any">ANY</option>
-                                </select>
-                            </td>
-                            <td><input type="text" name="description[]"></td>
-                            <td class="actions">
-                                <button type="button" class="btn-remove" onclick="removeRow(this)">Remove</button>
-                            </td>
-                        </tr>
-                    <?php endif; ?>
+                        <?php endif; ?>
 
-                </tbody>
-            </table>
-            <br>
-            <button type="button" class="btn-add" onclick="addRow()">Add Rule</button>
+                    </tbody>
+                </table>
+                <br>
+                <button type="button" class="btn-add" onclick="addRow()">Add Rule</button>
+                <br><br>
+                <button type="submit" class="btn-save">Save Rules</button>
+                <br><br>
+                <br><br>
+            </form>
             <br><br>
-            <button type="submit" class="btn-save">Save Rules</button>
-            <br><br>
-            <br><br>
-        </form>
-            <br><br>
+        </div>
     </div>
 </div>
 
