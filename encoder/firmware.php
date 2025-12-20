@@ -1,6 +1,5 @@
 <?php
 
-include 'header.php';
 
 $board_id = trim(@file_get_contents('/sys/class/dmi/id/board_serial'));
 
@@ -104,6 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
     }
 }
+include 'header.php';
 
 ?>
 <script>
