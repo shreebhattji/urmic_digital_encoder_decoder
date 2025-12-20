@@ -158,7 +158,7 @@ $board_id = trim(@file_get_contents('/sys/class/dmi/id/board_serial'));
             </form>
         </div>
         <div class="card wide">
-            <form method="post" class="form-center" onsubmit="return confirmbackup();">
+            <form method="post" class="form-center">
                 <button type="submit" name="action" value="backup" class="green-btn">Download Backup File</button>
             </form>
         </div>
