@@ -353,6 +353,19 @@ EOL
 
 EOL
 
+cat >/etc/netplan/00-stream.yaml<< 'EOL'
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eth:
+      match:
+        name: enx*
+      addresses:
+      - 172.16.111.111/24
+EOL
+
+
 cat > /etc/nginx/sites-available/default<< 'EOL'
 server {
 	listen 80 default_server;
