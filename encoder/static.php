@@ -180,7 +180,7 @@ function update_service($which_service)
                         . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
                     break;
                 case "url":
-                    $input .= "ffmpeg -hide_banner -stream_loop -1 -re -i " . $data['url']
+                    $input .= "ffmpeg -hwaccel auto -hide_banner -stream_loop -1 -re -i " . $data['url']
                         . " -c:v h264_qsv "
                         . ' -vf "scale=' . $common_backend_resolution . '"'
                         . " -b:v " . $common_backend_data_rate
@@ -196,7 +196,7 @@ function update_service($which_service)
                         . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
                     break;
                 case "udp":
-                    $input .= 'ffmpeg -hide_banner -stream_loop -1 -re -i "' . $data['udp']
+                    $input .= 'ffmpeg -hwaccel auto -hide_banner -stream_loop -1 -re -i "' . $data['udp']
                         . " -c:v h264_qsv "
                         . ' -vf "scale=' . $common_backend_resolution . '"'
                         . " -b:v " . $common_backend_data_rate
@@ -213,7 +213,7 @@ function update_service($which_service)
                     break;
                 case "rtmp":
                     update_service_backend('rtmp');
-                    $input .= "ffmpeg -hide_banner -stream_loop -1 -re -i rtmp://127.0.0.1:1935/" . $$input_rtmp_mount . "/" . $input_rtmp_pass
+                    $input .= "ffmpeg -hwaccel auto -hide_banner -stream_loop -1 -re -i rtmp://127.0.0.1:1935/" . $$input_rtmp_mount . "/" . $input_rtmp_pass
                         . " -c:v h264_qsv "
                         . ' -vf "scale=' . $common_backend_resolution . '"'
                         . " -b:v " . $common_backend_data_rate
@@ -231,7 +231,7 @@ function update_service($which_service)
                     break;
                 case "srt":
                     update_service_backend('srt');
-                    $input .= "ffmpeg -hide_banner -stream_loop -1 -re -i srt://127.0.0.1:1937?streamid=shree/bhatt/" . $srt_pass3
+                    $input .= "ffmpeg -hwaccel auto -hide_banner -stream_loop -1 -re -i srt://127.0.0.1:1937?streamid=shree/bhatt/" . $srt_pass3
                         . " -c:v h264_qsv "
                         . ' -vf "scale=' . $common_backend_resolution . '"'
                         . " -b:v " . $common_backend_data_rate
