@@ -266,7 +266,7 @@ function update_service($which_service)
                     break;
                 case "srt":
                     update_service_backend('srt');
-                    $input_transcode_every_time = "srt://127.0.0.1?streamid=shree/bhatt/ji";
+                    $input_transcode_every_time = "srt://127.0.0.1:1937?streamid=shree/bhatt/ji";
                     break;
             }
             break;
