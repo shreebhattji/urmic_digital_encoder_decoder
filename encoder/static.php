@@ -126,10 +126,10 @@ function update_service($which_service)
         case "copy_input":
             switch ($input_source) {
                 case "hdmi":
-                    $input .= "ffmpeg -hwaccel auto -hide_banner -f v4l2 -thread_queue_size 1024 -input_format mjpeg "
+                    $input .= "ffmpeg -init_hw_device qsv=hw -filter_hw_device hw -hide_banner -f v4l2 -thread_queue_size 1024 -input_format mjpeg "
                         . " -video_size " . $data['hdmi']['resolution']
                         . " -framerate " . $data['hdmi']['framerate']
-                        . " -fflags +genpts -use_wallclock_as_timestamps 1 -re -f alsa -thread_queue_size 512 -i " . $data['hdmi']['audio_source']
+                        . " -f alsa -thread_queue_size 1024 -i " . $data['hdmi']['audio_source']
                         . " -c:v h264_qsv -pix_fmt yuv420p  -profile:v high  -b:v 5M -maxrate 5M -bufsize 12M -c:a aac -b:a 265k  -ar 48000 -tune zerolatency ";
                     if ($hdmi_delay_video != "")
                         $input .= "-vf " . setptsFromMs($hdmi_delay_video);
@@ -156,8 +156,8 @@ function update_service($which_service)
         case "use_common_backend":
             switch ($input_source) {
                 case "hdmi":
-                    $input .= "ffmpeg -hwaccel auto -hide_banner -f v4l2 -thread_queue_size 1024 -input_format mjpeg -video_size " . $data['hdmi']['resolution']
-                        . " -framerate " . $data['hdmi']['framerate'] . " -i /dev/video0 -fflags +genpts -use_wallclock_as_timestamps 1 -re -f alsa -thread_queue_size 512 -i " . $data['hdmi']['audio_source']
+                    $input .= "ffmpeg -init_hw_device qsv=hw -filter_hw_device hw -hide_banner -f v4l2 -thread_queue_size 1024 -input_format mjpeg -video_size " . $data['hdmi']['resolution']
+                        . " -framerate " . $data['hdmi']['framerate'] . " -i /dev/video0 -f alsa -thread_queue_size 1024 -i " . $data['hdmi']['audio_source']
                         . " -c:v h264_qsv ";
                     if ($hdmi_delay_video != "")
                         $input .= ' -vf "scale=' . $common_backend_resolution . ',' . setptsFromMs($hdmi_delay_video) . '"';
