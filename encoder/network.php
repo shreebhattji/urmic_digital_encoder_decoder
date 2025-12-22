@@ -136,33 +136,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         function build_interface(array $d, string $key): array
         {
             $cfg = [];
+            $addresses = [];
+            $routes = [];
 
-            /* IPv4 */
-            switch ($d['mode']) {
+            /* ================= IPv4 ================= */
+            switch ($d['mode'] ?? 'disabled') {
+
                 case 'dhcp':
                     $cfg['dhcp4'] = true;
                     break;
 
                 case 'static':
                     if (!empty($d["network_{$key}_ip"]) && !empty($d["network_{$key}_subnet"])) {
-                        $cfg['addresses'][] =
+                        $addresses[] =
                             $d["network_{$key}_ip"] . '/' . $d["network_{$key}_subnet"];
                     }
+
                     if (!empty($d["network_{$key}_gateway"])) {
-                        $cfg['routes'][] = [
+                        $routes[] = [
                             'to'  => 'default',
                             'via' => $d["network_{$key}_gateway"]
                         ];
                     }
+
+                    $cfg['dhcp4'] = false;
                     break;
 
                 case 'disabled':
+                default:
                     $cfg['dhcp4'] = false;
                     break;
             }
 
-            /* IPv6 */
-            switch ($d['modev6']) {
+            /* ================= IPv6 ================= */
+            switch ($d['modev6'] ?? 'disabled') {
+
                 case 'auto': // SLAAC
                     $cfg['accept-ra'] = true;
                     $cfg['dhcp6'] = false;
@@ -175,36 +183,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 case 'static':
                     if (!empty($d["network_{$key}_ipv6"]) && !empty($d["network_{$key}_ipv6_prefix"])) {
-                        $cfg['addresses'][] =
+                        $addresses[] =
                             $d["network_{$key}_ipv6"] . '/' . $d["network_{$key}_ipv6_prefix"];
                     }
+
                     if (!empty($d["network_{$key}_ipv6_gateway"])) {
-                        $cfg['routes'][] = [
+                        $routes[] = [
                             'to'  => '::/0',
                             'via' => $d["network_{$key}_ipv6_gateway"]
                         ];
                     }
+
+                    $cfg['dhcp6'] = false;
                     $cfg['accept-ra'] = false;
                     break;
 
                 case 'disabled':
+                default:
                     $cfg['dhcp6'] = false;
                     $cfg['accept-ra'] = false;
                     break;
             }
 
-            /* DNS */
-            $dns = array_filter([
+            /* ================= Addresses ================= */
+            if ($addresses) {
+                $cfg['addresses'] = $addresses;
+            }
+
+            /* ================= Routes ================= */
+            if ($routes) {
+                $cfg['routes'] = $routes;
+            }
+
+            /* ================= DNS ================= */
+            $dns = array_values(array_filter([
                 $d["network_{$key}_dns1"] ?? '',
                 $d["network_{$key}_dns2"] ?? '',
                 $d["network_{$key}_ipv6_dns1"] ?? '',
-                $d["network_{$key}_ipv6_dns2"] ?? ''
-            ]);
+                $d["network_{$key}_ipv6_dns2"] ?? '',
+            ]));
 
             if ($dns) {
-                $cfg['nameservers']['addresses'] = array_values($dns);
+                $cfg['nameservers'] = [
+                    'addresses' => $dns
+                ];
             }
-
             return $cfg;
         }
 
