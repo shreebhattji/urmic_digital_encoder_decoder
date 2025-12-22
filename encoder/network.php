@@ -136,32 +136,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $uses_vlan = ($primary_vlan !== '' || $secondary_vlan !== '');
 
-        /* ---------- No VLAN ---------- */
         if (!$uses_vlan) {
             $netplan['network']['ethernets'][$iface] =
                 build_interface($data['primary'], 'primary');
-        }
-        /* ---------- VLAN mode ---------- */ else {
-            // base interface must exist as {}
+        } else {
             $netplan['network']['ethernets'][$iface] = new stdClass();
 
             if ($primary_vlan !== '') {
-                $vif = "{$iface}.{$primary_vlan}";
-                $netplan['network']['vlans'][$vif] = array_merge([
-                    'id'   => (int)$primary_vlan,
-                    'link' => $iface
-                ], build_interface($data['primary'], 'primary'));
+                $netplan['network']['vlans']["{$iface}.{$primary_vlan}"] =
+                    array_merge(
+                        ['id' => (int)$primary_vlan, 'link' => $iface],
+                        build_interface($data['primary'], 'primary')
+                    );
             }
 
             if ($secondary_vlan !== '') {
-                $vif = "{$iface}.{$secondary_vlan}";
-                $netplan['network']['vlans'][$vif] = array_merge([
-                    'id'   => (int)$secondary_vlan,
-                    'link' => $iface
-                ], build_interface($data['secondary'], 'secondary'));
+                $netplan['network']['vlans']["{$iface}.{$secondary_vlan}"] =
+                    array_merge(
+                        ['id' => (int)$secondary_vlan, 'link' => $iface],
+                        build_interface($data['secondary'], 'secondary')
+                    );
             }
         }
-        
+
         $yaml = netplan_yaml($netplan);
         file_put_contents('/var/www/50-cloud-init.yaml', $yaml);
     }

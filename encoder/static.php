@@ -81,7 +81,7 @@ function build_interface(array $d, string $key): array
     $addresses = [];
     $routes = [];
 
-    /* ---------- IPv4 ---------- */
+    /* IPv4 */
     switch ($d['mode'] ?? 'disabled') {
         case 'dhcp':
             $cfg['dhcp4'] = true;
@@ -89,14 +89,10 @@ function build_interface(array $d, string $key): array
 
         case 'static':
             if (!empty($d["network_{$key}_ip"]) && !empty($d["network_{$key}_subnet"])) {
-                $addresses[] =
-                    $d["network_{$key}_ip"] . '/' . $d["network_{$key}_subnet"];
+                $addresses[] = $d["network_{$key}_ip"] . '/' . $d["network_{$key}_subnet"];
             }
             if (!empty($d["network_{$key}_gateway"])) {
-                $routes[] = [
-                    'to'  => 'default',
-                    'via' => $d["network_{$key}_gateway"]
-                ];
+                $routes[] = ['to' => 'default', 'via' => $d["network_{$key}_gateway"]];
             }
             $cfg['dhcp4'] = false;
             break;
@@ -105,9 +101,9 @@ function build_interface(array $d, string $key): array
             $cfg['dhcp4'] = false;
     }
 
-    /* ---------- IPv6 ---------- */
+    /* IPv6 */
     switch ($d['modev6'] ?? 'disabled') {
-        case 'auto': // SLAAC
+        case 'auto':
             $cfg['accept-ra'] = true;
             $cfg['dhcp6'] = false;
             break;
@@ -119,14 +115,10 @@ function build_interface(array $d, string $key): array
 
         case 'static':
             if (!empty($d["network_{$key}_ipv6"]) && !empty($d["network_{$key}_ipv6_prefix"])) {
-                $addresses[] =
-                    $d["network_{$key}_ipv6"] . '/' . $d["network_{$key}_ipv6_prefix"];
+                $addresses[] = $d["network_{$key}_ipv6"] . '/' . $d["network_{$key}_ipv6_prefix"];
             }
             if (!empty($d["network_{$key}_ipv6_gateway"])) {
-                $routes[] = [
-                    'to'  => '::/0',
-                    'via' => $d["network_{$key}_ipv6_gateway"]
-                ];
+                $routes[] = ['to' => '::/0', 'via' => $d["network_{$key}_ipv6_gateway"]];
             }
             $cfg['dhcp6'] = false;
             $cfg['accept-ra'] = false;
@@ -153,9 +145,7 @@ function build_interface(array $d, string $key): array
     ]));
 
     if ($dns) {
-        $cfg['nameservers'] = [
-            'addresses' => $dns
-        ];
+        $cfg['nameservers'] = ['addresses' => $dns];
     }
 
     return $cfg;
@@ -164,7 +154,6 @@ function build_interface(array $d, string $key): array
 
 function netplan_yaml(array $data, int $indent = 0): string
 {
-
     $yaml = '';
     $pad  = str_repeat('  ', $indent);
 
@@ -175,23 +164,21 @@ function netplan_yaml(array $data, int $indent = 0): string
             continue;
         }
 
-        if (is_array($value) && array_keys($value) === range(0, count($value) - 1)) {
+        if (is_array($value) && !array_is_list($value)) {
+            $yaml .= "{$pad}{$key}:\n";
+            $yaml .= netplan_yaml($value, $indent + 1);
+            continue;
+        }
+
+        if (is_array($value) && array_is_list($value)) {
             foreach ($value as $item) {
-                if ($item instanceof stdClass) {
-                    $yaml .= "{$pad}- {}\n";
-                } elseif (is_array($item)) {
+                if (is_array($item)) {
                     $yaml .= "{$pad}-\n";
                     $yaml .= netplan_yaml($item, $indent + 1);
                 } else {
                     $yaml .= "{$pad}- {$item}\n";
                 }
             }
-            continue;
-        }
-
-        if (is_array($value)) {
-            $yaml .= "{$pad}{$key}:\n";
-            $yaml .= netplan_yaml($value, $indent + 1);
             continue;
         }
 
