@@ -164,15 +164,22 @@ function build_interface(array $d, string $key): array
 
 function netplan_yaml(array $data, int $indent = 0): string
 {
+
     $yaml = '';
     $pad  = str_repeat('  ', $indent);
 
     foreach ($data as $key => $value) {
 
-        // List (numeric keys)
+        if ($value instanceof stdClass) {
+            $yaml .= "{$pad}{$key}: {}\n";
+            continue;
+        }
+
         if (is_array($value) && array_keys($value) === range(0, count($value) - 1)) {
             foreach ($value as $item) {
-                if (is_array($item)) {
+                if ($item instanceof stdClass) {
+                    $yaml .= "{$pad}- {}\n";
+                } elseif (is_array($item)) {
                     $yaml .= "{$pad}-\n";
                     $yaml .= netplan_yaml($item, $indent + 1);
                 } else {
@@ -182,14 +189,12 @@ function netplan_yaml(array $data, int $indent = 0): string
             continue;
         }
 
-        // Mapping
         if (is_array($value)) {
             $yaml .= "{$pad}{$key}:\n";
             $yaml .= netplan_yaml($value, $indent + 1);
             continue;
         }
 
-        // Scalar
         if (is_bool($value)) {
             $value = $value ? 'true' : 'false';
         }
@@ -199,6 +204,7 @@ function netplan_yaml(array $data, int $indent = 0): string
 
     return $yaml;
 }
+
 
 function update_service($which_service)
 {
