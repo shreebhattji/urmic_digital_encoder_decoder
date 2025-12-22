@@ -40,6 +40,71 @@ function deleteDir(string $dir): void
     rmdir($dir);
 }
 
+function find_first_physical_ethernet(): ?string
+{
+    foreach (scandir('/sys/class/net') as $iface) {
+        if ($iface === '.' || $iface === '..' || $iface === 'lo') {
+            continue;
+        }
+
+        $net = "/sys/class/net/$iface";
+
+        if (!is_link("$net/device")) {
+            continue;
+        }
+
+        $type = @trim(file_get_contents("$net/type"));
+        if ($type !== '1') {
+            continue;
+        }
+
+        if (is_dir("$net/wireless")) {
+            continue;
+        }
+
+        if (is_dir("$net/bridge")) {
+            continue;
+        }
+
+        $addrAssignType = @trim(file_get_contents("$net/addr_assign_type"));
+        if ($addrAssignType !== '0') {
+            continue;
+        }
+        return $iface;
+    }
+    return null;
+}
+
+function netplan_yaml(array $data, int $indent = 0): string
+{
+    $yaml = '';
+    $pad  = str_repeat('  ', $indent);
+
+    foreach ($data as $key => $value) {
+        if (is_array($value)) {
+            $is_list = array_keys($value) === range(0, count($value) - 1);
+
+            if ($is_list) {
+                foreach ($value as $item) {
+                    if (is_array($item)) {
+                        $yaml .= "{$pad}-\n" . netplan_yaml($item, $indent + 1);
+                    } else {
+                        $yaml .= "{$pad}- {$item}\n";
+                    }
+                }
+            } else {
+                $yaml .= "{$pad}{$key}:\n" . netplan_yaml($value, $indent + 1);
+            }
+        } else {
+            if (is_bool($value)) {
+                $value = $value ? 'true' : 'false';
+            }
+            $yaml .= "{$pad}{$key}: {$value}\n";
+        }
+    }
+
+    return $yaml;
+}
 
 function update_service($which_service)
 {
