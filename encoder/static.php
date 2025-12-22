@@ -81,26 +81,33 @@ function netplan_yaml(array $data, int $indent = 0): string
     $pad  = str_repeat('  ', $indent);
 
     foreach ($data as $key => $value) {
-        if (is_array($value)) {
-            $is_list = array_keys($value) === range(0, count($value) - 1);
 
-            if ($is_list) {
-                foreach ($value as $item) {
-                    if (is_array($item)) {
-                        $yaml .= "{$pad}-\n" . netplan_yaml($item, $indent + 1);
-                    } else {
-                        $yaml .= "{$pad}- {$item}\n";
-                    }
+        // List (numeric keys)
+        if (is_array($value) && array_keys($value) === range(0, count($value) - 1)) {
+            foreach ($value as $item) {
+                if (is_array($item)) {
+                    $yaml .= "{$pad}-\n";
+                    $yaml .= netplan_yaml($item, $indent + 1);
+                } else {
+                    $yaml .= "{$pad}- {$item}\n";
                 }
-            } else {
-                $yaml .= "{$pad}{$key}:\n" . netplan_yaml($value, $indent + 1);
             }
-        } else {
-            if (is_bool($value)) {
-                $value = $value ? 'true' : 'false';
-            }
-            $yaml .= "{$pad}{$key}: {$value}\n";
+            continue;
         }
+
+        // Mapping
+        if (is_array($value)) {
+            $yaml .= "{$pad}{$key}:\n";
+            $yaml .= netplan_yaml($value, $indent + 1);
+            continue;
+        }
+
+        // Scalar
+        if (is_bool($value)) {
+            $value = $value ? 'true' : 'false';
+        }
+
+        $yaml .= "{$pad}{$key}: {$value}\n";
     }
 
     return $yaml;
