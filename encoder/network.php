@@ -123,7 +123,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'mode' => 'dhcp',
                 'modev6' => 'auto',
                 'network_primary_ip' => $primary_ip,
-                'network_primary_subnet' => $primary_subnet,
                 'network_primary_gateway' => $primary_gateway,
                 'network_primary_vlan' => $primary_vlan,
                 'network_primary_dns1' => $primary_vlan,
@@ -139,7 +138,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'mode' => 'disabled',
                 'modev6' => 'disabled',
                 'network_secondary_ip' => $secondary_ip,
-                'network_secondary_subnet' => $secondary_subnet,
                 'network_secondary_gateway' => $secondary_gateway,
                 'network_secondary_vlan' => $secondary_vlan,
                 'network_secondary_dns1' => $secondary_vlan,
@@ -310,23 +308,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         name="network_primary_ip"
                         placeholder="192.168.2.111/24"
                         pattern="^(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\/(?:8|16|20|24|28)$"
-                        value="<?php echo htmlspecialchars($data['primary']['ip']); ?>">
+                        value="<?php echo htmlspecialchars($data['primary']['network_primary_ip']); ?>">
                     <label for="network_primary_ip">Address</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_primary_gateway" name="network_primary_gateway" pattern="^([0-9a-fA-F]{1,4}:){2,7}[0-9a-fA-F]{1,4}$" placeholder="Gateway" value="<?php echo htmlspecialchars($data['primary']['gateway']); ?>">
+                    <input type="text" id="network_primary_gateway" name="network_primary_gateway" pattern="^([0-9a-fA-F]{1,4}:){2,7}[0-9a-fA-F]{1,4}$" placeholder="Gateway" value="<?php echo htmlspecialchars($data['primary']['network_primary_gateway']); ?>">
                     <label for="network_primary_gateway">Gateway</label>
                 </div>
                 <div class="input-group">
-                    <input type="number" min="1" max="4094" id="network_primary_vlan" name="network_primary_vlan" placeholder="Vlan" value="<?php echo htmlspecialchars($data['primary']['vlan']); ?>">
+                    <input type="number" min="1" max="4094" id="network_primary_vlan" name="network_primary_vlan" placeholder="Vlan" value="<?php echo htmlspecialchars($data['primary']['network_primary_vlan']); ?>">
                     <label for="network_primary_vlan">Vlan</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_primary_dns1" name="network_primary_dns1" placeholder="1.1.1.1" value="<?php echo htmlspecialchars($data['primary']['vlan']); ?>">
+                    <input type="text" id="network_primary_dns1" name="network_primary_dns1" placeholder="1.1.1.1" value="<?php echo htmlspecialchars($data['primary']['network_primary_dns1']); ?>">
                     <label for="network_primary_dns1">DNS1</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_primary_dns2" name="network_primary_dns2" placeholder="8.8.8.8" value="<?php echo htmlspecialchars($data['primary']['vlan']); ?>">
+                    <input type="text" id="network_primary_dns2" name="network_primary_dns2" placeholder="8.8.8.8" value="<?php echo htmlspecialchars($data['primary']['network_primary_dns2']); ?>">
                     <label for="network_primary_dns2">DNS2</label>
                 </div>
                 <div class="dropdown-container">
@@ -341,27 +339,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_primary_ipv6" name="network_primary_ipv6" placeholder="Address" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['ip']); ?>">
+                    <input type="text" id="network_primary_ipv6" name="network_primary_ipv6" placeholder="Address" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['network_primary_ipv6']); ?>">
                     <label for="network_primary_ipv6">Address</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_primary_ipv6_prefix" name="network_primary_ipv6_prefix" placeholder="Address" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['ip']); ?>">
+                    <input type="text" id="network_primary_ipv6_prefix" name="network_primary_ipv6_prefix" placeholder="Address" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['network_primary_ipv6_prefix']); ?>">
                     <label for="network_primary_ipv6_prefix">Prefix</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_primary_ipv6_gateway" name="network_primary_ipv6_gateway" placeholder="Address" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['ip']); ?>">
+                    <input type="text" id="network_primary_ipv6_gateway" name="network_primary_ipv6_gateway" placeholder="Address" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['network_primary_ipv6_gateway']); ?>">
                     <label for="network_primary_ipv6_gateway">Gateway</label>
                 </div>
                 <div class="input-group">
-                    <input type="number" min="1" max="4094" id="network_primary_ipv6_vlan" name="network_primary_ipv6_vlan" placeholder="Vlan" value="<?php echo htmlspecialchars($data['primary']['vlan']); ?>">
+                    <input type="number" min="1" max="4094" id="network_primary_ipv6_vlan" name="network_primary_ipv6_vlan" placeholder="Vlan" value="<?php echo htmlspecialchars($data['primary']['network_primary_ipv6_vlan']); ?>">
                     <label for="network_primary_ipv6_vlan">Vlan</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_primary_ipv6_dns1" name="network_primary_ipv6_dns1" placeholder="2606:4700:4700::1111" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['ip']); ?>">
+                    <input type="text" id="network_primary_ipv6_dns1" name="network_primary_ipv6_dns1" placeholder="2606:4700:4700::1111" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['network_primary_ipv6_dns1']); ?>">
                     <label for="network_primary_ipv6_dns1">DNS1</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_primary_ipv6_dns2" name="network_primary_ipv6_dns2" placeholder="2001:4860:4860::8888" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['ip']); ?>">
+                    <input type="text" id="network_primary_ipv6_dns2" name="network_primary_ipv6_dns2" placeholder="2001:4860:4860::8888" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['network_primary_ipv6_dns2']); ?>">
                     <label for="network_primary_ipv6_dns2">DNS2</label>
                 </div>
 
@@ -388,23 +386,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         name="network_secondary_ip"
                         placeholder="192.168.1.111/24"
                         pattern="^(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\/(?:8|16|20|24|28)$"
-                        value="<?php echo htmlspecialchars($data['secondary']['ip']); ?>">
+                        value="<?php echo htmlspecialchars($data['secondary']['network_secondary_ip']); ?>">
                     <label for="network_secondary_ip">Address</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_secondary_gateway" name="network_secondary_gateway" pattern="^([0-9a-fA-F]{1,4}:){2,7}[0-9a-fA-F]{1,4}$" placeholder="Gateway" value="<?php echo htmlspecialchars($data['secondary']['gateway']); ?>">
+                    <input type="text" id="network_secondary_gateway" name="network_secondary_gateway" pattern="^([0-9a-fA-F]{1,4}:){2,7}[0-9a-fA-F]{1,4}$" placeholder="Gateway" value="<?php echo htmlspecialchars($data['secondary']['network_secondary_gateway']); ?>">
                     <label for="network_secondary_gateway">Gateway</label>
                 </div>
                 <div class="input-group">
-                    <input type="number" min="1" max="4094" id="network_secondary_vlan" name="network_secondary_vlan" placeholder="Vlan" value="<?php echo htmlspecialchars($data['secondary']['vlan']); ?>">
+                    <input type="number" min="1" max="4094" id="network_secondary_vlan" name="network_secondary_vlan" placeholder="Vlan" value="<?php echo htmlspecialchars($data['secondary']['network_secondary_vlan']); ?>">
                     <label for="network_secondary_vlan">Vlan</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_secondary_dns1" name="network_secondary_dns1" placeholder="1.1.1.1" value="<?php echo htmlspecialchars($data['secondary']['vlan']); ?>">
+                    <input type="text" id="network_secondary_dns1" name="network_secondary_dns1" placeholder="1.1.1.1" value="<?php echo htmlspecialchars($data['secondary']['network_secondary_dns1']); ?>">
                     <label for="network_secondary_dns1">DNS1</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_secondary_dns2" name="network_secondary_dns2" placeholder="8.8.8.8" value="<?php echo htmlspecialchars($data['secondary']['vlan']); ?>">
+                    <input type="text" id="network_secondary_dns2" name="network_secondary_dns2" placeholder="8.8.8.8" value="<?php echo htmlspecialchars($data['secondary']['network_secondary_dns2']); ?>">
                     <label for="network_secondary_dns2">DNS2</label>
                 </div>
                 <div class="dropdown-container">
@@ -419,27 +417,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_secondary_ipv6" name="network_secondary_ipv6" placeholder="Address" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['ip']); ?>">
+                    <input type="text" id="network_secondary_ipv6" name="network_secondary_ipv6" placeholder="Address" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['network_secondary_ipv6']); ?>">
                     <label for="network_secondary_ipv6">Address</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_secondary_ipv6_prefix" name="network_secondary_ipv6_prefix" placeholder="Address" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['ip']); ?>">
+                    <input type="text" id="network_secondary_ipv6_prefix" name="network_secondary_ipv6_prefix" placeholder="Address" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['network_secondary_ipv6_prefix']); ?>">
                     <label for="network_secondary_ipv6_prefix">Prefix</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_secondary_ipv6_gateway" name="network_secondary_ipv6_gateway" placeholder="Address" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['ip']); ?>">
+                    <input type="text" id="network_secondary_ipv6_gateway" name="network_secondary_ipv6_gateway" placeholder="Address" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['network_secondary_ipv6_gateway']); ?>">
                     <label for="network_secondary_ipv6_gateway">Gateway</label>
                 </div>
                 <div class="input-group">
-                    <input type="number" min="1" max="4094" id="network_secondary_ipv6_vlan" name="network_secondary_ipv6_vlan" placeholder="Vlan" value="<?php echo htmlspecialchars($data['primary']['vlan']); ?>">
+                    <input type="number" min="1" max="4094" id="network_secondary_ipv6_vlan" name="network_secondary_ipv6_vlan" placeholder="Vlan" value="<?php echo htmlspecialchars($data['primary']['network_secondary_ipv6_vlan']); ?>">
                     <label for="network_secondary_ipv6_vlan">Vlan</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_secondary_ipv6_dns1" name="network_secondary_ipv6_dns1" placeholder="2606:4700:4700::1111" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['ip']); ?>">
+                    <input type="text" id="network_secondary_ipv6_dns1" name="network_secondary_ipv6_dns1" placeholder="2606:4700:4700::1111" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['network_secondary_ipv6_dns1']); ?>">
                     <label for="network_secondary_ipv6_dns1">DNS1</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_secondary_ipv6_dns2" name="network_secondary_ipv6_dns2" placeholder="2001:4860:4860::8888" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['ip']); ?>">
+                    <input type="text" id="network_secondary_ipv6_dns2" name="network_secondary_ipv6_dns2" placeholder="2001:4860:4860::8888" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['network_secondary_ipv6_dns2']); ?>">
                     <label for="network_secondary_ipv6_dns2">DNS2</label>
                 </div>
                 <br>
