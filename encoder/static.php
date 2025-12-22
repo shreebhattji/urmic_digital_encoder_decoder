@@ -75,6 +75,93 @@ function find_first_physical_ethernet(): ?string
     return null;
 }
 
+function build_interface(array $d, string $key): array
+{
+    $cfg = [];
+    $addresses = [];
+    $routes = [];
+
+    /* ---------- IPv4 ---------- */
+    switch ($d['mode'] ?? 'disabled') {
+        case 'dhcp':
+            $cfg['dhcp4'] = true;
+            break;
+
+        case 'static':
+            if (!empty($d["network_{$key}_ip"]) && !empty($d["network_{$key}_subnet"])) {
+                $addresses[] =
+                    $d["network_{$key}_ip"] . '/' . $d["network_{$key}_subnet"];
+            }
+            if (!empty($d["network_{$key}_gateway"])) {
+                $routes[] = [
+                    'to'  => 'default',
+                    'via' => $d["network_{$key}_gateway"]
+                ];
+            }
+            $cfg['dhcp4'] = false;
+            break;
+
+        default:
+            $cfg['dhcp4'] = false;
+    }
+
+    /* ---------- IPv6 ---------- */
+    switch ($d['modev6'] ?? 'disabled') {
+        case 'auto': // SLAAC
+            $cfg['accept-ra'] = true;
+            $cfg['dhcp6'] = false;
+            break;
+
+        case 'dhcp6':
+            $cfg['dhcp6'] = true;
+            $cfg['accept-ra'] = false;
+            break;
+
+        case 'static':
+            if (!empty($d["network_{$key}_ipv6"]) && !empty($d["network_{$key}_ipv6_prefix"])) {
+                $addresses[] =
+                    $d["network_{$key}_ipv6"] . '/' . $d["network_{$key}_ipv6_prefix"];
+            }
+            if (!empty($d["network_{$key}_ipv6_gateway"])) {
+                $routes[] = [
+                    'to'  => '::/0',
+                    'via' => $d["network_{$key}_ipv6_gateway"]
+                ];
+            }
+            $cfg['dhcp6'] = false;
+            $cfg['accept-ra'] = false;
+            break;
+
+        default:
+            $cfg['dhcp6'] = false;
+            $cfg['accept-ra'] = false;
+    }
+
+    if ($addresses) {
+        $cfg['addresses'] = $addresses;
+    }
+
+    if ($routes) {
+        $cfg['routes'] = $routes;
+    }
+
+    $dns = array_values(array_filter([
+        $d["network_{$key}_dns1"] ?? '',
+        $d["network_{$key}_dns2"] ?? '',
+        $d["network_{$key}_ipv6_dns1"] ?? '',
+        $d["network_{$key}_ipv6_dns2"] ?? '',
+    ]));
+
+    if ($dns) {
+        $cfg['nameservers'] = [
+            'addresses' => $dns
+        ];
+    }
+
+    return $cfg;
+}
+
+
 function netplan_yaml(array $data, int $indent = 0): string
 {
     $yaml = '';
