@@ -452,6 +452,7 @@ function update_service($which_service)
                 exec("sudo systemctl enable encoder-display");
                 exec("sudo systemctl restart encoder-display");
             } else {
+
                 exec("sudo systemctl stop encoder-display");
                 exec("sudo systemctl disable encoder-display");
             }
@@ -477,7 +478,7 @@ function update_service($which_service)
                             $rtmp .= ' '
                                 . ' -c:v h264_qsv '
                                 . ' -vf "scale=' . str_replace("x", ":", $data['rtmp0']['resolution']) . '"'
-                                . '" -b:v ' . $data['rtmp0']['data_rate']
+                                . ' -b:v ' . $data['rtmp0']['data_rate']
                                 . ' -maxrate ' . $data['rtmp0']['data_rate']
                                 . ' -bufsize ' . $data['rtmp0']['data_rate']
                                 . ' -r ' . $data['rtmp0']['framerate']
@@ -555,7 +556,7 @@ function update_service($which_service)
                         $service = 'ffmpeg -hide_banner -fflags +discardcorrupt -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v ' . $data['srt']['formate']
                             . ' -vf "scale=' . str_replace("x", ":", $data['srt']['resolution']) . '"'
-                            . '" -b:v ' . $data['srt']['data_rate']
+                            . ' -b:v ' . $data['srt']['data_rate']
                             . ' -maxrate ' . $data['srt']['data_rate']
                             . ' -bufsize ' . $data['udp0']['data_rate']
                             . ' -r ' . $data['srt']['srt']
@@ -595,7 +596,7 @@ function update_service($which_service)
                         $udp0 = 'ffmpeg -hwaccel auto -hide_banner   -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v ' . $data['udp0']['formate']
                             . ' -vf "scale=' . str_replace("x", ":", $data['udp0']['resolution']) . '"'
-                            . '" -b:v ' . $data['udp0']['data_rate']
+                            . ' -b:v ' . $data['udp0']['data_rate']
                             . ' -maxrate ' . $data['udp0']['data_rate']
                             . ' -bufsize ' . $data['udp0']['data_rate']
                             . ' -r ' . $data['udp0']['framerate']
@@ -630,7 +631,7 @@ function update_service($which_service)
                         $udp1 = 'ffmpeg -hwaccel auto -hide_banner   -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v ' . $data['udp1']['formate']
                             . ' -vf "scale=' . str_replace("x", ":", $data['udp1']['resolution']) . '"'
-                            . '" -b:v ' . $data['udp1']['data_rate']
+                            . ' -b:v ' . $data['udp1']['data_rate']
                             . ' -maxrate ' . $data['udp1']['data_rate']
                             . ' -bufsize ' . $data['udp1']['data_rate']
                             . ' -r ' . $data['udp1']['framerate']
@@ -665,7 +666,7 @@ function update_service($which_service)
                         $udp2 = 'ffmpeg -hwaccel auto -hide_banner   -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v ' . $data['udp2']['formate']
                             . ' -vf "scale=' . str_replace("x", ":", $data['udp2']['resolution']) . '"'
-                            . '" -b:v ' . $data['udp2']['data_rate']
+                            . ' -b:v ' . $data['udp2']['data_rate']
                             . ' -maxrate ' . $data['udp2']['data_rate']
                             . ' -bufsize ' . $data['udp2']['data_rate']
                             . ' -r ' . $data['udp2']['framerate']
