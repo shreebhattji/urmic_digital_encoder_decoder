@@ -60,7 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $network_primary_ip = $get('network_primary_ip');
     $network_primary_gateway = $get('network_primary_gateway');
-    $network_primary_gateway = $get('network_primary_gateway');
     $network_primary_vlan = $get('network_primary_vlan');
     $network_primary_dns1 = $get('network_primary_dns1');
     $network_primary_dns2 = $get('network_primary_dns2');
@@ -84,204 +83,169 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $network_secondary_ipv6_dns1 = $get('network_secondary_ipv6_dns1');
     $network_secondary_ipv6_dns2 = $get('network_secondary_ipv6_dns2');
 
-    $validate_ip_or_cidr = function ($v) {
-        if ($v === '') return true;
-        if (strpos($v, '/') !== false) {
-            [$ip, $cidr] = explode('/', $v, 2);
-            return filter_var($ip, FILTER_VALIDATE_IP) !== false && ctype_digit($cidr) && (int)$cidr >= 0 && (int)$cidr <= 32;
-        }
-        return filter_var($v, FILTER_VALIDATE_IP) !== false;
-    };
+    $new = [
+        'primary' => [
+            'mode' => 'dhcp',
+            'modev6' => 'auto',
+            'network_primary_ip' => $primary_ip,
+            'network_primary_gateway' => $primary_gateway,
+            'network_primary_vlan' => $primary_vlan,
+            'network_primary_dns1' => $primary_vlan,
+            'network_primary_dns2' => $primary_vlan,
+            'network_primary_ipv6' => $primary_vlan,
+            'network_primary_ipv6_prefix' => $primary_vlan,
+            'network_primary_ipv6_gateway' => $primary_vlan,
+            'network_primary_ipv6_vlan' => $primary_vlan,
+            'network_primary_ipv6_dns1' => $primary_vlan,
+            'network_primary_ipv6_dns2' => $primary_vlan
+        ],
+        'secondary' => [
+            'mode' => 'disabled',
+            'modev6' => 'disabled',
+            'network_secondary_ip' => $secondary_ip,
+            'network_secondary_gateway' => $secondary_gateway,
+            'network_secondary_vlan' => $secondary_vlan,
+            'network_secondary_dns1' => $secondary_vlan,
+            'network_secondary_dns2' => $secondary_vlan,
+            'network_secondary_ipv6' => $secondary_vlan,
+            'network_secondary_ipv6_prefix' => $secondary_vlan,
+            'network_secondary_ipv6_gateway' => $secondary_vlan,
+            'network_secondary_ipv6_vlan' => $secondary_vlan,
+            'network_secondary_ipv6_dns1' => $secondary_vlan,
+            'network_secondary_ipv6_dns2' => $secondary_vlan
+        ],
+    ];
+    $json = json_encode($new, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    if (file_put_contents($jsonFile, $json, LOCK_EX) === false) {
+        $errors[] = "Failed to write {$jsonFile}. Check permissions.";
+    } else {
+        $data = $new;
+        $success = 'Saved.';
 
-    foreach (
-        [
-            ['field' => 'Primary IP', 'value' => $primary_ip],
-            ['field' => 'Primary Subnet', 'value' => $primary_subnet],
-            ['field' => 'Primary Gateway', 'value' => $primary_gateway],
-            ['field' => 'Secondary IP', 'value' => $secondary_ip],
-            ['field' => 'Secondary Subnet', 'value' => $secondary_subnet],
-            ['field' => 'Secondary Gateway', 'value' => $secondary_gateway],
-        ] as $f
-    ) {
-        if ($f['value'] !== '') {
-            $ok = $f['field'] === 'Primary Subnet' || $f['field'] === 'Secondary Subnet'
-                ? $validate_ip_or_cidr($f['value'])
-                : filter_var($f['value'], FILTER_VALIDATE_IP) !== false;
-            if (!$ok) $errors[] = $f['field'] . ' is invalid: ' . htmlspecialchars($f['value']);
-        }
-    }
-
-    foreach ([['Primary VLAN', $primary_vlan], ['Secondary VLAN', $secondary_vlan]] as $v) {
-        if ($v[1] !== '' && (!ctype_digit($v[1]) || (int)$v[1] < 0 || (int)$v[1] > 4094)) {
-            $errors[] = $v[0] . ' must be a number 0-4094';
-        }
-    }
-
-    if (empty($errors)) {
-        $new = [
-            'primary' => [
-                'mode' => 'dhcp',
-                'modev6' => 'auto',
-                'network_primary_ip' => $primary_ip,
-                'network_primary_gateway' => $primary_gateway,
-                'network_primary_vlan' => $primary_vlan,
-                'network_primary_dns1' => $primary_vlan,
-                'network_primary_dns2' => $primary_vlan,
-                'network_primary_ipv6' => $primary_vlan,
-                'network_primary_ipv6_prefix' => $primary_vlan,
-                'network_primary_ipv6_gateway' => $primary_vlan,
-                'network_primary_ipv6_vlan' => $primary_vlan,
-                'network_primary_ipv6_dns1' => $primary_vlan,
-                'network_primary_ipv6_dns2' => $primary_vlan
-            ],
-            'secondary' => [
-                'mode' => 'disabled',
-                'modev6' => 'disabled',
-                'network_secondary_ip' => $secondary_ip,
-                'network_secondary_gateway' => $secondary_gateway,
-                'network_secondary_vlan' => $secondary_vlan,
-                'network_secondary_dns1' => $secondary_vlan,
-                'network_secondary_dns2' => $secondary_vlan,
-                'network_secondary_ipv6' => $secondary_vlan,
-                'network_secondary_ipv6_prefix' => $secondary_vlan,
-                'network_secondary_ipv6_gateway' => $secondary_vlan,
-                'network_secondary_ipv6_vlan' => $secondary_vlan,
-                'network_secondary_ipv6_dns1' => $secondary_vlan,
-                'network_secondary_ipv6_dns2' => $secondary_vlan
-            ],
+        $netplan = [
+            'network' => [
+                'version'  => 2,
+                'renderer' => 'networkd',
+                'ethernets' => [
+                    $iface => []
+                ],
+                'vlans'    => []
+            ]
         ];
-        $json = json_encode($new, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-        if (file_put_contents($jsonFile, $json, LOCK_EX) === false) {
-            $errors[] = "Failed to write {$jsonFile}. Check permissions.";
-        } else {
-            $data = $new;
-            $success = 'Saved.';
 
-            $netplan = [
-                'network' => [
-                    'version'  => 2,
-                    'renderer' => 'networkd',
-                    'ethernets' => [
-                        $iface => []
-                    ],
-                    'vlans'    => []
-                ]
-            ];
+        function build_interface(array $d, string $key): array
+        {
+            $cfg = [];
 
-            /* ---------- helper to build IPv4/IPv6 ---------- */
-            function build_interface(array $d, string $key): array
-            {
-                $cfg = [];
+            /* IPv4 */
+            switch ($d['mode']) {
+                case 'dhcp':
+                    $cfg['dhcp4'] = true;
+                    break;
 
-                /* IPv4 */
-                switch ($d['mode']) {
-                    case 'dhcp':
-                        $cfg['dhcp4'] = true;
-                        break;
+                case 'static':
+                    if (!empty($d["network_{$key}_ip"]) && !empty($d["network_{$key}_subnet"])) {
+                        $cfg['addresses'][] =
+                            $d["network_{$key}_ip"] . '/' . $d["network_{$key}_subnet"];
+                    }
+                    if (!empty($d["network_{$key}_gateway"])) {
+                        $cfg['routes'][] = [
+                            'to'  => 'default',
+                            'via' => $d["network_{$key}_gateway"]
+                        ];
+                    }
+                    break;
 
-                    case 'static':
-                        if (!empty($d["network_{$key}_ip"]) && !empty($d["network_{$key}_subnet"])) {
-                            $cfg['addresses'][] =
-                                $d["network_{$key}_ip"] . '/' . $d["network_{$key}_subnet"];
-                        }
-                        if (!empty($d["network_{$key}_gateway"])) {
-                            $cfg['routes'][] = [
-                                'to'  => 'default',
-                                'via' => $d["network_{$key}_gateway"]
-                            ];
-                        }
-                        break;
-
-                    case 'disabled':
-                        $cfg['dhcp4'] = false;
-                        break;
-                }
-
-                /* IPv6 */
-                switch ($d['modev6']) {
-                    case 'auto': // SLAAC
-                        $cfg['accept-ra'] = true;
-                        $cfg['dhcp6'] = false;
-                        break;
-
-                    case 'dhcp6':
-                        $cfg['dhcp6'] = true;
-                        $cfg['accept-ra'] = false;
-                        break;
-
-                    case 'static':
-                        if (!empty($d["network_{$key}_ipv6"]) && !empty($d["network_{$key}_ipv6_prefix"])) {
-                            $cfg['addresses'][] =
-                                $d["network_{$key}_ipv6"] . '/' . $d["network_{$key}_ipv6_prefix"];
-                        }
-                        if (!empty($d["network_{$key}_ipv6_gateway"])) {
-                            $cfg['routes'][] = [
-                                'to'  => '::/0',
-                                'via' => $d["network_{$key}_ipv6_gateway"]
-                            ];
-                        }
-                        $cfg['accept-ra'] = false;
-                        break;
-
-                    case 'disabled':
-                        $cfg['dhcp6'] = false;
-                        $cfg['accept-ra'] = false;
-                        break;
-                }
-
-                /* DNS */
-                $dns = array_filter([
-                    $d["network_{$key}_dns1"] ?? '',
-                    $d["network_{$key}_dns2"] ?? '',
-                    $d["network_{$key}_ipv6_dns1"] ?? '',
-                    $d["network_{$key}_ipv6_dns2"] ?? ''
-                ]);
-
-                if ($dns) {
-                    $cfg['nameservers']['addresses'] = array_values($dns);
-                }
-
-                return $cfg;
+                case 'disabled':
+                    $cfg['dhcp4'] = false;
+                    break;
             }
 
-            /* ---------- VLAN detection ---------- */
-            $primary_vlan   = trim($data['primary']['network_primary_vlan'] ?? '');
-            $secondary_vlan = trim($data['secondary']['network_secondary_vlan'] ?? '');
+            /* IPv6 */
+            switch ($d['modev6']) {
+                case 'auto': // SLAAC
+                    $cfg['accept-ra'] = true;
+                    $cfg['dhcp6'] = false;
+                    break;
 
-            $uses_vlan = ($primary_vlan !== '' || $secondary_vlan !== '');
+                case 'dhcp6':
+                    $cfg['dhcp6'] = true;
+                    $cfg['accept-ra'] = false;
+                    break;
 
-            /* ---------- No VLAN: apply primary only ---------- */
-            if (!$uses_vlan) {
-                $netplan['network']['ethernets'][$iface] =
-                    build_interface($data['primary'], 'primary');
+                case 'static':
+                    if (!empty($d["network_{$key}_ipv6"]) && !empty($d["network_{$key}_ipv6_prefix"])) {
+                        $cfg['addresses'][] =
+                            $d["network_{$key}_ipv6"] . '/' . $d["network_{$key}_ipv6_prefix"];
+                    }
+                    if (!empty($d["network_{$key}_ipv6_gateway"])) {
+                        $cfg['routes'][] = [
+                            'to'  => '::/0',
+                            'via' => $d["network_{$key}_ipv6_gateway"]
+                        ];
+                    }
+                    $cfg['accept-ra'] = false;
+                    break;
+
+                case 'disabled':
+                    $cfg['dhcp6'] = false;
+                    $cfg['accept-ra'] = false;
+                    break;
             }
-            /* ---------- VLAN mode ---------- */ else {
-                // base iface must exist but empty
-                $netplan['network']['ethernets'][$iface] = [];
 
-                if ($primary_vlan !== '') {
-                    $vif = "{$iface}.{$primary_vlan}";
-                    $netplan['network']['vlans'][$vif] = array_merge([
-                        'id'   => (int)$primary_vlan,
-                        'link' => $iface
-                    ], build_interface($data['primary'], 'primary'));
-                }
+            /* DNS */
+            $dns = array_filter([
+                $d["network_{$key}_dns1"] ?? '',
+                $d["network_{$key}_dns2"] ?? '',
+                $d["network_{$key}_ipv6_dns1"] ?? '',
+                $d["network_{$key}_ipv6_dns2"] ?? ''
+            ]);
 
-                if ($secondary_vlan !== '') {
-                    $vif = "{$iface}.{$secondary_vlan}";
-                    $netplan['network']['vlans'][$vif] = array_merge([
-                        'id'   => (int)$secondary_vlan,
-                        'link' => $iface
-                    ], build_interface($data['secondary'], 'secondary'));
-                }
+            if ($dns) {
+                $cfg['nameservers']['addresses'] = array_values($dns);
             }
 
-            /* ---------- write ---------- */
-            $yaml = netplan_yaml($netplan);
-            file_put_contents('/var/www/50-cloud-init.yaml', $yaml);
+            return $cfg;
         }
+
+        /* ---------- VLAN detection ---------- */
+        $primary_vlan   = trim($data['primary']['network_primary_vlan'] ?? '');
+        $secondary_vlan = trim($data['secondary']['network_secondary_vlan'] ?? '');
+
+        $uses_vlan = ($primary_vlan !== '' || $secondary_vlan !== '');
+
+        /* ---------- No VLAN: apply primary only ---------- */
+        if (!$uses_vlan) {
+            $netplan['network']['ethernets'][$iface] =
+                build_interface($data['primary'], 'primary');
+        }
+        /* ---------- VLAN mode ---------- */ else {
+            // base iface must exist but empty
+            $netplan['network']['ethernets'][$iface] = [];
+
+            if ($primary_vlan !== '') {
+                $vif = "{$iface}.{$primary_vlan}";
+                $netplan['network']['vlans'][$vif] = array_merge([
+                    'id'   => (int)$primary_vlan,
+                    'link' => $iface
+                ], build_interface($data['primary'], 'primary'));
+            }
+
+            if ($secondary_vlan !== '') {
+                $vif = "{$iface}.{$secondary_vlan}";
+                $netplan['network']['vlans'][$vif] = array_merge([
+                    'id'   => (int)$secondary_vlan,
+                    'link' => $iface
+                ], build_interface($data['secondary'], 'secondary'));
+            }
+        }
+
+        /* ---------- write ---------- */
+        $yaml = netplan_yaml($netplan);
+        file_put_contents('/var/www/50-cloud-init.yaml', $yaml);
     }
 }
+
 ?>
 
 <form method="POST" novalidate>
