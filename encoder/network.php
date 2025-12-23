@@ -54,9 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     };
 
     $primary_mode = in_array($get('primary_mode'), ['dhcp', 'static', 'disabled']) ? $get('primary_mode') : 'dhcp';
-    $primary_modev6 = in_array($get('primary_mode'), ['auto', 'dhcpv6', 'static', 'disabled']) ? $get('primary_mode') : 'auto';
+    $primary_modev6 = in_array($get('primary_ipv6'), ['auto', 'dhcpv6', 'static', 'disabled']) ? $get('primary_mode') : 'auto';
     $secondary_mode = in_array($get('secondary_mode'), ['dhcp', 'static', 'disabled']) ? $get('secondary_mode') : 'dhcp';
-    $secondary_modev6 = in_array($get('secondary_mode'), ['auto', 'dhcpv6', 'static', 'disabled']) ? $get('secondary_mode') : 'auto';
+    $secondary_modev6 = in_array($get('secondary_ipv6'), ['auto', 'dhcpv6', 'static', 'disabled']) ? $get('secondary_mode') : 'auto';
 
     $network_primary_ip = $get('network_primary_ip');
     $network_primary_gateway = $get('network_primary_gateway');
@@ -187,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (validate_config($data)) {
             file_put_contents('/var/www/50-cloud-init.yaml', netplan_yaml(generate_netplan($data, $iface)));
         }
-        
+
     }
 }
 
