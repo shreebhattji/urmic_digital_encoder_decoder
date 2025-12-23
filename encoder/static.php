@@ -75,121 +75,80 @@ function find_first_physical_ethernet(): ?string
     return null;
 }
 
-function build_interface(array $d, string $key): array
+function build_interface(array $cfg, string $type): array
 {
-    $cfg = [];
-    $addresses = [];
-    $routes = [];
+    $out = [];
 
-    /* IPv4 */
-    switch ($d['mode'] ?? 'disabled') {
-        case 'dhcp':
-            $cfg['dhcp4'] = true;
-            break;
+    /* ---------- IPv4 ---------- */
+    if ($cfg['mode'] === 'dhcp') {
+        $out['dhcp4'] = true;
+    } elseif ($cfg['mode'] === 'static') {
+        $out['dhcp4'] = false;
+        $out['addresses'][] = $cfg["network_{$type}_ip"];
+        $out['gateway4'] = $cfg["network_{$type}_gateway"];
 
-        case 'static':
-            if (!empty($d["network_{$key}_ip"]) && !empty($d["network_{$key}_subnet"])) {
-                $addresses[] = $d["network_{$key}_ip"] . '/' . $d["network_{$key}_subnet"];
-            }
-            if (!empty($d["network_{$key}_gateway"])) {
-                $routes[] = ['to' => 'default', 'via' => $d["network_{$key}_gateway"]];
-            }
-            $cfg['dhcp4'] = false;
-            break;
+        $dns = array_filter([
+            $cfg["network_{$type}_dns1"],
+            $cfg["network_{$type}_dns2"]
+        ]);
 
-        default:
-            $cfg['dhcp4'] = false;
+        if ($dns) {
+            $out['nameservers']['addresses'] = array_values($dns);
+        }
+    } else {
+        $out['dhcp4'] = false;
     }
 
-    /* IPv6 */
-    switch ($d['modev6'] ?? 'disabled') {
-        case 'auto':
-            $cfg['accept-ra'] = true;
-            $cfg['dhcp6'] = false;
-            break;
+    /* ---------- IPv6 ---------- */
+    if ($cfg['modev6'] === 'auto') {
+        $out['dhcp6'] = true;
+        $out['accept-ra'] = true;
+    } elseif ($cfg['modev6'] === 'dhcpv6') {
+        $out['dhcp6'] = true;
+        $out['accept-ra'] = false;
+    } elseif ($cfg['modev6'] === 'static') {
+        $out['dhcp6'] = false;
+        $out['accept-ra'] = false;
 
-        case 'dhcp6':
-            $cfg['dhcp6'] = true;
-            $cfg['accept-ra'] = false;
-            break;
+        $out['addresses'][] =
+            $cfg["network_{$type}_ipv6"] . '/' .
+            $cfg["network_{$type}_ipv6_prefix"];
 
-        case 'static':
-            if (!empty($d["network_{$key}_ipv6"]) && !empty($d["network_{$key}_ipv6_prefix"])) {
-                $addresses[] = $d["network_{$key}_ipv6"] . '/' . $d["network_{$key}_ipv6_prefix"];
-            }
-            if (!empty($d["network_{$key}_ipv6_gateway"])) {
-                $routes[] = ['to' => '::/0', 'via' => $d["network_{$key}_ipv6_gateway"]];
-            }
-            $cfg['dhcp6'] = false;
-            $cfg['accept-ra'] = false;
-            break;
+        $out['gateway6'] = $cfg["network_{$type}_ipv6_gateway"];
 
-        default:
-            $cfg['dhcp6'] = false;
-            $cfg['accept-ra'] = false;
+        $dns6 = array_filter([
+            $cfg["network_{$type}_ipv6_dns1"],
+            $cfg["network_{$type}_ipv6_dns2"]
+        ]);
+
+        if ($dns6) {
+            $out['nameservers']['addresses'] =
+                array_merge($out['nameservers']['addresses'] ?? [], $dns6);
+        }
+    } else {
+        $out['dhcp6'] = false;
+        $out['accept-ra'] = false;
     }
 
-    if ($addresses) {
-        $cfg['addresses'] = $addresses;
-    }
-
-    if ($routes) {
-        $cfg['routes'] = $routes;
-    }
-
-    $dns = array_values(array_filter([
-        $d["network_{$key}_dns1"] ?? '',
-        $d["network_{$key}_dns2"] ?? '',
-        $d["network_{$key}_ipv6_dns1"] ?? '',
-        $d["network_{$key}_ipv6_dns2"] ?? '',
-    ]));
-
-    if ($dns) {
-        $cfg['nameservers'] = ['addresses' => $dns];
-    }
-
-    return $cfg;
+    return $out;
 }
 
-
-function netplan_yaml(array $data, int $indent = 0): string
+function yaml(array $data, int $indent = 0): string
 {
-    $yaml = '';
-    $pad  = str_repeat('  ', $indent);
+    $out = '';
+    $pad = str_repeat('  ', $indent);
 
-    foreach ($data as $key => $value) {
-
-        if ($value instanceof stdClass) {
-            $yaml .= "{$pad}{$key}: {}\n";
-            continue;
+    foreach ($data as $k => $v) {
+        if ($v instanceof stdClass) {
+            $out .= "{$pad}{$k}: {}\n";
+        } elseif (is_array($v)) {
+            $out .= "{$pad}{$k}:\n";
+            $out .= yaml($v, $indent + 1);
+        } else {
+            $out .= "{$pad}{$k}: {$v}\n";
         }
-
-        if (is_array($value) && !array_is_list($value)) {
-            $yaml .= "{$pad}{$key}:\n";
-            $yaml .= netplan_yaml($value, $indent + 1);
-            continue;
-        }
-
-        if (is_array($value) && array_is_list($value)) {
-            foreach ($value as $item) {
-                if (is_array($item)) {
-                    $yaml .= "{$pad}-\n";
-                    $yaml .= netplan_yaml($item, $indent + 1);
-                } else {
-                    $yaml .= "{$pad}- {$item}\n";
-                }
-            }
-            continue;
-        }
-
-        if (is_bool($value)) {
-            $value = $value ? 'true' : 'false';
-        }
-
-        $yaml .= "{$pad}{$key}: {$value}\n";
     }
-
-    return $yaml;
+    return $out;
 }
 
 

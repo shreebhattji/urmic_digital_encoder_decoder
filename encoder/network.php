@@ -115,6 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'network_secondary_ipv6_dns2' => $network_secondary_ipv6_dns2
         ],
     ];
+
     $json = json_encode($new, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     if (file_put_contents($jsonFile, $json, LOCK_EX) === false) {
         $errors[] = "Failed to write {$jsonFile}. Check permissions.";
@@ -122,44 +123,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $data = $new;
         $success = 'Saved.';
 
+        foreach ($data as $block => &$fields) {
+            foreach ($fields as $key => $value) {
+                if (isset($_POST[$key])) {
+                    $fields[$key] = trim($_POST[$key]);
+                }
+            }
+        }
+        unset($fields);
+
+
         $netplan = [
             'network' => [
-                'version'  => 2,
+                'version' => 2,
                 'renderer' => 'networkd',
                 'ethernets' => [],
-                'vlans'    => []
+                'vlans' => []
             ]
         ];
 
-        $primary_vlan   = trim($data['primary']['network_primary_vlan'] ?? '');
-        $secondary_vlan = trim($data['secondary']['network_secondary_vlan'] ?? '');
+        foreach (['primary', 'secondary'] as $type) {
 
-        $uses_vlan = ($primary_vlan !== '' || $secondary_vlan !== '');
-
-        if (!$uses_vlan) {
-            $netplan['network']['ethernets'][$iface] =
-                build_interface($data['primary'], 'primary');
-        } else {
-            $netplan['network']['ethernets'][$iface] = new stdClass();
-
-            if ($primary_vlan !== '') {
-                $netplan['network']['vlans']["{$iface}.{$primary_vlan}"] =
-                    array_merge(
-                        ['id' => (int)$primary_vlan, 'link' => $iface],
-                        build_interface($data['primary'], 'primary')
-                    );
+            if (
+                $data[$type]['mode'] === 'disabled' &&
+                $data[$type]['modev6'] === 'disabled'
+            ) {
+                continue;
             }
 
-            if ($secondary_vlan !== '') {
-                $netplan['network']['vlans']["{$iface}.{$secondary_vlan}"] =
+            $vlan = trim($data[$type]["network_{$type}_vlan"] ?? '');
+
+            if ($vlan === '') {
+                $netplan['network']['ethernets'][$iface] =
+                    build_interface($data[$type], $type);
+            } else {
+                $netplan['network']['ethernets'][$iface] = new stdClass();
+
+                $netplan['network']['vlans']["{$iface}.{$vlan}"] =
                     array_merge(
-                        ['id' => (int)$secondary_vlan, 'link' => $iface],
-                        build_interface($data['secondary'], 'secondary')
+                        ['id' => (int)$vlan, 'link' => $iface],
+                        build_interface($data[$type], $type)
                     );
             }
         }
 
-        file_put_contents('/var/www/50-cloud-init.yaml', netplan_yaml($netplan));
+        $yaml = yaml($netplan);
+        file_put_contents('/var/www/50-cloud-init.yaml', $yaml);
+
     }
 }
 
