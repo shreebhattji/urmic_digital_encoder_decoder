@@ -138,9 +138,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'version' => 2,
                 'renderer' => 'networkd',
                 'ethernets' => [],
-                'vlans' => []
             ]
         ];
+
+        if (!empty($netplan['network']['vlans'])) {
+            $netplan['network']['vlans'] = $netplan['network']['vlans'];
+        } else {
+            $netplan['network']['vlans'] = new stdClass(); // forces {}
+        }
 
         foreach (['primary', 'secondary'] as $type) {
 
@@ -168,7 +173,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         file_put_contents('/var/www/50-cloud-init.yaml', netplan_yaml($netplan));
-
     }
 }
 
