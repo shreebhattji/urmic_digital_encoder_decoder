@@ -184,7 +184,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        file_put_contents('/var/www/50-cloud-init.yaml', netplan_yaml(generate_netplan($data, $iface)));
+        if (validate_config($data)) {
+            file_put_contents('/var/www/50-cloud-init.yaml', netplan_yaml(generate_netplan($data, $iface)));
+        }
+        
     }
 }
 

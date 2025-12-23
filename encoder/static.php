@@ -148,7 +148,6 @@ function build_interface(array $cfg, string $type): array
 
 function generate_netplan(array $data, string $iface): array
 {
-    validate_config($data);
 
     $netplan = [
         'network' => [
@@ -201,7 +200,7 @@ function generate_netplan(array $data, string $iface): array
     return $netplan;
 }
 
-function validate_config(array $data): void
+function validate_config(array $data): bool
 {
     $p_enabled = (
         $data['primary']['mode'] !== 'disabled' ||
@@ -216,13 +215,21 @@ function validate_config(array $data): void
     $p_vlan = trim($data['primary']['network_primary_vlan'] ?? '');
     $s_vlan = trim($data['secondary']['network_secondary_vlan'] ?? '');
 
-    /* If both enabled, at least one VLAN is mandatory */
+    /* If both enabled → at least one VLAN required */
     if ($p_enabled && $s_enabled && $p_vlan === '' && $s_vlan === '') {
-        throw new RuntimeException(
-            'Invalid configuration: Primary and Secondary are enabled but no VLAN is defined.'
-        );
+        echo "<script>alert('Primary and Secondary are enabled, but no VLAN is defined.');</script>";
+        return false;
     }
+
+    /* Block duplicate VLAN IDs */
+    if ($p_vlan !== '' && $s_vlan !== '' && $p_vlan === $s_vlan) {
+        echo "<script>alert('Primary and Secondary cannot use the same VLAN ID.');</script>";
+        return false;
+    }
+
+    return true;
 }
+
 
 function netplan_yaml(array $data, int $indent = 0): string
 {
