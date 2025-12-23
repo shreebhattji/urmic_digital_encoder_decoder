@@ -133,21 +133,47 @@ function build_interface(array $cfg, string $type): array
     return $out;
 }
 
-function yaml(array $data, int $indent = 0): string
+function netplan_yaml(array $data, int $indent = 0): string
 {
     $out = '';
     $pad = str_repeat('  ', $indent);
 
-    foreach ($data as $k => $v) {
-        if ($v instanceof stdClass) {
-            $out .= "{$pad}{$k}: {}\n";
-        } elseif (is_array($v)) {
-            $out .= "{$pad}{$k}:\n";
-            $out .= yaml($v, $indent + 1);
-        } else {
-            $out .= "{$pad}{$k}: {$v}\n";
+    foreach ($data as $key => $value) {
+
+        /* Empty map */
+        if ($value instanceof stdClass) {
+            $out .= "{$pad}{$key}: {}\n";
+            continue;
         }
+
+        /* Boolean */
+        if (is_bool($value)) {
+            $out .= "{$pad}{$key}: " . ($value ? 'true' : 'false') . "\n";
+            continue;
+        }
+
+        /* Scalar */
+        if (!is_array($value)) {
+            $out .= "{$pad}{$key}: {$value}\n";
+            continue;
+        }
+
+        /* Numeric array (list) */
+        if (array_keys($value) === range(0, count($value) - 1)) {
+            $out .= "{$pad}{$key}:\n";
+            foreach ($value as $item) {
+                $out .= is_bool($item)
+                    ? "{$pad}  - " . ($item ? 'true' : 'false') . "\n"
+                    : "{$pad}  - {$item}\n";
+            }
+            continue;
+        }
+
+        /* Mapping */
+        $out .= "{$pad}{$key}:\n";
+        $out .= netplan_yaml($value, $indent + 1);
     }
+
     return $out;
 }
 
