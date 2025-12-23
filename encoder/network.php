@@ -159,8 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        $yaml = netplan_yaml($netplan);
-        file_put_contents('/var/www/50-cloud-init.yaml', $yaml);
+        file_put_contents('/var/www/50-cloud-init.yaml', netplan_yaml($netplan));
     }
 }
 
