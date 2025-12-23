@@ -148,14 +148,11 @@ function build_interface(array $cfg, string $type): array
 
 function generate_netplan(array $data, string $iface): array
 {
-
     $netplan = [
         'network' => [
             'version' => 2,
             'renderer' => 'networkd',
-            'ethernets' => [
-                $iface => new stdClass()   // base NIC only
-            ],
+            'ethernets' => [],
             'vlans' => []
         ]
     ];
@@ -168,31 +165,47 @@ function generate_netplan(array $data, string $iface): array
         $vlan = trim($data['primary']['network_primary_vlan'] ?? '');
 
         if ($vlan !== '') {
+            /* VLAN configuration */
+            $netplan['network']['ethernets'][$iface] = new stdClass();
+
             $netplan['network']['vlans']["{$iface}.{$vlan}"] =
                 array_merge(
                     ['id' => (int)$vlan, 'link' => $iface],
                     build_interface($data['primary'], 'primary')
                 );
+        } else {
+            /* NO VLAN → configure base NIC */
+            $netplan['network']['ethernets'][$iface] =
+                build_interface($data['primary'], 'primary');
         }
     }
 
-    /* ---------- SECONDARY ---------- */
+    /* ---------- SECONDARY (only if primary not configured on base) ---------- */
     if (
-        $data['secondary']['mode'] !== 'disabled' ||
-        $data['secondary']['modev6'] !== 'disabled'
+        !isset($netplan['network']['ethernets'][$iface]) &&
+        (
+            $data['secondary']['mode'] !== 'disabled' ||
+            $data['secondary']['modev6'] !== 'disabled'
+        )
     ) {
         $vlan = trim($data['secondary']['network_secondary_vlan'] ?? '');
 
         if ($vlan !== '') {
+            $netplan['network']['ethernets'][$iface] = new stdClass();
+
             $netplan['network']['vlans']["{$iface}.{$vlan}"] =
                 array_merge(
                     ['id' => (int)$vlan, 'link' => $iface],
                     build_interface($data['secondary'], 'secondary')
                 );
+        } else {
+            /* NO VLAN → configure base NIC */
+            $netplan['network']['ethernets'][$iface] =
+                build_interface($data['secondary'], 'secondary');
         }
     }
 
-    /* Ensure vlans is a mapping */
+    /* Normalize vlans */
     if (empty($netplan['network']['vlans'])) {
         $netplan['network']['vlans'] = new stdClass();
     }
