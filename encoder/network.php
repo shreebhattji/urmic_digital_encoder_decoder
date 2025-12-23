@@ -58,10 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $secondary_mode = in_array($get('secondary_mode'), ['dhcp', 'static', 'disabled']) ? $get('secondary_mode') : 'dhcp';
     $secondary_modev6 = in_array($get('secondary_ipv6'), ['auto', 'dhcpv6', 'static', 'disabled']) ? $get('secondary_mode') : 'auto';
 
-    error_log("primary_mode",$primary_mode);
-    error_log("primary_modev6",$primary_modev6);
-    error_log("secondary_mode",$secondary_mode);
-    error_log("secondary_modev6",$secondary_modev6);
+    error_log("primary_mode :- " . $primary_mode);
+    error_log("primary_modev6:- " . $primary_modev6);
+    error_log("secondary_mode:- " . $secondary_mode);
+    error_log("secondary_modev6:- " . $secondary_modev6);
 
     $network_primary_ip = $get('network_primary_ip');
     $network_primary_gateway = $get('network_primary_gateway');
@@ -122,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ];
 
     $json = json_encode($new, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-   
+
     if (file_put_contents($jsonFile, $json, LOCK_EX) === false) {
         $errors[] = "Failed to write {$jsonFile}. Check permissions.";
     } else {
@@ -183,7 +183,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (validate_config($data)) {
             file_put_contents('/var/www/50-cloud-init.yaml', netplan_yaml(generate_netplan($data, $iface)));
         }
-
     }
 }
 
