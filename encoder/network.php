@@ -275,7 +275,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="dropdown-container">
                     <span class="dropdown-label">IPv4 mode :</span>
                     <div class="dropdown">
-                        <select name="secondary_ipv4" id="secondary_ipv4">
+                        <select name="secondary_mode" id="secondary_mode">
                             <option value="dhcp" <?php if ($data['secondary']['mode'] == 'dhcp') echo 'selected'; ?>>DHCP</option>
                             <option value="static" <?php if ($data['secondary']['mode'] == 'static') echo 'selected'; ?>>Static</option>
                             <option value="disabled" <?php if ($data['secondary']['mode'] == 'disabled') echo 'selected'; ?>>Disabled</option>
