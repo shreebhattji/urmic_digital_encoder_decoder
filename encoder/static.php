@@ -84,9 +84,10 @@ function build_interface(array $cfg, string $type): array
         $out['dhcp4'] = true;
     } elseif ($cfg['mode'] === 'static') {
         $out['dhcp4'] = false;
-        $out['addresses'] = [
-            $cfg["network_{$type}_ip"]   // already CIDR
-        ];
+
+        if ($cfg["network_{$type}_ip"] !== '') {
+            $out['addresses'][] = $cfg["network_{$type}_ip"]; // already CIDR
+        }
 
         if ($cfg["network_{$type}_gateway"] !== '') {
             $out['gateway4'] = $cfg["network_{$type}_gateway"];
@@ -115,17 +116,17 @@ function build_interface(array $cfg, string $type): array
         $out['dhcp6'] = false;
         $out['accept-ra'] = false;
 
-        if ($cfg["network_{$type}_ipv6"] !== '' &&
-            $cfg["network_{$type}_ipv6_prefix"] !== '') {
-
+        if (
+            $cfg["network_{$type}_ipv6"] !== '' &&
+            $cfg["network_{$type}_ipv6_prefix"] !== ''
+        ) {
             $out['addresses'][] =
                 $cfg["network_{$type}_ipv6"] . '/' .
                 $cfg["network_{$type}_ipv6_prefix"];
         }
 
         if ($cfg["network_{$type}_ipv6_gateway"] !== '') {
-            $out['gateway6'] =
-                $cfg["network_{$type}_ipv6_gateway"];
+            $out['gateway6'] = $cfg["network_{$type}_ipv6_gateway"];
         }
 
         $dns6 = array_filter([
@@ -144,35 +145,83 @@ function build_interface(array $cfg, string $type): array
 
     return $out;
 }
+
 function generate_netplan(array $data, string $iface): array
 {
+    validate_config($data);
+
     $netplan = [
         'network' => [
             'version' => 2,
             'renderer' => 'networkd',
-            'ethernets' => [],
-            'vlans' => new stdClass()
+            'ethernets' => [
+                $iface => new stdClass()   // base NIC only
+            ],
+            'vlans' => []
         ]
     ];
 
-    /* PRIMARY HAS PRIORITY */
+    /* ---------- PRIMARY ---------- */
     if (
         $data['primary']['mode'] !== 'disabled' ||
         $data['primary']['modev6'] !== 'disabled'
     ) {
-        $netplan['network']['ethernets'][$iface] =
-            build_interface($data['primary'], 'primary');
+        $vlan = trim($data['primary']['network_primary_vlan'] ?? '');
 
-    /* SECONDARY ONLY IF PRIMARY DISABLED */
-    } elseif (
+        if ($vlan !== '') {
+            $netplan['network']['vlans']["{$iface}.{$vlan}"] =
+                array_merge(
+                    ['id' => (int)$vlan, 'link' => $iface],
+                    build_interface($data['primary'], 'primary')
+                );
+        }
+    }
+
+    /* ---------- SECONDARY ---------- */
+    if (
         $data['secondary']['mode'] !== 'disabled' ||
         $data['secondary']['modev6'] !== 'disabled'
     ) {
-        $netplan['network']['ethernets'][$iface] =
-            build_interface($data['secondary'], 'secondary');
+        $vlan = trim($data['secondary']['network_secondary_vlan'] ?? '');
+
+        if ($vlan !== '') {
+            $netplan['network']['vlans']["{$iface}.{$vlan}"] =
+                array_merge(
+                    ['id' => (int)$vlan, 'link' => $iface],
+                    build_interface($data['secondary'], 'secondary')
+                );
+        }
+    }
+
+    /* Ensure vlans is a mapping */
+    if (empty($netplan['network']['vlans'])) {
+        $netplan['network']['vlans'] = new stdClass();
     }
 
     return $netplan;
+}
+
+function validate_config(array $data): void
+{
+    $p_enabled = (
+        $data['primary']['mode'] !== 'disabled' ||
+        $data['primary']['modev6'] !== 'disabled'
+    );
+
+    $s_enabled = (
+        $data['secondary']['mode'] !== 'disabled' ||
+        $data['secondary']['modev6'] !== 'disabled'
+    );
+
+    $p_vlan = trim($data['primary']['network_primary_vlan'] ?? '');
+    $s_vlan = trim($data['secondary']['network_secondary_vlan'] ?? '');
+
+    /* If both enabled, at least one VLAN is mandatory */
+    if ($p_enabled && $s_enabled && $p_vlan === '' && $s_vlan === '') {
+        throw new RuntimeException(
+            'Invalid configuration: Primary and Secondary are enabled but no VLAN is defined.'
+        );
+    }
 }
 
 function netplan_yaml(array $data, int $indent = 0): string
@@ -200,9 +249,7 @@ function netplan_yaml(array $data, int $indent = 0): string
         if (array_keys($value) === range(0, count($value) - 1)) {
             $out .= "{$pad}{$key}:\n";
             foreach ($value as $item) {
-                $out .= is_bool($item)
-                    ? "{$pad}  - " . ($item ? 'true' : 'false') . "\n"
-                    : "{$pad}  - {$item}\n";
+                $out .= "{$pad}  - {$item}\n";
             }
             continue;
         }
@@ -213,7 +260,6 @@ function netplan_yaml(array $data, int $indent = 0): string
 
     return $out;
 }
-
 
 function update_service($which_service)
 {
