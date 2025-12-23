@@ -54,9 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     };
 
     $primary_mode = in_array($get('primary_mode'), ['dhcp', 'static', 'disabled']) ? $get('primary_mode') : 'dhcp';
-    $primary_modev6 = in_array($get('primary_ipv6'), ['auto', 'dhcpv6', 'static', 'disabled']) ? $get('primary_mode') : 'auto';
+    $primary_modev6 = in_array($get('primary_ipv6'), ['auto', 'dhcpv6', 'static', 'disabled']) ? $get('primary_ipv6') : 'auto';
     $secondary_mode = in_array($get('secondary_mode'), ['dhcp', 'static', 'disabled']) ? $get('secondary_mode') : 'dhcp';
-    $secondary_modev6 = in_array($get('secondary_ipv6'), ['auto', 'dhcpv6', 'static', 'disabled']) ? $get('secondary_mode') : 'auto';
+    $secondary_modev6 = in_array($get('secondary_ipv6'), ['auto', 'dhcpv6', 'static', 'disabled']) ? $get('secondary_ipv6') : 'auto';
 
     error_log("primary_mode :- " . $primary_mode);
     error_log("primary_modev6:- " . $primary_modev6);
