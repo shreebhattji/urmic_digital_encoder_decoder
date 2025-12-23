@@ -84,8 +84,13 @@ function build_interface(array $cfg, string $type): array
         $out['dhcp4'] = true;
     } elseif ($cfg['mode'] === 'static') {
         $out['dhcp4'] = false;
-        $out['addresses'][] = $cfg["network_{$type}_ip"];
-        $out['gateway4'] = $cfg["network_{$type}_gateway"];
+        $out['addresses'] = [
+            $cfg["network_{$type}_ip"]   // already CIDR
+        ];
+
+        if ($cfg["network_{$type}_gateway"] !== '') {
+            $out['gateway4'] = $cfg["network_{$type}_gateway"];
+        }
 
         $dns = array_filter([
             $cfg["network_{$type}_dns1"],
@@ -110,11 +115,18 @@ function build_interface(array $cfg, string $type): array
         $out['dhcp6'] = false;
         $out['accept-ra'] = false;
 
-        $out['addresses'][] =
-            $cfg["network_{$type}_ipv6"] . '/' .
-            $cfg["network_{$type}_ipv6_prefix"];
+        if ($cfg["network_{$type}_ipv6"] !== '' &&
+            $cfg["network_{$type}_ipv6_prefix"] !== '') {
 
-        $out['gateway6'] = $cfg["network_{$type}_ipv6_gateway"];
+            $out['addresses'][] =
+                $cfg["network_{$type}_ipv6"] . '/' .
+                $cfg["network_{$type}_ipv6_prefix"];
+        }
+
+        if ($cfg["network_{$type}_ipv6_gateway"] !== '') {
+            $out['gateway6'] =
+                $cfg["network_{$type}_ipv6_gateway"];
+        }
 
         $dns6 = array_filter([
             $cfg["network_{$type}_ipv6_dns1"],
@@ -132,6 +144,36 @@ function build_interface(array $cfg, string $type): array
 
     return $out;
 }
+function generate_netplan(array $data, string $iface): array
+{
+    $netplan = [
+        'network' => [
+            'version' => 2,
+            'renderer' => 'networkd',
+            'ethernets' => [],
+            'vlans' => new stdClass()
+        ]
+    ];
+
+    /* PRIMARY HAS PRIORITY */
+    if (
+        $data['primary']['mode'] !== 'disabled' ||
+        $data['primary']['modev6'] !== 'disabled'
+    ) {
+        $netplan['network']['ethernets'][$iface] =
+            build_interface($data['primary'], 'primary');
+
+    /* SECONDARY ONLY IF PRIMARY DISABLED */
+    } elseif (
+        $data['secondary']['mode'] !== 'disabled' ||
+        $data['secondary']['modev6'] !== 'disabled'
+    ) {
+        $netplan['network']['ethernets'][$iface] =
+            build_interface($data['secondary'], 'secondary');
+    }
+
+    return $netplan;
+}
 
 function netplan_yaml(array $data, int $indent = 0): string
 {
@@ -140,25 +182,21 @@ function netplan_yaml(array $data, int $indent = 0): string
 
     foreach ($data as $key => $value) {
 
-        /* Empty map */
         if ($value instanceof stdClass) {
             $out .= "{$pad}{$key}: {}\n";
             continue;
         }
 
-        /* Boolean */
         if (is_bool($value)) {
             $out .= "{$pad}{$key}: " . ($value ? 'true' : 'false') . "\n";
             continue;
         }
 
-        /* Scalar */
         if (!is_array($value)) {
             $out .= "{$pad}{$key}: {$value}\n";
             continue;
         }
 
-        /* Numeric array (list) */
         if (array_keys($value) === range(0, count($value) - 1)) {
             $out .= "{$pad}{$key}:\n";
             foreach ($value as $item) {
@@ -169,7 +207,6 @@ function netplan_yaml(array $data, int $indent = 0): string
             continue;
         }
 
-        /* Mapping */
         $out .= "{$pad}{$key}:\n";
         $out .= netplan_yaml($value, $indent + 1);
     }

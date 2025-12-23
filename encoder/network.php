@@ -138,13 +138,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'version' => 2,
                 'renderer' => 'networkd',
                 'ethernets' => [],
+                'vlans' => new stdClass()
             ]
         ];
 
-        if (!empty($netplan['network']['vlans'])) {
-            $netplan['network']['vlans'] = $netplan['network']['vlans'];
-        } else {
-            $netplan['network']['vlans'] = new stdClass(); // forces {}
+        /* ---------- PRIMARY ---------- */
+        if (
+            $data['primary']['mode'] !== 'disabled' ||
+            $data['primary']['modev6'] !== 'disabled'
+        ) {
+            $netplan['network']['ethernets'][$iface] =
+                build_interface($data['primary'], 'primary');
+
+            /* ---------- SECONDARY ---------- */
+        } elseif (
+            $data['secondary']['mode'] !== 'disabled' ||
+            $data['secondary']['modev6'] !== 'disabled'
+        ) {
+            $netplan['network']['ethernets'][$iface] =
+                build_interface($data['secondary'], 'secondary');
         }
 
         foreach (['primary', 'secondary'] as $type) {
@@ -172,7 +184,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        file_put_contents('/var/www/50-cloud-init.yaml', netplan_yaml($netplan));
+        file_put_contents('/var/www/50-cloud-init.yaml', netplan_yaml(generate_netplan($data, $iface)));
     }
 }
 
