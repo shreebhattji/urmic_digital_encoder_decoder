@@ -129,42 +129,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $data = $new;
         $success = 'Saved.';
 
-        $netplan = [
-            'network' => [
-                'version' => 2,
-                'renderer' => 'networkd',
-                'ethernets' => [],
-                'vlans' => []   // MUST be array while building
-            ]
-        ];
-
-        foreach (['primary', 'secondary'] as $type) {
-
-            /* Skip disabled blocks */
-            if (
-                $data[$type]['mode'] === 'disabled' &&
-                $data[$type]['modev6'] === 'disabled'
-            ) {
-                continue;
-            }
-
-            $vlan = trim($data[$type]["network_{$type}_vlan"] ?? '');
-
-            /* Base NIC must exist if any VLAN is used */
-            if ($vlan !== '') {
-                $netplan['network']['ethernets'][$iface] = new stdClass();
-
-                $netplan['network']['vlans']["{$iface}.{$vlan}"] =
-                    array_merge(
-                        [
-                            'id'   => (int)$vlan,
-                            'link' => $iface
-                        ],
-                        build_interface($data[$type], $type)
-                    );
-            }
-        }
-
         if (validate_config($data)) {
             file_put_contents('/var/www/50-cloud-init.yaml', netplan_yaml(generate_netplan($data, $iface)));
         }
