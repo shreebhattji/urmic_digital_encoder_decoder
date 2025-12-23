@@ -134,29 +134,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'version' => 2,
                 'renderer' => 'networkd',
                 'ethernets' => [],
-                'vlans' => new stdClass()
+                'vlans' => []   // MUST be array while building
             ]
         ];
 
-        /* ---------- PRIMARY ---------- */
-        if (
-            $data['primary']['mode'] !== 'disabled' ||
-            $data['primary']['modev6'] !== 'disabled'
-        ) {
-            $netplan['network']['ethernets'][$iface] =
-                build_interface($data['primary'], 'primary');
-
-            /* ---------- SECONDARY ---------- */
-        } elseif (
-            $data['secondary']['mode'] !== 'disabled' ||
-            $data['secondary']['modev6'] !== 'disabled'
-        ) {
-            $netplan['network']['ethernets'][$iface] =
-                build_interface($data['secondary'], 'secondary');
-        }
-
         foreach (['primary', 'secondary'] as $type) {
 
+            /* Skip disabled blocks */
             if (
                 $data[$type]['mode'] === 'disabled' &&
                 $data[$type]['modev6'] === 'disabled'
@@ -166,15 +150,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $vlan = trim($data[$type]["network_{$type}_vlan"] ?? '');
 
-            if ($vlan === '') {
-                $netplan['network']['ethernets'][$iface] =
-                    build_interface($data[$type], $type);
-            } else {
+            /* Base NIC must exist if any VLAN is used */
+            if ($vlan !== '') {
                 $netplan['network']['ethernets'][$iface] = new stdClass();
 
                 $netplan['network']['vlans']["{$iface}.{$vlan}"] =
                     array_merge(
-                        ['id' => (int)$vlan, 'link' => $iface],
+                        [
+                            'id'   => (int)$vlan,
+                            'link' => $iface
+                        ],
                         build_interface($data[$type], $type)
                     );
             }
