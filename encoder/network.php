@@ -58,11 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $secondary_mode = in_array($get('secondary_mode'), ['dhcp', 'static', 'disabled']) ? $get('secondary_mode') : 'dhcp';
     $secondary_modev6 = in_array($get('secondary_ipv6'), ['auto', 'dhcpv6', 'static', 'disabled']) ? $get('secondary_ipv6') : 'auto';
 
-    error_log("primary_mode :- " . $primary_mode);
-    error_log("primary_modev6:- " . $primary_modev6);
-    error_log("secondary_mode:- " . $secondary_mode);
-    error_log("secondary_modev6:- " . $secondary_modev6);
-
     $network_primary_ip = $get('network_primary_ip');
     $network_primary_gateway = $get('network_primary_gateway');
     $network_primary_vlan = $get('network_primary_vlan');

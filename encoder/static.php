@@ -157,15 +157,10 @@ function generate_netplan(array $data, string $iface): array
         ]
     ];
 
-    /* ---------- PRIMARY ---------- */
-    if (
-        $data['primary']['mode'] !== 'disabled' ||
-        $data['primary']['modev6'] !== 'disabled'
-    ) {
+    if ($data['primary']['mode'] !== 'disabled') {
         $vlan = trim($data['primary']['network_primary_vlan'] ?? '');
 
         if ($vlan !== '') {
-            /* VLAN configuration */
             $netplan['network']['ethernets'][$iface] = new stdClass();
 
             $netplan['network']['vlans']["{$iface}.{$vlan}"] =
@@ -174,20 +169,27 @@ function generate_netplan(array $data, string $iface): array
                     build_interface($data['primary'], 'primary')
                 );
         } else {
-            /* NO VLAN → configure base NIC */
             $netplan['network']['ethernets'][$iface] =
                 build_interface($data['primary'], 'primary');
         }
     }
+    if ($data['primary']['modev6'] !== 'disabled') {
+        $vlan = trim($data['primary']['network_primary_ipv6_vlan'] ?? '');
 
-    /* ---------- SECONDARY (only if primary not configured on base) ---------- */
-    if (
-        !isset($netplan['network']['ethernets'][$iface]) &&
-        (
-            $data['secondary']['mode'] !== 'disabled' ||
-            $data['secondary']['modev6'] !== 'disabled'
-        )
-    ) {
+        if ($vlan !== '') {
+            $netplan['network']['ethernets'][$iface] = new stdClass();
+
+            $netplan['network']['vlans']["{$iface}.{$vlan}"] =
+                array_merge(
+                    ['id' => (int)$vlan, 'link' => $iface],
+                    build_interface($data['primary'], 'primary')
+                );
+        } else {
+            $netplan['network']['ethernets'][$iface] =
+                build_interface($data['primary'], 'primary');
+        }
+    }
+    if ($data['secondary']['mode'] !== 'disabled') {
         $vlan = trim($data['secondary']['network_secondary_vlan'] ?? '');
 
         if ($vlan !== '') {
@@ -199,17 +201,29 @@ function generate_netplan(array $data, string $iface): array
                     build_interface($data['secondary'], 'secondary')
                 );
         } else {
-            /* NO VLAN → configure base NIC */
             $netplan['network']['ethernets'][$iface] =
                 build_interface($data['secondary'], 'secondary');
         }
     }
+    if ($data['secondary']['modev6'] !== 'disabled') {
+        $vlan = trim($data['secondary']['network_secondary_ipv6_vlan'] ?? '');
 
-    /* Normalize vlans */
+        if ($vlan !== '') {
+            $netplan['network']['ethernets'][$iface] = new stdClass();
+
+            $netplan['network']['vlans']["{$iface}.{$vlan}"] =
+                array_merge(
+                    ['id' => (int)$vlan, 'link' => $iface],
+                    build_interface($data['secondary'], 'secondary')
+                );
+        } else {
+            $netplan['network']['ethernets'][$iface] =
+                build_interface($data['secondary'], 'secondary');
+        }
+    }
     if (empty($netplan['network']['vlans'])) {
         $netplan['network']['vlans'] = new stdClass();
     }
-
     return $netplan;
 }
 
