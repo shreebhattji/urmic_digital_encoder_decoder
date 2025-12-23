@@ -117,21 +117,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ];
 
     $json = json_encode($new, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+   
     if (file_put_contents($jsonFile, $json, LOCK_EX) === false) {
         $errors[] = "Failed to write {$jsonFile}. Check permissions.";
     } else {
         $data = $new;
         $success = 'Saved.';
-
-        foreach ($data as $block => &$fields) {
-            foreach ($fields as $key => $value) {
-                if (isset($_POST[$key])) {
-                    $fields[$key] = trim($_POST[$key]);
-                }
-            }
-        }
-        unset($fields);
-
 
         $netplan = [
             'network' => [
