@@ -85,8 +85,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $new = [
         'primary' => [
-            'mode' => 'dhcp',
-            'modev6' => 'auto',
+            'mode' => $primary_mode,
+            'modev6' => $primary_modev6,
             'network_primary_ip' => $network_primary_ip,
             'network_primary_gateway' => $network_primary_gateway,
             'network_primary_vlan' => $network_primary_vlan,
@@ -100,8 +100,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'network_primary_ipv6_dns2' => $network_primary_ipv6_dns2
         ],
         'secondary' => [
-            'mode' => 'disabled',
-            'modev6' => 'disabled',
+            'mode' => $secondary_mode,
+            'modev6' => $secondary_modev6,
             'network_secondary_ip' => $network_secondary_ip,
             'network_secondary_gateway' => $network_secondary_gateway,
             'network_secondary_vlan' => $network_secondary_vlan,
