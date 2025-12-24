@@ -8,7 +8,7 @@ $defaults = [
         'resolution' => '1920x1080',
         'audio_source' => 'hw:1,0',
         'framerate' => '30',
-        'video_delay' => '300',
+        'video_delay' => '',
         'audio_delay' => ''
     ],
     'url' => 'https://cdn.urmic.org/unavailable.mp4',
@@ -29,7 +29,7 @@ $defaults = [
         'framerate' => '30',
         'gop' => '30',
         'audio_db_gain' => '0dB',
-        'audio_data_rate' => '256k',
+        'audio_data_rate' => '128k',
         'audio_sample_rate' => '48000',
         'extra' => ''
     ],

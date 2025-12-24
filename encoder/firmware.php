@@ -30,8 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $tmpZip = sys_get_temp_dir() . '/backup.zip';
             $outputFile = __DIR__ . '/universal_encoder_decoder.bin';
 
-            $publicKey = file_get_contents('/var/www/public.pem');
-            $publicKey = file_get_contents('/var/www/public.pem');
+            $publicKey = file_get_contents('/var/www/backup_private.pem');
+            $publicKey = file_get_contents('/var/www/backup_public.pem');
 
             $zip = new ZipArchive();
             $zip->open($tmpZip, ZipArchive::CREATE | ZipArchive::OVERWRITE);
@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $restoreDir = __DIR__ . '/var/www/encoder/';
             $tmpZip     = sys_get_temp_dir() . '/restore.zip';
 
-            $privateKey = file_get_contents(__DIR__ . '/keys/private.pem');
+            $privateKey = file_get_contents('/var/www/backup_private.pem');
 
             if (!file_exists($inputFile)) {
                 die("Backup file not found\n");
@@ -128,7 +128,7 @@ include 'header.php';
             Device Licence Info :- <br>
             Device ID :- <?php echo trim(file_get_contents('/sys/class/dmi/id/product_uuid')); ?><br>
             Reseller ID :- <br>
-            Project Name :- <br>
+            Project Name :- Universal Digital Encoder / Decoder<br>
         </div>
         <div class="card wide">
             <form method="post" class="form-center" enctype="multipart/form-data"

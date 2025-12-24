@@ -389,8 +389,8 @@ sudo mkdir -p /var/www/html/dash/shreeshree;
 sudo mkdir -p /var/www/encoder;
 sudo cp -r html/* /var/www/html/
 sudo cp -r encoder/* /var/www/encoder/
-sudo cp private.pem /var/www/
-sudo cp public.pem /var/www/
+sudo cp backup_private.pem /var/www/
+sudo cp backup_public.pem /var/www/
 sudo cp 00-stream.yaml /var/www/
 
 sudo a2enmod ssl
