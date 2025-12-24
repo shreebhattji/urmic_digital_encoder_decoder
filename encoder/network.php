@@ -1,6 +1,14 @@
 <?php include 'header.php'; ?>
 <?php
 
+function rollback(): void
+{
+    exec("sudo rm -rf /etc/netplan/*");
+    exec("sudo cp -a /etc/netplan.backup/* /etc/netplan/");
+    exec("sudo netplan generate");
+    exec("sudo netplan apply");
+}
+
 $jsonFile = __DIR__ . '/network.json';
 $iface = find_first_physical_ethernet();
 
@@ -120,6 +128,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (validate_config($data)) {
             file_put_contents('/var/www/50-cloud-init.yaml', netplan_yaml(generate_netplan($data, $iface)));
+        }
+
+        $netplanDir = '/etc/netplan';
+        $backupDir  = '/etc/netplan.backup';
+
+        exec("sudo rm -rf $backupDir");
+        exec("sudo cp -a $netplanDir $backupDir", $out, $rc);
+
+        exec("sudo cp /var/www/50-cloud-init.yaml /etc/netplan/50-cloud-init.yaml");
+        exec("sudo cp /var/www/00-stream.yaml /etc/netplan/00-stream.yaml");
+
+        exec("sudo netplan generate 2>&1", $out, $rc);
+        if ($rc !== 0) {
+            rollback();
         }
     }
 }

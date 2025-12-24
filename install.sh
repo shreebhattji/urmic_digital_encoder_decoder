@@ -391,6 +391,7 @@ sudo cp -r html/* /var/www/html/
 sudo cp -r encoder/* /var/www/encoder/
 sudo cp private.pem /var/www/
 sudo cp public.pem /var/www/
+sudo cp 00-stream.yaml /var/www/
 
 sudo a2enmod ssl
 sudo systemctl enable apache2
