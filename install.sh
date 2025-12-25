@@ -412,3 +412,5 @@ sudo ufw route allow proto udp to 224.0.0.0/4
 sudo ufw deny out to 239.255.254.254 port 39000 proto udp
 sudo systemctl daemon-reload
 sudo chmod 444 /sys/class/dmi/id/product_uuid
+sudo systemctl disable systemd-networkd-wait-online.service
+sudo systemctl mask systemd-networkd-wait-online.service

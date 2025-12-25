@@ -68,7 +68,7 @@ if ($service_rtmp1_multiple == 'enable') {
 }
 
 if($service_srt_multiple){
-    $text .= "<h5>srt://" . $domain . "?streamid=shree/bhatt/ji</h5><br><br>";
+    $text .= "<h5>srt://" . $domain . ":1937?streamid=shree/bhatt/ji</h5><br><br>";
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
