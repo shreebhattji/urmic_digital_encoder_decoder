@@ -459,7 +459,7 @@ function update_service($which_service)
                         . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
                     break;
                 case "rtmp":
-                    update_service_backend('rtmp');
+                    update_service_backend('rtmp', "", "");
                     $input .= "ffmpeg -hwaccel auto -hide_banner -stream_loop -1 -re -i rtmp://127.0.0.1:1935/" . $$input_rtmp_mount . "/" . $input_rtmp_pass
                         . " -c:v h264_qsv "
                         . ' -vf "scale=' . $common_backend_resolution . '"'
@@ -477,7 +477,7 @@ function update_service($which_service)
 
                     break;
                 case "srt":
-                    update_service_backend('srt');
+                    update_service_backend('srt', $srt_pass1, $srt_pass2);
                     $input .= "ffmpeg -hwaccel auto -hide_banner -stream_loop -1 -re -i srt://127.0.0.1:1937?streamid=shree/bhatt/" . $srt_pass3
                         . " -c:v h264_qsv "
                         . ' -vf "scale=' . $common_backend_resolution . '"'
@@ -508,11 +508,11 @@ function update_service($which_service)
                     $input_transcode_every_time = $data['udp'];
                     break;
                 case "rtmp":
-                    update_service_backend('rtmp');
+                    update_service_backend('rtmp', "", "");
                     $input_transcode_every_time = "rtmp://127.0.0.1:1935/shree/bhattji";
                     break;
                 case "srt":
-                    update_service_backend('srt');
+                    update_service_backend('srt', $srt_pass1, $srt_pass2);
                     $input_transcode_every_time = "srt://127.0.0.1:1937?streamid=shree/bhatt/ji";
                     break;
             }
@@ -706,7 +706,7 @@ function update_service($which_service)
             break;
         case 'rtmp0';
         case 'rtmp1';
-            update_service_backend("rtmp");
+            update_service_backend("rtmp", "", "");
             if ($service_rtmp0_multiple === "enable") {
                 $rtmp = "ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i ";
                 if ($use_common_backend === "transcode_every_time") {
@@ -790,7 +790,7 @@ function update_service($which_service)
             }
             break;
         case "srt";
-            update_service_backend("srt");
+            update_service_backend('srt', $srt_pass1, $srt_pass2);
             if ($service_srt_multiple) {
 
                 switch ($use_common_backend_srt) {
@@ -959,7 +959,7 @@ function update_firewall() {}
 
 function update_firmware() {}
 
-function update_service_backend($service)
+function update_service_backend($service, $srt_pass1, $srt_pass2)
 {
 
     $input = "";
@@ -967,8 +967,6 @@ function update_service_backend($service)
     $input_rtmp_mount = "";
     $input_rtmp_pass = "";
     $output = "";
-    $srt_pass1 = "";
-    $srt_pass2 = "";
     $srt_pass3 = "";
     $rtmp0_multiple[] = [];
     $rtmp1_multiple[] = [];
@@ -1019,13 +1017,6 @@ function update_service_backend($service)
     $use_common_backend = $data['use_common_backend'];
     $input_source = $data['input'];
     $input_rtmp_mount = $data['rtmp']['mount'];
-    $srt_pass1 = $data['srt']['stream_id_1'];
-    $srt_pass2 = $data['srt']['stream_id_2'];
-
-    if ($srt_pass1 == "")
-        $srt_pass1 = generateRandomString(16);
-    if ($srt_pass2 == "")
-        $srt_pass2 = generateRandomString(16);
 
     $jsonFile = __DIR__ . '/output.json';
 
