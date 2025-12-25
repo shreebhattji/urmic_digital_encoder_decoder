@@ -1,6 +1,9 @@
 <?php include 'header.php' ?>
 <?php
 
+exec("sudo chmod 444 /sys/class/dmi/id/product_uuid");
+
+
 $file = __DIR__ . '/firewall.json';
 $rules = [];
 
