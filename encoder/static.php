@@ -1235,6 +1235,7 @@ rtmp {
       meta off;
       wait_video on;
       deny play all;
+      allow play 127.0.0.1;
       allow publish all;
       " . $rtmp_input_copy . "
     }
@@ -1248,8 +1249,8 @@ rtmp {
       record off;
       meta off;
       wait_video on;
-      allow publish 127.0.0.1;
       deny publish all;
+      allow publish 127.0.0.1;
       allow play all;
 
       " . $hls0 . "
@@ -1261,6 +1262,10 @@ rtmp {
       record off;
       meta off;
       wait_video on;
+      deny publish all;
+      allow publish 127.0.0.1;
+      allow play all;
+
       " . $hls1 . "
       " . $dash1 . "
       " . $rtmp_push1 . "
