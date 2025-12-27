@@ -2,7 +2,8 @@
 <?php
 
 $jsonFile = __DIR__ . '/firewall.json';
-$data = [
+
+$defaults = [
     '80'   => '',
     '443'  => '',
     '1935' => '',
@@ -10,7 +11,8 @@ $data = [
     '8080' => '',
 ];
 
-if (file_exists($jsonFile)) {
+$data = $defaults;
+if (is_file($jsonFile)) {
     $stored = json_decode(file_get_contents($jsonFile), true);
     if (is_array($stored)) {
         $data = array_merge($data, $stored);
@@ -18,13 +20,19 @@ if (file_exists($jsonFile)) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    foreach ($data as $port => $val) {
+
+    foreach ($defaults as $port => $_) {
         $data[$port] = trim($_POST["port_$port"] ?? '');
     }
-    file_put_contents($jsonFile, json_encode($data, JSON_PRETTY_PRINT));
 
+    $tmp = $jsonFile . '.tmp';
+    file_put_contents(
+        $tmp,
+        json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
+    );
+    rename($tmp, $jsonFile);
 }
-
+?>
 
 ?>
 

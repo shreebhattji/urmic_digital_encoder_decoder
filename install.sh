@@ -419,6 +419,7 @@ sudo ufw allow 1935
 sudo ufw allow 1937
 sudo ufw allow 80
 sudo ufw allow 443
+sudo ufw allow 8080
 sudo ufw allow proto udp to 224.0.0.0/4
 sudo ufw route allow proto udp to 224.0.0.0/4
 sudo ufw deny out to 239.255.254.254 port 39000 proto udp
