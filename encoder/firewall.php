@@ -24,6 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exec("sudo ufw reset");
     exec("sudo ufw default allow outgoing");
     exec("sudo ufw default deny incoming");
+    exec("sudo ufw allow from 172.16.111.112 to 172.16.111.111 port 8080");
+    exec("sudo ufw allow proto udp to 224.0.0.0/4");
+    exec("sudo ufw route allow proto udp to 224.0.0.0/4");
+    exec("sudo ufw deny out to 239.255.254.254 port 39000 proto udp");
 
     foreach ($defaults as $port => $_) {
         $data[$port] = trim($_POST["port_$port"] ?? '');
