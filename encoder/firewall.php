@@ -1,7 +1,7 @@
 <?php include 'header.php' ?>
 <?php
 
-$file = __DIR__ . '/firewall.json';
+$jsonFile = __DIR__ . '/firewall.json';
 $data = [
     '80'   => '',
     '443'  => '',
