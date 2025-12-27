@@ -46,13 +46,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             array_map('trim', explode(',', (string)$value)),
             'strlen'
         );
-        error_log("tmp count is " . count($tmp));
-        if (count($tmp) !== 0) {
+        if (count($tmp) > 0) {
             foreach ($tmp as $ip) {
                 exec("sudo ufw allow from " . $ip . "to any port " . $port . " proto tcp");
             }
         } else {
-            error_log("allow all  port " . $port);
             exec("sudo ufw allow " . $port);
         }
     }
