@@ -832,16 +832,26 @@ function update_service($which_service)
             break;
         case "udp0";
             if ($service_udp0 === "enable") {
+                $udp0 = 'ffmpeg -hwaccel auto -hide_banner -i ';
+                switch ($use_common_backend) {
+                    case "copy_input":
+                    case "use_common_backend":
+
+                        $udp0 .= ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1"';
+
+                        break;
+                    case "transcode_every_time":
+                        $udp0 .= $input_transcode_every_time;
+                        break;
+                }
                 switch ($use_common_backend_udp0) {
                     case "enable":
-                        $udp0 = 'ffmpeg -hwaccel auto -hide_banner   -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
-                            . ' -c:v copy '
+                        $udp0 .=  ' -c:v copy '
                             . ' -c:a copy '
                             . ' -f mpegts ' . $data['udp0']['udp'];
                         break;
                     case "disable":
-                        $udp0 = 'ffmpeg -hwaccel auto -hide_banner   -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
-                            . ' -c:v ' . $data['udp0']['formate']
+                        $udp0 .= ' -c:v ' . $data['udp0']['formate']
                             . ' -vf "scale=' . str_replace("x", ":", $data['udp0']['resolution']) . '"'
                             . ' -b:v ' . $data['udp0']['data_rate']
                             . ' -maxrate ' . $data['udp0']['data_rate']
