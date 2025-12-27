@@ -695,10 +695,10 @@ function update_service($which_service)
                 switch ($use_common_backend) {
                     case "copy_input":
                     case "use_common_backend":
-                        $display =  '  "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
+                        $display .=  '  "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
                         break;
                     case "transcode_every_time":
-                        $display = '  "' . $input_transcode_every_time . '"';
+                        $display .= '  "' . $input_transcode_every_time . '"';
                         break;
                 }
 
