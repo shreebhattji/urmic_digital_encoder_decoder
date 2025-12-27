@@ -100,6 +100,7 @@ $defaults = [
 
   'display_resolution' => '720x576',
   'display_audio' => '0,3',
+  'display_hdmi_sdi' => 'disable',
 
   'custom_output' => ''
 ];
@@ -145,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   $new['display_resolution'] = $get('display_resolution', $defaults['display_resolution']);
   $new['display_audio'] = $get('display_audio', $defaults['display_audio']);
-
+  $new['display_hdmi_sdi'] = $get('display_hdmi_sdi', $defaults['display_hdmi_sdi']);
 
   $new['rtmp0']['resolution'] = $get('rtmp0_resolution', $defaults['rtmp0']['resolution']);
   $new['rtmp0']['data_rate'] = $get('rtmp0_data_rate', $defaults['rtmp0']['data_rate']);
@@ -306,6 +307,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <select name="service_display" id="service_display">
               <option value="enable" <?php if ($data['service_display'] == 'enable') echo 'selected'; ?>>Enable</option>
               <option value="disable" <?php if ($data['service_display'] == 'disable') echo 'selected'; ?>>Disable</option>
+            </select>
+          </div>
+        </div>
+        <div class="dropdown-container">
+          <span class="dropdown-label">HDMI to SDI :</span>
+          <div class="dropdown">
+            <select name="display_hdmi_sdi" id="display_hdmi_sdi">
+              <option value="enable" <?php if ($data['display_hdmi_sdi'] == 'enable') echo 'selected'; ?>>Enable</option>
+              <option value="disable" <?php if ($data['display_hdmi_sdi'] == 'disable') echo 'selected'; ?>>Disable</option>
             </select>
           </div>
         </div>

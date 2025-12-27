@@ -513,13 +513,14 @@ function update_service($which_service)
                     break;
                 case "srt":
                     update_service_backend('srt', $srt_pass1, $srt_pass2);
-                    $input_transcode_every_time = "srt://127.0.0.1:1937?streamid=shree/bhatt/ji";
+                    $input_transcode_every_time = "srt://127.0.0.1:1937?streamid=shree/bhatt/" . $srt_pass3;
                     break;
             }
             break;
     }
 
     $jsonFile = __DIR__ . '/output.json';
+
 
     $defaults = [
         'service_display' => 'disable',
@@ -618,6 +619,7 @@ function update_service($which_service)
 
         'display_resolution' => '720x576',
         'display_audio' => '0,3',
+        'display_hdmi_sdi' => 'disable',
 
         'custom_output' => ''
     ];
@@ -792,16 +794,25 @@ function update_service($which_service)
         case "srt";
             update_service_backend('srt', $srt_pass1, $srt_pass2);
             if ($service_srt_multiple) {
+                $srt = 'ffmpeg -hwaccel auto -hide_banner  -fflags +discardcorrupt -i ';
+                switch ($use_common_backend) {
+                    case "copy_input":
+                    case "use_common_backend":
+                        $srt .= ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1"';
+                        break;
+                    case "transcode_every_time":
+                        $srt .= '"' . $input_transcode_every_time . '"';
+                        break;
+                }
 
                 switch ($use_common_backend_srt) {
                     case "enable":
-                        $service = 'ffmpeg -hide_banner  -fflags +discardcorrupt -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" ' .
-                            ' -c:v copy ' .
-                            ' -c:a copy -pkt_size 1316 -flush_packets 0 ' .
-                            ' -f mpegts "srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji&latency=2000"';
+                        $service = ' -c:v copy '
+                            . ' -c:a copy -pkt_size 1316 -flush_packets 0 '
+                            . ' -f mpegts "srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji&latency=2000"';
                         break;
-                        $service = 'ffmpeg -hide_banner -fflags +discardcorrupt -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
-                            . ' -c:v ' . $data['srt']['formate']
+                    case "disable":
+                        $service = ' -c:v ' . $data['srt']['formate']
                             . ' -vf "scale=' . str_replace("x", ":", $data['srt']['resolution']) . '"'
                             . ' -b:v ' . $data['srt']['data_rate']
                             . ' -maxrate ' . $data['srt']['data_rate']
@@ -841,14 +852,14 @@ function update_service($which_service)
 
                         break;
                     case "transcode_every_time":
-                        $udp0 .= $input_transcode_every_time;
+                        $udp0 .= '"' . $input_transcode_every_time . '"';
                         break;
                 }
                 switch ($use_common_backend_udp0) {
                     case "enable":
                         $udp0 .=  ' -c:v copy '
                             . ' -c:a copy '
-                            . ' -f mpegts ' . $data['udp0']['udp'];
+                            . ' -f mpegts "' . $data['udp0']['udp'] . '"';
                         break;
                     case "disable":
                         $udp0 .= ' -c:v ' . $data['udp0']['formate']
@@ -863,7 +874,7 @@ function update_service($which_service)
                             . ' -af "volume=' . $data['udp0']['audio_db_gain'] . '"'
                             . ' -ar ' . $data['udp0']['audio_sample_rate']
                             . ' ' . $data['udp0']['extra']
-                            . ' -f mpegts ' . $data['udp0']['udp'];
+                            . ' -f mpegts "' . $data['udp0']['udp'] . '"';
                         break;
                 }
                 $file = "/var/www/encoder-udp0.sh";
@@ -877,16 +888,26 @@ function update_service($which_service)
             break;
         case "udp1";
             if ($service_udp1 === "enable") {
+                $udp1 = 'ffmpeg -hwaccel auto -hide_banner -i ';
+                switch ($use_common_backend) {
+                    case "copy_input":
+                    case "use_common_backend":
+
+                        $udp1 .= ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1"';
+
+                        break;
+                    case "transcode_every_time":
+                        $udp1 .= '"' . $input_transcode_every_time . '"';
+                        break;
+                }
                 switch ($use_common_backend_udp1) {
                     case "enable":
-                        $udp1 = 'ffmpeg -hwaccel auto -hide_banner   -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
-                            . ' -c:v copy '
+                        $udp1 .= ' -c:v copy '
                             . ' -c:a copy '
-                            . ' -f mpegts ' . $data['udp1']['udp'];
+                            . ' -f mpegts "' . $data['udp1']['udp'] . '"';
                         break;
                     case "disable":
-                        $udp1 = 'ffmpeg -hwaccel auto -hide_banner   -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
-                            . ' -c:v ' . $data['udp1']['formate']
+                        $udp1 .= ' -c:v ' . $data['udp1']['formate']
                             . ' -vf "scale=' . str_replace("x", ":", $data['udp1']['resolution']) . '"'
                             . ' -b:v ' . $data['udp1']['data_rate']
                             . ' -maxrate ' . $data['udp1']['data_rate']
@@ -898,7 +919,7 @@ function update_service($which_service)
                             . ' -af "volume=' . $data['udp1']['audio_db_gain'] . '"'
                             . ' -ar ' . $data['udp1']['audio_sample_rate']
                             . ' ' . $data['udp1']['extra']
-                            . ' -f mpegts ' . $data['udp1']['udp'];
+                            . ' -f mpegts "' . $data['udp1']['udp'] . '"';
                         break;
                 }
                 $file = "/var/www/encoder-udp1.sh";
@@ -911,17 +932,27 @@ function update_service($which_service)
             }
             break;
         case "udp2";
+            $udp2 = 'ffmpeg -hwaccel auto -hide_banner -i ';
+            switch ($use_common_backend) {
+                case "copy_input":
+                case "use_common_backend":
+
+                    $udp2 .= ' "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1"';
+
+                    break;
+                case "transcode_every_time":
+                    $udp2 .= '"' . $input_transcode_every_time . '"';
+                    break;
+            }
             if ($service_udp2 === "enable") {
                 switch ($use_common_backend_udp2) {
                     case "enable":
-                        $udp2 = 'ffmpeg -hwaccel auto -hide_banner   -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
-                            . ' -c:v copy '
+                        $udp2 = ' -c:v copy '
                             . ' -c:a copy '
-                            . ' -f mpegts ' . $data['udp2']['udp'];
+                            . ' -f mpegts "' . $data['udp2']['udp'] . '"';
                         break;
                     case "disable":
-                        $udp2 = 'ffmpeg -hwaccel auto -hide_banner   -i "udp://@239.255.254.254:39000?fifo_size=5000000&overrun_nonfatal=1&localaddr=127.0.0.1" '
-                            . ' -c:v ' . $data['udp2']['formate']
+                        $udp2 = ' -c:v ' . $data['udp2']['formate']
                             . ' -vf "scale=' . str_replace("x", ":", $data['udp2']['resolution']) . '"'
                             . ' -b:v ' . $data['udp2']['data_rate']
                             . ' -maxrate ' . $data['udp2']['data_rate']
@@ -933,7 +964,7 @@ function update_service($which_service)
                             . ' -af "volume=' . $data['udp2']['audio_db_gain'] . '"'
                             . ' -ar ' . $data['udp2']['audio_sample_rate']
                             . ' ' . $data['udp2']['extra']
-                            . ' -f mpegts ' . $data['udp2']['udp'];
+                            . ' -f mpegts "' . $data['udp2']['udp'] . '"';
                         break;
                 }
                 $file = "/var/www/encoder-udp2.sh";
