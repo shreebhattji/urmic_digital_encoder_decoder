@@ -12,6 +12,7 @@ $defaults = [
 ];
 
 $data = $defaults;
+
 if (is_file($jsonFile)) {
     $stored = json_decode(file_get_contents($jsonFile), true);
     if (is_array($stored)) {
@@ -43,6 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($data as $port => $value) {
         $tmp = explode(",", trim($value));
         if (count($tmp) > 0) {
+            error_log(count($tmp));
+            print_r($tmp);
             foreach ($tmp as $ip) {
                 error_log("limit  port " . $port);
                 exec("sudo ufw allow from " . $ip . "to any port " . $port . " proto tcp");
