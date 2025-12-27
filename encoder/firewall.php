@@ -42,10 +42,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     rename($tmp, $jsonFile);
 
     foreach ($data as $port => $value) {
-        $tmp = explode(",", trim($value));
+        $tmp = array_filter(
+            array_map('trim', explode(',', (string)$value)),
+            'strlen'
+        );
         error_log("tmp count is " . count($tmp));
-        error_log($tmp);
-        if (count($tmp) > 1) {
+        if (count($tmp) !== 0) {
             foreach ($tmp as $ip) {
                 exec("sudo ufw allow from " . $ip . "to any port " . $port . " proto tcp");
             }
