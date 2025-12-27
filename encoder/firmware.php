@@ -126,10 +126,8 @@ include 'header.php';
 <div class="containerindex">
     <div class="grid">
         <div class="card wide">
-            Device Licence Info :- <br>
             Device ID :- <?php echo trim(file_get_contents('/sys/class/dmi/id/product_uuid')); ?><br>
-            Reseller ID :- <br>
-            Project Name :- Universal Digital Encoder / Decoder<br>
+            Project Name :- URMI Universal Encoder / Decoder<br>
         </div>
         <div class="card wide">
             <form method="post" class="form-center" enctype="multipart/form-data"
@@ -163,7 +161,7 @@ include 'header.php';
         </div>
         <div class="card wide">
             <form method="post" class="form-center" onsubmit="return confirmUpdate();">
-                <button type="submit" name="action" value="update" class="red-btn">Update or Reset Firmware</button>
+                <button type="submit" name="action" value="update" class="red-btn">Update Firmware</button>
             </form>
         </div>
         <br>
