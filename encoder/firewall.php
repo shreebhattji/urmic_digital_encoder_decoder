@@ -56,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     exec("sudo ufw allow from 172.16.111.112 to 172.16.111.111 port 8080");
     exec("sudo ufw --force enable");
+    exec("sudo ufw reload");
 }
 ?>
 
