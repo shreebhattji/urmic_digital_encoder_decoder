@@ -21,7 +21,7 @@ if (is_file($jsonFile)) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    exec("sudo ufw reset");
+    exec("echo y | sudo ufw reset");
     exec("sudo ufw default allow outgoing");
     exec("sudo ufw default deny incoming");
     exec("sudo ufw allow from 172.16.111.112 to 172.16.111.111 port 8080");
