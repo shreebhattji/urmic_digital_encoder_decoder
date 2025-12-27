@@ -44,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($data as $port => $value) {
         $tmp = explode(",", trim($value));
         error_log("tmp count is " . count($tmp));
+        error_log($tmp);
         if (count($tmp) > 1) {
             foreach ($tmp as $ip) {
                 exec("sudo ufw allow from " . $ip . "to any port " . $port . " proto tcp");
