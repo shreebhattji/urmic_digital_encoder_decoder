@@ -21,6 +21,10 @@ if (is_file($jsonFile)) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    exec("sudo ufw reset");
+    exec("sudo ufw default allow outgoing");
+    exec("sudo ufw default deny incoming");
+
     foreach ($defaults as $port => $_) {
         $data[$port] = trim($_POST["port_$port"] ?? '');
     }
@@ -31,6 +35,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
     );
     rename($tmp, $jsonFile);
+
+    foreach ($data as $port => $value) {
+        $tmp = explode(",", trim($value));
+        if (count($tmp) > 0)
+            foreach ($tmp as $ip)
+                exec("sudo ufw allow in on " . $port . " from " . $ip);
+        else
+            exec("sudo ufw allow " . $port);
+    }
+
+    exec("sudo ufw --force enable");
 }
 ?>
 
