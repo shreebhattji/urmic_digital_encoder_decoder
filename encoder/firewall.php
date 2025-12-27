@@ -15,7 +15,7 @@ $data = $defaults;
 if (is_file($jsonFile)) {
     $stored = json_decode(file_get_contents($jsonFile), true);
     if (is_array($stored)) {
-        $data = array_merge($data, $stored);
+        $data =  $stored;
     }
 }
 
