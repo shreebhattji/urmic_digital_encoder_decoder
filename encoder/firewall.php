@@ -43,8 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     foreach ($data as $port => $value) {
         $tmp = explode(",", trim($value));
-        if (count($tmp) > 0) {
-            error_log(count($tmp));
+        if (count($tmp) >= 1) {
+            print_r(count($tmp));
             print_r($tmp);
             foreach ($tmp as $ip) {
                 error_log("limit  port " . $port);
