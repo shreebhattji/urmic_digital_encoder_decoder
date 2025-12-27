@@ -654,6 +654,7 @@ function update_service($which_service)
     $rtmp0_multiple = $data['rtmp0_multiple'];
     $rtmp1_multiple = $data['rtmp1_multiple'];
     $srt_multiple = $data['srt_multiple'];
+    $display_hdmi_sdi = $data['display_hdmi_sdi'];
 
     $use_common_backend_rtmp0 = $data['rtmp0']['common_backend'];
     $use_common_backend_rtmp1 = $data['rtmp1']['common_backend'];
@@ -684,15 +685,20 @@ function update_service($which_service)
             }
             break;
         case 'display';
-            $display = "";
+            $display = "mpv --vo=drm --drm-mode=" . $display_resolution . " --fs --keepaspect=no --audio-device=alsa/plughw:" . $display_audio;
+            if ($display_hdmi_sdi === "enable") {
+                $display .= ' --audio-format=s16 --audio-samplerate=48000 --audio-channels=stereo --audio-spdif=no';
+            } else {
+                $display .= "";
+            }
             if ($service_display === "enable") {
                 switch ($use_common_backend) {
                     case "copy_input":
                     case "use_common_backend":
-                        $display = "mpv --vo=drm --drm-mode=" . $display_resolution . " --fs --keepaspect=no --audio-device=alsa/plughw:" . $display_audio . ' --audio-format=s16 --audio-samplerate=48000 --audio-channels=stereo --audio-spdif=no  "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
+                        $display =  '  "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
                         break;
                     case "transcode_every_time":
-                        $display = "mpv --vo=drm --drm-mode=" . $display_resolution . " --fs --keepaspect=no --audio-device=alsa/plughw:" . $display_audio . ' --audio-format=s16 --audio-samplerate=48000 --audio-channels=stereo --audio-spdif=no  "' . $input_transcode_every_time . '"';
+                        $display = '  "' . $input_transcode_every_time . '"';
                         break;
                 }
 
