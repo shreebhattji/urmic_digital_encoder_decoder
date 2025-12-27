@@ -1,13 +1,13 @@
 <?php include 'header.php' ?>
 <?php
 
-
 $file = __DIR__ . '/firewall.json';
 $data = [
     '80'   => '',
     '443'  => '',
     '1935' => '',
-    '1937' => ''
+    '1937' => '',
+    '8080' => '',
 ];
 
 if (file_exists($jsonFile)) {
@@ -17,12 +17,12 @@ if (file_exists($jsonFile)) {
     }
 }
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($data as $port => $val) {
         $data[$port] = trim($_POST["port_$port"] ?? '');
     }
     file_put_contents($jsonFile, json_encode($data, JSON_PRETTY_PRINT));
+
 }
 
 
@@ -60,11 +60,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     input[type=text] {
         width: 100%;
-        padding: 10px;
-        border-radius: 6px;
+        padding: 16px 14px;
+        border-radius: 8px;
         border: 1px solid #ccc;
-        font-size: 14px;
+        font-size: 11px;
+        line-height: 1.4;
     }
+
+    textarea {
+        width: 100%;
+        padding: 14px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 17px;
+        line-height: 1.5;
+        resize: vertical;
+    }
+
 
     input[type=text]:invalid {
         border-color: #d33;
@@ -72,6 +84,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     small {
         color: #666;
+    }
+
+    input[type=text]:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 2px rgba(37, 99, 235, .15);
     }
 
     button {
@@ -124,26 +142,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="containerindex">
     <div class="grid">
         <div class="card wide">
-            <h2>Firewall Allowed IPs</h2>
+            <h2>Limit Access</h2>
 
             <form method="post">
                 <?php foreach ($data as $port => $value): ?>
                     <div class="row">
                         <label>Port <?= htmlspecialchars($port) ?></label>
-                        <input
-                            type="text"
+                        <textarea
                             name="port_<?= $port ?>"
-                            value="<?= htmlspecialchars($value) ?>"
-                            placeholder="IPv4, IPv6 (comma separated)">
-                        <small>Example: 192.168.1.10, 2001:db8::1</small>
+                            rows="3"
+                            placeholder="IPv4, IPv6 (comma separated)"><?= htmlspecialchars($value) ?></textarea>
+
+                        <small>Example: 192.168.1.10/24, 2001:db8::1</small>
                     </div>
                 <?php endforeach; ?>
 
-                <button type="submit">Save Rules</button>
+                <button type="submit">Limit Access</button>
+                <br>
+                <br>
+                <br>
+                <br>
             </form>
-            <br><br>
         </div>
     </div>
 </div>
-
 <?php include 'footer.php' ?>
