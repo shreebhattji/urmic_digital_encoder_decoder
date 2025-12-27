@@ -42,11 +42,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     foreach ($data as $port => $value) {
         $tmp = explode(",", trim($value));
-        if (count($tmp) > 0)
-            foreach ($tmp as $ip)
-                exec("sudo ufw allow in on " . $port . " from " . $ip);
-        else
+        if (count($tmp) > 0) {
+            foreach ($tmp as $ip) {
+                exec("sudo ufw allow from " . $ip . "to any port " . $port . " proto tcp");
+            }
+        } else {
             exec("sudo ufw allow " . $port);
+        }
     }
 
     exec("sudo ufw --force enable");
