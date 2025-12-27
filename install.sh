@@ -407,11 +407,20 @@ sudo systemctl status nginx.service --no-pager
 
 sudo chmod 777 -R /var/www
 sudo chown -R www-data:www-data /var/www
-sudo ufw allow proto udp to 224.0.0.0/4
-sudo ufw route allow proto udp to 224.0.0.0/4
-sudo ufw deny out to 239.255.254.254 port 39000 proto udp
 sudo systemctl daemon-reload
 
 sudo chmod 444 /sys/class/dmi/id/product_uuid
 sudo systemctl disable systemd-networkd-wait-online.service
 sudo systemctl mask systemd-networkd-wait-online.service
+
+sudo ufw default allow outgoing
+sudo ufw default deny incoming
+sudo ufw allow 1935
+sudo ufw allow 1937
+sudo ufw allow 80
+sudo ufw allow 443
+sudo ufw allow proto udp to 224.0.0.0/4
+sudo ufw route allow proto udp to 224.0.0.0/4
+sudo ufw deny out to 239.255.254.254 port 39000 proto udp
+sudo ufw allow from 172.16.111.112 to 172.16.111.111 port 8080
+sudo ufw --force enable

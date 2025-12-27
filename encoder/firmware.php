@@ -1,4 +1,5 @@
 <?php
+exec("sudo chmod 444 /sys/class/dmi/id/product_uuid");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     switch ($_POST['action']) {
