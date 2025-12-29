@@ -88,8 +88,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
 
         case 'restore':
-            $inputFile  = __DIR__ . '/universal_encoder_decoder.bin';
-            $restoreDir = __DIR__ . '/var/www/encoder/';
+            $jsonFiles = [
+                'input.json',
+                'output.json',
+                'firewall.json',
+                'network.json',
+                'firmware.json',
+            ];
+
+            foreach ($jsonFiles as $json) {
+                if (file_exists($json)) {
+                    unlink($json);
+                }
+            }
+
             $tmpZip     = sys_get_temp_dir() . '/restore.zip';
 
             $upload = $_FILES['shree_bhattji_encoder'];
@@ -166,6 +178,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             update_service("udp2");
             update_service("srt");
             update_service("custom");
+            update_service("input");
             break;
     }
 }
