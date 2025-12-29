@@ -7,13 +7,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             update_firmware();
             break;
         case 'reset':
-            $files = glob('/var/www/html/*.json');
+            $files = glob('/var/www/encoder/*.json');
             foreach ($files as $file) {
                 if (is_file($file) && basename($file) !== 'critical.json') {
                     unlink($file);
                 }
             }
-            deleteDir('/var/www/encoder/setup');
             break;
         case 'reboot':
             exec('sudo reboot');
