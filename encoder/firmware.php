@@ -93,11 +93,72 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $restoreDir = __DIR__ . '/var/www/encoder/';
             $tmpZip     = sys_get_temp_dir() . '/restore.zip';
 
-            $privateKey = file_get_contents('/var/www/backup_private.pem');
+            $upload = $_FILES['shree_bhattji_encoder'];
 
-            if (!file_exists($inputFile)) {
-                die("Backup file not found\n");
+            if ($upload['error'] !== UPLOAD_ERR_OK) {
+                die('Upload failed');
             }
+
+            if (pathinfo($upload['name'], PATHINFO_EXTENSION) !== 'bin') {
+                die('Invalid file type');
+            }
+
+            $privateKeyPem = file_get_contents('/var/www/backup_private.pem');
+            if (!$privateKeyPem) {
+                die('Private key not found');
+            }
+
+            $privateKey = openssl_pkey_get_private($privateKeyPem);
+            if (!$privateKey) {
+                die('Invalid private key');
+            }
+
+            $payloadRaw = file_get_contents($upload['tmp_name']);
+            $payload    = json_decode($payloadRaw, true);
+
+            if (
+                !is_array($payload)
+                || !isset($payload['key'], $payload['iv'], $payload['data'])
+            ) {
+                die('Invalid backup file format');
+            }
+
+            $encryptedKey  = base64_decode($payload['key'], true);
+            $iv            = base64_decode($payload['iv'], true);
+            $encryptedData = base64_decode($payload['data'], true);
+
+            if ($encryptedKey === false || $iv === false || $encryptedData === false) {
+                die('Corrupt backup data');
+            }
+
+            if (!openssl_private_decrypt($encryptedKey, $aesKey, $privateKey)) {
+                die('Key mismatch or wrong private key');
+            }
+
+            $zipBinary = openssl_decrypt(
+                $encryptedData,
+                'AES-256-CBC',
+                $aesKey,
+                OPENSSL_RAW_DATA,
+                $iv
+            );
+
+            if ($zipBinary === false) {
+                die('Failed to decrypt data');
+            }
+            $tmpZip = sys_get_temp_dir() . '/restore_' . uniqid() . '.zip';
+            file_put_contents($tmpZip, $zipBinary);
+
+            $zip = new ZipArchive();
+            if ($zip->open($tmpZip) !== true) {
+                unlink($tmpZip);
+                die('Invalid ZIP archive');
+            }
+
+            $zip->extractTo(__DIR__);   // overwrites existing JSON
+            $zip->close();
+
+            unlink($tmpZip);
             break;
     }
 }
@@ -136,7 +197,7 @@ include 'header.php';
                 <label>Select restore file (.bin only):</label><br><br>
 
                 <input type="file"
-                    name="shree_bhattji_encoder.bin"
+                    name="shree_bhattji_encoder"
                     accept=".bin"
                     required><br><br>
 

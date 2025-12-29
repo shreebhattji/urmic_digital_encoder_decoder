@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         padding: 14px;
         border-radius: 8px;
         border: 1px solid #ccc;
-        font-size: 17px;
+        font-size: 13px;
         line-height: 1.5;
         resize: vertical;
     }
@@ -184,7 +184,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label>Port <?= htmlspecialchars($port) ?></label>
                         <textarea
                             name="port_<?= $port ?>"
-                            rows="3"
+                            rows="2"
                             placeholder="IPv4, IPv6 (comma separated)"><?= htmlspecialchars($value) ?></textarea>
 
                         <small>Example: 192.168.1.10/24, 2001:db8::1</small>
