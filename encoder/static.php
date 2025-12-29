@@ -813,12 +813,12 @@ function update_service($which_service)
 
                 switch ($use_common_backend_srt) {
                     case "enable":
-                        $service = ' -c:v copy '
+                        $srt .= ' -c:v copy '
                             . ' -c:a copy -pkt_size 1316 -flush_packets 0 '
                             . ' -f mpegts "srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji&latency=2000"';
                         break;
                     case "disable":
-                        $service = ' -c:v ' . $data['srt']['formate']
+                        $srt .= ' -c:v ' . $data['srt']['formate']
                             . ' -vf "scale=' . str_replace("x", ":", $data['srt']['resolution']) . '"'
                             . ' -b:v ' . $data['srt']['data_rate']
                             . ' -maxrate ' . $data['srt']['data_rate']
@@ -835,7 +835,7 @@ function update_service($which_service)
                 }
 
                 $file = "/var/www/encoder-srt.sh";
-                file_put_contents($file, $service);
+                file_put_contents($file, $srt);
 
                 exec('sudo systemctl enable encoder-srt');
                 exec('sudo systemctl restart encoder-srt');
