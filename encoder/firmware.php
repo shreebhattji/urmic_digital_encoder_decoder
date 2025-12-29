@@ -198,21 +198,6 @@ include 'header.php';
             Project Name :- URMI Universal Encoder / Decoder<br>
         </div>
         <div class="card wide">
-            <form method="post" class="form-center" enctype="multipart/form-data"
-                onsubmit="return confirm('Are you sure you want to restore using this file ? All settings will be restored as per backup file .')">
-
-                <label>Select restore file (.bin only):</label><br><br>
-
-                <input type="file"
-                    name="shree_bhattji_encoder"
-                    accept=".bin"
-                    required><br><br>
-
-                <button type="submit" name="action" value="restore" class="green-btn">Restore</button>
-
-            </form>
-        </div>
-        <div class="card wide">
             <form method="post" class="form-center">
                 <button type="submit" name="action" value="backup" class="green-btn">Download Backup File</button>
             </form>
@@ -230,6 +215,21 @@ include 'header.php';
         <div class="card wide">
             <form method="post" class="form-center" onsubmit="return confirmUpdate();">
                 <button type="submit" name="action" value="update" class="red-btn">Update Firmware</button>
+            </form>
+        </div>
+        <div class="card wide">
+            <form method="post" class="form-center" enctype="multipart/form-data"
+                onsubmit="return confirm('Are you sure you want to restore using this file ? All settings will be restored as per backup file .')">
+
+                <label>Select restore file (.bin only):</label><br><br>
+
+                <input type="file"
+                    name="shree_bhattji_encoder"
+                    accept=".bin"
+                    required><br><br>
+
+                <button type="submit" name="action" value="restore" class="red-btn">Restore</button>
+
             </form>
         </div>
         <br>
