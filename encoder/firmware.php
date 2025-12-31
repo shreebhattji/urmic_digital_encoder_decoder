@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'encrypted' => base64_encode($encrypted)
             ];
 
-            $ch = curl_init('http://account.urmic.org/encoder/update.php');
+            $ch = curl_init('https://account.urmic.org/encoder/update.php');
             curl_setopt_array($ch, [
                 CURLOPT_POST           => true,
                 CURLOPT_POSTFIELDS     => $postData,
