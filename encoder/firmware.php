@@ -2,7 +2,36 @@
 include 'header.php';
 
 exec("sudo chmod 444 /sys/class/dmi/id/product_uuid");
-$version = 1.0;
+$version = 1;
+
+function fail(string $msg): never
+{
+    fwrite(STDERR, "ERROR: $msg\n");
+    exit(1);
+}
+
+function download(string $url, string $dest): void
+{
+    $fp = fopen($dest, 'wb');
+    if (!$fp) fail("Cannot write $dest");
+
+    $ch = curl_init($url);
+    curl_setopt_array($ch, [
+        CURLOPT_FILE => $fp,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_FAILONERROR => true,
+        CURLOPT_TIMEOUT => 60,
+        CURLOPT_SSL_VERIFYPEER => true,
+    ]);
+
+    if (!curl_exec($ch)) {
+        fail("Download failed: " . curl_error($ch));
+    }
+
+    curl_close($ch);
+    fclose($fp);
+}
+
 
 $device_id = trim(file_get_contents('/sys/class/dmi/id/product_uuid'));
 
@@ -73,7 +102,101 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             error_log($data['status']);
 
             if ($data['status'] == "valid") {
-                error_log($data['link']);
+                $public_key = "-----BEGIN PUBLIC KEY-----
+MIIEIjANBgkqhkiG9w0BAQEFAAOCBA8AMIIECgKCBAEAm+7Vl0fEgey2tF6v2mTn
+3C/FDGn589uY5a9rpDeZLlhjdOdFaTMWL3d8oEhmImCd+aPELpxydQ+xGxVPNOzO
+WKbF3V/FymwxyU3yCD8rfCPyd05z9ANeicVEZMO2K0CwjLoM1OFpxoo/GRmetHuY
+Yt2WxDWHPN9DjDDkIMrx2PKFHPqJnyWliyFWJ4aaaK174GH+b4rHRkAm31fUhbaG
+RBcQWJhWv1gJ+lxz2z3oHi9nI6Q/Hkb+u3B11tcx3j6rScxKXk8T6Bw64vEk3t0l
+i1kYgnPI4Eya0BXuROMfn+zGG50TNgq+vWntzBoKaWuPVbvvmzTlHK8My9qZUliy
+otDNd340xhBCmIYqkwxiN2w4g+TAM9X3r9/4lgJYx5ezh3Y0uLGf6mHZ5wFyDAhh
+uLJxkOCZY0b3zoRW5wqqKR67/FxBCpcLS6Y8wlKSR8UU8y73hr2tGD28JgNr9sjx
+reRItpdGhQgO8gLZKLK6LhihTFtbt5tiL1l6Fkc11DSac+N/xFyHfRe6K3lIV+cD
+WMx0+6YX3p8i4cmRXGn59Xu1VdZvmB03Dl5YmIb6wBNMCEPWohRz0bGmamXGW1Ze
+EZQhGJRUqIFNuTQwc/RI1wPUgefXXXitCOlo52oyahuKWxWuGMN/8Uyw74poK7NK
+7Tbu+JLNuqMsuPoVkrl7havRUbwQy7xUt93wFew0GFDaOobZzoGIjp3pWGvZiQ7y
+XMyzklS42/ZC7rJAJTyuLTHxMeUMB4Zt7Qmp7GQ3NaOUq4egPQ6KZUO4qDNtAJaK
+mvHca0HHmskP20/yb4iVtz65zhj6BWt98SsFuRMrMDDoBDEtcd1T7xIRK4nqfIhX
+8Nw8z1+m8TVItJM3XxvLx6eXgtnJ8BqWInjRoFkbpzEON56zA1ZwPCFm7MWACKEs
+m4Gul3+liBwDnpaJvHLLs6+9R4T1/d6nrwwRPDBz9AhBZV2Qz0/Z67qAyGvT2Joh
+qR6fIHe+jsKlPSW4TBBx8C2H6avKv7W0CH7z4Y9APuDucvMQ2X3CCekTRaejU7nr
+JOGs8ALAtsL+eXL+KMvU/16zxzcbT4ZW/6kdRFtwkaWlq07Q1yU13s+JQRzenut5
+7j1GMcmtt1K/CSBzhs2d2UTwiO3fRDs4TCUAj/vq2OlfL1UOAZ3ni8QmfA1vD/BD
+Xqfivizijmypv83rv8se5b6dr78ti+wiAIEJEDX+/yISmEWuDXGaL+eVATr1Rw+0
+8vFY2f7lS2/QsSv+X7B6lOs3L18sG7AAYrkFjrfhQ8RC9Lv62ITUAV6B6G/BJ4o0
+UubReGWsYm092Z9SWEB8KBUlwMWjEMl6Q2f3AfkAKR3EMYBqmNfL8teAcb711xA2
+EwIDAQAB
+-----END PUBLIC KEY-----
+";
+
+                $tmpDir = sys_get_temp_dir() . '/payload_' . bin2hex(random_bytes(6));
+                $zipFile = $tmpDir . '/payload.zip';
+                $sigFile = $tmpDir . '/payload.zip.sig';
+                $extractDir = $tmpDir . '/extract';
+
+                mkdir($tmpDir, 0700, true);
+                mkdir($extractDir, 0700, true);
+
+                download($data['link'], $zipFile);
+                download($data['signature'], $sigFile);
+
+                $publicKey = openssl_pkey_get_public($public_key);
+                if (!$publicKey) fail('Invalid public key');
+
+                $data = file_get_contents($zipFile);
+                $signature = file_get_contents($sigFile);
+
+                $verified = openssl_verify($data, $signature, $publicKey, OPENSSL_ALGO_SHA256);
+                openssl_free_key($publicKey);
+
+                if ($verified !== 1) {
+                    fail('Signature verification FAILED');
+                }
+
+                $zip = new ZipArchive();
+                if ($zip->open($zipFile) !== true) {
+                    fail('Unable to open ZIP');
+                }
+                for ($i = 0; $i < $zip->numFiles; $i++) {
+                    $name = $zip->getNameIndex($i);
+                    if (str_contains($name, '..') || str_starts_with($name, '/')) {
+                        fail('Zip traversal detected');
+                    }
+                }
+
+                $zip->extractTo($extractDir);
+                $zip->close();
+                $setup = $extractDir . '/setup.sh';
+
+                if (!is_file($setup)) {
+                    fail('setup.sh not found');
+                }
+
+                chmod($setup, 0755);
+
+                $descriptorSpec = [
+                    1 => ['pipe', 'w'],
+                    2 => ['pipe', 'w'],
+                ];
+
+                $process = proc_open(
+                    ['/bin/bash', $setup],
+                    $descriptorSpec,
+                    $pipes,
+                    $extractDir
+                );
+
+                if (!is_resource($process)) {
+                    fail('Failed to execute setup.sh');
+                }
+
+                $output = stream_get_contents($pipes[1]);
+                $error  = stream_get_contents($pipes[2]);
+
+                fclose($pipes[1]);
+                fclose($pipes[2]);
+
+                $exitCode = proc_close($process);
             }
             break;
         case 'reset':
