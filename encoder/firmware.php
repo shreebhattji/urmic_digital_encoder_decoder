@@ -1,5 +1,7 @@
 <?php
+
 exec("sudo chmod 444 /sys/class/dmi/id/product_uuid");
+$version = 1.0;
 
 $device_id = trim(file_get_contents('/sys/class/dmi/id/product_uuid'));
 
@@ -33,10 +35,10 @@ KQIDAQAB
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     switch ($_POST['action']) {
         case 'update':
-            $payload = $_POST;
+
             $payload['device_id'] = $device_id;
             $payload['project_id'] = "28f27590923d962388f0da125553c5";
-
+            $payload['version'] = 1;
             $payload = json_encode($payload, JSON_UNESCAPED_UNICODE);
 
             openssl_public_encrypt(
@@ -61,7 +63,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $response = curl_exec($ch);
             curl_close($ch);
 
-            error_log($response);
 
             break;
         case 'reset':
@@ -267,7 +268,7 @@ include 'header.php';
         <div class="card wide">
             Device ID :- <?php echo trim(file_get_contents('/sys/class/dmi/id/product_uuid')); ?><br>
             Project Name :- URMI Universal Encoder / Decoder<br>
-            Software Version  :- 1.0v <br>
+            Software Version :- 1.0v <br>
         </div>
         <div class="card wide">
             <form method="post" class="form-center">
@@ -285,7 +286,7 @@ include 'header.php';
             </form>
         </div>
         <div class="card wide">
-            <form method="post" class="form-center" onsubmit="return confirmUpdate();">
+            <form method="post" class="form-center">
                 <button type="submit" name="action" value="update" class="red-btn">Update Firmware</button>
             </form>
         </div>
