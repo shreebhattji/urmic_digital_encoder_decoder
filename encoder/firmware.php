@@ -62,9 +62,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $response = curl_exec($ch);
             curl_close($ch);
-            echo '<script>alert("'
-                . htmlspecialchars($response, ENT_QUOTES)
-                . '");</script>';
+            $data = json_decode($response,true);
+
+            error_log($data['status']);
+            error_log($data['message']);
             break;
         case 'reset':
             $files = glob('/var/www/encoder/*.json');
@@ -269,7 +270,7 @@ include 'header.php';
         <div class="card wide">
             Device ID :- <?php echo trim(file_get_contents('/sys/class/dmi/id/product_uuid')); ?><br>
             Project Name :- URMI Universal Encoder / Decoder<br>
-            Software Version :- 1.0v <br>
+            Software Version :- 1 <br>
         </div>
         <div class="card wide">
             <form method="post" class="form-center">
