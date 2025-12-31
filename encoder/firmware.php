@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 . htmlspecialchars($data['message'], ENT_QUOTES)
                 . '");</script>';
 
-            if ($data['valid'] === "valid") {
+            if ($data['status'] === "valid") {
                 error_log($data['link']);
             }
             break;
