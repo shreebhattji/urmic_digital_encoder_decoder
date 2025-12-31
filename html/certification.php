@@ -164,6 +164,15 @@
             full responsibility for compliance with this declaration.
         </p>
 
+        <div class="section-title">Device ID</div>
+        <p>
+             <?php
+                exec("sudo chmod 444 /sys/class/dmi/id/product_uuid");
+                $device_id = trim(file_get_contents('/sys/class/dmi/id/product_uuid'));
+                echo $device_id;
+             ?>
+        </p>
+
         <div class="signature">
             <div class="sign-box">
                 Devdatt Bhatt aka ShreeBhattji <br> Bhavnagar
