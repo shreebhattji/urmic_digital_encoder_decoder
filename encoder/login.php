@@ -1,5 +1,92 @@
+<?php
+session_start();
+
+/* ---------- CONFIG ---------- */
+$usersFile    = __DIR__ . '/users.json';
+$attemptsFile = __DIR__ . '/attempts.json';
+
+$MAX_ATTEMPTS = 3;
+$LOCK_TIME    = 3600; // 15 minutes
+
+/* ---------- HELPERS ---------- */
+function client_ip(): string
+{
+    return $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+}
+
+function load_json($file): array
+{
+    return is_file($file) ? json_decode(file_get_contents($file), true) ?: [] : [];
+}
+
+function save_json($file, $data): void
+{
+    file_put_contents($file, json_encode($data, JSON_PRETTY_PRINT), LOCK_EX);
+}
+
+/* ---------- CSRF ---------- */
+if (empty($_SESSION['csrf'])) {
+    $_SESSION['csrf'] = bin2hex(random_bytes(32));
+}
+
+/* ---------- RATE LIMIT ---------- */
+$ip = client_ip();
+$attempts = load_json($attemptsFile);
+
+if (isset($attempts[$ip])) {
+    if (
+        $attempts[$ip]['count'] >= $MAX_ATTEMPTS &&
+        time() - $attempts[$ip]['last'] < $LOCK_TIME
+    ) {
+        http_response_code(429);
+        die("Too many attempts. Try again later.");
+    }
+}
+
+/* ---------- LOGIN ---------- */
+$error = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    if (!hash_equals($_SESSION['csrf'], $_POST['csrf'] ?? '')) {
+        http_response_code(400);
+        die('Invalid request');
+    }
+
+    $username = trim($_POST['username'] ?? '');
+    $password = $_POST['password'] ?? '';
+    if (empty($_POST['agree'])) {
+
+        $error = 'You must agree to the Privacy Policy and Terms & Conditions.';
+        echo '<script>alert("'
+            . htmlspecialchars($error, ENT_QUOTES)
+            . '");</script>';
+    }
+    $users = load_json($usersFile);
+
+    $valid = isset($users[$username]) &&
+        password_verify($password, $users[$username]['password']);
+
+    if ($valid) {
+        session_regenerate_id(true);
+        unset($attempts[$ip]);
+        save_json($attemptsFile, $attempts);
+        $_SESSION['user'] = $username;
+        header('Location: dashboard.php');
+        exit;
+    }
+
+    // Failed login
+    $attempts[$ip]['count'] = ($attempts[$ip]['count'] ?? 0) + 1;
+    $attempts[$ip]['last']  = time();
+    save_json($attemptsFile, $attempts);
+
+    $error = 'Invalid username or password';
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -59,11 +146,9 @@
             position: absolute;
             width: 2px;
             height: 70px;
-            background: linear-gradient(
-                to bottom,
-                rgba(255, 255, 255, 0.9),
-                rgba(255, 255, 255, 0)
-            );
+            background: linear-gradient(to bottom,
+                    rgba(255, 255, 255, 0.9),
+                    rgba(255, 255, 255, 0));
             opacity: 0.55;
             border-radius: 999px;
             filter: blur(0.3px);
@@ -77,6 +162,7 @@
             0% {
                 transform: translate3d(0, -120px, 0);
             }
+
             100% {
                 transform: translate3d(0, 110vh, 0);
             }
@@ -90,12 +176,9 @@
             padding: 2.5rem 2rem;
             border-radius: 1.75rem;
             border: 1px solid rgba(148, 163, 184, 0.6);
-            background: linear-gradient(
-                    135deg,
+            background: linear-gradient(135deg,
                     rgba(15, 23, 42, 0.9),
-                    rgba(15, 23, 42, 0.7)
-                )
-                border-box;
+                    rgba(15, 23, 42, 0.7)) border-box;
             backdrop-filter: blur(16px);
             box-shadow:
                 0 20px 60px rgba(15, 23, 42, 0.7),
@@ -115,11 +198,9 @@
             text-transform: uppercase;
             letter-spacing: 0.12em;
             color: var(--text-main);
-            background: linear-gradient(
-                90deg,
-                rgba(59, 130, 246, 0.6),
-                rgba(34, 197, 94, 0.75)
-            );
+            background: linear-gradient(90deg,
+                    rgba(59, 130, 246, 0.6),
+                    rgba(34, 197, 94, 0.75));
         }
 
         .badge-dot {
@@ -136,12 +217,10 @@
 
         h1 span.highlight {
             font-size: clamp(1.1rem, 2vw, 1.8rem);
-            background-image: linear-gradient(
-                120deg,
-                #22c55e,
-                #a855f7,
-                #f97316
-            );
+            background-image: linear-gradient(120deg,
+                    #22c55e,
+                    #a855f7,
+                    #f97316);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
@@ -173,11 +252,9 @@
             border: 1px solid rgba(148, 163, 184, 0.8);
             font-size: 0.75rem;
             color: #e5e7eb;
-            background: radial-gradient(
-                circle at top left,
-                rgba(59, 130, 246, 0.22),
-                rgba(15, 23, 42, 0.7)
-            );
+            background: radial-gradient(circle at top left,
+                    rgba(59, 130, 246, 0.22),
+                    rgba(15, 23, 42, 0.7));
         }
 
         .footer {
@@ -239,38 +316,56 @@
 
     <div class="page-wrap">
         <main class="card">
-            <div class="badge">
-                <span class="badge-dot"></span>
-                <span>Any formate to any formate</span>
+
+            <h1>Welcome</h1>
+
+            <?php if ($error): ?>
+                <p style="color:#fca5a5"><?= htmlspecialchars($error) ?></p>
+            <?php endif; ?>
+
+            <form method="post" autocomplete="off">
+                <input type="hidden" name="csrf" value="<?= htmlspecialchars($_SESSION['csrf']) ?>">
+
+                <div style="display:flex;flex-direction:column;gap:0.75rem">
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="Username"
+                        required
+                        style="padding:0.7rem;border-radius:0.5rem;border:none" />
+
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        required
+                        style="padding:0.7rem;border-radius:0.5rem;border:none" />
+                    <label style="display:flex; gap:0.5rem; align-items:flex-start; font-size:0.8rem; color:#e5e7eb;">
+                        <input
+                            type="checkbox"
+                            name="agree"
+                            value="1"
+                            required
+                            style="margin-top:0.15rem">
+                        <span>
+                            I agree to the
+                            <a href="https://urmic.org/2025/12/31/privacy-policy-and-terms-conditions-for-encoder/" target="_blank" class="link">Privacy Policy</a>
+                            and
+                            <a href="https://urmic.org/2025/12/31/privacy-policy-and-terms-conditions-for-encoder/" target="_blank" class="link">Terms & Conditions</a>
+                        </span>
+                    </label>
+                    <button
+                        type="submit"
+                        style="padding:0.75rem;border-radius:0.6rem;border:none;
+           background:#22c55e;color:#000;font-weight:600">
+                        Login
+                    </button>
+                </div>
+            </form>
+
+            <div style="margin-top:0.75rem">
+                <a href="forgot.php" class="link">Forgot password?</a>
             </div>
-
-            <h1>
-                Universal Encoder / Decoder
-                <span class="highlight">powred by Shreebhattji</span>
-            </h1>
-
-            <p class="subtitle">
-                Full Free Taining
-            </p>
-            <p class="subtitle">
-                10 Year Long Term Software Support 
-            </p>
-            <p class="subtitle">
-                Industry wide formate support 
-            </p>
-            <p class="subtitle">
-                Wordwide availibility of hardware via hardware partners
-            </p>
-
-            <div class="pill-row">
-                <span class="pill"><a style="color: #ffffff;" href="https://www.facebook.com/WorldwideDigitalAssociation/">Facebook</a></span>
-                <span class="pill"><a style="color: #ffffff;" href="https://www.linkedin.com/in/dbhatt-org/">Linkedin</a></span>
-                <span class="pill"><a style="color: #ffffff;" href="https://wa.me/+918000741919">What's app</a></span>
-                <span class="pill"><a style="color: #ffffff;" href="mailto:hello@urmic.org">Email</a></span>
-                <span class="pill"><a style="color: #ffffff;" href="tel:+918000741919">Call Us</a></span>
-                <span class="pill"><a style="color: #ffffff;" href="certification.html">Certificate</a></span>
-            </div>
-
             <div class="footer">
                 <div class="brand">
                     URMIC • <span>Shreebhattji</span>
@@ -279,11 +374,12 @@
                     <a href="https://urmic.org/trusted-partners/" class="link">Meet Out Partners</a>
                 </div>
             </div>
+
         </main>
     </div>
 
     <script>
-        (function () {
+        (function() {
             const container = document.getElementById("rain");
 
             function generateRain() {
@@ -334,4 +430,5 @@
         })();
     </script>
 </body>
+
 </html>
