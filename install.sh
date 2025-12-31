@@ -443,3 +443,5 @@ sudo ufw route allow proto udp to 224.0.0.0/4
 sudo ufw deny out to 239.255.254.254 port 39000 proto udp
 sudo ufw allow from 172.16.111.112 to 172.16.111.111 port 8080
 sudo ufw --force enable
+DEVICE_ID="$(cat /sys/class/dmi/id/product_uuid | tr -d '\n')"
+sudo sed -i 's/certificatecertificatecertificatecertificate/${DEVICE_ID}/g' /var/www/html/certification.html
