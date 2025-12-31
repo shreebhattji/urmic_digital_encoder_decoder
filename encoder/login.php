@@ -6,7 +6,7 @@ $usersFile    = '/var/www/users.json';
 $attemptsFile = '/var/www/attempts.json';
 
 $MAX_ATTEMPTS = 3;
-$LOCK_TIME    = 3600; // 15 minutes
+$LOCK_TIME    = 3600;
 
 /* ---------- HELPERS ---------- */
 function client_ip(): string
