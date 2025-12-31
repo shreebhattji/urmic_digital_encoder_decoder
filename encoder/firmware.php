@@ -62,7 +62,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $response = curl_exec($ch);
             curl_close($ch);
-            error_log(print_r($response));
+            echo '<script>alert("'
+                . htmlspecialchars($response, ENT_QUOTES)
+                . '");</script>';
             break;
         case 'reset':
             $files = glob('/var/www/encoder/*.json');
