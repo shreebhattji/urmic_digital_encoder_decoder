@@ -332,6 +332,7 @@ EOL
 
 sudo chmod +x /etc/srt/srt.sh
 sudo cp sls /etc/srt/srt
+
 cat > /etc/systemd/system/srt.service<< 'EOL'
 [Unit]
 Description=Srt by ShreeBhattJi
@@ -351,8 +352,6 @@ SyslogIdentifier=srt
 
 [Install]
 WantedBy=multi-user.target
-EOL
-
 EOL
 
 cat >/etc/netplan/00-stream.yaml<< 'EOL'
