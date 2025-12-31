@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $payload['device_id'] = $device_id;
             $payload['project_id'] = "28f27590923d962388f0da125553c5";
 
-            $payload = json_encode($_POST, JSON_UNESCAPED_UNICODE);
+            $payload = json_encode($payload, JSON_UNESCAPED_UNICODE);
 
             openssl_public_encrypt(
                 $payload,
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $response = curl_exec($ch);
             curl_close($ch);
 
-            error_log(print_r($response,true));
+            error_log($response);
 
             break;
         case 'reset':
