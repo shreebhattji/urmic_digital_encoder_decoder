@@ -2,8 +2,8 @@
 session_start();
 
 /* ---------- CONFIG ---------- */
-$usersFile    = __DIR__ . '/users.json';
-$attemptsFile = __DIR__ . '/attempts.json';
+$usersFile    = '/var/www/users.json';
+$attemptsFile = '/var/www/attempts.json';
 
 $MAX_ATTEMPTS = 3;
 $LOCK_TIME    = 3600; // 15 minutes
