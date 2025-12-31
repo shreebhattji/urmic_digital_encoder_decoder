@@ -69,6 +69,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo '<script>alert("'
                 . htmlspecialchars($data['message'], ENT_QUOTES)
                 . '");</script>';
+
+            if ($data['valid'] === "valid") {
+                error_log($data['link']);
+            }
             break;
         case 'reset':
             $files = glob('/var/www/encoder/*.json');
