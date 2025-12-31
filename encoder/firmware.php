@@ -1,4 +1,5 @@
 <?php
+include 'header.php';
 
 exec("sudo chmod 444 /sys/class/dmi/id/product_uuid");
 $version = 1.0;
@@ -245,7 +246,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
     }
 }
-include 'header.php';
 
 ?>
 <script>
