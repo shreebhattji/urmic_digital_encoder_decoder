@@ -62,12 +62,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $response = curl_exec($ch);
             curl_close($ch);
+
             $data = json_decode($response, true);
 
-            echo '<div class="alert success">'
-                . '<strong>Message:</strong> '
-                . htmlspecialchars($data['message'], ENT_QUOTES, 'UTF-8')
-                . '</div>';
+            echo '<script>alert("'
+                . htmlspecialchars($data['message'], ENT_QUOTES)
+                . '");</script>';
             break;
         case 'reset':
             $files = glob('/var/www/encoder/*.json');
@@ -265,28 +265,6 @@ include 'header.php';
         return confirm("Are you sure you want to download backup ? ");
     }
 </script>
-<style>
-    .alert {
-        padding: 10px;
-        border-radius: 4px;
-        margin: 10px 0;
-    }
-
-    .alert.success {
-        background: #e6fffa;
-        color: #065f46;
-    }
-
-    .alert.error {
-        background: #fee2e2;
-        color: #7f1d1d;
-    }
-
-    .alert.warning {
-        background: #fff7ed;
-        color: #9a3412;
-    }
-</style>
 
 
 <div class="containerindex">
