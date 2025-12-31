@@ -1,6 +1,13 @@
 <?php
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+header('Expires: 0');
 session_start();
-
+    
+if (!empty($_SESSION['user'])) {
+    header('Location: /index.php', true, 302);
+    exit;
+}
 /* ---------- CONFIG ---------- */
 $usersFile    = '/var/www/users.json';
 $attemptsFile = '/var/www/attempts.json';
@@ -72,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         unset($attempts[$ip]);
         save_json($attemptsFile, $attempts);
         $_SESSION['user'] = $username;
-        header('Location: dashboard.php');
+        header('Location: index.php');
         exit;
     }
 

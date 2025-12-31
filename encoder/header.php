@@ -1,4 +1,7 @@
-<?php include 'static.php'; ?>
+<?php 
+require 'require_login.php';
+include 'static.php';
+?>
 <!doctype html>
 <html lang="en">
 
