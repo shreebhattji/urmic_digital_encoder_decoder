@@ -1199,8 +1199,11 @@ function update_service_backend($service, $srt_pass1, $srt_pass2)
                 $hls0 = "
       hls on;
       hls_path /var/www/html/hls/shree;
-      hls_fragment 3;
-      hls_playlist_length 60;
+      hls_fragment 4;
+      hls_playlist_length 48;
+      hls_cleanup on;
+      hls_continuous on;
+      hls_nested on;
 ";
             } else {
                 $hls0 = "
@@ -1209,7 +1212,10 @@ function update_service_backend($service, $srt_pass1, $srt_pass2)
             if ($service_rtmp0_dash === "enable") {
                 $dash0 = "
       dash on;
-      dash_path /var/www/html/dash/shree; 
+      dash_path /var/www/html/dash/shree;
+      dash_fragment 4;
+      dash_playlist_length 48;
+      dash_cleanup on;
 ";
             } else {
                 $dash0 = "
@@ -1219,8 +1225,11 @@ function update_service_backend($service, $srt_pass1, $srt_pass2)
                 $hls1 = "
       hls on;
       hls_path /var/www/html/hls/shreeshree;
-      hls_fragment 3;
-      hls_playlist_length 60;
+      hls_fragment 4;
+      hls_playlist_length 48;
+      hls_cleanup on;
+      hls_continuous on;
+      hls_nested on;
 ";
             } else {
                 $hls1 = "
@@ -1229,7 +1238,10 @@ function update_service_backend($service, $srt_pass1, $srt_pass2)
             if ($service_rtmp1_dash === "enable") {
                 $dash1 = "
       dash on;
-      dash_path /var/www/html/dash/shreeshree; 
+      dash_path /var/www/html/dash/shreeshree;
+      dash_fragment 4;
+      dash_playlist_length 48;
+      dash_cleanup on;
 ";
             } else {
                 $dash1 = "
@@ -1259,11 +1271,12 @@ function update_service_backend($service, $srt_pass1, $srt_pass2)
             $nginx = "
 user www-data;
 worker_processes auto;
+worker_rlimit_nofile 100000;
 pid /run/nginx.pid;
 include /etc/nginx/modules-enabled/*.conf;
 
 events {
-    worker_connections 2048;
+    worker_connections 8192;
     multi_accept on;
 }
 
@@ -1282,6 +1295,9 @@ rtmp {
       meta off;
       wait_video on;
       
+      sync 10ms;
+      idle_streams off;
+
       " . $rtmp_input_copy . "
     }
 
@@ -1294,6 +1310,9 @@ rtmp {
       record off;
       meta off;
       wait_video on;
+
+      sync 10ms;
+      idle_streams off;
     
       " . $hls0 . "
       " . $dash0 . "
@@ -1304,6 +1323,9 @@ rtmp {
       record off;
       meta off;
       wait_video on;
+
+      sync 10ms;
+      idle_streams off;
 
       " . $hls1 . "
       " . $dash1 . "
@@ -1361,7 +1383,7 @@ http {
 srt {                
     
     worker_threads  64;
-    worker_connections 500;
+    worker_connections 1000;
 
     log_file /tmp/logs/error.log ; 
     log_level info;

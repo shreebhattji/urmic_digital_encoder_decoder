@@ -20,6 +20,7 @@ cat > /etc/apache2/sites-available/000-default.conf << 'EOL'
 
 </VirtualHost>
 EOL
+
 cat > /etc/apache2/sites-available/default-ssl.conf << 'EOL'
 <VirtualHost *:8443>
 	
@@ -39,6 +40,7 @@ cat > /etc/apache2/sites-available/default-ssl.conf << 'EOL'
 	<Directory /usr/lib/cgi-bin>
 		SSLOptions +StdEnvVars
 	</Directory>
+
 </VirtualHost>
 EOL
 
@@ -378,6 +380,23 @@ server {
 	location / {
         try_files $uri $uri/ =404;
 	}
+    
+    location /hls/ {
+        root /var/www/html;
+        add_header Cache-Control no-cache;
+        add_header Access-Control-Allow-Origin *;
+        sendfile off;
+        proxy_buffering off;
+        proxy_request_buffering off;
+    }
+
+    location /dash/ {
+        root /var/www/html;
+        add_header Cache-Control no-cache;
+        add_header Access-Control-Allow-Origin *;
+        sendfile off;
+    }
+
 }
 EOL
 
