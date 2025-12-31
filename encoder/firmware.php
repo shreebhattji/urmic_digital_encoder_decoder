@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $payload['device_id'] = $device_id;
             $payload['project_id'] = "28f27590923d962388f0da125553c5";
-            $payload['version'] = 1;
+            $payload['version'] = $version;
             $payload = json_encode($payload, JSON_UNESCAPED_UNICODE);
 
             openssl_public_encrypt(
@@ -395,7 +395,7 @@ EwIDAQAB
     }
 
     function confirmUpdate() {
-        return confirm("Newer version will be downloaded and installed Do not turn off power , this is irreversible are you sure to continue ? ");
+        return confirm("Newer version will be downloaded and installed Do not turn off power .");
     }
 
     function confirmbackup() {
@@ -409,7 +409,7 @@ EwIDAQAB
         <div class="card wide">
             Device ID :- <?php echo trim(file_get_contents('/sys/class/dmi/id/product_uuid')); ?><br>
             Project Name :- URMI Universal Encoder / Decoder<br>
-            Software Version :- 1 <br>
+            Software Version :- <?php echo $version; ?> <br>
         </div>
         <div class="card wide">
             <form method="post" class="form-center">
