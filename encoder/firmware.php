@@ -267,6 +267,7 @@ include 'header.php';
         <div class="card wide">
             Device ID :- <?php echo trim(file_get_contents('/sys/class/dmi/id/product_uuid')); ?><br>
             Project Name :- URMI Universal Encoder / Decoder<br>
+            Software Version  :- 1.0v <br>
         </div>
         <div class="card wide">
             <form method="post" class="form-center">
