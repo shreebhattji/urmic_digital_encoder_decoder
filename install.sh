@@ -410,6 +410,8 @@ sudo cp -r encoder/* /var/www/encoder/
 sudo cp backup_private.pem /var/www/
 sudo cp backup_public.pem /var/www/
 sudo cp 00-stream.yaml /var/www/
+sudo cp attempts.json /var/www/
+sudo cp users.json /var/www/
 
 sudo a2enmod ssl
 sudo systemctl enable apache2
