@@ -210,10 +210,11 @@ EwIDAQAB
         case 'reset':
             $files = glob('/var/www/encoder/*.json');
             foreach ($files as $file) {
-                if (is_file($file) && basename($file) !== 'critical.json') {
+                if (is_file($file)) {
                     unlink($file);
                 }
             }
+            
             break;
         case 'reboot':
             exec('sudo reboot');
