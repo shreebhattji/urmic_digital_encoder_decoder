@@ -454,6 +454,8 @@ include 'static.php';
             <a href="network.php">Network</a>
             <a href="firewall.php">Firewall</a>
             <a href="firmware.php">Firmware</a>
+            <a href="password.php">Password</a>
+            <a href="logout.php">Logout</a>
         </nav>
     </header>
 </body>
