@@ -23,23 +23,31 @@ EOL
 
 cat > /etc/apache2/sites-available/default-ssl.conf << 'EOL'
 <VirtualHost *:8443>
-	
+
+    ServerName localhost
     ServerAdmin webmaster@localhost
-	DocumentRoot /var/www/encoder
+    DocumentRoot /var/www/encoder
 
-	ErrorLog ${APACHE_LOG_DIR}/error.log
-	CustomLog ${APACHE_LOG_DIR}/access.log combined
-	SSLEngine on
+    ErrorLog ${APACHE_LOG_DIR}/encoder-ssl-error.log
+    CustomLog ${APACHE_LOG_DIR}/encoder-ssl-access.log combined
 
-	SSLCertificateFile      /etc/ssl/certs/ssl-cert-snakeoil.pem
-	SSLCertificateKeyFile   /etc/ssl/private/ssl-cert-snakeoil.key
+    SSLEngine on
+    SSLCertificateFile      /etc/ssl/certs/ssl-cert-snakeoil.pem
+    SSLCertificateKeyFile   /etc/ssl/private/ssl-cert-snakeoil.key
 
-	<FilesMatch "\.(?:cgi|shtml|phtml|php)$">
-		SSLOptions +StdEnvVars
-	</FilesMatch>
-	<Directory /usr/lib/cgi-bin>
-		SSLOptions +StdEnvVars
-	</Directory>
+    <Directory /var/www/encoder>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    <FilesMatch "\.(?:cgi|shtml|phtml|php)$">
+        SSLOptions +StdEnvVars
+    </FilesMatch>
+
+    <Directory /usr/lib/cgi-bin>
+        SSLOptions +StdEnvVars
+    </Directory>
 
 </VirtualHost>
 EOL

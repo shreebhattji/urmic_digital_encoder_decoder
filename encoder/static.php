@@ -685,7 +685,7 @@ function update_service($which_service)
             }
             break;
         case 'display';
-            $display = "mpv --vo=drm --drm-mode=" . $display_resolution . " --fs --keepaspect=no --audio-device=alsa/plughw:" . $display_audio;
+            $display = "mpv --hwdec=auto --demuxer-lavf-o=fflags=+discardcorrupt --vo=drm --drm-mode=" . $display_resolution . " --fs --keepaspect=no --audio-device=alsa/plughw:" . $display_audio;
             if ($display_hdmi_sdi === "enable") {
                 $display .= ' --audio-format=s16 --audio-samplerate=48000 --audio-channels=stereo --audio-spdif=no';
             } else {
