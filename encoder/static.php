@@ -816,14 +816,14 @@ function update_service($which_service)
                             . ' -f mpegts "srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji&latency=2000"';
                         break;
                     case "disable":
-                        $srt .= ' -c:v ' . $data['srt']['formate']
+                        $srt .= ' -c:v ' . $data['srt']['format']
                             . ' -vf "scale=' . str_replace("x", ":", $data['srt']['resolution']) . '"'
                             . ' -b:v ' . $data['srt']['data_rate']
                             . ' -maxrate ' . $data['srt']['data_rate']
                             . ' -bufsize ' . $data['udp0']['data_rate']
                             . ' -r ' . $data['srt']['srt']
                             . ' -g ' . $data['srt']['gop']
-                            . ' -c:a ' . $data['srt']['audio_formate']
+                            . ' -c:a ' . $data['srt']['audio_format']
                             . ' -b:a ' . $data['srt']['audio_data_rate']
                             . ' -af "volume=' . $data['srt']['audio_db_gain'] . '"'
                             . ' -ar ' . $data['srt']['audio_sample_rate']
@@ -866,14 +866,14 @@ function update_service($which_service)
                             . ' -f mpegts "' . $data['udp0']['udp'] . '"';
                         break;
                     case "disable":
-                        $udp0 .= ' -c:v ' . $data['udp0']['formate']
+                        $udp0 .= ' -c:v ' . $data['udp0']['format']
                             . ' -vf "scale=' . str_replace("x", ":", $data['udp0']['resolution']) . '"'
                             . ' -b:v ' . $data['udp0']['data_rate']
                             . ' -maxrate ' . $data['udp0']['data_rate']
                             . ' -bufsize ' . $data['udp0']['data_rate']
                             . ' -r ' . $data['udp0']['framerate']
                             . ' -g ' . $data['udp0']['gop']
-                            . ' -c:a ' . $data['udp0']['audio_formate']
+                            . ' -c:a ' . $data['udp0']['audio_format']
                             . ' -b:a ' . $data['udp0']['audio_data_rate']
                             . ' -af "volume=' . $data['udp0']['audio_db_gain'] . '"'
                             . ' -ar ' . $data['udp0']['audio_sample_rate']
@@ -912,14 +912,14 @@ function update_service($which_service)
                             . ' -f mpegts "' . $data['udp1']['udp'] . '"';
                         break;
                     case "disable":
-                        $udp1 .= ' -c:v ' . $data['udp1']['formate']
+                        $udp1 .= ' -c:v ' . $data['udp1']['format']
                             . ' -vf "scale=' . str_replace("x", ":", $data['udp1']['resolution']) . '"'
                             . ' -b:v ' . $data['udp1']['data_rate']
                             . ' -maxrate ' . $data['udp1']['data_rate']
                             . ' -bufsize ' . $data['udp1']['data_rate']
                             . ' -r ' . $data['udp1']['framerate']
                             . ' -g ' . $data['udp1']['gop']
-                            . ' -c:a ' . $data['udp1']['audio_formate']
+                            . ' -c:a ' . $data['udp1']['audio_format']
                             . ' -b:a ' . $data['udp1']['audio_data_rate']
                             . ' -af "volume=' . $data['udp1']['audio_db_gain'] . '"'
                             . ' -ar ' . $data['udp1']['audio_sample_rate']
@@ -957,14 +957,14 @@ function update_service($which_service)
                             . ' -f mpegts "' . $data['udp2']['udp'] . '"';
                         break;
                     case "disable":
-                        $udp2 = ' -c:v ' . $data['udp2']['formate']
+                        $udp2 = ' -c:v ' . $data['udp2']['format']
                             . ' -vf "scale=' . str_replace("x", ":", $data['udp2']['resolution']) . '"'
                             . ' -b:v ' . $data['udp2']['data_rate']
                             . ' -maxrate ' . $data['udp2']['data_rate']
                             . ' -bufsize ' . $data['udp2']['data_rate']
                             . ' -r ' . $data['udp2']['framerate']
                             . ' -g ' . $data['udp2']['gop']
-                            . ' -c:a ' . $data['udp2']['audio_formate']
+                            . ' -c:a ' . $data['udp2']['audio_format']
                             . ' -b:a ' . $data['udp2']['audio_data_rate']
                             . ' -af "volume=' . $data['udp2']['audio_db_gain'] . '"'
                             . ' -ar ' . $data['udp2']['audio_sample_rate']
