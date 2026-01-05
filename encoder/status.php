@@ -24,9 +24,9 @@ if (file_exists($jsonFile)) {
 $service_rtmp0_multiple = $data['service_rtmp0_multiple'];
 $service_rtmp0_hls = $data['service_rtmp0_hls'];
 $service_rtmp0_dash = $data['service_rtmp0_dash'];
-$service_rtmp1_multiple = $data['service_rtmp0_multiple'];
-$service_rtmp1_hls = $data['service_rtmp0_hls'];
-$service_rtmp1_dash = $data['service_rtmp0_dash'];
+$service_rtmp1_multiple = $data['service_rtmp1_multiple'];
+$service_rtmp1_hls = $data['service_rtmp1_hls'];
+$service_rtmp1_dash = $data['service_rtmp1_dash'];
 $service_srt_multiple = $data['service_srt_multiple'];
 
 $text = "<h3>Encoder</h3>";

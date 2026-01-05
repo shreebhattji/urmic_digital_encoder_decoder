@@ -641,11 +641,7 @@ function update_service($which_service)
 
     $service_display = $data['service_display'];
     $service_rtmp0_multiple = $data['service_rtmp0_multiple'];
-    $service_rtmp0_hls = $data['service_rtmp0_hls'];
-    $service_rtmp0_dash = $data['service_rtmp0_dash'];
     $service_rtmp1_multiple = $data['service_rtmp1_multiple'];
-    $service_rtmp1_hls = $data['service_rtmp1_hls'];
-    $service_rtmp1_dash = $data['service_rtmp1_dash'];
     $service_udp0 = $data['service_udp0'];
     $service_udp1 = $data['service_udp1'];
     $service_udp2 = $data['service_udp2'];
@@ -895,6 +891,7 @@ function update_service($which_service)
         case "udp1";
             if ($service_udp1 === "enable") {
                 $udp1 = 'ffmpeg -hwaccel auto -hide_banner -i ';
+                error_log($use_common_backend);
                 switch ($use_common_backend) {
                     case "copy_input":
                     case "use_common_backend":

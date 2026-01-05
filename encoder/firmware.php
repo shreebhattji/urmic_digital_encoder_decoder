@@ -2,7 +2,7 @@
 include 'header.php';
 
 exec("sudo chmod 444 /sys/class/dmi/id/product_uuid");
-$version = 3;
+$version = 4;
 
 function fail(string $msg): never
 {
