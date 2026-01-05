@@ -311,7 +311,7 @@ function update_service($which_service)
             'resolution' => '1920x1080',
             'audio_source' => 'hw:1,0',
             'framerate' => '30',
-            'video_delay' => '300',
+            'video_delay' => '',
             'audio_delay' => ''
         ],
         'url' => 'https://cdn.urmic.org/unavailable.mp4',
@@ -332,7 +332,7 @@ function update_service($which_service)
             'framerate' => '30',
             'gop' => '30',
             'audio_db_gain' => '0dB',
-            'audio_data_rate' => '256k',
+            'audio_data_rate' => '128k',
             'audio_sample_rate' => '48000',
             'extra' => ''
         ],
@@ -344,8 +344,10 @@ function update_service($which_service)
         $raw = file_get_contents($jsonFile);
         $data = json_decode($raw, true);
         if (!is_array($data)) $data = $defaults;
+        $data = array_replace_recursive($defaults, $data);
+    } else {
+        $data = $defaults;
     }
-
     $input_source = $data['input'];
     $use_common_backend = $data['use_common_backend'];
     $input_rtmp_mount = $data['rtmp']['mount'];
