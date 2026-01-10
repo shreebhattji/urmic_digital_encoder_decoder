@@ -162,7 +162,7 @@ EwIDAQAB
 
                 $zip = new ZipArchive();
                 if ($zip->open($zipFile) !== true) {
-                error_log("zip unzip problem");
+                    error_log("zip unzip problem");
                     fail('Unable to open ZIP');
                 }
                 for ($i = 0; $i < $zip->numFiles; $i++) {
@@ -214,13 +214,12 @@ EwIDAQAB
                     unlink($file);
                 }
             }
-            
+
             break;
         case 'reboot':
             exec('sudo reboot');
             break;
         case 'backup':
-
             $jsonFiles = [
                 'input.json',
                 'output.json',
@@ -230,16 +229,12 @@ EwIDAQAB
             ];
 
             $tmpZip = sys_get_temp_dir() . '/backup.zip';
-            $outputFile = __DIR__ . '/universal_encoder_decoder.bin';
 
-            $publicKey = file_get_contents('/var/www/backup_private.pem');
             $publicKey = file_get_contents('/var/www/backup_public.pem');
 
             $zip = new ZipArchive();
             $zip->open($tmpZip, ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
-
-            /* Add JSON files if exist */
             foreach ($jsonFiles as $json) {
                 if (file_exists($json)) {
                     $zip->addFile($json, basename($json));
@@ -249,11 +244,9 @@ EwIDAQAB
             $zip->close();
             $data = file_get_contents($tmpZip);
 
-            /* Generate AES key */
             $aesKey = random_bytes(32);
             $iv     = random_bytes(16);
 
-            /* Encrypt ZIP */
             $encryptedData = openssl_encrypt(
                 $data,
                 'AES-256-CBC',
@@ -262,31 +255,28 @@ EwIDAQAB
                 $iv
             );
 
-            /* Encrypt AES key using RSA public key */
             openssl_public_encrypt($aesKey, $encryptedKey, $publicKey);
 
-            /* Final binary format */
-            $payload = json_encode([
-                'key' => base64_encode($encryptedKey),
-                'iv'  => base64_encode($iv),
-                'data' => base64_encode($encryptedData)
-            ]);
+            $binary  = pack('N', strlen($encryptedKey));
+            $binary .= $encryptedKey;
+            $binary .= $iv;
+            $binary .= $encryptedData;
 
+            /* Headers */
             $filename = 'universal_encoder_decoder.bin';
 
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
             header('Content-Disposition: attachment; filename="' . $filename . '"');
-            header('Content-Length: ' . strlen($payload));
+            header('Content-Length: ' . strlen($binary));
             header('Cache-Control: no-store, no-cache, must-revalidate');
             header('Pragma: no-cache');
             header('Expires: 0');
 
-            echo $payload;
+            echo $binary;
             flush();
 
             unlink($tmpZip);
-
             break;
 
         case 'restore':
