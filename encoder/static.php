@@ -415,7 +415,7 @@ function update_service($which_service)
                         $input .= ' -vf "format=nv12,hwupload=extra_hw_frames=64,scale_qsv=' . $common_backend_resolution . ',' . setptsFromMs($hdmi_delay_video) . '"';
                     else
                         $input .= ' -vf "format=nv12,hwupload=extra_hw_frames=64,scale_qsv=' . $common_backend_resolution . '"';
-                    $input .=  " -c:v h264_qsv -profile:v high -level:v 4.2 -rate_control_method vbr "
+                    $input .=  " -c:v h264_qsv -profile:v high -level:v 4.2  "
                         . " -b:v " . $common_backend_data_rate
                         . " -maxrate " . $common_backend_data_rate
                         . " -bufsize 12M "
