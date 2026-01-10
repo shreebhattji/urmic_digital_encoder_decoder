@@ -1,8 +1,7 @@
 <?php
-include 'header.php';
 
 exec("sudo chmod 444 /sys/class/dmi/id/product_uuid");
-$version = 4;
+$version = 5;
 
 function fail(string $msg): never
 {
@@ -374,6 +373,7 @@ EwIDAQAB
             break;
     }
 }
+include 'header.php';
 
 ?>
 <script>
