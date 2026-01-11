@@ -947,7 +947,13 @@ function update_service($which_service)
                             . ' -metadata service_provider=ShreeBhattJI -f mpegts "' . $data['udp1']['udp'] . '?pkt_size=1316&ttl=4&reuse=1&buffer_size=1048576"';
                         break;
                 }
-                if ($use_common_backend === "use_common_backend" && $data['udp1']['format'] === "h264_qsv") {
+                error_log("use_common_backend :- " . $use_common_backend);
+                error_log("format :- " . $data['udp1']['format']);
+                error_log("service_udp1_output :- " . $data['udp1']['service_udp1_output']);
+                error_log("udp1_service_name :- " . $data['udp1']['udp1_service_name']);
+                error_log($udp1);
+
+                if ($use_common_backend == "use_common_backend" && $data['udp1']['format'] == "h264_qsv") {
                     str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp1);
                     str_replace("scale", "scale_qsv", $udp1);
                 }
