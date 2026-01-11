@@ -665,10 +665,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </select>
           </div>
         </div>
-        <div class="input-group">
-          <input type="text" id="udp0_service_name" name="udp0_service_name" placeholder="service name" value="<?php echo htmlspecialchars($data['udp0']['udp0_service_name']); ?>">
-          <label for="udp0_service_name">Service Name :- </label>
-        </div>
         <div class="dropdown-container">
           <span class="dropdown-label">Common Backend :</span>
           <div class="dropdown">
@@ -775,6 +771,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="input-group">
           <input type="text" id="udp0_extra" name="udp0_extra" value="<?php echo htmlspecialchars($data['udp0']['extra']); ?>">
           <label for="udp0_extra">Extra :</label>
+        </div>
+        <div class="input-group">
+          <input type="text" id="udp0_service_name" name="udp0_service_name" placeholder="service name" value="<?php echo htmlspecialchars($data['udp0']['udp0_service_name']); ?>">
+          <label for="udp0_service_name">Service Name :- </label>
         </div>
         <div class="input-group">
           <input type="text" id="udp0_ip" name="udp0_ip" placeholder="udp0_ip" value="<?php echo htmlspecialchars($data['udp0']['udp']); ?>">
@@ -947,10 +947,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </select>
           </div>
         </div>
-        <div class="input-group">
-          <input type="text" id="udp2_service_name" name="udp2_service_name" placeholder="service name" value="<?php echo htmlspecialchars($data['udp2']['udp2_service_name']); ?>">
-          <label for="udp2_service_name">Service Name :- </label>
-        </div>
         <div class="dropdown-container">
           <span class="dropdown-label">Common Backend :</span>
           <div class="dropdown">
@@ -1058,6 +1054,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="input-group">
           <input type="text" id="udp2_extra" name="udp2_extra" value="<?php echo htmlspecialchars($data['udp2']['extra']); ?>">
           <label for="udp2_extra">Extra :</label>
+        </div>
+        <div class="input-group">
+          <input type="text" id="udp2_service_name" name="udp2_service_name" placeholder="service name" value="<?php echo htmlspecialchars($data['udp2']['udp2_service_name']); ?>">
+          <label for="udp2_service_name">Service Name :- </label>
         </div>
         <div class="input-group">
           <input type="text" id="udp2_ip" name="udp2_ip" placeholder="udp2_ip" value="<?php echo htmlspecialchars($data['udp2']['udp']); ?>">
