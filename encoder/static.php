@@ -398,7 +398,7 @@ function update_service($which_service)
                     $input .= 'ffmpeg -hwaccel auto -hide_banner -stream_loop -1 -re -i "' . $data['udp'] . " -c:v copy -c:a copy -f mpegts " . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
                     break;
                 case "rtmp":
-                    $input .= "ffmpeg -hwaccel auto -hide_banner -stream_loop -1 -re -i rtmp://127.0.0.1:1935/" . $$input_rtmp_mount . "/" . $input_rtmp_pass .  " -c:v copy -c:a copy -f mpegts " . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
+                    $input .= "ffmpeg -hwaccel auto -hide_banner -stream_loop -1 -re -i rtmp://127.0.0.1:1935/" . $input_rtmp_mount . "/" . $input_rtmp_pass .  " -c:v copy -c:a copy -f mpegts " . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
                     break;
                 case "srt":
                     $input .= "ffmpeg -hwaccel auto -hide_banner -stream_loop -1 -re -i srt://127.0.0.1:1937?streamid=shree/bhatt/" . $srt_pass3 . " -c:v copy -c:a copy -f mpegts " . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
@@ -466,7 +466,7 @@ function update_service($which_service)
                     break;
                 case "rtmp":
                     update_service_backend('rtmp', "", "");
-                    $input .= "ffmpeg -hwaccel auto -hide_banner -stream_loop -1 -re -i rtmp://127.0.0.1:1935/" . $$input_rtmp_mount . "/" . $input_rtmp_pass
+                    $input .= "ffmpeg -hwaccel auto -hide_banner -stream_loop -1 -re -i rtmp://127.0.0.1:1935/" . $input_rtmp_mount . "/" . $input_rtmp_pass
                         . " -c:v h264_qsv "
                         . ' -vf "scale=' . $common_backend_resolution . '"'
                         . " -b:v " . $common_backend_data_rate
@@ -891,7 +891,7 @@ function update_service($which_service)
                             . ' -metadata service_provider=ShreeBhattJI -f mpegts "' . $data['udp0']['udp'] . '?pkt_size=1316&ttl=4&reuse=1&buffer_size=1048576"';
                         break;
                 }
-                if ($$use_common_backend == "use_common_backend" && $data['udp0']['format'] == "h264_qsv") {
+                if ($use_common_backend == "use_common_backend" && $data['udp0']['format'] == "h264_qsv") {
                     str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp0);
                     str_replace("scale", "scale_qsv", $udp0);
                 }
@@ -947,7 +947,7 @@ function update_service($which_service)
                             . ' -metadata service_provider=ShreeBhattJI -f mpegts "' . $data['udp1']['udp'] . '?pkt_size=1316&ttl=4&reuse=1&buffer_size=1048576"';
                         break;
                 }
-                if ($$use_common_backend == "use_common_backend" && $data['udp1']['format'] === "h264_qsv") {
+                if ($use_common_backend == "use_common_backend" && $data['udp1']['format'] === "h264_qsv") {
                     str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp1);
                     str_replace("scale", "scale_qsv", $udp1);
                 }
@@ -1000,7 +1000,7 @@ function update_service($which_service)
                             . ' -ar ' . $data['udp2']['audio_sample_rate']
                             . ' ' . $data['udp2']['extra']
                             . ' -metadata service_provider=ShreeBhattJI -f mpegts "' . $data['udp2']['udp'] . '?pkt_size=1316&ttl=4&reuse=1&buffer_size=1048576"';
-                        if ($$use_common_backend == "use_common_backend" && $data['udp2']['format'] == "h264_qsv") {
+                        if ($use_common_backend == "use_common_backend" && $data['udp2']['format'] == "h264_qsv") {
                             str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp2);
                             str_replace("scale", "scale_qsv", $udp2);
                         }
