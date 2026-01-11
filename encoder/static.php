@@ -892,14 +892,14 @@ function update_service($which_service)
                         break;
                 }
                 if ($use_common_backend == "use_common_backend" && $data['udp0']['format'] == "h264_qsv") {
-                    str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp0);
-                    str_replace("scale", "scale_qsv", $udp0);
+                    $udp0 = str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp0);
+                    $udp0 = str_replace("scale", "scale_qsv", $udp0);
                 }
                 if ($data['udp0']['service_udp0_output'] == "usb") {
-                    str_replace("pkt_size=1316", "pkt_size=1316&localaddr=172.16.111.111", $udp0);
+                    $udp0 = str_replace("pkt_size=1316", "pkt_size=1316&localaddr=172.16.111.111", $udp0);
                 }
                 if ($data['udp0']['udp0_service_name'] != "") {
-                    str_replace("-f mpegts", "-metadata service_name=" . $data['udp0']['udp0_service_name'] . " -f mpegts", $udp0);
+                    $udp0 = str_replace("-f mpegts", "-metadata service_name=" . $data['udp0']['udp0_service_name'] . " -f mpegts", $udp0);
                 }
                 $file = "/var/www/encoder-udp0.sh";
                 file_put_contents($file, $udp0);
@@ -954,14 +954,14 @@ function update_service($which_service)
                 error_log($udp1);
 
                 if ($use_common_backend == "use_common_backend" && $data['udp1']['format'] == "h264_qsv") {
-                    str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp1);
-                    str_replace("scale", "scale_qsv", $udp1);
+                    $udp1 = str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp1);
+                    $udp1 = str_replace("scale", "scale_qsv", $udp1);
                 }
                 if ($data['udp1']['service_udp1_output'] === "usb") {
-                    str_replace("pkt_size=1316", "pkt_size=1316&localaddr=172.16.111.111", $udp1);
+                    $udp1 = str_replace("pkt_size=1316", "pkt_size=1316&localaddr=172.16.111.111", $udp1);
                 }
                 if ($data['udp1']['udp1_service_name'] !== "") {
-                    str_replace("-f mpegts", "-metadata service_name=" . $data['udp1']['udp1_service_name'] . " -f mpegts", $udp1);
+                    $udp1 = str_replace("-f mpegts", "-metadata service_name=" . $data['udp1']['udp1_service_name'] . " -f mpegts", $udp1);
                 }
                 $file = "/var/www/encoder-udp1.sh";
                 file_put_contents($file, $udp1);
@@ -1007,14 +1007,14 @@ function update_service($which_service)
                             . ' ' . $data['udp2']['extra']
                             . ' -metadata service_provider=ShreeBhattJI -f mpegts "' . $data['udp2']['udp'] . '?pkt_size=1316&ttl=4&reuse=1&buffer_size=1048576"';
                         if ($use_common_backend == "use_common_backend" && $data['udp2']['format'] == "h264_qsv") {
-                            str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp2);
-                            str_replace("scale", "scale_qsv", $udp2);
+                            $udp2 = str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp2);
+                            $udp2 = str_replace("scale", "scale_qsv", $udp2);
                         }
                         if ($data['udp2']['service_udp2_output'] == "usb") {
-                            str_replace("pkt_size=1316", "pkt_size=1316&localaddr=172.16.111.111", $udp2);
+                            $udp2 = str_replace("pkt_size=1316", "pkt_size=1316&localaddr=172.16.111.111", $udp2);
                         }
                         if ($data['udp2']['udp2_service_name'] != "") {
-                            str_replace("-f mpegts", "-metadata service_name=" . $data['udp2']['udp2_service_name'] . " -f mpegts", $udp2);
+                            $udp2 = str_replace("-f mpegts", "-metadata service_name=" . $data['udp2']['udp2_service_name'] . " -f mpegts", $udp2);
                         }
                         break;
                 }
