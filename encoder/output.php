@@ -54,7 +54,9 @@ $defaults = [
     'audio_format' => 'aac',
     'audio_data_rate' => '128k',
     'audio_db_gain' => '0dB',
-    'audio_sample_rate' => '48000'
+    'audio_sample_rate' => '48000',
+    'service_udp0_output' => 'default',
+    'udp0_service_name' =>''
   ],
   'udp1' => [
     'common_backend' => 'disable',
@@ -68,7 +70,9 @@ $defaults = [
     'audio_format' => 'mp2',
     'audio_data_rate' => '128k',
     'audio_db_gain' => '0dB',
-    'audio_sample_rate' => '48000'
+    'audio_sample_rate' => '48000',
+    'service_udp1_output' => 'default',
+    'udp1_service_name' =>''
   ],
   'udp2' => [
     'common_backend' => 'disable',
@@ -82,7 +86,9 @@ $defaults = [
     'audio_format' => 'mp2',
     'audio_data_rate' => '96k',
     'audio_db_gain' => '0dB',
-    'audio_sample_rate' => '48000'
+    'audio_sample_rate' => '48000',
+    'service_udp2_output' => 'default',
+    'udp2_service_name' =>''
   ],
   'srt' => [
     'common_backend' => 'enable',
@@ -180,6 +186,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $new['udp0']['audio_sample_rate'] = $get('udp0_audio_sample_rate', $defaults['udp0']['audio_sample_rate']);
   $new['udp0']['udp'] = $get('udp0_ip', $defaults['udp0']['udp']);
   $new['udp0']['common_backend'] = $get('udp0_common_backend', $defaults['udp0']['common_backend']);
+  $new['udp0']['service_udp0_output'] = $get('service_udp0_output', $defaults['udp0']['service_udp0_output']);
+  $new['udp0']['udp0_service_name'] = $get('udp0_service_name', $defaults['udp0']['udp0_service_name']);
 
   $new['udp1']['format'] = $get('udp1_format', $defaults['udp1']['format']);
   $new['udp1']['resolution'] = $get('udp1_resolution', $defaults['udp1']['resolution']);
@@ -193,6 +201,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $new['udp1']['audio_sample_rate'] = $get('udp1_audio_sample_rate', $defaults['udp1']['audio_sample_rate']);
   $new['udp1']['udp'] = $get('udp1_ip', $defaults['udp1']['udp']);
   $new['udp1']['common_backend'] = $get('udp1_common_backend', $defaults['udp1']['common_backend']);
+  $new['udp1']['service_udp1_output'] = $get('service_udp1_output', $defaults['udp1']['service_udp1_output']);
+  $new['udp1']['udp1_service_name'] = $get('udp1_service_name', $defaults['udp1']['udp1_service_name']);
 
   $new['udp2']['format'] = $get('udp2_format', $defaults['udp2']['format']);
   $new['udp2']['resolution'] = $get('udp2_resolution', $defaults['udp2']['resolution']);
@@ -206,6 +216,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $new['udp2']['audio_sample_rate'] = $get('udp2_audio_sample_rate', $defaults['udp2']['audio_sample_rate']);
   $new['udp2']['udp'] = $get('udp2_ip', $defaults['udp2']['udp']);
   $new['udp2']['common_backend'] = $get('udp2_common_backend', $defaults['udp2']['common_backend']);
+  $new['udp2']['service_udp2_output'] = $get('service_udp2_output', $defaults['udp2']['service_udp2_output']);
+  $new['udp2']['udp2_service_name'] = $get('udp2_service_name', $defaults['udp2']['udp2_service_name']);
 
   $new['srt']['format'] = $get('srt_format', $defaults['srt']['format']);
   $new['srt']['resolution'] = $get('srt_resolution', $defaults['srt']['resolution']);
@@ -645,6 +657,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
         </div>
         <div class="dropdown-container">
+          <span class="dropdown-label">Output Port :</span>
+          <div class="dropdown">
+            <select name="service_udp0_output" id="service_udp0_output">
+              <option value="enable" <?php if ($data['udp0']['service_udp0_output'] == 'default') echo 'selected'; ?>>Default</option>
+              <option value="disable" <?php if ($data['udp0']['service_udp0_output'] == 'usb') echo 'selected'; ?>>USB</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group">
+          <input type="text" id="udp0_service_name" name="udp0_service_name" placeholder="service name" value="<?php echo htmlspecialchars($data['udp0']['udp0_service_name']); ?>">
+          <label for="udp0_service_name">Service Name :- </label>
+        </div>
+        <div class="dropdown-container">
           <span class="dropdown-label">Common Backend :</span>
           <div class="dropdown">
             <select name="udp0_common_backend" id="udp0_common_backend">
@@ -773,6 +798,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
         </div>
         <div class="dropdown-container">
+          <span class="dropdown-label">Output Port :</span>
+          <div class="dropdown">
+            <select name="service_udp1_output" id="service_udp1_output">
+              <option value="enable" <?php if ($data['udp1']['service_udp1_output'] == 'default') echo 'selected'; ?>>Default</option>
+              <option value="disable" <?php if ($data['udp1']['service_udp1_output'] == 'usb') echo 'selected'; ?>>USB</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group">
+          <input type="text" id="udp1_service_name" name="udp1_service_name" placeholder="service name" value="<?php echo htmlspecialchars($data['udp1']['udp1_service_name']); ?>">
+          <label for="udp1_service_name">Service Name :- </label>
+        </div>
+        <div class="dropdown-container">
           <span class="dropdown-label">Common Backend :</span>
           <div class="dropdown">
             <select name="udp1_common_backend" id="udp1_common_backend">
@@ -899,6 +937,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <option value="disable" <?php if ($data['service_udp2'] == 'disable') echo 'selected'; ?>>Disable</option>
             </select>
           </div>
+        </div>
+        <div class="dropdown-container">
+          <span class="dropdown-label">Output Port :</span>
+          <div class="dropdown">
+            <select name="service_udp2_output" id="service_udp2_output">
+              <option value="enable" <?php if ($data['udp2']['service_udp2_output'] == 'default') echo 'selected'; ?>>Default</option>
+              <option value="disable" <?php if ($data['udp2']['service_udp2_output'] == 'usb') echo 'selected'; ?>>USB</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group">
+          <input type="text" id="udp2_service_name" name="udp2_service_name" placeholder="service name" value="<?php echo htmlspecialchars($data['udp2']['udp2_service_name']); ?>">
+          <label for="udp2_service_name">Service Name :- </label>
         </div>
         <div class="dropdown-container">
           <span class="dropdown-label">Common Backend :</span>

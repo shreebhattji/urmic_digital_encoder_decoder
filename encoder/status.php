@@ -36,7 +36,7 @@ $text .= "</h5>";
 
 if ($service_rtmp0_multiple == 'enable') {
     $text .= "<h5>rtmp://" . $domain . "/shree/bhattji<br>";
-    if ($service_rtmp0_dash == 'enable') {
+    if ($service_rtmp0_hls == 'enable') {
         $text .= "http://" . $domain . "/hls/shree/bhattji.m3u8<br>";
         if ($https) {
             $text .= "https://" . $domain . "/hls/shree/bhattji.m3u8<br><br>";
@@ -52,7 +52,7 @@ if ($service_rtmp0_multiple == 'enable') {
 }
 if ($service_rtmp1_multiple == 'enable') {
     $text .= "<h5>rtmp://" . $domain . "/shreeshree/bhattji<br>";
-    if ($service_rtmp1_dash == 'enable') {
+    if ($service_rtmp1_hls == 'enable') {
         $text .= "http://" . $domain . "/hls/shreeshree/bhattji.m3u8<br>";
         if ($https) {
             $text .= "https://" . $domain . "/hls/shreeshree/bhattji.m3u8<br><br>";
@@ -67,7 +67,7 @@ if ($service_rtmp1_multiple == 'enable') {
     $text .= "</h5>";
 }
 
-if($service_srt_multiple){
+if ($service_srt_multiple == 'enable') {
     $text .= "<h5>srt://" . $domain . ":1937?streamid=shree/bhatt/ji</h5><br><br>";
 }
 

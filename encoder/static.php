@@ -415,7 +415,7 @@ function update_service($which_service)
                         $input .= ' -vf "format=nv12,hwupload=extra_hw_frames=64,scale_qsv=' . $common_backend_resolution . ',' . setptsFromMs($hdmi_delay_video) . '"';
                     else
                         $input .= ' -vf "format=nv12,hwupload=extra_hw_frames=64,scale_qsv=' . $common_backend_resolution . '"';
-                    $input .=  " -c:v h264_qsv -profile:v high -level:v 4.2  "
+                    $input .=  " -c:v h264_qsv -profile:v high -level:v 4.2 "
                         . " -b:v " . $common_backend_data_rate
                         . " -maxrate " . $common_backend_data_rate
                         . " -bufsize 12M "
@@ -579,7 +579,9 @@ function update_service($which_service)
             'audio_format' => 'aac',
             'audio_data_rate' => '128k',
             'audio_db_gain' => '0dB',
-            'audio_sample_rate' => '48000'
+            'audio_sample_rate' => '48000',
+            'service_udp0_output' => 'default',
+            'udp0_service_name' => ''
         ],
         'udp1' => [
             'common_backend' => 'disable',
@@ -593,7 +595,9 @@ function update_service($which_service)
             'audio_format' => 'mp2',
             'audio_data_rate' => '128k',
             'audio_db_gain' => '0dB',
-            'audio_sample_rate' => '48000'
+            'audio_sample_rate' => '48000',
+            'service_udp1_output' => 'default',
+            'udp1_service_name' => ''
         ],
         'udp2' => [
             'common_backend' => 'disable',
@@ -607,7 +611,9 @@ function update_service($which_service)
             'audio_format' => 'mp2',
             'audio_data_rate' => '96k',
             'audio_db_gain' => '0dB',
-            'audio_sample_rate' => '48000'
+            'audio_sample_rate' => '48000',
+            'service_udp2_output' => 'default',
+            'udp2_service_name' => ''
         ],
         'srt' => [
             'common_backend' => 'enable',
@@ -882,8 +888,18 @@ function update_service($which_service)
                             . ' -af "volume=' . $data['udp0']['audio_db_gain'] . '"'
                             . ' -ar ' . $data['udp0']['audio_sample_rate']
                             . ' ' . $data['udp0']['extra']
-                            . ' -f mpegts "' . $data['udp0']['udp'] . '?pkt_size=1316&ttl=4&reuse=1&buffer_size=1048576"';
+                            . ' -metadata service_provider=ShreeBhattJI -f mpegts "' . $data['udp0']['udp'] . '?pkt_size=1316&ttl=4&reuse=1&buffer_size=1048576"';
                         break;
+                }
+                if ($$use_common_backend == "use_common_backend" && $data['udp0']['format'] == "h264_qsv") {
+                    str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp0);
+                    str_replace("scale", "scale_qsv", $udp0);
+                }
+                if ($data['udp0']['service_udp0_output'] == "usb") {
+                    str_replace("pkt_size=1316", "pkt_size=1316&localaddr=172.16.111.111", $udp0);
+                }
+                if ($data['udp0']['udp0_service_name'] != "") {
+                    str_replace("-f mpegts", "-metadata service_name=" . $data['udp0']['udp0_service_name'] . " -f mpegts", $udp0);
                 }
                 $file = "/var/www/encoder-udp0.sh";
                 file_put_contents($file, $udp0);
@@ -928,8 +944,18 @@ function update_service($which_service)
                             . ' -af "volume=' . $data['udp1']['audio_db_gain'] . '"'
                             . ' -ar ' . $data['udp1']['audio_sample_rate']
                             . ' ' . $data['udp1']['extra']
-                            . ' -f mpegts "' . $data['udp1']['udp'] . '?pkt_size=1316&ttl=4&reuse=1&buffer_size=1048576"';
+                            . ' -metadata service_provider=ShreeBhattJI -f mpegts "' . $data['udp1']['udp'] . '?pkt_size=1316&ttl=4&reuse=1&buffer_size=1048576"';
                         break;
+                }
+                if ($$use_common_backend == "use_common_backend" && $data['udp1']['format'] == "h264_qsv") {
+                    str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp1);
+                    str_replace("scale", "scale_qsv", $udp1);
+                }
+                if ($data['udp1']['service_udp1_output'] == "usb") {
+                    str_replace("pkt_size=1316", "pkt_size=1316&localaddr=172.16.111.111", $udp1);
+                }
+                if ($data['udp1']['udp1_service_name'] != "") {
+                    str_replace("-f mpegts", "-metadata service_name=" . $data['udp1']['udp1_service_name'] . " -f mpegts", $udp1);
                 }
                 $file = "/var/www/encoder-udp1.sh";
                 file_put_contents($file, $udp1);
@@ -973,7 +999,17 @@ function update_service($which_service)
                             . ' -af "volume=' . $data['udp2']['audio_db_gain'] . '"'
                             . ' -ar ' . $data['udp2']['audio_sample_rate']
                             . ' ' . $data['udp2']['extra']
-                            . ' -f mpegts "' . $data['udp2']['udp'] . '?pkt_size=1316&ttl=4&reuse=1&buffer_size=1048576"';
+                            . ' -metadata service_provider=ShreeBhattJI -f mpegts "' . $data['udp2']['udp'] . '?pkt_size=1316&ttl=4&reuse=1&buffer_size=1048576"';
+                        if ($$use_common_backend == "use_common_backend" && $data['udp2']['format'] == "h264_qsv") {
+                            str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp2);
+                            str_replace("scale", "scale_qsv", $udp2);
+                        }
+                        if ($data['udp2']['service_udp2_output'] == "usb") {
+                            str_replace("pkt_size=1316", "pkt_size=1316&localaddr=172.16.111.111", $udp2);
+                        }
+                        if ($data['udp2']['udp2_service_name'] != "") {
+                            str_replace("-f mpegts", "-metadata service_name=" . $data['udp2']['udp2_service_name'] . " -f mpegts", $udp2);
+                        }
                         break;
                 }
                 $file = "/var/www/encoder-udp2.sh";
@@ -1121,7 +1157,9 @@ function update_service_backend($service, $srt_pass1, $srt_pass2)
             'audio_format' => 'aac',
             'audio_data_rate' => '128k',
             'audio_db_gain' => '0dB',
-            'audio_sample_rate' => '48000'
+            'audio_sample_rate' => '48000',
+            'service_udp0_output' => 'default',
+            'udp0_service_name' => ''
         ],
         'udp1' => [
             'common_backend' => 'disable',
@@ -1135,7 +1173,9 @@ function update_service_backend($service, $srt_pass1, $srt_pass2)
             'audio_format' => 'mp2',
             'audio_data_rate' => '128k',
             'audio_db_gain' => '0dB',
-            'audio_sample_rate' => '48000'
+            'audio_sample_rate' => '48000',
+            'service_udp1_output' => 'default',
+            'udp1_service_name' => ''
         ],
         'udp2' => [
             'common_backend' => 'disable',
@@ -1149,7 +1189,9 @@ function update_service_backend($service, $srt_pass1, $srt_pass2)
             'audio_format' => 'mp2',
             'audio_data_rate' => '96k',
             'audio_db_gain' => '0dB',
-            'audio_sample_rate' => '48000'
+            'audio_sample_rate' => '48000',
+            'service_udp2_output' => 'default',
+            'udp2_service_name' => ''
         ],
         'srt' => [
             'common_backend' => 'enable',
@@ -1165,12 +1207,12 @@ function update_service_backend($service, $srt_pass1, $srt_pass2)
             'audio_sample_rate' => '48000'
         ],
 
-        'display' => '1920x1080@60.00',
+        'display_resolution' => '720x576',
         'display_audio' => '0,3',
+        'display_hdmi_sdi' => 'disable',
 
         'custom_output' => ''
     ];
-
     for ($i = 1; $i <= 11; $i++) {
         $defaults['rtmp0_multiple'][$i] = ['url' => '', 'name' => '', 'enabled' => false];
         $defaults['rtmp1_multiple'][$i] = ['url' => '', 'name' => '', 'enabled' => false];

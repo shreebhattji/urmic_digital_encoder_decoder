@@ -1,7 +1,7 @@
 <?php
 
 exec("sudo chmod 444 /sys/class/dmi/id/product_uuid");
-$version = 5;
+$version = 6;
 
 function fail(string $msg): never
 {
