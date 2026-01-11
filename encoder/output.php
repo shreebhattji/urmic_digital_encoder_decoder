@@ -56,7 +56,7 @@ $defaults = [
     'audio_db_gain' => '0dB',
     'audio_sample_rate' => '48000',
     'service_udp0_output' => 'default',
-    'udp0_service_name' =>''
+    'udp0_service_name' => ''
   ],
   'udp1' => [
     'common_backend' => 'disable',
@@ -72,7 +72,7 @@ $defaults = [
     'audio_db_gain' => '0dB',
     'audio_sample_rate' => '48000',
     'service_udp1_output' => 'default',
-    'udp1_service_name' =>''
+    'udp1_service_name' => ''
   ],
   'udp2' => [
     'common_backend' => 'disable',
@@ -88,7 +88,7 @@ $defaults = [
     'audio_db_gain' => '0dB',
     'audio_sample_rate' => '48000',
     'service_udp2_output' => 'default',
-    'udp2_service_name' =>''
+    'udp2_service_name' => ''
   ],
   'srt' => [
     'common_backend' => 'enable',
@@ -769,7 +769,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
         </div>
         <div class="input-group">
-          <input type="text" id="udp0_extra" name="udp0_extra" value="<?php echo htmlspecialchars($data['udp0']['extra']); ?>">
+          <input type="text" id="udp0_extra" name="udp0_extra" placeholder="Extra" value="<?php echo htmlspecialchars($data['udp0']['extra']); ?>">
           <label for="udp0_extra">Extra :</label>
         </div>
         <div class="input-group">
@@ -805,10 +805,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <option value="disable" <?php if ($data['udp1']['service_udp1_output'] == 'usb') echo 'selected'; ?>>USB</option>
             </select>
           </div>
-        </div>
-        <div class="input-group">
-          <input type="text" id="udp1_service_name" name="udp1_service_name" placeholder="service name" value="<?php echo htmlspecialchars($data['udp1']['udp1_service_name']); ?>">
-          <label for="udp1_service_name">Service Name :- </label>
         </div>
         <div class="dropdown-container">
           <span class="dropdown-label">Common Backend :</span>
@@ -915,8 +911,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
         </div>
         <div class="input-group">
-          <input type="text" id="udp1_extra" name="udp1_extra" value="<?php echo htmlspecialchars($data['udp1']['extra']); ?>">
+          <input type="text" id="udp1_extra" name="udp1_extra" placeholder="Extra" value="<?php echo htmlspecialchars($data['udp1']['extra']); ?>">
           <label for="udp1_extra">Extra :</label>
+        </div>
+        <div class="input-group">
+          <input type="text" id="udp1_service_name" name="udp1_service_name" placeholder="service name" value="<?php echo htmlspecialchars($data['udp1']['udp1_service_name']); ?>">
+          <label for="udp1_service_name">Service Name :- </label>
         </div>
         <div class="input-group">
           <input type="text" id="udp1_ip" name="udp1_ip" placeholder="udp1_ip" value="<?php echo htmlspecialchars($data['udp1']['udp']); ?>">
@@ -1052,7 +1052,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
         </div>
         <div class="input-group">
-          <input type="text" id="udp2_extra" name="udp2_extra" value="<?php echo htmlspecialchars($data['udp2']['extra']); ?>">
+          <input type="text" id="udp2_extra" name="udp2_extra" placeholder="Extra" value="<?php echo htmlspecialchars($data['udp2']['extra']); ?>">
           <label for="udp2_extra">Extra :</label>
         </div>
         <div class="input-group">
