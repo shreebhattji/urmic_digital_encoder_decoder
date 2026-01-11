@@ -947,14 +947,14 @@ function update_service($which_service)
                             . ' -metadata service_provider=ShreeBhattJI -f mpegts "' . $data['udp1']['udp'] . '?pkt_size=1316&ttl=4&reuse=1&buffer_size=1048576"';
                         break;
                 }
-                if ($$use_common_backend == "use_common_backend" && $data['udp1']['format'] == "h264_qsv") {
+                if ($$use_common_backend == "use_common_backend" && $data['udp1']['format'] === "h264_qsv") {
                     str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp1);
                     str_replace("scale", "scale_qsv", $udp1);
                 }
-                if ($data['udp1']['service_udp1_output'] == "usb") {
+                if ($data['udp1']['service_udp1_output'] === "usb") {
                     str_replace("pkt_size=1316", "pkt_size=1316&localaddr=172.16.111.111", $udp1);
                 }
-                if ($data['udp1']['udp1_service_name'] != "") {
+                if ($data['udp1']['udp1_service_name'] !== "") {
                     str_replace("-f mpegts", "-metadata service_name=" . $data['udp1']['udp1_service_name'] . " -f mpegts", $udp1);
                 }
                 $file = "/var/www/encoder-udp1.sh";
