@@ -76,5 +76,6 @@ server {
 }
 EOL
 
+sudo a2enmod ssl
 sudo chown -R www-data:www-data /var/www/*
 sudo reboot
