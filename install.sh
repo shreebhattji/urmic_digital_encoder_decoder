@@ -31,8 +31,6 @@ cat > /etc/apache2/sites-available/000-default.conf << 'EOL'
 EOL
 
 cat>/etc/apache2/ports.conf<< 'EOL'
-Listen 8080
-
 <IfModule mod_ssl.c>
     Listen 8080
 </IfModule>
