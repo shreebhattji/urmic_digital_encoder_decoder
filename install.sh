@@ -375,35 +375,28 @@ network:
 EOL
 
 
-cat > /etc/nginx/sites-available/default<< 'EOL'
+cat > /etc/nginx/sites-available/default << 'EOL'
 server {
-	listen 80 default_server;
-	listen [::]:80 default_server;
-	server_name _;
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    server_name _;
 
-	root /var/www/html;
-	index index.php index.html;
+    root /var/www/html;
+    index index.php index.html;
 
-	location / {
+    add_header Access-Control-Allow-Origin "*" always;
+    add_header Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS" always;
+    add_header Access-Control-Allow-Headers "Authorization, Content-Type, Accept, Origin, X-Requested-With" always;
+
+    if ($request_method = OPTIONS) {
+        add_header Content-Length 0;
+        add_header Content-Type text/plain;
+        return 204;
+    }
+
+    location / {
         try_files $uri $uri/ =404;
-	}
-    
-    location /hls/ {
-        root /var/www/html;
-        add_header Cache-Control no-cache;
-        add_header Access-Control-Allow-Origin *;
-        sendfile off;
-        proxy_buffering off;
-        proxy_request_buffering off;
     }
-
-    location /dash/ {
-        root /var/www/html;
-        add_header Cache-Control no-cache;
-        add_header Access-Control-Allow-Origin *;
-        sendfile off;
-    }
-
 }
 EOL
 

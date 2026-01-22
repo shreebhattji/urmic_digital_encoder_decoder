@@ -757,7 +757,10 @@ function update_service($which_service)
                             break;
                     }
                 }
-
+                if ($use_common_backend_rtmp0 === "disable") {
+                    $rtmp = str_replace("ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -fflags nobuffer -analyzeduration 3000000 -i ", $rtmp);
+                    $rtmp = str_replace("scale", "scale_qsv", $rtmp);
+                }
                 $file = "/var/www/encoder-rtmp0.sh";
                 file_put_contents($file, $rtmp);
                 exec('sudo systemctl enable encoder-rtmp0');
@@ -795,7 +798,10 @@ function update_service($which_service)
                         error_log("service_rtmp1_multiple");
                         break;
                 }
-
+                if ($use_common_backend_rtmp1 === "disable") {
+                    $rtmp = str_replace("ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -fflags nobuffer -analyzeduration 3000000 -i ", $rtmp);
+                    $rtmp = str_replace("scale", "scale_qsv", $rtmp);
+                }
                 $file = "/var/www/encoder-rtmp1.sh";
                 file_put_contents($file, $rtmp);
                 exec('sudo systemctl enable encoder-rtmp1');
@@ -1335,7 +1341,7 @@ rtmp {
     chunk_size 4096;
 
     ";
-            if ($input_source === "rtmp") {
+            if ($input_source === "rtmp" || $input_rtmp_mount !== "") {
                 $nginx .= "    
 
     application " . $input_rtmp_mount . " {
