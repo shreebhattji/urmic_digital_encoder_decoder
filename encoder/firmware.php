@@ -1,7 +1,7 @@
 <?php
 
 exec("sudo chmod 444 /sys/class/dmi/id/product_uuid");
-$version = 9;
+$version = 10;
 
 function fail(string $msg): never
 {
@@ -155,6 +155,8 @@ const interval = setInterval(() => {
 
     if (seconds <= 0) {
         clearInterval(interval);
+        blocker.remove();
+        window.location.href = window.location.pathname;
     }
 }, 1000);
 </script>
