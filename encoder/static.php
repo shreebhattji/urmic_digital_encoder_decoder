@@ -753,7 +753,6 @@ function update_service($which_service)
                                 . ' -f flv "rtmp://127.0.0.1/shree/bhattji"';
                             break;
                         default:
-                            error_log("service_rtmp0_multiple");
                             break;
                     }
                 }
@@ -795,7 +794,6 @@ function update_service($which_service)
                             . ' -f flv "rtmp://127.0.0.1/shreeshree/bhattji"';
                         break;
                     default:
-                        error_log("service_rtmp1_multiple");
                         break;
                 }
                 if ($use_common_backend_rtmp1 === "disable") {
@@ -919,7 +917,6 @@ function update_service($which_service)
         case "udp1";
             if ($service_udp1 === "enable") {
                 $udp1 = 'ffmpeg -hwaccel auto -hide_banner -i ';
-                error_log($use_common_backend);
                 switch ($use_common_backend) {
                     case "copy_input":
                     case "use_common_backend":
@@ -953,11 +950,6 @@ function update_service($which_service)
                             . ' -metadata service_provider=ShreeBhattJI -f mpegts "' . $data['udp1']['udp'] . '?pkt_size=1316&ttl=4&reuse=1&buffer_size=1048576"';
                         break;
                 }
-                error_log("use_common_backend :- " . $use_common_backend);
-                error_log("format :- " . $data['udp1']['format']);
-                error_log("service_udp1_output :- " . $data['udp1']['service_udp1_output']);
-                error_log("udp1_service_name :- " . $data['udp1']['udp1_service_name']);
-                error_log($udp1);
 
                 if ($use_common_backend == "use_common_backend" && $data['udp1']['format'] == "h264_qsv") {
                     $udp1 = str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp1);
@@ -1047,7 +1039,6 @@ function update_service($which_service)
             }
             break;
         default:
-            error_log("Error no input found");
             break;
     }
 }

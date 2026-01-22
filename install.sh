@@ -382,19 +382,24 @@ server {
     server_name _;
 
     root /var/www/html;
-    index index.php index.html;
+    index index.html;
 
+    # These are fine at the server level, but safer inside location
     add_header Access-Control-Allow-Origin "*" always;
     add_header Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS" always;
     add_header Access-Control-Allow-Headers "Authorization, Content-Type, Accept, Origin, X-Requested-With" always;
 
-    if ($request_method = OPTIONS) {
-        add_header Content-Length 0;
-        add_header Content-Type text/plain;
-        return 204;
-    }
-
     location / {
+        # Handle the OPTIONS (Preflight) request correctly
+        if ($request_method = OPTIONS) {
+            add_header Access-Control-Allow-Origin "*" always;
+            add_header Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS" always;
+            add_header Access-Control-Allow-Headers "Authorization, Content-Type, Accept, Origin, X-Requested-With" always;
+            add_header Content-Length 0;
+            add_header Content-Type text/plain;
+            return 204;
+        }
+
         try_files $uri $uri/ =404;
     }
 }

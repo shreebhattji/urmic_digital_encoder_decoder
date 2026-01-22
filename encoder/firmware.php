@@ -138,9 +138,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div id="blocker">
     <div id="blockerBox">
         <div class="msg">'
-                    . htmlspecialchars($data['message'], ENT_QUOTES) .
+                    . htmlspecialchars("message", ENT_QUOTES) .
                     '</div>
-        <div>Continuing in</div>
+        <div>Refreshing in</div>
         <div class="timer" id="blockerTimer">100</div>
     </div>
 </div>
@@ -155,7 +155,7 @@ const interval = setInterval(() => {
 
     if (seconds <= 0) {
         clearInterval(interval);
-        document.getElementById("blocker").remove();
+        location.reload();
     }
 }, 1000);
 </script>
@@ -188,40 +188,31 @@ EwIDAQAB
 -----END PUBLIC KEY-----
 ";
 
-                error_log("starting");
                 $tmpDir = sys_get_temp_dir() . '/payload_' . bin2hex(random_bytes(6));
                 $zipFile = $tmpDir . '/payload.zip';
                 $sigFile = $tmpDir . '/payload.zip.sig';
                 $extractDir = $tmpDir . '/extract';
-                error_log("setting up directory");
 
                 mkdir($tmpDir, 0700, true);
                 mkdir($extractDir, 0700, true);
-                error_log("directory created");
-                error_log($tmpDir);
 
                 download($data['link'], $zipFile);
                 download($data['signature'], $sigFile);
-                error_log("download compltete");
 
                 $publicKey = openssl_pkey_get_public($public_key);
                 if (!$publicKey) fail('Invalid public key');
 
                 $data = file_get_contents($zipFile);
                 $signature = file_get_contents($sigFile);
-                error_log("loading zip and sig");
 
                 $verified = openssl_verify($data, $signature, $publicKey, OPENSSL_ALGO_SHA256);
 
                 if ($verified !== 1) {
-                    error_log("verification failed");
                     fail('Signature verification FAILED');
                 }
-                error_log("varification complete");
 
                 $zip = new ZipArchive();
                 if ($zip->open($zipFile) !== true) {
-                    error_log("zip unzip problem");
                     fail('Unable to open ZIP');
                 }
                 for ($i = 0; $i < $zip->numFiles; $i++) {
