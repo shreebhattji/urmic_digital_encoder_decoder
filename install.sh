@@ -11,56 +11,30 @@ EOL
 
 cat > /etc/apache2/sites-available/000-default.conf << 'EOL'
 <VirtualHost *:8080>
-
-    ServerAdmin webmaster@localhost
-    DocumentRoot /var/www/encoder
-
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
-
-</VirtualHost>
-EOL
-
-cat > /etc/apache2/sites-available/default-ssl.conf << 'EOL'
-<VirtualHost *:8443>
-
     ServerName localhost
     ServerAdmin webmaster@localhost
     DocumentRoot /var/www/encoder
 
-    ErrorLog ${APACHE_LOG_DIR}/encoder-ssl-error.log
-    CustomLog ${APACHE_LOG_DIR}/encoder-ssl-access.log combined
+    ErrorLog ${APACHE_LOG_DIR}/encoder-error.log
+    CustomLog ${APACHE_LOG_DIR}/encoder-access.log combined
 
     SSLEngine on
-    SSLCertificateFile      /etc/ssl/certs/ssl-cert-snakeoil.pem
-    SSLCertificateKeyFile   /etc/ssl/private/ssl-cert-snakeoil.key
+    SSLCertificateFile /etc/ssl/certs/ssl-cert-snakeoil.pem
+    SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
 
     <Directory /var/www/encoder>
         Options Indexes FollowSymLinks
         AllowOverride All
         Require all granted
     </Directory>
-
-    <FilesMatch "\.(?:cgi|shtml|phtml|php)$">
-        SSLOptions +StdEnvVars
-    </FilesMatch>
-
-    <Directory /usr/lib/cgi-bin>
-        SSLOptions +StdEnvVars
-    </Directory>
-
 </VirtualHost>
 EOL
 
 cat>/etc/apache2/ports.conf<< 'EOL'
 Listen 8080
 
-<IfModule ssl_module>
-	Listen 8443
-</IfModule>
-
-<IfModule mod_gnutls.c>
-	Listen 8443
+<IfModule mod_ssl.c>
+    Listen 8080
 </IfModule>
 EOL
 

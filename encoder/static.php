@@ -1216,6 +1216,7 @@ function update_service_backend($service, $srt_pass1, $srt_pass2)
 
         'custom_output' => ''
     ];
+
     for ($i = 1; $i <= 11; $i++) {
         $defaults['rtmp0_multiple'][$i] = ['url' => '', 'name' => '', 'enabled' => false];
         $defaults['rtmp1_multiple'][$i] = ['url' => '', 'name' => '', 'enabled' => false];
@@ -1309,11 +1310,6 @@ function update_service_backend($service, $srt_pass1, $srt_pass2)
                 }
             }
 
-            $rtmp_input_copy = "";
-            if ($use_common_backend == 'transcode_every_time') {
-                $rtmp_input_copy = "push rtmp://127.0.0.1/shree/bhattji;";
-            }
-
             $nginx = "
 user www-data;
 worker_processes auto;
@@ -1343,8 +1339,6 @@ rtmp {
       
       sync 10ms;
       idle_streams off;
-
-      " . $rtmp_input_copy . "
     }
 
 ";

@@ -1,11 +1,11 @@
 <?php
 
 exec("sudo chmod 444 /sys/class/dmi/id/product_uuid");
-$version = 8;
+$version = 9;
 
 function fail(string $msg): never
 {
-    fwrite(STDERR, "ERROR: $msg\n");
+    error_log("ERROR: $msg");
     exit(1);
 }
 
@@ -138,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div id="blocker">
     <div id="blockerBox">
         <div class="msg">'
-                    . htmlspecialchars("message", ENT_QUOTES) .
+                    . htmlspecialchars($data['message'], ENT_QUOTES) .
                     '</div>
         <div>Refreshing in</div>
         <div class="timer" id="blockerTimer">100</div>
@@ -155,7 +155,6 @@ const interval = setInterval(() => {
 
     if (seconds <= 0) {
         clearInterval(interval);
-        location.reload();
     }
 }, 1000);
 </script>

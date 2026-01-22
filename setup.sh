@@ -4,6 +4,36 @@ sudo cp attempts.json /var/www/attempts.json
 DEVICE_ID="$(sudo cat /sys/class/dmi/id/product_uuid | tr -d '\n')"
 sudo sed -i 's/certificatecertificatecertificatecertificate/'$DEVICE_ID'/g' /var/www/html/certification.html
 
+cat > /etc/apache2/sites-available/000-default.conf << 'EOL'
+<VirtualHost *:8080>
+    ServerName localhost
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/encoder
+
+    ErrorLog ${APACHE_LOG_DIR}/encoder-error.log
+    CustomLog ${APACHE_LOG_DIR}/encoder-access.log combined
+
+    SSLEngine on
+    SSLCertificateFile /etc/ssl/certs/ssl-cert-snakeoil.pem
+    SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+
+    <Directory /var/www/encoder>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+EOL
+
+cat>/etc/apache2/ports.conf<< 'EOL'
+Listen 8080
+
+<IfModule mod_ssl.c>
+    Listen 8080
+</IfModule>
+EOL
+
+
 SOURCE_FILE="users.json"
 TARGET_FILE="/var/www/users.json"
 
@@ -47,7 +77,6 @@ server {
     }
 }
 EOL
-
 
 sudo chown -R www-data:www-data /var/www/*
 sudo reboot

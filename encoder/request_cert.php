@@ -102,6 +102,14 @@ if ($subdomains_raw !== '') {
     }
 }
 
+exec("sudo systemctl stop nginx");
+sleep(3); 
+exec("sudo certbot delete --all");
+sleep(3); 
+exec("sudo systemctl restart nginx");
+sleep(3); 
+
+
 // Merge primary domain + subdomains
 $domains = array_values(array_unique(array_merge([$domain], $subdomains)));
 
