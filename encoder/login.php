@@ -4,6 +4,16 @@ header('Pragma: no-cache');
 header('Expires: 0');
 session_start();
     
+/*
+Urmi you happy me happy licence
+
+Copyright (c) 2026 shreebhattji
+
+License text:
+https://github.com/shreebhattji/Urmi/blob/main/licence.md
+*/
+
+
 if (!empty($_SESSION['user'])) {
     header('Location: /index.php', true, 302);
     exit;

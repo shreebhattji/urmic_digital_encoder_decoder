@@ -1,4 +1,14 @@
 <?php
+
+/*
+Urmi you happy me happy licence
+
+Copyright (c) 2026 shreebhattji
+
+License text:
+https://github.com/shreebhattji/Urmi/blob/main/licence.md
+*/
+
 // auth/require_login.php
 
 declare(strict_types=1);
