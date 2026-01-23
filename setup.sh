@@ -76,6 +76,54 @@ server {
 }
 EOL
 
+cat > /etc/systemd/system/encoder-rtmp0.service<< 'EOL'
+[Unit]
+Description= RTMP Encoder by ShreeBhattJi
+Wants=nginx.service encoder-main.service
+After=nginx.service encoder-main.service
+Requires=nginx.service encoder-main.service
+
+[Service]
+ExecStart=/bin/bash /var/www/encoder-rtmp0.sh
+WorkingDirectory=/var/www/
+Restart=always
+User=root
+Environment=PATH=/usr/bin:/usr/local/bin
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+cat > /etc/systemd/system/encoder-rtmp1.service<< 'EOL'
+[Unit]
+Wants=nginx.service encoder-main.service
+After=nginx.service encoder-main.service
+Requires=nginx.service encoder-main.service
+Description= RTMP Encoder by ShreeBhattJi
+
+[Service]
+ExecStart=/bin/bash /var/www/encoder-rtmp1.sh
+WorkingDirectory=/var/www/
+Restart=always
+User=root
+Environment=PATH=/usr/bin:/usr/local/bin
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+sudo mkdir -p /etc/systemd/system/nginx.service.d
+sudo cat > /etc/systemd/system/nginx.service.d/override.conf << 'EOF'
+[Service]
+Restart=always
+RestartSec=3
+StartLimitIntervalSec=0
+EOF
+
+sudo systemctl daemon-reload
 sudo a2enmod ssl
+sudo systemctl restart apache2
 sudo chown -R www-data:www-data /var/www/*
 sudo reboot
