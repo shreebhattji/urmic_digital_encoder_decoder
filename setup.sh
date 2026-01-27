@@ -109,14 +109,16 @@ WantedBy=multi-user.target
 EOL
 
 sudo mkdir -p /etc/systemd/system/nginx.service.d
+
 sudo cat > /etc/systemd/system/nginx.service.d/override.conf << 'EOF'
 [Service]
 Restart=always
-RestartSec=3
-StartLimitIntervalSec=0
+RestartSec=30
+StartLimitIntervalSec=30
 EOF
 
 sudo systemctl daemon-reload
+sudo systemctl restart nginx
 sudo a2enmod ssl
 sudo a2ensite 000-default
 sudo chown -R www-data:www-data /var/www/*

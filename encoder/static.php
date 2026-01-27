@@ -737,7 +737,7 @@ function update_service($which_service)
                 if ($use_common_backend === "transcode_every_time") {
                     $rtmp .= $input_transcode_every_time;
                 } else {
-                    $rtmp .= ' "udp://@239.255.254.254:39000?fifo_size=50000&overrun_nonfatal=1&localaddr=127.0.0.1" ';
+                    $rtmp .= ' "udp://@239.255.254.254:39000?fifo_size=70000&overrun_nonfatal=1&localaddr=127.0.0.1" ';
                     switch ($use_common_backend_rtmp0) {
                         case "enable":
                             $rtmp .= ' '
@@ -782,13 +782,13 @@ function update_service($which_service)
 
                 switch ($use_common_backend_rtmp1) {
                     case "enable":
-                        $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=50000&overrun_nonfatal=1&localaddr=127.0.0.1" '
+                        $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=70000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v copy '
                             . ' -c:a copy '
                             . ' -f flv "rtmp://127.0.0.1/shreeshree/bhattji"';
                         break;
                     case "disable":
-                        $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=50000&overrun_nonfatal=1&localaddr=127.0.0.1" '
+                        $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=70000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                             . ' -c:v h264_qsv '
                             . ' -vf "scale=' . str_replace("x", ":", $data['rtmp1']['resolution']) . '"'
                             . ' -b:v ' . $data['rtmp1']['data_rate']
@@ -825,7 +825,7 @@ function update_service($which_service)
                 switch ($use_common_backend) {
                     case "copy_input":
                     case "use_common_backend":
-                        $srt .= ' "udp://@239.255.254.254:39000?fifo_size=50000&overrun_nonfatal=1&localaddr=127.0.0.1"';
+                        $srt .= ' "udp://@239.255.254.254:39000?fifo_size=70000&overrun_nonfatal=1&localaddr=127.0.0.1"';
                         break;
                     case "transcode_every_time":
                         $srt .= '"' . $input_transcode_every_time . '"';
@@ -875,7 +875,7 @@ function update_service($which_service)
                     case "copy_input":
                     case "use_common_backend":
 
-                        $udp0 .= ' "udp://@239.255.254.254:39000?fifo_size=50000&overrun_nonfatal=1&localaddr=127.0.0.1"';
+                        $udp0 .= ' "udp://@239.255.254.254:39000?fifo_size=70000&overrun_nonfatal=1&localaddr=127.0.0.1"';
 
                         break;
                     case "transcode_every_time":
@@ -930,7 +930,7 @@ function update_service($which_service)
                     case "copy_input":
                     case "use_common_backend":
 
-                        $udp1 .= ' "udp://@239.255.254.254:39000?fifo_size=50000&overrun_nonfatal=1&localaddr=127.0.0.1"';
+                        $udp1 .= ' "udp://@239.255.254.254:39000?fifo_size=70000&overrun_nonfatal=1&localaddr=127.0.0.1"';
 
                         break;
                     case "transcode_every_time":
@@ -985,7 +985,7 @@ function update_service($which_service)
                 case "copy_input":
                 case "use_common_backend":
 
-                    $udp2 .= ' "udp://@239.255.254.254:39000?fifo_size=50000&overrun_nonfatal=1&localaddr=127.0.0.1"';
+                    $udp2 .= ' "udp://@239.255.254.254:39000?fifo_size=70000&overrun_nonfatal=1&localaddr=127.0.0.1"';
 
                     break;
                 case "transcode_every_time":
@@ -1036,7 +1036,7 @@ function update_service($which_service)
             break;
         case "custom";
             if ($service_custom === "enable") {
-                $custom = 'ffmpeg -hwaccel auto -hide_banner   -i "udp://@239.255.254.254:39000?fifo_size=50000&overrun_nonfatal=1&localaddr=127.0.0.1" '
+                $custom = 'ffmpeg -hwaccel auto -hide_banner   -i "udp://@239.255.254.254:39000?fifo_size=70000&overrun_nonfatal=1&localaddr=127.0.0.1" '
                     . $data['custom_output'];
                 $file = "/var/www/encoder-custom.sh";
                 file_put_contents($file, $custom);
