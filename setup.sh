@@ -79,9 +79,6 @@ EOL
 cat > /etc/systemd/system/encoder-rtmp0.service<< 'EOL'
 [Unit]
 Description= RTMP Encoder by ShreeBhattJi
-Wants=nginx.service encoder-main.service
-After=nginx.service encoder-main.service
-Requires=nginx.service encoder-main.service
 
 [Service]
 ExecStart=/bin/bash /var/www/encoder-rtmp0.sh
@@ -97,9 +94,6 @@ EOL
 
 cat > /etc/systemd/system/encoder-rtmp1.service<< 'EOL'
 [Unit]
-Wants=nginx.service encoder-main.service
-After=nginx.service encoder-main.service
-Requires=nginx.service encoder-main.service
 Description= RTMP Encoder by ShreeBhattJi
 
 [Service]
@@ -124,6 +118,6 @@ EOF
 
 sudo systemctl daemon-reload
 sudo a2enmod ssl
-sudo systemctl restart apache2
+sudo a2ensite 000-default
 sudo chown -R www-data:www-data /var/www/*
 sudo reboot
