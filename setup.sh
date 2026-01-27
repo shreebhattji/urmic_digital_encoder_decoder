@@ -116,6 +116,39 @@ Restart=always
 RestartSec=30
 EOF
 
+cat > /etc/systemd/system/encoder-rtmp0.service<< 'EOL'
+[Unit]
+Description= RTMP Encoder by ShreeBhattJi
+
+[Service]
+ExecStart=/bin/bash /var/www/encoder-rtmp0.sh
+WorkingDirectory=/var/www/
+Restart=always
+User=root
+Environment=PATH=/usr/bin:/usr/local/bin
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+cat > /etc/systemd/system/encoder-rtmp1.service<< 'EOL'
+[Unit]
+Description= RTMP Encoder by ShreeBhattJi
+
+[Service]
+ExecStart=/bin/bash /var/www/encoder-rtmp1.sh
+WorkingDirectory=/var/www/
+Restart=always
+User=root
+Environment=PATH=/usr/bin:/usr/local/bin
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+
 sudo systemctl daemon-reload
 sudo systemctl restart nginx
 sudo a2enmod ssl
