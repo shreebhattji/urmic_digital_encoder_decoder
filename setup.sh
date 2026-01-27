@@ -114,7 +114,6 @@ sudo cat > /etc/systemd/system/nginx.service.d/override.conf << 'EOF'
 [Service]
 Restart=always
 RestartSec=30
-StartLimitIntervalSec=30
 EOF
 
 sudo systemctl daemon-reload
