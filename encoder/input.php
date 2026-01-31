@@ -95,10 +95,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]
     ];
 
-    if($new['use_common_backend']=='transcode_every_time'){
-        switch($new['input']){
+    if ($new['use_common_backend'] == 'transcode_every_time') {
+        switch ($new['input']) {
             case 'srt':
-                $new['srt']['stream_id_3']="ji";
+                $new['srt']['stream_id_3'] = "ji";
                 break;
         }
     }
@@ -110,7 +110,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $data = $new; // reload into form
         $saveSuccess = "Saved.";
     }
-
+    update_service("display");
+    update_service("rtmp0");
+    update_service("rtmp1");
+    update_service("udp0");
+    update_service("udp1");
+    update_service("udp2");
+    update_service("srt");
+    update_service("custom");
     update_service("input");
 }
 ?>
