@@ -46,35 +46,6 @@ if [ ! -f "$TARGET_FILE" ]; then
     cp "$SOURCE_FILE" "$TARGET_FILE"
 fi
 
-cat > /etc/nginx/sites-available/default << 'EOL'
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    server_name _;
-
-    root /var/www/html;
-    index index.html;
-
-    # These are fine at the server level, but safer inside location
-    add_header Access-Control-Allow-Origin "*" always;
-    add_header Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS" always;
-    add_header Access-Control-Allow-Headers "Authorization, Content-Type, Accept, Origin, X-Requested-With" always;
-
-    location / {
-        # Handle the OPTIONS (Preflight) request correctly
-        if ($request_method = OPTIONS) {
-            add_header Access-Control-Allow-Origin "*" always;
-            add_header Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS" always;
-            add_header Access-Control-Allow-Headers "Authorization, Content-Type, Accept, Origin, X-Requested-With" always;
-            add_header Content-Length 0;
-            add_header Content-Type text/plain;
-            return 204;
-        }
-
-        try_files $uri $uri/ =404;
-    }
-}
-EOL
 
 cat > /etc/systemd/system/encoder-rtmp0.service<< 'EOL'
 [Unit]

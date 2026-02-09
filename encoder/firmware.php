@@ -9,7 +9,7 @@ https://github.com/shreebhattji/Urmi/blob/main/licence.md
 */
 
 exec("sudo chmod 444 /sys/class/dmi/id/product_uuid");
-$version = 11.13;
+$version = 11.14;
 
 function fail(string $msg): never
 {
@@ -70,6 +70,9 @@ KQIDAQAB
 ";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($_POST['action'] !== "backup")
+        include 'header.php';
+
     switch ($_POST['action']) {
         case 'update':
 
@@ -274,7 +277,6 @@ EwIDAQAB
                 }
             }
 
-            
             exec('sudo cp /var/www/default_nginx.conf /etc/nginx/nginx.conf');
             exec('sudo cp /var/www/default_nginx_site /etc/nginx/sites-available/default');
 
@@ -352,7 +354,6 @@ EwIDAQAB
 
             unlink($tmpZip);
             break;
-
         case 'restore':
             $jsonFiles = [
                 'input.json',
@@ -494,8 +495,10 @@ EwIDAQAB
             update_service("input");
             break;
     }
-}
-include 'header.php';
+    if ($_POST['action'] === "backup")
+        include 'header.php';
+} else
+    include 'header.php';
 
 ?>
 <script>
