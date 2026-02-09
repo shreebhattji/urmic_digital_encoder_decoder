@@ -1413,7 +1413,7 @@ http {
             if ($status === 0) {
                 exec("sudo systemctl restart nginx 2>&1", $o, $s);
             } else {
-                exec('sudo cp /var/www/default_nginx.conf.conf /etc/nginx/nginx.conf');
+                exec('sudo cp /var/www/default_nginx.conf /etc/nginx/nginx.conf');
                 exec("sudo systemctl restart nginx");
             }
 
