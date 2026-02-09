@@ -148,11 +148,58 @@ RestartSec=30
 WantedBy=multi-user.target
 EOL
 
+sudo cp default_nginx_site /etc/nginx/sites-available/default
+
 sudo systemctl unmask systemd-networkd-wait-online.service
 sudo systemctl enable systemd-networkd-wait-online.service
 sudo systemctl daemon-reload
 sudo systemctl restart nginx
+
 sudo a2enmod ssl
 sudo a2ensite 000-default
+
 sudo chown -R www-data:www-data /var/www/*
+
+FSTAB="/etc/fstab"
+TMPFS_LINE="tmpfs  /mnt/ramdisk  tmpfs  size=1536M,mode=0755  0  0"
+
+BIND_LINES=(
+"/mnt/ramdisk/hls       /var/www/hls       none  bind  0  0"
+"/mnt/ramdisk/dash      /var/www/dash      none  bind  0  0"
+"/mnt/ramdisk/scramble  /var/www/scramble  none  bind  0  0"
+)
+
+# Ensure directories exist
+mkdir -p /mnt/ramdisk/{hls,dash,scramble} /var/www/{hls,dash,scramble}
+
+# Check if tmpfs is mounted
+if ! mountpoint -q /mnt/ramdisk; then
+  echo "tmpfs not mounted. Mounting now..."
+  mount -t tmpfs -o size=1536M,mode=0755 tmpfs /mnt/ramdisk
+fi
+
+# Ensure bind mounts are active
+for d in hls dash scramble; do
+  if ! mountpoint -q "/var/www/$d"; then
+    echo "Bind mount /var/www/$d not active. Mounting..."
+    mount --bind "/mnt/ramdisk/$d" "/var/www/$d"
+  fi
+done
+
+# Backup fstab once
+if [ ! -f /etc/fstab.bak_ramdisk ]; then
+  cp "$FSTAB" /etc/fstab.bak_ramdisk
+fi
+
+# Add tmpfs entry if missing
+grep -qF "$TMPFS_LINE" "$FSTAB" || echo "$TMPFS_LINE" >> "$FSTAB"
+
+# Add bind entries if missing
+for line in "${BIND_LINES[@]}"; do
+  grep -qF "$line" "$FSTAB" || echo "$line" >> "$FSTAB"
+done
+
+# Validate
+mount -a
+
 sudo reboot

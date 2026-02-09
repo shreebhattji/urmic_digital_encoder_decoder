@@ -392,36 +392,7 @@ network:
       - 172.16.111.111/24
 EOL
 
-
-cat > /etc/nginx/sites-available/default << 'EOL'
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    server_name _;
-
-    root /var/www/html;
-    index index.html;
-
-    # These are fine at the server level, but safer inside location
-    add_header Access-Control-Allow-Origin "*" always;
-    add_header Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS" always;
-    add_header Access-Control-Allow-Headers "Authorization, Content-Type, Accept, Origin, X-Requested-With" always;
-
-    location / {
-        # Handle the OPTIONS (Preflight) request correctly
-        if ($request_method = OPTIONS) {
-            add_header Access-Control-Allow-Origin "*" always;
-            add_header Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS" always;
-            add_header Access-Control-Allow-Headers "Authorization, Content-Type, Accept, Origin, X-Requested-With" always;
-            add_header Content-Length 0;
-            add_header Content-Type text/plain;
-            return 204;
-        }
-
-        try_files $uri $uri/ =404;
-    }
-}
-EOL
+sudo cp default_nginx_site /etc/nginx/sites-available/default
 
 rm /var/www/html/index.nginx-debian.html;
 sudo mkdir -p /var/www/html/hls/shree;
@@ -469,4 +440,47 @@ sudo ufw allow from 172.16.111.112 to 172.16.111.111 port 8080
 sudo ufw --force enable
 DEVICE_ID="$(sudo cat /sys/class/dmi/id/product_uuid | tr -d '\n')"
 sudo sed -i 's/certificatecertificatecertificatecertificate/'$DEVICE_ID'/g' /var/www/html/certification.html
+
+FSTAB="/etc/fstab"
+TMPFS_LINE="tmpfs  /mnt/ramdisk  tmpfs  size=1536M,mode=0755  0  0"
+
+BIND_LINES=(
+"/mnt/ramdisk/hls       /var/www/hls       none  bind  0  0"
+"/mnt/ramdisk/dash      /var/www/dash      none  bind  0  0"
+"/mnt/ramdisk/scramble  /var/www/scramble  none  bind  0  0"
+)
+
+# Ensure directories exist
+mkdir -p /mnt/ramdisk/{hls,dash,scramble} /var/www/{hls,dash,scramble}
+
+# Check if tmpfs is mounted
+if ! mountpoint -q /mnt/ramdisk; then
+  echo "tmpfs not mounted. Mounting now..."
+  mount -t tmpfs -o size=1536M,mode=0755 tmpfs /mnt/ramdisk
+fi
+
+# Ensure bind mounts are active
+for d in hls dash scramble; do
+  if ! mountpoint -q "/var/www/$d"; then
+    echo "Bind mount /var/www/$d not active. Mounting..."
+    mount --bind "/mnt/ramdisk/$d" "/var/www/$d"
+  fi
+done
+
+# Backup fstab once
+if [ ! -f /etc/fstab.bak_ramdisk ]; then
+  cp "$FSTAB" /etc/fstab.bak_ramdisk
+fi
+
+# Add tmpfs entry if missing
+grep -qF "$TMPFS_LINE" "$FSTAB" || echo "$TMPFS_LINE" >> "$FSTAB"
+
+# Add bind entries if missing
+for line in "${BIND_LINES[@]}"; do
+  grep -qF "$line" "$FSTAB" || echo "$line" >> "$FSTAB"
+done
+
+# Validate
+mount -a
+
 sudo reboot;

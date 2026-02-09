@@ -9,7 +9,7 @@ https://github.com/shreebhattji/Urmi/blob/main/licence.md
 */
 
 exec("sudo chmod 444 /sys/class/dmi/id/product_uuid");
-$version = 11.11;
+$version = 11.13;
 
 function fail(string $msg): never
 {
@@ -273,6 +273,21 @@ EwIDAQAB
                     unlink($file);
                 }
             }
+
+            
+            exec('sudo cp /var/www/default_nginx.conf /etc/nginx/nginx.conf');
+            exec('sudo cp /var/www/default_nginx_site /etc/nginx/sites-available/default');
+
+
+            update_service("display");
+            update_service("rtmp0");
+            update_service("rtmp1");
+            update_service("udp0");
+            update_service("udp1");
+            update_service("udp2");
+            update_service("srt");
+            update_service("custom");
+            update_service("input");
 
             break;
         case 'reboot':
