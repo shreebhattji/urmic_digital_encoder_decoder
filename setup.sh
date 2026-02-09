@@ -148,7 +148,8 @@ RestartSec=30
 WantedBy=multi-user.target
 EOL
 
-sudo cp default_nginx_site /etc/nginx/sites-available/default
+sudo cp default_nginx_site /var/www/default_nginx_site
+sudo cp default_nginx.conf /var/www/default_nginx.conf
 
 sudo systemctl unmask systemd-networkd-wait-online.service
 sudo systemctl enable systemd-networkd-wait-online.service

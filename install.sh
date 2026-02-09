@@ -392,7 +392,8 @@ network:
       - 172.16.111.111/24
 EOL
 
-sudo cp default_nginx_site /etc/nginx/sites-available/default
+sudo cp default_nginx_site /var/www/default_nginx_site
+sudo cp default_nginx.conf /var/www/default_nginx.conf
 
 rm /var/www/html/index.nginx-debian.html;
 sudo mkdir -p /var/www/html/hls/shree;
