@@ -1110,6 +1110,8 @@ function update_service_backend($service, $srt_pass1, $srt_pass2)
         $raw = file_get_contents($jsonFile);
         $data = json_decode($raw, true);
         if (!is_array($data)) $data = $defaults;
+    } else {
+        $data = $defaults;
     }
 
     $use_common_backend = $data['use_common_backend'];
