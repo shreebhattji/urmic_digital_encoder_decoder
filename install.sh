@@ -180,6 +180,52 @@ RestartSec=30
 WantedBy=multi-user.target
 EOL
 
+cat > /etc/systemd/system/drm-key.service<< 'EOL'
+[Unit]
+Description=HLS Key Generator and Poster
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=key genrator
+User=root
+Group=root
+ExecStart=/var/www/key.sh
+WorkingDirectory=/var/www
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+cat > /var/www/key.sh<< 'EOL'
+#!/bin/bash
+set -e
+
+# ===== CONFIG =====
+STREAM_ID="strem_id_strem_id_strem_id"
+KEY_FILE="/var/www/scrambler.key"
+# ==================
+
+# Timestamp
+TIMESTAMP=$(date +%s)
+
+# Dynamic POST field name
+KEY_FIELD="${STREAM_ID}_${TIMESTAMP}"
+
+# Generate secure random 16-byte key (binary)
+openssl rand 16 > "$KEY_FILE"
+
+# Convert binary key to hex for HTTP transport
+KEY_HEX=$(xxd -p "$KEY_FILE" | tr -d '\n')
+
+curl --fail --silent --show-error \
+  -X POST "$post_url_post_url_post_url" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  --data "stream_id=${STREAM_ID}&${KEY_FIELD}=${KEY_HEX}"
+EOL
+
 # graph monitor setup
 cat > /etc/systemd/system/system-monitor.service<< 'EOL'
 [Unit]
@@ -408,8 +454,6 @@ sudo chown -R www-data:www-data /var/www
 sudo systemctl daemon-reload
 
 sudo chmod 444 /sys/class/dmi/id/product_uuid
-sudo systemctl disable systemd-networkd-wait-online.service
-sudo systemctl mask systemd-networkd-wait-online.service
 
 sudo ufw default allow outgoing
 sudo ufw default deny incoming

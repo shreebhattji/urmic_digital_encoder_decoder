@@ -347,13 +347,17 @@ EwIDAQAB
                 'firmware.json',
             ];
 
+            /* 1. Remove existing config files */
             foreach ($jsonFiles as $json) {
                 if (file_exists($json)) {
                     unlink($json);
                 }
             }
 
-            $tmpZip     = sys_get_temp_dir() . '/restore.zip';
+            /* 2. Validate upload */
+            if (!isset($_FILES['shree_bhattji_encoder'])) {
+                die('No file uploaded');
+            }
 
             $upload = $_FILES['shree_bhattji_encoder'];
 
@@ -361,42 +365,71 @@ EwIDAQAB
                 die('Upload failed');
             }
 
-            if (pathinfo($upload['name'], PATHINFO_EXTENSION) !== 'bin') {
+            if (strtolower(pathinfo($upload['name'], PATHINFO_EXTENSION)) !== 'bin') {
                 die('Invalid file type');
             }
 
+            /* 3. Load private key */
             $privateKeyPem = file_get_contents('/var/www/backup_private.pem');
-            if (!$privateKeyPem) {
+            if ($privateKeyPem === false) {
                 die('Private key not found');
             }
 
             $privateKey = openssl_pkey_get_private($privateKeyPem);
-            if (!$privateKey) {
+            if ($privateKey === false) {
                 die('Invalid private key');
             }
 
+            /* 4. Read binary backup */
             $payloadRaw = file_get_contents($upload['tmp_name']);
-            $payload    = json_decode($payloadRaw, true);
-
-            if (
-                !is_array($payload)
-                || !isset($payload['key'], $payload['iv'], $payload['data'])
-            ) {
-                die('Invalid backup file format');
+            if ($payloadRaw === false) {
+                die('Failed to read backup file');
             }
 
-            $encryptedKey  = base64_decode($payload['key'], true);
-            $iv            = base64_decode($payload['iv'], true);
-            $encryptedData = base64_decode($payload['data'], true);
+            $offset = 0;
 
-            if ($encryptedKey === false || $iv === false || $encryptedData === false) {
-                die('Corrupt backup data');
+            /* 5. Read RSA key length (4 bytes, big-endian) */
+            if (strlen($payloadRaw) < 4) {
+                die('Corrupt backup file');
             }
 
+            $keyLen = unpack('N', substr($payloadRaw, 0, 4))[1];
+            $offset += 4;
+
+            if ($keyLen <= 0 || $keyLen > 512) {
+                die('Invalid encrypted key length');
+            }
+
+            /* 6. Read RSA-encrypted AES key */
+            $encryptedKey = substr($payloadRaw, $offset, $keyLen);
+            if (strlen($encryptedKey) !== $keyLen) {
+                die('Corrupt encrypted key');
+            }
+            $offset += $keyLen;
+
+            /* 7. Read IV */
+            $iv = substr($payloadRaw, $offset, 16);
+            if (strlen($iv) !== 16) {
+                die('Invalid IV');
+            }
+            $offset += 16;
+
+            /* 8. Remaining data = AES-encrypted ZIP */
+            $encryptedData = substr($payloadRaw, $offset);
+            if ($encryptedData === '') {
+                die('Missing encrypted payload');
+            }
+
+            /* 9. Decrypt AES key */
             if (!openssl_private_decrypt($encryptedKey, $aesKey, $privateKey)) {
                 die('Key mismatch or wrong private key');
             }
 
+            if (strlen($aesKey) !== 32) {
+                die('Invalid AES key length');
+            }
+
+            /* 10. Decrypt ZIP */
             $zipBinary = openssl_decrypt(
                 $encryptedData,
                 'AES-256-CBC',
@@ -408,18 +441,32 @@ EwIDAQAB
             if ($zipBinary === false) {
                 die('Failed to decrypt data');
             }
-            $tmpZip = sys_get_temp_dir() . '/restore_' . uniqid() . '.zip';
+
+            /* 11. Write ZIP to temp file */
+            $tmpZip = sys_get_temp_dir() . '/restore_' . uniqid('', true) . '.zip';
             file_put_contents($tmpZip, $zipBinary);
 
+            /* 12. Extract ZIP safely */
             $zip = new ZipArchive();
             if ($zip->open($tmpZip) !== true) {
                 unlink($tmpZip);
                 die('Invalid ZIP archive');
             }
 
-            $zip->extractTo(__DIR__);   // overwrites existing JSON
+            $restoreDir = __DIR__ . '/restore_tmp';
+            @mkdir($restoreDir, 0700, true);
+            $zip->extractTo($restoreDir);
             $zip->close();
 
+            /* 13. Restore only expected JSON files */
+            foreach ($jsonFiles as $file) {
+                $src = $restoreDir . '/' . $file;
+                if (file_exists($src)) {
+                    rename($src, __DIR__ . '/' . $file);
+                }
+            }
+
+            /* 14. Cleanup */
             unlink($tmpZip);
             update_service("display");
             update_service("rtmp0");

@@ -148,7 +148,8 @@ RestartSec=30
 WantedBy=multi-user.target
 EOL
 
-
+sudo systemctl unmask systemd-networkd-wait-online.service
+sudo systemctl enable systemd-networkd-wait-online.service
 sudo systemctl daemon-reload
 sudo systemctl restart nginx
 sudo a2enmod ssl
