@@ -1259,8 +1259,8 @@ function update_service_backend($service, $srt_pass1, $srt_pass2)
                 $hls0 = "
       hls on;
       hls_path /var/www/html/hls/shree;
-      hls_fragment 4;
-      hls_playlist_length 48;
+      hls_fragment 10;
+      hls_playlist_length 60;
       hls_cleanup on;
       hls_continuous on;
 ";
@@ -1272,8 +1272,8 @@ function update_service_backend($service, $srt_pass1, $srt_pass2)
                 $dash0 = "
       dash on;
       dash_path /var/www/html/dash/shree;
-      dash_fragment 4;
-      dash_playlist_length 48;
+      dash_fragment 10;
+      dash_playlist_length 60;
       dash_cleanup on;
 ";
             } else {
@@ -1284,8 +1284,8 @@ function update_service_backend($service, $srt_pass1, $srt_pass2)
                 $hls1 = "
       hls on;
       hls_path /var/www/html/hls/shreeshree;
-      hls_fragment 4;
-      hls_playlist_length 48;
+      hls_fragment 10;
+      hls_playlist_length 60;
       hls_cleanup on;
       hls_continuous on;
 ";
@@ -1297,8 +1297,8 @@ function update_service_backend($service, $srt_pass1, $srt_pass2)
                 $dash1 = "
       dash on;
       dash_path /var/www/html/dash/shreeshree;
-      dash_fragment 4;
-      dash_playlist_length 48;
+      dash_fragment 10;
+      dash_playlist_length 60;
       dash_cleanup on;
 ";
             } else {
