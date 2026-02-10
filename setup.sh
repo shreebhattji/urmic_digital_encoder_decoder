@@ -136,9 +136,9 @@ FSTAB="/etc/fstab"
 TMPFS_LINE="tmpfs  /mnt/ramdisk  tmpfs  size=1536M,mode=0755  0  0"
 
 BIND_LINES=(
-"/mnt/ramdisk/hls       /var/www/hls       none  bind  0  0"
-"/mnt/ramdisk/dash      /var/www/dash      none  bind  0  0"
-"/mnt/ramdisk/scramble  /var/www/scramble  none  bind  0  0"
+"/mnt/ramdisk/hls       /var/www/html/hls       none  bind  0  0"
+"/mnt/ramdisk/dash      /var/www/html/dash      none  bind  0  0"
+"/mnt/ramdisk/scramble  /var/www/html/scramble  none  bind  0  0"
 )
 
 # Ensure directories exist

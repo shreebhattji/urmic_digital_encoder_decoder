@@ -398,19 +398,19 @@ function update_service($which_service)
                     if ($hdmi_delay_audio != "")
                         $input .= adelayFromMs($hdmi_delay_audio, 2);
 
-                    $input .= " -f mpegts " . ' "udp://239.255.254.254:39000?reuse=1&localaddr=127.0.0.1"';
+                    $input .= " -f mpegts " . ' "unix:///run/shreebhattji.sock"';
                     break;
                 case "url":
-                    $input .= "ffmpeg -hwaccel auto -hide_banner -stream_loop -1 -re -i " . $data['url'] . " -c:v copy -c:a copy -f mpegts " .  ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
+                    $input .= "ffmpeg -hwaccel auto -hide_banner -stream_loop -1 -re -i " . $data['url'] . " -c:v copy -c:a copy -f mpegts " .  ' "unix:///run/shreebhattji.sock"';
                     break;
                 case "udp":
-                    $input .= 'ffmpeg -hwaccel auto -hide_banner -stream_loop -1 -re -i "' . $data['udp'] . " -c:v copy -c:a copy -f mpegts " . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
+                    $input .= 'ffmpeg -hwaccel auto -hide_banner -stream_loop -1 -re -i "' . $data['udp'] . " -c:v copy -c:a copy -f mpegts " . ' "unix:///run/shreebhattji.sock"';
                     break;
                 case "rtmp":
-                    $input .= "ffmpeg -hwaccel auto -hide_banner -stream_loop -1 -re -i rtmp://127.0.0.1:1935/" . $input_rtmp_mount . "/" . $input_rtmp_pass .  " -c:v copy -c:a copy -f mpegts " . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
+                    $input .= "ffmpeg -hwaccel auto -hide_banner -stream_loop -1 -re -i rtmp://127.0.0.1:1935/" . $input_rtmp_mount . "/" . $input_rtmp_pass .  " -c:v copy -c:a copy -f mpegts " . ' "unix:///run/shreebhattji.sock"';
                     break;
                 case "srt":
-                    $input .= "ffmpeg -hwaccel auto -hide_banner -stream_loop -1 -re -i srt://127.0.0.1:1937?streamid=shree/bhatt/" . $srt_pass3 . " -c:v copy -c:a copy -f mpegts " . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
+                    $input .= "ffmpeg -hwaccel auto -hide_banner -stream_loop -1 -re -i srt://127.0.0.1:1937?streamid=shree/bhatt/" . $srt_pass3 . " -c:v copy -c:a copy -f mpegts " . ' "unix:///run/shreebhattji.sock"';
                     break;
             }
             break;
@@ -439,7 +439,7 @@ function update_service($which_service)
                     else
                         $input .= ' -af "volume=' . $common_backend_audio_db_gain . '"';
                     $input .= " -muxrate 0 -pat_period 0.1 -pkt_size 1316 -f mpegts "
-                        . ' "udp://239.255.254.254:39000?reuse=1&localaddr=127.0.0.1"';
+                        . ' "unix:///run/shreebhattji.sock"';
                     break;
                 case "url":
                     $input .= "ffmpeg -hwaccel auto -hide_banner -stream_loop -1 -re -i " . $data['url']
@@ -455,7 +455,7 @@ function update_service($which_service)
                         . ' -af "volume=' . $common_backend_audio_db_gain . '"'
                         . '  -ar ' . $common_backend_audio_sample_rate
                         . ' ' . $common_backend_extra . " -tune zerolatency  -pkt_size 1316  -f mpegts "
-                        . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
+                        . ' "unix:///run/shreebhattji.sock"';
                     break;
                 case "udp":
                     $input .= 'ffmpeg -hwaccel auto -hide_banner -stream_loop -1 -re -i "' . $data['udp']
@@ -471,7 +471,7 @@ function update_service($which_service)
                         . ' -af "volume=' . $common_backend_audio_db_gain . '"'
                         . '  -ar ' . $common_backend_audio_sample_rate
                         . ' ' . $common_backend_extra . " -tune zerolatency  -pkt_size 1316  -f mpegts "
-                        . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
+                        . ' "unix:///run/shreebhattji.sock"';
                     break;
                 case "rtmp":
                     update_service_backend('rtmp', "", "");
@@ -488,7 +488,7 @@ function update_service($which_service)
                         . ' -af "volume=' . $common_backend_audio_db_gain . '"'
                         . '  -ar ' . $common_backend_audio_sample_rate
                         . ' ' . $common_backend_extra . " -tune zerolatency  -pkt_size 1316  -f mpegts "
-                        . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
+                        . ' "unix:///run/shreebhattji.sock"';
 
                     break;
                 case "srt":
@@ -506,7 +506,7 @@ function update_service($which_service)
                         . ' -af "volume=' . $common_backend_audio_db_gain . '"'
                         . '  -ar ' . $common_backend_audio_sample_rate
                         . ' ' . $common_backend_extra . " -tune zerolatency  -pkt_size 1316  -f mpegts "
-                        . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
+                        . ' "unix:///run/shreebhattji.sock"';
 
                     break;
             }
@@ -712,7 +712,7 @@ function update_service($which_service)
                 switch ($use_common_backend) {
                     case "copy_input":
                     case "use_common_backend":
-                        $display .=  '  "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
+                        $display .=  '  "unix:///run/shreebhattji.sock"';
                         break;
                     case "transcode_every_time":
                         $display .= '  "' . $input_transcode_every_time . '"';
@@ -737,7 +737,7 @@ function update_service($which_service)
                 if ($use_common_backend === "transcode_every_time") {
                     $rtmp .= $input_transcode_every_time;
                 } else {
-                    $rtmp .= ' "udp://@239.255.254.254:39000?fifo_size=70000&overrun_nonfatal=1&localaddr=127.0.0.1" ';
+                    $rtmp .= ' "unix:///run/shreebhattji.sock" ';
                     switch ($use_common_backend_rtmp0) {
                         case "enable":
                             $rtmp .= ' '
@@ -782,13 +782,13 @@ function update_service($which_service)
 
                 switch ($use_common_backend_rtmp1) {
                     case "enable":
-                        $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=70000&overrun_nonfatal=1&localaddr=127.0.0.1" '
+                        $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "unix:///run/shreebhattji.sock" '
                             . ' -c:v copy '
                             . ' -c:a copy '
                             . ' -f flv "rtmp://127.0.0.1/shreeshree/bhattji"';
                         break;
                     case "disable":
-                        $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?fifo_size=70000&overrun_nonfatal=1&localaddr=127.0.0.1" '
+                        $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "unix:///run/shreebhattji.sock" '
                             . ' -c:v h264_qsv '
                             . ' -vf "scale=' . str_replace("x", ":", $data['rtmp1']['resolution']) . '"'
                             . ' -b:v ' . $data['rtmp1']['data_rate']
@@ -825,7 +825,7 @@ function update_service($which_service)
                 switch ($use_common_backend) {
                     case "copy_input":
                     case "use_common_backend":
-                        $srt .= ' "udp://@239.255.254.254:39000?fifo_size=70000&overrun_nonfatal=1&localaddr=127.0.0.1"';
+                        $srt .= ' "unix:///run/shreebhattji.sock"';
                         break;
                     case "transcode_every_time":
                         $srt .= '"' . $input_transcode_every_time . '"';
@@ -875,7 +875,7 @@ function update_service($which_service)
                     case "copy_input":
                     case "use_common_backend":
 
-                        $udp0 .= ' "udp://@239.255.254.254:39000?fifo_size=70000&overrun_nonfatal=1&localaddr=127.0.0.1"';
+                        $udp0 .= ' "unix:///run/shreebhattji.sock"';
 
                         break;
                     case "transcode_every_time":
@@ -930,7 +930,7 @@ function update_service($which_service)
                     case "copy_input":
                     case "use_common_backend":
 
-                        $udp1 .= ' "udp://@239.255.254.254:39000?fifo_size=70000&overrun_nonfatal=1&localaddr=127.0.0.1"';
+                        $udp1 .= ' "unix:///run/shreebhattji.sock"';
 
                         break;
                     case "transcode_every_time":
@@ -985,7 +985,7 @@ function update_service($which_service)
                 case "copy_input":
                 case "use_common_backend":
 
-                    $udp2 .= ' "udp://@239.255.254.254:39000?fifo_size=70000&overrun_nonfatal=1&localaddr=127.0.0.1"';
+                    $udp2 .= ' "unix:///run/shreebhattji.sock"';
 
                     break;
                 case "transcode_every_time":
@@ -1036,7 +1036,7 @@ function update_service($which_service)
             break;
         case "custom";
             if ($service_custom === "enable") {
-                $custom = 'ffmpeg -hwaccel auto -hide_banner   -i "udp://@239.255.254.254:39000?fifo_size=70000&overrun_nonfatal=1&localaddr=127.0.0.1" '
+                $custom = 'ffmpeg -hwaccel auto -hide_banner   -i "unix:///run/shreebhattji.sock" '
                     . $data['custom_output'];
                 $file = "/var/www/encoder-custom.sh";
                 file_put_contents($file, $custom);
