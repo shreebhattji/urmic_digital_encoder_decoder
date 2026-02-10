@@ -9,7 +9,7 @@ https://github.com/shreebhattji/Urmi/blob/main/licence.md
 */
 
 exec("sudo chmod 444 /sys/class/dmi/id/product_uuid");
-$version = 11.16;
+$version = 11.17;
 
 function fail(string $msg): never
 {

@@ -1262,7 +1262,7 @@ function update_service_backend($service, $srt_pass1, $srt_pass2)
       hls_fragment 10;
       hls_playlist_length 60;
       hls_cleanup on;
-      hls_continuous on;
+
 ";
             } else {
                 $hls0 = "
@@ -1287,7 +1287,7 @@ function update_service_backend($service, $srt_pass1, $srt_pass2)
       hls_fragment 10;
       hls_playlist_length 60;
       hls_cleanup on;
-      hls_continuous on;
+
 ";
             } else {
                 $hls1 = "
