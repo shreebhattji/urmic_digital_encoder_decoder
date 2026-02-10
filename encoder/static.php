@@ -836,7 +836,7 @@ function update_service($which_service)
                     case "enable":
                         $srt .= ' -c:v copy '
                             . ' -c:a copy -pkt_size 1316 -flush_packets 0 '
-                            . ' -f mpegts "srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji&latency=2000"';
+                            . ' -f mpegts "srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji"';
                         break;
                     case "disable":
                         $srt .= ' -c:v ' . $data['srt']['format']
