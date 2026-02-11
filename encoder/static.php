@@ -384,7 +384,7 @@ function update_service($which_service)
         case "copy_input":
             switch ($input_source) {
                 case "hdmi":
-                    $input .= "ffmpeg -hide_banner -init_hw_device qsv=hw -filter_hw_device hw -f v4l2 -thread_queue_size 4096 -input_format mjpeg "
+                    $input .= "ffmpeg -hide_banner -init_hw_device qsv=hw -filter_hw_device hw -f v4l2 -thread_queue_size 4096 -input_format yuyv422 "
                         . " -video_size " . $data['hdmi']['resolution']
                         . " -framerate " . $data['hdmi']['framerate']
                         . " -i /dev/video0"
@@ -417,13 +417,21 @@ function update_service($which_service)
         case "use_common_backend":
             switch ($input_source) {
                 case "hdmi":
-                    $input .= "ffmpeg -hide_banner -init_hw_device qsv=hw -filter_hw_device hw -f v4l2 -thread_queue_size 4096 -input_format mjpeg -video_size "
+                    $input .= "ffmpeg -hide_banner -init_hw_device qsv=hw -filter_hw_device hw -f v4l2 -thread_queue_size 4096 -input_format yuyv422 -video_size "
                         . $data['hdmi']['resolution']
                         . " -framerate " . $data['hdmi']['framerate'] . " -i /dev/video0 -f alsa -thread_queue_size 1024 -i " . $data['hdmi']['audio_source'];
-                    if ($hdmi_delay_video != "")
-                        $input .= ' -vf "format=nv12,hwupload=extra_hw_frames=64,scale_qsv=' . $common_backend_resolution . ',' . setptsFromMs($hdmi_delay_video) . '"';
-                    else
-                        $input .= ' -vf "format=nv12,hwupload=extra_hw_frames=64,scale_qsv=' . $common_backend_resolution . '"';
+
+                    if ($data['hdmi']['resolution'] == $data['common_backend']['resolution']) {
+                        if ($hdmi_delay_video != "")
+                            $input .= ' -vf "format=nv12,hwupload=extra_hw_frames=64,' . setptsFromMs($hdmi_delay_video) . '"';
+                        else
+                            $input .= ' -vf "format=nv12,hwupload=extra_hw_frames=64"';
+                    }else{
+                        if ($hdmi_delay_video != "")
+                            $input .= ' -vf "format=nv12,hwupload=extra_hw_frames=64,scale_qsv=' . $common_backend_resolution . ',' . setptsFromMs($hdmi_delay_video) . '"';
+                        else
+                            $input .= ' -vf "format=nv12,hwupload=extra_hw_frames=64,scale_qsv=' . $common_backend_resolution . '"';
+                    }
                     $input .=  " -c:v h264_qsv -profile:v high -level:v 4.2 "
                         . " -b:v " . $common_backend_data_rate
                         . " -maxrate " . $common_backend_data_rate
@@ -834,8 +842,7 @@ function update_service($which_service)
 
                 switch ($use_common_backend_srt) {
                     case "enable":
-                        $srt .= ' -c:v copy '
-                            . ' -c:a copy -pkt_size 1316 -flush_packets 0 '
+                        $srt .= '  -c copy -mpegts_flags +resend_headers '
                             . ' -f mpegts "srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji"';
                         break;
                     case "disable":
@@ -886,7 +893,7 @@ function update_service($which_service)
                     case "enable":
                         $udp0 .=  ' -c:v copy '
                             . ' -c:a copy '
-                            . ' -f mpegts "' . $data['udp0']['udp'] . '?pkt_size=1316&ttl=4&reuse=1&buffer_size=1048576"';
+                            . ' -f mpegts "' . $data['udp0']['udp'] . '?pkt_size=1316&ttl=4&buffer_size=1048576"';
                         break;
                     case "disable":
                         $udp0 .= ' -c:v ' . $data['udp0']['format']
@@ -901,7 +908,7 @@ function update_service($which_service)
                             . ' -af "volume=' . $data['udp0']['audio_db_gain'] . '"'
                             . ' -ar ' . $data['udp0']['audio_sample_rate']
                             . ' ' . $data['udp0']['extra']
-                            . ' -metadata service_provider=ShreeBhattJI -f mpegts "' . $data['udp0']['udp'] . '?pkt_size=1316&ttl=4&reuse=1&buffer_size=1048576"';
+                            . ' -metadata service_provider=ShreeBhattJI -f mpegts "' . $data['udp0']['udp'] . '?pkt_size=1316&ttl=4&buffer_size=1048576"';
                         break;
                 }
                 if ($use_common_backend == "use_common_backend" && $data['udp0']['format'] == "h264_qsv") {
@@ -941,7 +948,7 @@ function update_service($which_service)
                     case "enable":
                         $udp1 .= ' -c:v copy '
                             . ' -c:a copy '
-                            . ' -f mpegts "' . $data['udp1']['udp'] . '?pkt_size=1316&ttl=4&reuse=1&buffer_size=1048576"';
+                            . ' -f mpegts "' . $data['udp1']['udp'] . '?pkt_size=1316&ttl=4&buffer_size=1048576"';
                         break;
                     case "disable":
                         $udp1 .= ' -c:v ' . $data['udp1']['format']
@@ -956,7 +963,7 @@ function update_service($which_service)
                             . ' -af "volume=' . $data['udp1']['audio_db_gain'] . '"'
                             . ' -ar ' . $data['udp1']['audio_sample_rate']
                             . ' ' . $data['udp1']['extra']
-                            . ' -metadata service_provider=ShreeBhattJI -f mpegts "' . $data['udp1']['udp'] . '?pkt_size=1316&ttl=4&reuse=1&buffer_size=1048576"';
+                            . ' -metadata service_provider=ShreeBhattJI -f mpegts "' . $data['udp1']['udp'] . '?pkt_size=1316&ttl=4&buffer_size=1048576"';
                         break;
                 }
 
@@ -997,7 +1004,7 @@ function update_service($which_service)
                     case "enable":
                         $udp2 = ' -c:v copy '
                             . ' -c:a copy '
-                            . ' -f mpegts "' . $data['udp2']['udp'] . '?pkt_size=1316&ttl=4&reuse=1&buffer_size=1048576"';
+                            . ' -f mpegts "' . $data['udp2']['udp'] . '?pkt_size=1316&ttl=4&buffer_size=1048576"';
                         break;
                     case "disable":
                         $udp2 = ' -c:v ' . $data['udp2']['format']
@@ -1012,7 +1019,7 @@ function update_service($which_service)
                             . ' -af "volume=' . $data['udp2']['audio_db_gain'] . '"'
                             . ' -ar ' . $data['udp2']['audio_sample_rate']
                             . ' ' . $data['udp2']['extra']
-                            . ' -metadata service_provider=ShreeBhattJI -f mpegts "' . $data['udp2']['udp'] . '?pkt_size=1316&ttl=4&reuse=1&buffer_size=1048576"';
+                            . ' -metadata service_provider=ShreeBhattJI -f mpegts "' . $data['udp2']['udp'] . '?pkt_size=1316&ttl=4&buffer_size=1048576"';
                         if ($use_common_backend == "use_common_backend" && $data['udp2']['format'] == "h264_qsv") {
                             $udp2 = str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp2);
                             $udp2 = str_replace("scale", "scale_qsv", $udp2);
