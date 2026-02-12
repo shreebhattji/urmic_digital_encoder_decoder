@@ -384,12 +384,12 @@ function update_service($which_service)
         case "copy_input":
             switch ($input_source) {
                 case "hdmi":
-                    $input .= "ffmpeg -hide_banner -init_hw_device qsv=hw -filter_hw_device hw -f v4l2 -thread_queue_size 4096 -input_format yuyv422 "
+                    $input .= "ffmpeg -hide_banner -init_hw_device qsv=hw -filter_hw_device hw -fflags +genpts -use_wallclock_as_timestamps 1 -f v4l2 -thread_queue_size 512 -input_format yuyv422 "
                         . " -video_size " . $data['hdmi']['resolution']
                         . " -framerate " . $data['hdmi']['framerate']
                         . " -i /dev/video0"
                         . " -f alsa -thread_queue_size 1024 -i " . $data['hdmi']['audio_source']
-                        . " -c:v h264_qsv -profile:v high -level:v 4.2   -b:v 5M -maxrate 5M -bufsize 12M "
+                        . " -c:v h264_qsv -profile:v high -level:v 4.2   -b:v 6M -maxrate 6M -bufsize 12M "
                         . " -c:a aac -b:a 265k  -ar 48000 -muxrate 0 -pat_period 0.1  -pkt_size 1316 ";
                     if ($hdmi_delay_video != "")
                         $input .= ' -vf "format=nv12,hwupload=extra_hw_frames=64,scale_qsv=' . $common_backend_resolution . ',' . setptsFromMs($hdmi_delay_video) . '"';
@@ -417,16 +417,16 @@ function update_service($which_service)
         case "use_common_backend":
             switch ($input_source) {
                 case "hdmi":
-                    $input .= "ffmpeg -hide_banner -init_hw_device qsv=hw -filter_hw_device hw -f v4l2 -thread_queue_size 4096 -input_format yuyv422 -video_size "
+                    $input .= "ffmpeg -hide_banner -init_hw_device qsv=hw -filter_hw_device hw -fflags +genpts -use_wallclock_as_timestamps 1 -f v4l2 -thread_queue_size 512 -input_format yuyv422 -video_size "
                         . $data['hdmi']['resolution']
-                        . " -framerate " . $data['hdmi']['framerate'] . " -i /dev/video0 -f alsa -thread_queue_size 1024 -i " . $data['hdmi']['audio_source'];
+                        . " -framerate " . $data['hdmi']['framerate'] . " -i /dev/video0 -f alsa -thread_queue_size 512 -i " . $data['hdmi']['audio_source'];
 
                     if ($data['hdmi']['resolution'] == $data['common_backend']['resolution']) {
                         if ($hdmi_delay_video != "")
                             $input .= ' -vf "format=nv12,hwupload=extra_hw_frames=64,' . setptsFromMs($hdmi_delay_video) . '"';
                         else
                             $input .= ' -vf "format=nv12,hwupload=extra_hw_frames=64"';
-                    }else{
+                    } else {
                         if ($hdmi_delay_video != "")
                             $input .= ' -vf "format=nv12,hwupload=extra_hw_frames=64,scale_qsv=' . $common_backend_resolution . ',' . setptsFromMs($hdmi_delay_video) . '"';
                         else
@@ -435,9 +435,13 @@ function update_service($which_service)
                     $input .=  " -c:v h264_qsv -profile:v high -level:v 4.2 "
                         . " -b:v " . $common_backend_data_rate
                         . " -maxrate " . $common_backend_data_rate
-                        . " -bufsize 12M "
-                        . " -r " . $common_backend_framerate
-                        . " -g " . $common_backend_gop
+                        . " -bufsize 12M ";
+                    if ($data['hdmi']['framerate'] != $data['common_backend']['framerate']) {
+                        $input .= " -r " . $common_backend_framerate;
+                    }
+                    $input .=
+
+                        " -g " . $common_backend_gop
                         . " -c:a aac "
                         . " -b:a " . $common_backend_audio_data_rate
                         . '  -ar ' . $common_backend_audio_sample_rate
