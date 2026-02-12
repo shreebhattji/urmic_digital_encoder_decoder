@@ -283,7 +283,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                         </div>
                         <div class="input-group">
-                            <input type="text" id="common_backend_data_rate" name="common_backend_data_rate" placeholder="5M" value="<?php echo htmlspecialchars($data['common_backend']['data_rate']); ?>">
+                            <input type="text" id="common_backend_data_rate" name="common_backend_data_rate" placeholder="in kbps" value="<?php echo htmlspecialchars($data['common_backend']['data_rate']); ?>">
                             <label for="common_backend_data_rate">Data Rate :</label>
                         </div>
                         <div class="input-group">
