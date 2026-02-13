@@ -384,17 +384,17 @@ function update_service($which_service)
         case "copy_input":
             switch ($input_source) {
                 case "hdmi":
-                    $input .= "ffmpeg -hide_banner -init_hw_device qsv=hw -filter_hw_device hw -hwaccel qsv -hwaccel_output_format qsv -c:v mjpeg_qsv -fflags +genpts -use_wallclock_as_timestamps 1 -f v4l2 -thread_queue_size 512 -input_format mjpeg "
+                    $input .= "ffmpeg -hide_banner -init_hw_device qsv=hw -filter_hw_device hw -hwaccel qsv -hwaccel_output_format qsv -c:v mjpeg_qsv -f v4l2 -thread_queue_size 128 -use_wallclock_as_timestamps 1 -input_format mjpeg "
                         . " -video_size " . $data['hdmi']['resolution']
                         . " -framerate " . $data['hdmi']['framerate']
                         . " -i /dev/video0"
                         . " -f alsa -thread_queue_size 2048 -i " . $data['hdmi']['audio_source']
-                        . " -c:v h264_qsv -profile:v high -level:v 4.2   -b:v 6M -maxrate 6M -bufsize 12M "
-                        . " -c:a aac -b:a 265k  -ar 48000 -muxrate 0 -pat_period 0.1  -pkt_size 1316 ";
+                        . " -c:v h264_qsv -profile:v high -level:v 4.2 -async_depth 4 -b:v 6M -maxrate 6M -bufsize 12M "
+                        . " -c:a aac -b:a 265k  -ar 48000 -async 1 -muxrate 0 -pat_period 0.1  -pkt_size 1316 ";
                     if ($hdmi_delay_video != "")
-                        $input .= ' -vf "vpp_qsv=format=nv12:in_range=full:out_range=full,scale_qsv=' . $common_backend_resolution . ',' . setptsFromMs($hdmi_delay_video) . '"';
+                        $input .= ' -vf "vpp_qsv=format=nv12,scale_qsv=' . $common_backend_resolution . ',' . setptsFromMs($hdmi_delay_video) . '"';
                     else
-                        $input .= ' -vf "vpp_qsv=format=nv12:in_range=full:out_range=full,scale_qsv=' . $common_backend_resolution . '"';
+                        $input .= ' -vf "vpp_qsv=format=nv12,scale_qsv=' . $common_backend_resolution . '"';
                     if ($hdmi_delay_audio != "")
                         $input .= adelayFromMs($hdmi_delay_audio, 2);
 
@@ -417,25 +417,25 @@ function update_service($which_service)
         case "use_common_backend":
             switch ($input_source) {
                 case "hdmi":
-                    $input .= "ffmpeg -hide_banner -init_hw_device qsv=hw -filter_hw_device hw -hwaccel qsv -hwaccel_output_format qsv -c:v mjpeg_qsv -fflags +genpts -use_wallclock_as_timestamps 1 -f v4l2 -thread_queue_size 512 -input_format mjpeg "
+                    $input .= "ffmpeg -hide_banner -init_hw_device qsv=hw -filter_hw_device hw -hwaccel qsv -hwaccel_output_format qsv -c:v mjpeg_qsv -f v4l2 -thread_queue_size 128 -use_wallclock_as_timestamps 1 -input_format mjpeg "
                         . " -video_size ". $data['hdmi']['resolution']
-                        . " -framerate " . $data['hdmi']['framerate'] . " -i /dev/video0 -f alsa -thread_queue_size 2048 -i " . $data['hdmi']['audio_source'];
+                        . " -framerate " . $data['hdmi']['framerate'] . " -i /dev/video0 -f alsa -thread_queue_size 128 -i " . $data['hdmi']['audio_source'];
 
                     if ($data['hdmi']['resolution'] == $data['common_backend']['resolution']) {
                         if ($hdmi_delay_video != "")
-                            $input .= ' -vf "vpp_qsv=format=nv12:in_range=full:out_range=full,' . setptsFromMs($hdmi_delay_video) . '"';
+                            $input .= ' -vf "vpp_qsv=format=nv12,' . setptsFromMs($hdmi_delay_video) . '"';
                         else
-                            $input .= ' -vf "vpp_qsv=format=nv12:in_range=full:out_range=full"';
+                            $input .= ' -vf "vpp_qsv=format=nv12"';
                     } else {
                         if ($hdmi_delay_video != "")
-                            $input .= ' -vf "vpp_qsv=format=nv12:in_range=full:out_range=full,scale_qsv=' . $common_backend_resolution . ',' . setptsFromMs($hdmi_delay_video) . '"';
+                            $input .= ' -vf "vpp_qsv=format=nv12,scale_qsv=' . $common_backend_resolution . ',' . setptsFromMs($hdmi_delay_video) . '"';
                         else
-                            $input .= ' -vf "vpp_qsv=format=nv12:in_range=full:out_range=full,scale_qsv=' . $common_backend_resolution . '"';
+                            $input .= ' -vf "vpp_qsv=format=nv12,scale_qsv=' . $common_backend_resolution . '"';
                     }
-                    $input .=  " -c:v h264_qsv -profile:v high -level:v 4.2 "
+                    $input .=  " -c:v h264_qsv -profile:v high -level:v 4.2 -async_depth 1 -bf 0  "
                         . " -b:v " . $common_backend_data_rate
                         . " -maxrate " . $common_backend_data_rate
-                        . " -bufsize 12M ";
+                        . " -bufsize 1M ";
                     if ($data['hdmi']['framerate'] != $data['common_backend']['framerate']) {
                         $input .= " -r " . $common_backend_framerate;
                     }
@@ -447,10 +447,10 @@ function update_service($which_service)
                         . '  -ar ' . $common_backend_audio_sample_rate
                         . ' ' . $common_backend_extra;
                     if ($hdmi_delay_audio != "")
-                        $input .= ' -af "volume=' . $common_backend_audio_db_gain . ',' . adelayFromMs($hdmi_delay_audio, 2) . '"';
+                        $input .= ' -af "aresample=async=1:first_pts=0,volume=' . $common_backend_audio_db_gain . ',' . adelayFromMs($hdmi_delay_audio, 2) . '"';
                     else
-                        $input .= ' -af "volume=' . $common_backend_audio_db_gain . '"';
-                    $input .= " -muxrate 0 -pat_period 0.1 -pkt_size 1316 -f mpegts "
+                        $input .= ' -af "aresample=async=1:first_pts=0,volume=' . $common_backend_audio_db_gain . '"';
+                    $input .= " -fflags nobuffer -flags low_delay -muxrate 0 -muxpreload 0 -pkt_size 1316 -f mpegts "
                         . ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1"';
                     break;
                 case "url":
