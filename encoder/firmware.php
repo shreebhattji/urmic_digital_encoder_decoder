@@ -268,6 +268,15 @@ EwIDAQAB
 
                 $exitCode = proc_close($process);
             }
+            update_service("display");
+            update_service("rtmp0");
+            update_service("rtmp1");
+            update_service("udp0");
+            update_service("udp1");
+            update_service("udp2");
+            update_service("srt");
+            update_service("custom");
+            update_service("input");
             break;
         case 'reset':
             $files = glob('/var/www/encoder/*.json');
