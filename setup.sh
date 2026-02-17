@@ -183,6 +183,7 @@ import subprocess
 import threading
 import re
 import psutil
+import shutil
 from collections import deque
 from datetime import datetime, timezone
 
@@ -193,66 +194,105 @@ SAMPLE_INTERVAL = 10.0
 HISTORY_SECONDS = 15 * 60
 MAX_SAMPLES = int(HISTORY_SECONDS / SAMPLE_INTERVAL)
 
+# ---------------- DEPENDENCY CHECK ----------------
+if not shutil.which("intel_gpu_top"):
+    raise RuntimeError("intel_gpu_top not installed or not in PATH")
+
 # ---------------- HISTORY BUFFERS ----------------
 keys = [
-    "timestamps", "cpu_percent", "ram_percent", "gpu_total", "gpu_render", 
-    "gpu_video", "gpu_blitter", "gpu_videoenhance", "net_in_Bps", 
+    "timestamps", "cpu_percent", "ram_percent", "gpu_total", "gpu_render",
+    "gpu_video", "gpu_blitter", "gpu_videoenhance", "net_in_Bps",
     "net_out_Bps", "disk_read_Bps", "disk_write_Bps", "disk_percent"
 ]
 hist = {k: deque(maxlen=MAX_SAMPLES) for k in keys}
 
-# State for rates
 _prev_net = psutil.net_io_counters()
 _prev_disk = psutil.disk_io_counters()
 _prev_time = time.time()
+
+# Prime CPU measurement
+psutil.cpu_percent(None)
 
 gpu_data = {"total": 0.0, "render": 0.0, "video": 0.0, "blitter": 0.0, "ve": 0.0}
 gpu_lock = threading.Lock()
 
 # ---------------- GPU MONITOR THREAD ----------------
-
 def gpu_monitor():
     global gpu_data
-    # -J gives JSON, -s 1000 gives 1 second samples
-    # We use stdbuf to ensure the pipe doesn't buffer the JSON
-    cmd = ["stdbuf", "-oL", "intel_gpu_top", "-J", "-s", "1000"]
-    
+
+    cmd = ["intel_gpu_top", "-J", "-s", "1000"]
+
     while True:
         try:
-            p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
-            for line in p.stdout:
-                # We target the "engines" section specifically to avoid "clients" noise
-                # This regex captures the engine name and the very next 'busy' value
-                with gpu_lock:
-                    # Look for engine busy values
-                    m_render = re.search(r'"Render/3D":\s*{\s*"busy":\s*([\d\.]+)', line)
-                    m_video  = re.search(r'"Video":\s*{\s*"busy":\s*([\d\.]+)', line)
-                    m_blit   = re.search(r'"Blitter":\s*{\s*"busy":\s*([\d\.]+)', line)
-                    m_ve     = re.search(r'"VideoEnhance":\s*{\s*"busy":\s*([\d\.]+)', line)
+            p = subprocess.Popen(
+                cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.DEVNULL,
+                text=True,
+                bufsize=1
+            )
 
-                    if m_render: gpu_data["render"] = float(m_render.group(1))
-                    if m_video:  gpu_data["video"]  = float(m_video.group(1))
-                    if m_blit:   gpu_data["blitter"] = float(m_blit.group(1))
-                    if m_ve:     gpu_data["ve"]      = float(m_ve.group(1))
-                    
-                    gpu_data["total"] = max(gpu_data["render"], gpu_data["video"], gpu_data["blitter"], gpu_data["ve"])
+            buf = ""
+            brace = 0
+
+            for chunk in iter(lambda: p.stdout.read(1), ""):
+                if chunk == "{":
+                    brace += 1
+
+                if brace > 0:
+                    buf += chunk
+
+                if chunk == "}":
+                    brace -= 1
+                    if brace == 0 and buf.strip():
+                        try:
+                            obj = json.loads(buf)
+                            engines = obj.get("engines", {})
+
+                            r = v = b = e = 0.0
+
+                            for name, data in engines.items():
+                                busy = float(data.get("busy", 0.0))
+                                n = name.lower()
+
+                                if "render" in n or "rcs" in n:
+                                    r = max(r, busy)
+                                elif "video" in n or "vcs" in n:
+                                    v = max(v, busy)
+                                elif "blitter" in n or "bcs" in n:
+                                    b = max(b, busy)
+                                elif "enhance" in n or "vecs" in n:
+                                    e = max(e, busy)
+
+                            with gpu_lock:
+                                gpu_data["render"] = r
+                                gpu_data["video"] = v
+                                gpu_data["blitter"] = b
+                                gpu_data["ve"] = e
+                                gpu_data["total"] = max(r, v, b, e)
+
+                        except Exception:
+                            pass
+
+                        buf = ""
+
+            p.wait()
+
         except Exception:
             time.sleep(2)
 
 # ---------------- SAMPLING ----------------
-
 def sample_once():
     global _prev_net, _prev_disk, _prev_time
+
     now = time.time()
     elapsed = max(now - _prev_time, 0.1)
-    
-    # Grab System stats
+
     cpu = psutil.cpu_percent()
     ram = psutil.virtual_memory().percent
     net = psutil.net_io_counters()
     disk = psutil.disk_io_counters()
 
-    # Calculate rates
     in_r = (net.bytes_recv - _prev_net.bytes_recv) / elapsed
     out_r = (net.bytes_sent - _prev_net.bytes_sent) / elapsed
     read_r = (disk.read_bytes - _prev_disk.read_bytes) / elapsed
@@ -261,7 +301,10 @@ def sample_once():
     with gpu_lock:
         g = gpu_data.copy()
 
-    # Log to deques
+    # stale GPU protection
+    if time.time() - _prev_time > SAMPLE_INTERVAL * 2:
+        g = {"total": 0, "render": 0, "video": 0, "blitter": 0, "ve": 0}
+
     hist["timestamps"].append(datetime.now().isoformat(timespec='seconds'))
     hist["cpu_percent"].append(round(cpu, 1))
     hist["ram_percent"].append(round(ram, 1))
@@ -278,31 +321,34 @@ def sample_once():
 
     _prev_net, _prev_disk, _prev_time = net, disk, now
 
+# ---------------- MAIN LOOP ----------------
 def main():
-    if os.geteuid() != 0:
-        print("WARNING: Script not running as root. GPU metrics will be 0.")
-
     threading.Thread(target=gpu_monitor, daemon=True).start()
-    
+
     while True:
         try:
             sample_once()
-            # Atomic Save
+
             payload = {k: list(v) for k, v in hist.items()}
             payload.update({
                 "sample_interval": SAMPLE_INTERVAL,
                 "generated_at": datetime.now(timezone.utc).isoformat()
             })
+
             with open(TMP_FILE, "w") as f:
                 json.dump(payload, f)
+
             os.replace(TMP_FILE, OUT_FILE)
-        except Exception as e:
-            print(f"Error: {e}")
+
+        except Exception:
+            pass
+
         time.sleep(SAMPLE_INTERVAL)
 
+# ---------------- ENTRY ----------------
 if __name__ == "__main__":
     main()
-    
+
 EOL
 
 sudo systemctl enable --now system-monitor.service
