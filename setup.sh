@@ -218,7 +218,7 @@ gpu_lock = threading.Lock()
 def gpu_monitor():
     global gpu_data
     # -J provides JSON, -s 1000 provides 1s updates
-    cmd = ["stdbuf", "-oL", "/usr/sbin/intel_gpu_top", "-J", "-s", "1000"]
+    cmd = ["stdbuf", "-oL", "/usr/bin/intel_gpu_top", "-J", "-s", "1000"]
     
     while True:
         try:
