@@ -745,7 +745,7 @@ function update_service($which_service)
         case 'rtmp1';
             update_service_backend("rtmp", "", "");
             if ($service_rtmp0_multiple === "enable") {
-                $rtmp = "ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i ";
+                $rtmp = "ffmpeg -hide_banner -fflags nobuffer -analyzeduration 3000000 -i ";
                 if ($use_common_backend === "transcode_every_time") {
                     $rtmp .= $input_transcode_every_time;
                 } else {
