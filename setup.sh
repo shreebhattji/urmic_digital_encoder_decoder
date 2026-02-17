@@ -231,57 +231,62 @@ gpu_lock = threading.Lock()
 
 def gpu_monitor():
     global gpu_data
-    # Use -s 1000 for 1-second updates
-    cmd = ["/usr/sbin/intel_gpu_top", "-J", "-s", "1000"]
-    
+
+    # auto-detect path
+    binary = "/usr/bin/intel_gpu_top"
+    if not os.path.exists(binary):
+        binary = "intel_gpu_top"
+
+    cmd = [binary, "-J", "-s", "1000"]
+
     while True:
         try:
-            p = subprocess.Popen(
+            proc = subprocess.Popen(
                 cmd,
                 stdout=subprocess.PIPE,
-                stderr=subprocess.DEVNULL,
+                stderr=subprocess.PIPE,
                 text=True,
                 bufsize=1
             )
 
-            buffer = ""
-            for line in p.stdout:
-                buffer += line
-                if "}" in line:
-                    # Regex extracts the object between curly braces that contains "engines"
-                    matches = re.findall(r'({[^{}]*("engines")[^{}]*})', buffer, re.DOTALL)
-                    if matches:
-                        try:
-                            # Parse the most recent complete match
-                            raw_json = matches[-1][0]
-                            data = json.loads(raw_json)
-                            
-                            if "engines" in data:
-                                eng = data["engines"]
-                                
-                                # Helper to find keys regardless of index (e.g. Render/3D/0)
-                                def get_busy(name):
-                                    for k, v in eng.items():
-                                        if name in k:
-                                            return v.get("busy", 0.0)
-                                    return 0.0
+            for line in proc.stdout:
+                line = line.strip()
+                if not line:
+                    continue
 
-                                with gpu_lock:
-                                    gpu_data["Render/3D"] = get_busy("Render/3D")
-                                    gpu_data["Video"] = get_busy("Video")
-                                    gpu_data["Blitter"] = get_busy("Blitter")
-                                    gpu_data["VideoEnhance"] = get_busy("VideoEnhance")
-                                    
-                                    # Total is the peak engine usage
-                                    vals = [v for k, v in gpu_data.items() if k != "total"]
-                                    gpu_data["total"] = max(vals) if vals else 0.0
-                            
-                            # Clean buffer to prevent memory growth
-                            buffer = buffer[buffer.rfind("}")+1:]
-                        except (json.JSONDecodeError, ValueError):
-                            continue
+                try:
+                    data = json.loads(line)
+                except:
+                    continue
+
+                engines = data.get("engines")
+                if not engines:
+                    continue
+
+                def get_busy(name):
+                    for k, v in engines.items():
+                        if name in k:
+                            return float(v.get("busy", 0.0))
+                    return 0.0
+
+                r = get_busy("Render")
+                v = get_busy("Video")
+                b = get_busy("Blitter")
+                e = get_busy("VideoEnhance")
+
+                with gpu_lock:
+                    gpu_data["Render/3D"] = r
+                    gpu_data["Video"] = v
+                    gpu_data["Blitter"] = b
+                    gpu_data["VideoEnhance"] = e
+                    gpu_data["total"] = max(r, v, b, e)
+
+            proc.wait()
+
         except Exception:
-            time.sleep(2)
+            pass
+
+        time.sleep(2)
 
 threading.Thread(target=gpu_monitor, daemon=True).start()
 
