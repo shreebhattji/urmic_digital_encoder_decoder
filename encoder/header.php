@@ -17,11 +17,13 @@ include 'static.php';
         :root {
             --bg: #020617;
             --panel: #0f172a;
+            --panel2: #020617;
             --accent: #38bdf8;
             --accent2: #6366f1;
             --text: #e5e7eb;
             --muted: #94a3b8;
             --border: rgba(255, 255, 255, .08);
+            --radius: 14px;
         }
 
         * {
@@ -35,7 +37,7 @@ include 'static.php';
             color: var(--text);
         }
 
-        /* ---------- HEADER STACK ---------- */
+        /* HEADER */
 
         .top-header-1 {
             position: fixed;
@@ -86,9 +88,6 @@ include 'static.php';
             color: var(--text)
         }
 
-
-        /* ---------- MAIN NAV ---------- */
-
         .site-header {
             position: fixed;
             top: 90px;
@@ -118,28 +117,202 @@ include 'static.php';
         }
 
         .site-header a:hover {
-            color: var(--text);
+            color: var(--text)
         }
 
-        /* ---------- PAGE OFFSET ---------- */
+        /* PAGE OFFSET */
 
         .page-wrap {
             padding-top: 150px;
         }
 
-        /* ---------- CONTAINER ---------- */
+        /* CONTAINERS */
 
-        .container {
+        .container,
+        .containerindex {
             max-width: 1100px;
             margin: 30px auto;
             padding: 24px;
-            background: linear-gradient(180deg, #0f172a, #020617);
+            background: linear-gradient(180deg, var(--panel), var(--panel2));
             border: 1px solid var(--border);
-            border-radius: 14px;
+            border-radius: var(--radius);
             box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
         }
 
-        /* ---------- MOBILE ---------- */
+        /* GRID */
+
+        .grid {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        /* CARD */
+
+        .card {
+            padding: 18px;
+            border-radius: var(--radius);
+            background: rgba(255, 255, 255, .02);
+            border: 1px solid var(--border);
+        }
+
+        .card.wide {
+            grid-column: 1/-1;
+        }
+
+        .card h3 {
+            margin: 0 0 14px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* DROPDOWNS */
+
+        .dropdown-container {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+
+        .dropdown-label {
+            font-size: 14px;
+            color: var(--muted);
+            min-width: 160px;
+        }
+
+        .dropdown select {
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #020617;
+            color: var(--text);
+            font-size: 14px;
+            outline: none;
+        }
+
+        /* INPUT */
+
+        .input-group {
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #020617;
+            color: var(--text);
+            font-size: 14px;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, .15);
+        }
+
+        .input-group label {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 13px;
+            color: var(--muted);
+            background: #020617;
+            padding: 0 6px;
+            transition: .25s;
+        }
+
+        .input-group input:focus+label,
+        .input-group input:not(:placeholder-shown)+label {
+            top: -7px;
+            font-size: 11px;
+            color: var(--accent);
+        }
+
+        /* BUTTON */
+
+        button[type="submit"] {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            opacity: .9;
+        }
+
+        /* FOOTER */
+
+        .site-footer {
+            margin-top: 40px;
+            padding: 20px 16px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .footer-box {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 22px;
+            border-radius: var(--radius);
+            background: linear-gradient(180deg, #0f172a, #020617);
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 35px rgba(0, 0, 0, .45);
+            font-size: 14px;
+            color: #cbd5e1;
+        }
+
+        .footer-box strong {
+            color: #e2e8f0
+        }
+
+        .phone {
+            text-decoration: none;
+            color: #38bdf8;
+            font-weight: 500;
+        }
+
+        .phone:hover {
+            text-decoration: underline
+        }
+
+        .muted {
+            color: #94a3b8
+        }
+
+        .heart {
+            color: #ef4444;
+            animation: pulse 1.4s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: .6
+            }
+
+            50% {
+                opacity: 1
+            }
+
+            100% {
+                opacity: .6
+            }
+        }
+
+        /* MOBILE */
 
         @media(max-width:700px) {
             .site-header nav {
@@ -155,8 +328,14 @@ include 'static.php';
             .page-wrap {
                 padding-top: 180px
             }
+
+            .footer-box {
+                flex-direction: column;
+                text-align: center;
+            }
         }
     </style>
+
 </head>
 
 <body>
