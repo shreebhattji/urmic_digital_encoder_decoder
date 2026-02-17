@@ -202,25 +202,19 @@ _prev_disk=psutil.disk_io_counters()
 _prev_time=time.time()
 
 def igpu_percent():
-    # fastest method (modern kernels)
-    for card in ("card0","card1","card2"):
-        p=f"/sys/class/drm/{card}/gt_busy_percent"
-        if os.path.exists(p):
-            try:
-                return float(open(p).read().strip())
-            except:
-                pass
-
-    # fallback: intel_gpu_top JSON snapshot
     try:
-        out=subprocess.check_output(
-            ["intel_gpu_top","-J","-s","100","-o","-"],
+        out = subprocess.check_output(
+            ["intel_gpu_top","-J","-s","200","-o","-"],
             stderr=subprocess.DEVNULL,
-            timeout=1
+            timeout=2
         )
-        j=json.loads(out.splitlines()[0])
-        return float(j["engines"]["Render/3D/0"]["busy"])
-    except:
+        line = out.decode().splitlines()[0]
+        data = json.loads(line)
+        engines = data.get("engines",{})
+        if not engines:
+            return 0.0
+        return round(max(v.get("busy",0) for v in engines.values()),2)
+    except Exception:
         return 0.0
 
 def sample_once():

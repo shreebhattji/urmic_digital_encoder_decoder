@@ -20,11 +20,6 @@ include 'header.php'; ?>
     </div>
 
     <div class="card">
-      <h3>Intel iGPU (%)</h3>
-      <div class="chart-wrap"><canvas id="gpuChart"></canvas></div>
-    </div>
-
-    <div class="card">
       <h3>Network (KB/s)</h3>
       <div class="chart-wrap"><canvas id="netChart"></canvas></div>
     </div>
@@ -33,6 +28,11 @@ include 'header.php'; ?>
       <h3>Disk I/O (KB/s) & Disk %</h3>
       <div class="chart-wrap"><canvas id="diskChart"></canvas></div>
     </div>
+    <div class="card">
+      <h3>Intel iGPU (%)</h3>
+      <div class="chart-wrap"><canvas id="gpuChart"></canvas></div>
+    </div>
+
   </div>
 
   <div style="margin-top:12px; color:#9fb2d6; display:flex; justify-content:space-between;">
