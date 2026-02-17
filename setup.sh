@@ -181,6 +181,7 @@ import json
 import os
 import subprocess
 import threading
+import re
 import psutil
 from collections import deque
 from datetime import datetime, timezone
@@ -193,116 +194,126 @@ HISTORY_SECONDS = 15 * 60
 MAX_SAMPLES = int(HISTORY_SECONDS / SAMPLE_INTERVAL)
 
 # ---------------- HISTORY BUFFERS ----------------
-# Initializing deques with maxlen handles the sliding window automatically
-buffers = {
-    "timestamps": deque(maxlen=MAX_SAMPLES),
-    "cpu_percent": deque(maxlen=MAX_SAMPLES),
-    "ram_percent": deque(maxlen=MAX_SAMPLES),
-    "gpu_total": deque(maxlen=MAX_SAMPLES),
-    "gpu_render": deque(maxlen=MAX_SAMPLES),
-    "gpu_video": deque(maxlen=MAX_SAMPLES),
-    "gpu_blitter": deque(maxlen=MAX_SAMPLES),
-    "gpu_videoenhance": deque(maxlen=MAX_SAMPLES),
-    "net_in_Bps": deque(maxlen=MAX_SAMPLES),
-    "net_out_Bps": deque(maxlen=MAX_SAMPLES),
-    "disk_read_Bps": deque(maxlen=MAX_SAMPLES),
-    "disk_write_Bps": deque(maxlen=MAX_SAMPLES),
-    "disk_percent": deque(maxlen=MAX_SAMPLES),
-}
+# Using a dictionary to manage deques more cleanly
+keys = [
+    "timestamps", "cpu_percent", "ram_percent", "gpu_total", "gpu_render", 
+    "gpu_video", "gpu_blitter", "gpu_videoenhance", "net_in_Bps", 
+    "net_out_Bps", "disk_read_Bps", "disk_write_Bps", "disk_percent"
+]
+hist = {k: deque(maxlen=MAX_SAMPLES) for k in keys}
 
-gpu_data = {"total": 0.0, "render": 0.0, "video": 0.0, "blitter": 0.0, "ve": 0.0}
+# Global state for rates
+_prev_net = psutil.net_io_counters()
+_prev_disk = psutil.disk_io_counters()
+_prev_time = time.time()
+
+gpu_data = {"total": 0.0, "Render/3D": 0.0, "Video": 0.0, "Blitter": 0.0, "VideoEnhance": 0.0}
 gpu_lock = threading.Lock()
 
 # ---------------- GPU MONITOR THREAD ----------------
 
 def gpu_monitor():
     global gpu_data
-    # -J provides JSON, -s 1000 provides 1s updates
-    cmd = ["stdbuf", "-oL", "/usr/bin/intel_gpu_top", "-J", "-s", "1000"]
+    # Note: Ensure this script runs as ROOT or with CAP_PERFMON for intel_gpu_top
+    cmd = ["stdbuf", "-oL", "intel_gpu_top", "-J", "-s", "1000"]
     
     while True:
         try:
             p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
             for line in p.stdout:
-                # intel_gpu_top -J outputs one JSON object per sample
-                # We look for lines containing the engine data
-                try:
-                    # Simple check to see if we have a full JSON-like line for engines
-                    if '"engines":' in line:
-                        # Extract percentages (this is a simplified logic, 
-                        # usually intel_gpu_top output needs a bit of buffering to be valid JSON)
-                        # If the JSON is complex, consider a proper JSON buffer.
-                        pass 
-                    
-                    # Alternative: Regex is actually faster for streaming if structure is consistent
-                    # Using your existing logic but making it slightly more robust:
-                    with gpu_lock:
-                        if "render" in line.lower() or "rcs" in line:
-                            gpu_data["render"] = float(line.split(":")[1].split(",")[0])
-                        elif "video" in line.lower() or "vcs" in line:
-                            gpu_data["video"] = float(line.split(":")[1].split(",")[0])
-                        # Add others as needed...
-                        gpu_data["total"] = max(gpu_data.values())
-                except:
-                    continue
-        except Exception:
-            time.sleep(5)
+                # Basic regex to grab "busy": X.XX values from the JSON stream
+                if '"busy":' in line:
+                    val_match = re.search(r'"busy":\s*([\d\.]+)', line)
+                    if val_match:
+                        val = float(val_match.group(1))
+                        with gpu_lock:
+                            if "Render/3D" in line or "rcs" in line: gpu_data["Render/3D"] = val
+                            elif "Video" in line or "vcs" in line: gpu_data["Video"] = val
+                            elif "Blitter" in line or "bcs" in line: gpu_data["Blitter"] = val
+                            elif "VideoEnhance" in line or "vecs" in line: gpu_data["VideoEnhance"] = val
+                            
+                            # Total is the max load of any single engine
+                            gpu_data["total"] = max(gpu_data.values())
+        except Exception as e:
+            time.sleep(5) # Cool down on error
 
 # ---------------- SAMPLING ----------------
 
-_prev_net = psutil.net_io_counters()
-_prev_disk = psutil.disk_io_counters()
-_prev_time = time.time()
-
 def sample_once():
     global _prev_net, _prev_disk, _prev_time
+    
     now = time.time()
-    elapsed = now - _prev_time
+    elapsed = max(now - _prev_time, 0.001) # Avoid division by zero
     
+    # System Basics
+    cpu = psutil.cpu_percent()
+    ram = psutil.virtual_memory().percent
+    
+    # Network Rates
     net = psutil.net_io_counters()
-    disk = psutil.disk_io_counters()
+    in_rate = max(0, (net.bytes_recv - _prev_net.bytes_recv) / elapsed)
+    out_rate = max(0, (net.bytes_sent - _prev_net.bytes_sent) / elapsed)
     
-    # Calculate Rates
-    in_rate = (net.bytes_recv - _prev_net.bytes_recv) / elapsed
-    out_rate = (net.bytes_sent - _prev_net.bytes_sent) / elapsed
-    read_rate = (disk.read_bytes - _prev_disk.read_bytes) / elapsed
-    write_rate = (disk.write_bytes - _prev_disk.write_bytes) / elapsed
+    # Disk Rates & Usage
+    disk = psutil.disk_io_counters()
+    read_rate = max(0, (disk.read_bytes - _prev_disk.read_bytes) / elapsed)
+    write_rate = max(0, (disk.write_bytes - _prev_disk.write_bytes) / elapsed)
+    
+    try:
+        d_perc = psutil.disk_usage('/').percent
+    except:
+        d_perc = 0.0
 
+    # GPU Data (Thread-safe copy)
     with gpu_lock:
         g = gpu_data.copy()
 
-    # Append to buffers
-    buffers["timestamps"].append(datetime.fromtimestamp(now).isoformat(timespec='seconds'))
-    buffers["cpu_percent"].append(round(psutil.cpu_percent(), 2))
-    buffers["ram_percent"].append(round(psutil.virtual_memory().percent, 2))
-    buffers["gpu_total"].append(round(g["total"], 2))
-    buffers["net_in_Bps"].append(int(max(0, in_rate)))
-    buffers["net_out_Bps"].append(int(max(0, out_rate)))
-    # ... append the rest similarly
+    # Update History Buffers
+    hist["timestamps"].append(datetime.fromtimestamp(now).isoformat(timespec='seconds'))
+    hist["cpu_percent"].append(round(cpu, 2))
+    hist["ram_percent"].append(round(ram, 2))
+    hist["net_in_Bps"].append(int(in_rate))
+    hist["net_out_Bps"].append(int(out_rate))
+    hist["disk_read_Bps"].append(int(read_rate))
+    hist["disk_write_Bps"].append(int(write_rate))
+    hist["disk_percent"].append(round(d_perc, 2))
+    hist["gpu_total"].append(round(g["total"], 2))
+    hist["gpu_render"].append(round(g["Render/3D"], 2))
+    hist["gpu_video"].append(round(g["Video"], 2))
+    hist["gpu_blitter"].append(round(g["Blitter"], 2))
+    hist["gpu_videoenhance"].append(round(g["VideoEnhance"], 2))
 
+    # Save state for next tick
     _prev_net, _prev_disk, _prev_time = net, disk, now
 
 def write_json_atomic():
-    payload = {key: list(val) for key, val in buffers.items()}
+    payload = {k: list(v) for k, v in hist.items()}
     payload["sample_interval"] = SAMPLE_INTERVAL
-    payload["generated_at"] = datetime.now(timezone.utc).isoformat(timespec='seconds')
+    payload["generated_at"] = datetime.now(timezone.utc).isoformat(timespec='seconds').replace("+00:00", "Z")
     
-    with open(TMP_FILE, "w") as f:
-        json.dump(payload, f)
-    os.replace(TMP_FILE, OUT_FILE)
+    try:
+        with open(TMP_FILE, "w") as f:
+            json.dump(payload, f)
+        os.replace(TMP_FILE, OUT_FILE)
+    except Exception as e:
+        print(f"File write error: {e}")
 
 def main():
+    # Start GPU monitor
     threading.Thread(target=gpu_monitor, daemon=True).start()
+    
+    print(f"Monitoring started. Writing to {OUT_FILE}...")
     while True:
         try:
             sample_once()
             write_json_atomic()
         except Exception as e:
-            print(f"Error: {e}")
+            print(f"Loop error: {e}")
         time.sleep(SAMPLE_INTERVAL)
 
 if __name__ == "__main__":
-    main()    
+    main()
+
 EOL
 
 sudo systemctl enable --now system-monitor.service
