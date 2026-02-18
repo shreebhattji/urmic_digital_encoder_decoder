@@ -59,9 +59,16 @@ include 'static.php';
         .top-header-1 a {
             text-decoration: none;
             background: linear-gradient(90deg, var(--accent), var(--accent2));
+
+            /* standard + vendor for compatibility */
+            background-clip: text;
             -webkit-background-clip: text;
+
             color: transparent;
+            -webkit-text-fill-color: transparent;
+            /* required for Safari/WebKit */
         }
+
 
         .top-header-2 {
             position: fixed;
@@ -391,7 +398,7 @@ include 'static.php';
 
             .grid>.card:last-child {
                 grid-column: auto;
-            }   
+            }
         }
 
         /* CONTACT PAGE */
