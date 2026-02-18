@@ -12,33 +12,6 @@ include 'header.php'; ?>
 
 <div class="wrap" style="max-width:1100px;margin:auto;text-align:center">
 
-    <section class="benefits">
-        <div class="card">
-            <h3>Why choose hosted streaming over just buying a static IP from your ISP ?</h3>
-
-            <ul style="display:inline-block;text-align:left;margin-top:12px">
-                <li><strong>DDoS & attack protection:</strong> Professional hosts run network-level DDoS mitigation and web application firewalls (WAF) that absorb and block large-scale attacks before they reach your origin server.</li>
-                <li><strong>Scalable bandwidth & CDN:</strong> Hosting + CDN provides globally distributed edge points and the ability to scale to many thousands of viewers without saturating a single home/office link.</li>
-                <li><strong>Higher availability & SLA:</strong> Providers operate redundant infrastructure and SLAs that keep streams online even when single links or hardware fail.</li>
-                <li><strong>Managed SSL, domain & DNS:</strong> Automated SSL issuance/renewal (Let's Encrypt), DNS features and a dedicated domain remove operational friction compared to configuring services on a raw ISP IP.</li>
-                <li><strong>Security isolation:</strong> Dedicated servers and hosting accounts isolate your traffic and services from other customers, reducing risks that come with shared consumer-grade network equipment.</li>
-                <li><strong>Monitoring & support:</strong> 24/7 monitoring, alerting and expert support are part of hosting plans — ISPs rarely provide application-level stream support.</li>
-                <li><strong>Optional reserved (static) IPs:</strong> If you still need a static IP for whitelisting, we can provision a reserved IP on a dedicated plan and keep it behind our mitigation/CDN layer.</li>
-            </ul>
-
-            <div class="note">
-                <strong>Quick notes:</strong>
-                "Unlimited data for links" refers to stream delivery (no per-GB charge on the plan level for the specified formats). Extremely large egress (multi-TB per month) or abusive usage may require a custom enterprise agreement. CDN bandwidth, archival storage and advanced security may be subject to fair-use or tiered pricing.
-            </div>
-
-            <div class="note">
-                <strong>Hosting :</strong>
-                All servers are hosted with our CDN ISP partners. This project aims to transform ISPs into data-center service providers through a hybrid partnership model. All billing is handled directly by the ISP. We found this is lowest letency and stable solutions for broadcastors . Price includes GST and 2 month will be free on yearly payment .
-            </div>
-        </div>
-    </section>
-
-
     <div class="cards">
 
         <!-- Shared -->
@@ -67,7 +40,7 @@ include 'header.php'; ?>
                 </tr>
                 <tr>
                     <td>Domain</td>
-                    <td>Subdomain (example.customer.example.com)</td>
+                    <td>Shared Domain ( isp.urmic.org )</td>
                 </tr>
                 <tr>
                     <td>SSL</td>
@@ -149,6 +122,32 @@ include 'header.php'; ?>
         </div>
 
     </div>
+
+    <section class="benefits">
+        <div class="card">
+            <h3>Why choose hosted streaming over just buying a static IP from your ISP ?</h3>
+
+            <ul style="display:inline-block;text-align:left;margin-top:12px">
+                <li><strong>DDoS & attack protection:</strong> Professional hosts run network-level DDoS mitigation and web application firewalls (WAF) that absorb and block large-scale attacks before they reach your origin server.</li>
+                <li><strong>Scalable bandwidth & CDN:</strong> Hosting + CDN provides globally distributed edge points and the ability to scale to many thousands of viewers without saturating a single home/office link.</li>
+                <li><strong>Higher availability & SLA:</strong> Providers operate redundant infrastructure and SLAs that keep streams online even when single links or hardware fail.</li>
+                <li><strong>Managed SSL, domain & DNS:</strong> Automated SSL issuance/renewal (Let's Encrypt), DNS features and a dedicated domain remove operational friction compared to configuring services on a raw ISP IP.</li>
+                <li><strong>Security isolation:</strong> Dedicated servers and hosting accounts isolate your traffic and services from other customers, reducing risks that come with shared consumer-grade network equipment.</li>
+                <li><strong>Monitoring & support:</strong> 24/7 monitoring, alerting and expert support are part of hosting plans — ISPs rarely provide application-level stream support.</li>
+                <li><strong>Optional reserved (static) IPs:</strong> If you still need a static IP for whitelisting, we can provision a reserved IP on a dedicated plan and keep it behind our mitigation/CDN layer.</li>
+            </ul>
+
+            <div class="note">
+                <strong>Quick notes:</strong>
+                "Unlimited data for links" refers to stream delivery (no per-GB charge on the plan level for the specified formats). Extremely large egress (multi-TB per month) or abusive usage may require a custom enterprise agreement. CDN bandwidth, archival storage and advanced security may be subject to fair-use or tiered pricing.
+            </div>
+
+            <div class="note">
+                <strong>Hosting :</strong>
+                All servers are hosted with our CDN ISP partners. This project aims to transform ISPs into data-center service providers through a hybrid partnership model. All billing is handled directly by the ISP. We found this is lowest letency and stable solutions for broadcastors . Price includes GST and 2 month will be free on yearly payment .
+            </div>
+        </div>
+    </section>
 
     <div style="margin-top:26px" class="muted">
         Need an exportable copy of this pricing page or custom branding? Contact sales for a tailored quote and SLA.
