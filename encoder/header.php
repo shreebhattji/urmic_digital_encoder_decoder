@@ -80,8 +80,7 @@ include 'static.php';
 
         .top-header-2 a {
             color: var(--muted);
-            text-decoration: none;
-            transition: .25s;
+            text-decoration: none
         }
 
         .top-header-2 a:hover {
@@ -106,29 +105,24 @@ include 'static.php';
         .site-header nav {
             display: flex;
             gap: 26px;
-            flex-wrap: wrap;
+            flex-wrap: wrap
         }
 
         .site-header a {
             color: var(--muted);
-            text-decoration: none;
-            font-size: 14px;
-            transition: .25s;
+            text-decoration: none
         }
 
         .site-header a:hover {
             color: var(--text)
         }
 
-        /* PAGE OFFSET */
-
         .page-wrap {
-            padding-top: 150px;
+            padding-top: 150px
         }
 
-        /* CONTAINERS */
+        /* CONTAINER */
 
-        .container,
         .containerindex {
             max-width: 1100px;
             margin: 30px auto;
@@ -144,42 +138,43 @@ include 'static.php';
         .grid {
             display: grid;
             gap: 20px;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
         }
 
         /* CARD */
 
         .card {
-            padding: 18px;
+            padding: 20px;
             border-radius: var(--radius);
             background: rgba(255, 255, 255, .02);
             border: 1px solid var(--border);
         }
 
         .card.wide {
-            grid-column: 1/-1;
+            grid-column: 1/-1
         }
 
         .card h3 {
-            margin: 0 0 14px;
-            font-size: 16px;
+            margin: 0 0 16px;
+            font-size: 17px;
             font-weight: 600;
+            color: #f1f5f9;
         }
 
-        /* DROPDOWNS */
+        /* DROPDOWN ROW */
 
         .dropdown-container {
             display: flex;
             align-items: center;
-            gap: 14px;
-            margin-bottom: 14px;
+            gap: 16px;
+            margin-bottom: 16px;
             flex-wrap: wrap;
         }
 
         .dropdown-label {
-            font-size: 14px;
+            min-width: 170px;
             color: var(--muted);
-            min-width: 160px;
+            font-size: 14px;
         }
 
         .dropdown select {
@@ -188,8 +183,22 @@ include 'static.php';
             border: 1px solid var(--border);
             background: #020617;
             color: var(--text);
-            font-size: 14px;
-            outline: none;
+            min-width: 180px;
+        }
+
+        /* INPUT ROW BLOCK (URL rows etc) */
+
+        .input-container {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            align-items: flex-end;
+        }
+
+        .input-container .input-group {
+            flex: 1 1 260px;
+            margin: 0;
         }
 
         /* INPUT */
@@ -207,12 +216,12 @@ include 'static.php';
             background: #020617;
             color: var(--text);
             font-size: 14px;
-            outline: none;
         }
 
         .input-group input:focus {
             border-color: var(--accent);
             box-shadow: 0 0 0 2px rgba(56, 189, 248, .15);
+            outline: none;
         }
 
         .input-group label {
@@ -224,7 +233,7 @@ include 'static.php';
             color: var(--muted);
             background: #020617;
             padding: 0 6px;
-            transition: .25s;
+            transition: .2s;
         }
 
         .input-group input:focus+label,
@@ -232,6 +241,26 @@ include 'static.php';
             top: -7px;
             font-size: 11px;
             color: var(--accent);
+        }
+
+        /* CHECKBOX */
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .checkbox-group input {
+            width: 18px;
+            height: 18px;
+            accent-color: #38bdf8;
+        }
+
+        .checkbox-group label {
+            font-size: 14px;
+            color: var(--muted);
         }
 
         /* BUTTON */
@@ -247,7 +276,7 @@ include 'static.php';
         }
 
         button[type="submit"]:hover {
-            opacity: .9;
+            opacity: .9
         }
 
         /* FOOTER */
@@ -272,7 +301,6 @@ include 'static.php';
             border: 1px solid var(--border);
             box-shadow: 0 10px 35px rgba(0, 0, 0, .45);
             font-size: 14px;
-            color: #cbd5e1;
         }
 
         .footer-box strong {
@@ -280,9 +308,8 @@ include 'static.php';
         }
 
         .phone {
-            text-decoration: none;
             color: #38bdf8;
-            font-weight: 500;
+            text-decoration: none
         }
 
         .phone:hover {
@@ -316,13 +343,7 @@ include 'static.php';
 
         @media(max-width:700px) {
             .site-header nav {
-                gap: 16px
-            }
-
-            .top-header-2 {
-                flex-wrap: wrap;
-                height: auto;
-                padding: 8px
+                gap: 14px
             }
 
             .page-wrap {
@@ -331,7 +352,7 @@ include 'static.php';
 
             .footer-box {
                 flex-direction: column;
-                text-align: center;
+                text-align: center
             }
         }
     </style>
