@@ -439,6 +439,86 @@ include 'static.php';
                 height: 50px;
             }
         }
+
+        /* ===== FIREWALL PAGE ADDON ===== */
+
+        /* section title */
+        .card h2 {
+            margin: 0 0 18px;
+            font-size: 18px;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+            color: #f1f5f9;
+        }
+
+        /* form rows */
+        .row {
+            margin-bottom: 18px;
+        }
+
+        /* label */
+        .row label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--muted);
+        }
+
+        /* textarea fields */
+        textarea {
+            width: 100%;
+            padding: 14px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #020617;
+            color: var(--text);
+            font-size: 14px;
+            resize: vertical;
+            transition: .2s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, .15);
+        }
+
+        /* helper hint */
+        .row small {
+            display: block;
+            margin-top: 6px;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        /* invalid highlight */
+        textarea:invalid {
+            border-color: #ef4444;
+        }
+
+        /* submit button spacing */
+        .card form button {
+            margin-top: 18px;
+        }
+
+        /* smooth card spacing for stacked ports */
+        .row:not(:last-child) {
+            padding-bottom: 12px;
+            border-bottom: 1px dashed rgba(255, 255, 255, .05);
+        }
+
+        /* mobile optimization */
+        @media(max-width:600px) {
+            .card h2 {
+                font-size: 16px
+            }
+
+            textarea {
+                font-size: 13px
+            }
+        }
     </style>
 
 </head>
