@@ -125,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <form method="POST">
     <div class="containerindex">
         <div class="grid">
-            <div class="card wide">
+            <div class="card">
                 <div class="dropdown-container">
                     <span class="dropdown-label">Input :</span>
                     <div class="dropdown">
@@ -152,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
 
-            <div class="card wide">
+            <div class="card">
                 <h3>HDMI Settings</h3>
                 <div class="dropdown-container">
                     <span class="dropdown-label">Resolution :</span>
@@ -210,7 +210,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             </div>
 
-            <div class="card wide">
+            <div class="card">
                 <h3>URL Setting</h3>
                 <div class="input-group">
                     <input type="text" id="url" name="url" value="<?php echo htmlspecialchars($data['url']); ?>" placeholder=" ">
@@ -218,7 +218,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
 
-            <div class="card wide">
+            <div class="card">
                 <h3>RTMP Server Setting</h3>
                 <div class="input-group">
                     <input type="text" id="rtmp_mount" name="rtmp_mount" value="<?php echo htmlspecialchars($data['rtmp']['mount']); ?>" placeholder="Mount Name">
@@ -229,7 +229,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="rtmp_password">Password</label>
                 </div>
             </div>
-            <div class="card wide">
+            <div class="card">
                 <h3>SRT Caller Setting</h3>
                 <div class="input-group">
                     <input type="text" id="srt_stream_id_1" name="srt_stream_id_1" value="<?php echo htmlspecialchars($data['srt']['stream_id_1']); ?>" placeholder="pass1">
@@ -244,7 +244,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="srt_stream_id_3">Stream ID 3</label>
                 </div>
             </div>
-            <div class="card wide">
+            <div class="card">
                 <h3>UDP</h3>
                 <div class="input-group">
                     <input type="text" id="udp" name="udp" value="<?php echo htmlspecialchars($data['udp']); ?>" placeholder="udp://@224.224.1.1:8000">
@@ -252,7 +252,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
 
-            <div class="card wide">
+            <div class="card">
                 <h3>Custom Input</h3>
                 <div class="input-group">
                     <input type="text" id="custom" name="custom" value="<?php echo htmlspecialchars($data['custom']); ?>" placeholder=" ">
@@ -260,7 +260,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
 
-            <div class="card wide">
+            <div class="card">
                 <h3>Common BackEnd</h3>
 
                 <div class="grid">

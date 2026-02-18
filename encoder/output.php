@@ -319,7 +319,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <div class="containerindex">
     <div class="grid">
 
-      <div class="card wide">
+      <div class="card">
         <h3>DISPLAY - HDMI - VGA - PORTS</h3>
         <div class="dropdown-container">
           <span class="dropdown-label">Service Status :</span>
@@ -375,7 +375,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       </div>
 
-      <div class="card wide">
+      <div class="card">
         <h3>RTMP0 Output</h3>
         <div class="dropdown-container">
           <span class="dropdown-label">Service Status :</span>
@@ -514,7 +514,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
       </div>
 
-      <div class="card wide">
+      <div class="card">
         <h3>RTMP1 Output</h3>
         <div class="dropdown-container">
           <span class="dropdown-label">Service Status :</span>
@@ -653,7 +653,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
       </div>
 
-      <div class="card wide">
+      <div class="card">
         <h3>UDP0 Output</h3>
         <div class="dropdown-container">
           <span class="dropdown-label">Service Status :</span>
@@ -794,7 +794,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
       </div>
 
-      <div class="card wide">
+      <div class="card">
         <h3>udp1 Output</h3>
         <div class="dropdown-container">
           <span class="dropdown-label">Service Status :</span>
@@ -935,7 +935,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <button type="submit" name="udp1" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Save udp1</button>
         </div>
       </div>
-      <div class="card wide">
+      <div class="card">
         <h3>udp2 Output</h3>
         <div class="dropdown-container">
           <span class="dropdown-label">Service Status :</span>
@@ -1077,7 +1077,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
       </div>
 
-      <div class="card wide">
+      <div class="card">
         <h3>SRT Output</h3>
         <div class="dropdown-container">
           <span class="dropdown-label">Service Status :</span>
@@ -1220,7 +1220,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
       </div>
 
-      <div class="card wide">
+      <div class="card">
         <h3>CUSTOM OUTPUT</h3>
         <div class="dropdown-container">
           <span class="dropdown-label">Service Status :</span>

@@ -12,7 +12,7 @@ include 'header.php'; ?>
 
 <div class="containerindex">
     <div class="grid">
-        <div class="card wide">
+        <div class="card">
             <h3>How Can We Help ?</h3>
             <ul>
                 <li>We provide free RTMP and EPG file hosting for Registared Broadcastors.</li>
@@ -21,13 +21,13 @@ include 'header.php'; ?>
                 <li>ISP will get scalable Intranet OTT for resellers and customers .</li>
             </ul>
         </div>
-        <div class="card wide">
+        <div class="card">
             <h3>Say Hello to Us</h3>
             <p>C-1819 , <br>Radhesyam Soc,<br>Kalyabid, <br>Bhavnagar - 364001<br>INDIA
             <p>support@urmic.org
             <br>+91-8000-74-1919
         </div>
-        <div class="card wide">
+        <div class="card">
             <div class="social-row" aria-label="Social links">
             <a class="social-btn" href="https://www.facebook.com/WorldwideDigitalAssociation" target="_blank" rel="noopener" aria-label="Facebook page">
                 <svg viewBox="0 0 23 23" fill="currentColor" aria-hidden="true">

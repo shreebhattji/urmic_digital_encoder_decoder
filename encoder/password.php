@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <div class="containerindex">
     <div class="grid">
-        <div class="card wide">
+        <div class="card">
             <h3>Change Username / Password</h3>
 
             <?php if ($error): ?>

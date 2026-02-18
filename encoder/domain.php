@@ -28,7 +28,7 @@ if (file_exists($jsonFile)) {
 <div class="containerindex">
     <div class="grid">
         <div class="wrap">
-            <div class="card">
+            <div class="card wide">
                 <form id="certForm" method="post" action="request_cert.php">
                     <label for="domain">Primary domain</label>
                     <input id="domain" name="domain" type="text" placeholder="example.com" required pattern="^[A-Za-z0-9.-]{1,253}$" value="<?php if ($data['domain'] !== "example.com") echo $data['domain']; ?>" />
