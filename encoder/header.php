@@ -771,6 +771,8 @@ include 'static.php';
         .card .note pre {
             margin-top: 12px;
             padding: 14px;
+            tab-size: 4;
+            letter-spacing: .2px;
             border-radius: 12px;
             background: #010409;
             border: 1px dashed rgba(255, 255, 255, .08);
