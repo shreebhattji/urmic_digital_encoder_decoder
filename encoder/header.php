@@ -401,6 +401,13 @@ include 'static.php';
                 grid-column: auto;
             }
 
+            .wrap .row {
+                grid-template-columns: 1fr;
+            }
+
+            .card.wide {
+                max-width: 100%;
+            }
         }
 
         /* CONTACT PAGE */
@@ -804,13 +811,6 @@ include 'static.php';
             font-size: 13px;
         }
 
-        /* responsive */
-        @media(max-width:700px) {
-            .wrap .row {
-                grid-template-columns: 1fr;
-            }
-        }
-
         /* ===== NOTE BLOCK FIX ===== */
 
         .card .note {
@@ -1019,6 +1019,53 @@ include 'static.php';
             text-align: center;
             font-size: 14px;
         }
+
+        /* ===== FULL WIDTH MODE FOR SINGLE CARD PAGES ===== */
+
+        /* make wrapper span full grid */
+        .grid>.wrap:has(.card.wide) {
+            grid-column: 1 / -1;
+        }
+
+        /* full width card */
+        .card.wide {
+            width: 100%;
+            max-width: 1100px;
+            /* adjust max page width */
+            margin: 0 auto;
+            /* center */
+        }
+
+        /* center form layout nicely */
+        .card.wide form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* keep inputs readable */
+        .card.wide input,
+        .card.wide select,
+        .card.wide textarea {
+            max-width: 700px;
+            width: 100%;
+        }
+
+        /* center checkbox + links + buttons */
+        .card.wide .checkbox,
+        .card.wide .links,
+        .card.wide .actions {
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* center note box but keep text readable */
+        .card.wide .note {
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
     </style>
 
 </head>
@@ -1034,7 +1081,7 @@ include 'static.php';
     <header class="top-header-2">
         <a href="https://learn.urmic.org/" target="_blank">Tutorials</a>
         <a href="about_us.php">About Us</a>
-        <a href="contact_us.php">Contact</a>
+        <a href="contact_us.php">Contact Us</a>
         <a href="premium_service.php">Premium</a>
         <a href="domain.php">Domain SSL</a>
     </header>
