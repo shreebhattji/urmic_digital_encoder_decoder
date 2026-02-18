@@ -47,8 +47,6 @@ include 'header.php'; ?>
       Out: <span id="lastOut">—</span>KB/s
     </div>
   </div>
-
-  <br><br><br><br>
 </div>
 
 <script>

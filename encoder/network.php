@@ -310,9 +310,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div style="text-align:center; width:100%; margin-top:12px;">
             <button type="submit" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Save</button>
         </div>
-        <br>
-        <br>
-        <br>
     </div>
 </form>
 

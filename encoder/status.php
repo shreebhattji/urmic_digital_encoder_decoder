@@ -680,9 +680,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h3>Output Links</h3>
             <?php echo $text; ?>
         </div>
-        <br>
-        <br>
-        <br>
 
     </div>
 </div>

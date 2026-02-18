@@ -151,12 +151,6 @@ include 'header.php'; ?>
 
     <div class="wrap">
 
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
         <section class="benefits">
             <div class="card">
                 <h3 style="margin-top:0">Why choose hosted streaming over just buying a static IP from your ISP ?</h3>
@@ -291,8 +285,6 @@ include 'header.php'; ?>
                 </div>
             </div>
         </div>
-        <br>
-        <br>
         <br>
         <footer>
             <div class="muted">Need an exportable copy of this pricing page or custom branding? Contact sales for a tailored quote and SLA.</div>

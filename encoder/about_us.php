@@ -31,14 +31,8 @@ include 'header.php'; ?>
                     <li>The largest ship-breaking yard in the world, “Alang Ship Breaking Yard,” located in Bhavnagar district, Gujarat, started operations in 1983. It handles over 50% of global ship recycling by tonnage and is a major source of recycled steel for India’s economy.</li>
                 <p>
                     <li>After the Kurukshetra war, the Pandavas sought absolution for the killing that occurred in battle. Following the guidance of Lord Krishna, who gave them a black flag and a black cow, they were instructed to follow the cow until both turned white. Krishna told them that when this happened, they would be forgiven. The Pandavas followed the cow for many years to various places, but the flag and cow remained black. Finally, when they reached Koliyak Beach, both miraculously turned white.</li>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
             </ul>
         </div>
     </div>
 </div>
-<br>
-<br>
 <?php include 'footer.php'; ?>

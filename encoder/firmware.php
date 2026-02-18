@@ -560,21 +560,15 @@ EwIDAQAB
             <form method="post" class="form-center" enctype="multipart/form-data"
                 onsubmit="return confirm('Are you sure you want to restore using this file ? All settings will be restored as per backup file .')">
 
-                <label>Select restore file (.bin only):</label><br><br>
-
+                <label>Select restore file (.bin only):</label>
                 <input type="file"
                     name="shree_bhattji_encoder"
                     accept=".bin"
-                    required><br><br>
-
+                    required>
                 <button type="submit" name="action" value="restore" class="red-btn">Restore</button>
 
             </form>
         </div>
-        <br>
     </div>
-    <br>
 </div>
-<br><br>
-
 <?php include 'footer.php'; ?>

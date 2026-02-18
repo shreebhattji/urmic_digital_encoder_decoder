@@ -345,15 +345,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="submit" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Save</button>
             </div>
         </div>
-        <br>
-        <br>
     </div>
-    <br>
-    <br>
 </form>
-<br>
-<br>
-
 <?php
 if (!empty($saveError)) echo '<p style="color:red;text-align:center;">' . htmlspecialchars($saveError) . '</p>';
 if (!empty($saveSuccess)) echo '<p style="color:green;text-align:center;">' . htmlspecialchars($saveSuccess) . '</p>';

@@ -190,14 +190,6 @@ include 'static.php';
             color: #f1f5f9;
         }
 
-        .grid>.card:last-child {
-            grid-column: 1 / -1;
-        }
-
-        .grid>.card:last-child .chart-wrap {
-            height: 260px;
-        }
-
         /* DROPDOWN ROW */
 
         .dropdown-container {
@@ -376,6 +368,15 @@ include 'static.php';
             }
         }
 
+        .card:has(#gpuChart) {
+            grid-column: 1 / -1;
+        }
+
+        /* slightly taller only for GPU chart */
+        .card:has(#gpuChart) .chart-wrap {
+            height: 260px;
+        }
+
         /* MOBILE */
 
         @media(max-width:700px) {
@@ -396,9 +397,10 @@ include 'static.php';
                 grid-template-columns: 1fr;
             }
 
-            .grid>.card:last-child {
+            .card:has(#gpuChart) {
                 grid-column: auto;
             }
+
         }
 
         /* CONTACT PAGE */

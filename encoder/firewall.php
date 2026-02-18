@@ -118,10 +118,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endforeach; ?>
 
                 <button type="submit">Limit Access</button>
-                <br>
-                <br>
-                <br>
-                <br>
             </form>
         </div>
     </div>
