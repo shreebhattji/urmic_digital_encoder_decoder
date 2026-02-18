@@ -76,7 +76,7 @@ if ($service_rtmp1_multiple == 'enable') {
 }
 
 if ($service_srt_multiple == 'enable') {
-    $text .= "<h5>srt://" . $domain . ":1937?streamid=shree/bhatt/ji</h5><br><br>";
+    $text .= "<h5>srt://" . $domain . ":1937?streamid=shree/bhatt/ji</h5>";
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -680,10 +680,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h3>Output Links</h3>
             <?php echo $text; ?>
         </div>
-
     </div>
 </div>
-
-<br>
-<br>
 <?php include 'footer.php'; ?>

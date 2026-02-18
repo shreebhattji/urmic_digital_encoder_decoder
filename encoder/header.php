@@ -476,16 +476,7 @@ include 'static.php';
 
         /* MOBILE TUNING */
 
-        @media(max-width:600px) {
-            .social-row {
-                gap: 10px;
-            }
 
-            .social-btn {
-                width: 50px;
-                height: 50px;
-            }
-        }
 
         /* ===== FIREWALL PAGE ADDON ===== */
 
@@ -556,14 +547,31 @@ include 'static.php';
             border-bottom: 1px dashed rgba(255, 255, 255, .05);
         }
 
-        /* mobile optimization */
-        @media(max-width:600px) {
+        @media (max-width:600px) {
+
+            /* headings */
             .card h2 {
-                font-size: 16px
+                font-size: 16px;
             }
 
+            /* textarea */
             textarea {
-                font-size: 13px
+                font-size: 13px;
+            }
+
+            /* social buttons */
+            .social-row {
+                gap: 10px;
+            }
+
+            .social-btn {
+                width: 50px;
+                height: 50px;
+            }
+
+            /* password form */
+            .password-form {
+                max-width: 100%;
             }
         }
 
@@ -671,12 +679,7 @@ include 'static.php';
             position: relative;
         }
 
-        /* mobile */
-        @media(max-width:600px) {
-            .password-form {
-                max-width: 100%
-            }
-        }
+
 
         /* ===== CERT REQUEST PAGE ADDON ===== */
 
@@ -865,6 +868,51 @@ include 'static.php';
         #lastOut {
             color: #ffffff;
             font-weight: 700;
+        }
+
+        form[enctype="multipart/form-data"] {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* restore label */
+        form[enctype="multipart/form-data"]>label {
+            font-weight: 600;
+            color: #e2e8f0;
+            text-align: center;
+        }
+
+        /* file input */
+        form[enctype="multipart/form-data"]>input[type="file"] {
+            width: 100%;
+            max-width: 420px;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px dashed var(--border);
+            background: #020617;
+            color: var(--muted);
+            cursor: pointer;
+            transition: .25s;
+        }
+
+        /* hover + focus */
+        form[enctype="multipart/form-data"]>input[type="file"]:hover {
+            border-color: var(--accent);
+            background: rgba(56, 189, 248, .05);
+        }
+
+        form[enctype="multipart/form-data"]>input[type="file"]:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, .15);
+        }
+
+        /* restore button spacing only */
+        form[enctype="multipart/form-data"]>.red-btn {
+            margin-top: 6px;
+            min-width: 200px;
         }
     </style>
 
