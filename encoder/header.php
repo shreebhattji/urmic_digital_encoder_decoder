@@ -124,7 +124,7 @@ include 'static.php';
         /* CONTAINER */
 
         .containerindex {
-            max-width: 1100px;
+            max-width: 1280px;
             margin: 30px auto;
             padding: 24px;
             background: linear-gradient(180deg, var(--panel), var(--panel2));
@@ -137,7 +137,7 @@ include 'static.php';
 
         .grid {
             display: grid;
-            gap: 20px;
+            gap: 26px;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
         }
 
@@ -786,6 +786,78 @@ include 'static.php';
             /* break long strings */
             overflow-wrap: anywhere;
             /* modern wrap support */
+        }
+
+        /* ===== CHART SIZE + READABILITY ===== */
+
+        /* chart container */
+        .chart-wrap {
+            position: relative;
+            height: 320px;
+            margin-top: 6px;
+        }
+
+        /* canvas fill container */
+        .chart-wrap canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* make charts visually clearer */
+        .card {
+            backdrop-filter: blur(4px);
+        }
+
+        /* slightly brighter panel for readability */
+        .containerindex {
+            background: linear-gradient(180deg, #0b1220, #020617);
+        }
+
+        /* headings easier to read */
+        .card h3 {
+            font-size: 18px;
+            letter-spacing: .3px;
+        }
+
+        /* metrics footer row readability */
+        #lastUpdate,
+        #lastCpu,
+        #lastRam,
+        #lastGpu,
+        #lastIn,
+        #lastOut {
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        /* ===== GPU DOUBLE HEIGHT ===== */
+
+        .card:nth-child(5) .chart-wrap {
+            height: 600px;
+        }
+
+        /* ===== LARGE SCREENS ===== */
+
+        @media(min-width:1500px) {
+            .chart-wrap {
+                height: 380px;
+            }
+
+            .card:nth-child(5) .chart-wrap {
+                height: 700px;
+            }
+        }
+
+        /* ===== SMALL SCREENS ===== */
+
+        @media(max-width:700px) {
+            .chart-wrap {
+                height: 260px;
+            }
+
+            .card:nth-child(5) .chart-wrap {
+                height: 420px;
+            }
         }
     </style>
 
