@@ -355,6 +355,90 @@ include 'static.php';
                 text-align: center
             }
         }
+
+        /* CONTACT PAGE */
+
+        .card ul {
+            margin: 10px 0 0 18px;
+            padding: 0;
+            line-height: 1.7;
+            color: #cbd5e1;
+            font-size: 15px;
+        }
+
+        .card ul li {
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            margin: 6px 0;
+            line-height: 1.6;
+            color: #cbd5e1;
+            font-size: 15px;
+        }
+
+        /* SOCIAL ICON ROW */
+
+        .social-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 10px;
+            justify-content: center;
+        }
+
+        .social-btn {
+            width: 58px;
+            height: 58px;
+            display: grid;
+            place-items: center;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid rgba(255, 255, 255, .08);
+            color: #cbd5e1;
+            transition: .25s;
+            text-decoration: none;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-4px) scale(1.05);
+            background: linear-gradient(135deg, #0ea5e9, #6366f1);
+            color: white;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .45);
+        }
+
+        .social-btn svg {
+            width: 24px;
+            height: 24px;
+            display: block;
+        }
+
+        /* CONTACT CARD HEADINGS */
+
+        .card.wide h3 {
+            border-bottom: 1px solid rgba(255, 255, 255, .08);
+            padding-bottom: 8px;
+            margin-bottom: 14px;
+        }
+
+        /* ADDRESS BLOCK */
+
+        .card p br {
+            margin-bottom: 6px;
+        }
+
+        /* MOBILE TUNING */
+
+        @media(max-width:600px) {
+            .social-row {
+                gap: 10px;
+            }
+
+            .social-btn {
+                width: 50px;
+                height: 50px;
+            }
+        }
     </style>
 
 </head>
