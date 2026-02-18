@@ -377,31 +377,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ?>
 
             <div class="card-row">
-                <div class="service-label">
-                    <strong>Service</strong>
+                <div class="card-right">
+                    <div class="service-label">
+                        <strong>Service</strong>
 
-                    <?php if ($serviceEnabled): ?>
-                        <span class="badge badge-enabled">Enabled</span>
-                    <?php else: ?>
-                        <span class="badge badge-disabled">Disabled</span>
-                    <?php endif; ?>
+                        <?php if ($serviceEnabled): ?>
+                            <span class="badge badge-enabled">Enabled</span>
+                        <?php else: ?>
+                            <span class="badge badge-disabled">Disabled</span>
+                        <?php endif; ?>
+                    </div>
+
+                    <form method="post" class="service-buttons">
+                        <button type="submit" name="action" value="main_restart" class="btn-restart">
+                            Restart
+                        </button>
+
+                        <?php if ($serviceEnabled): ?>
+                            <button type="submit" name="action" value="main_disable" class="btn-disable">
+                                Disable
+                            </button>
+                        <?php else: ?>
+                            <button type="submit" name="action" value="main_enable" class="btn-enable">
+                                Enable
+                            </button>
+                        <?php endif; ?>
+                    </form>
                 </div>
-
-                <form method="post" class="service-buttons">
-                    <button type="submit" name="action" value="main_restart" class="btn-restart">
-                        Restart
-                    </button>
-
-                    <?php if ($serviceEnabled): ?>
-                        <button type="submit" name="action" value="main_disable" class="btn-disable">
-                            Disable
-                        </button>
-                    <?php else: ?>
-                        <button type="submit" name="action" value="main_enable" class="btn-enable">
-                            Enable
-                        </button>
-                    <?php endif; ?>
-                </form>
             </div>
         </div>
 
@@ -676,7 +678,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </form>
             </div>
         </div>
-        <div class="card">
+        <div class="card wide">
             <h3>Output Links</h3>
             <?php echo $text; ?>
         </div>
