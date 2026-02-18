@@ -519,6 +519,117 @@ include 'static.php';
                 font-size: 13px
             }
         }
+
+        /* ===== PASSWORD PAGE GLOBAL STYLES ===== */
+
+        .password-form {
+            max-width: 520px;
+            margin-top: 10px;
+        }
+
+        .password-form .field {
+            margin-bottom: 18px;
+        }
+
+        .password-form label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--muted);
+        }
+
+        .password-form input {
+            width: 100%;
+            padding: 14px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #020617;
+            color: var(--text);
+            font-size: 14px;
+            transition: .2s;
+        }
+
+        .password-form input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, .15);
+        }
+
+        .password-form input:invalid {
+            border-color: #ef4444;
+        }
+
+        /* divider between fields */
+        .password-form .field:not(:last-of-type) {
+            padding-bottom: 14px;
+            border-bottom: 1px dashed rgba(255, 255, 255, .05);
+        }
+
+        /* strength bar container */
+        .strength {
+            margin-top: 8px;
+            height: 8px;
+            border-radius: 6px;
+            background: #111827;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        /* strength fill */
+        .strength-bar {
+            height: 100%;
+            width: 0%;
+            background: #ef4444;
+            transition: .3s;
+        }
+
+        /* strength text */
+        .strength-text {
+            font-size: 12px;
+            margin-top: 6px;
+            color: #94a3b8;
+        }
+
+        /* colors by strength */
+        .strength-weak {
+            background: #ef4444
+        }
+
+        .strength-medium {
+            background: #f59e0b
+        }
+
+        .strength-good {
+            background: #22c55e
+        }
+
+        .strength-strong {
+            background: linear-gradient(90deg, #22c55e, #38bdf8);
+        }
+
+        /* show password toggle */
+        .pass-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 13px;
+            color: #94a3b8;
+            user-select: none;
+        }
+
+        .pass-wrap {
+            position: relative;
+        }
+
+        /* mobile */
+        @media(max-width:600px) {
+            .password-form {
+                max-width: 100%
+            }
+        }
     </style>
 
 </head>

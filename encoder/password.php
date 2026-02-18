@@ -105,6 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="grid">
         <div class="card wide">
             <h3>Change Username / Password</h3>
+
             <?php if ($error): ?>
                 <p style="color:#dc2626"><?= htmlspecialchars($error) ?></p>
             <?php endif; ?>
@@ -112,32 +113,82 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php if ($success): ?>
                 <p style="color:#16a34a"><?= htmlspecialchars($success) ?></p>
             <?php endif; ?>
-            <form method="post" autocomplete="off">
+
+            <form method="post" class="password-form" autocomplete="off">
                 <input type="hidden" name="csrf" value="<?= htmlspecialchars($_SESSION['csrf']) ?>">
 
-                <p>
-                    <label>New Username (optional)</label><br>
+                <div class="field">
+                    <label>New Username (optional)</label>
                     <input type="text" name="new_username" placeholder="leave blank to keep current">
-                </p>
+                </div>
 
-                <p>
-                    <label>Current Password (required)</label><br>
-                    <input type="password" name="current_password" required>
-                </p>
+                <div class="field">
+                    <label>Current Password</label>
+                    <div class="pass-wrap">
+                        <input type="password" name="current_password" required>
+                        <span class="pass-toggle" onclick="togglePass(this)">Show</span>
+                    </div>
+                </div>
 
-                <p>
-                    <label>New Password (optional)</label><br>
-                    <input type="password" name="new_password">
-                </p>
+                <div class="field">
+                    <label>New Password</label>
+                    <div class="pass-wrap">
+                        <input type="password" id="newpass" name="new_password" oninput="checkStrength(this.value)">
+                        <span class="pass-toggle" onclick="togglePass(this)">Show</span>
+                    </div>
 
-                <p>
-                    <label>Confirm New Password</label><br>
+                    <div class="strength">
+                        <div class="strength-bar" id="strengthBar"></div>
+                    </div>
+                    <div class="strength-text" id="strengthText">Password strength</div>
+                </div>
+
+                <div class="field">
+                    <label>Confirm New Password</label>
                     <input type="password" name="confirm_password">
-                </p>
+                </div>
 
                 <button type="submit">Update</button>
             </form>
         </div>
     </div>
 </div>
+<script>
+    function togglePass(el) {
+        const input = el.parentElement.querySelector("input");
+        if (input.type === "password") {
+            input.type = "text";
+            el.textContent = "Hide";
+        } else {
+            input.type = "password";
+            el.textContent = "Show";
+        }
+    }
+
+    function checkStrength(p) {
+        let s = 0;
+        if (p.length > 5) s++;
+        if (p.length > 9) s++;
+        if (/[A-Z]/.test(p)) s++;
+        if (/[0-9]/.test(p)) s++;
+        if (/[^A-Za-z0-9]/.test(p)) s++;
+
+        const bar = document.getElementById("strengthBar");
+        const txt = document.getElementById("strengthText");
+
+        const lvl = [
+            ["0%", ""],
+            ["20%", "strength-weak", "Weak"],
+            ["40%", "strength-weak", "Weak"],
+            ["60%", "strength-medium", "Medium"],
+            ["80%", "strength-good", "Good"],
+            ["100%", "strength-strong", "Strong"]
+        ][s];
+
+        bar.style.width = lvl[0];
+        bar.className = "strength-bar " + (lvl[1] || "");
+        txt.textContent = lvl[2] || "Password strength";
+    }
+</script>
+
 <?php include 'footer.php'; ?>
