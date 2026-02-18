@@ -25,89 +25,86 @@ if (file_exists($jsonFile)) {
 }
 
 ?>
+<div class="containerindex">
+    <div class="grid">
+        <div class="wrap">
+            <div class="card">
+                <form id="certForm" method="post" action="request_cert.php">
+                    <label for="domain">Primary domain</label>
+                    <input id="domain" name="domain" type="text" placeholder="example.com" required pattern="^[A-Za-z0-9.-]{1,253}$" value="<?php if ($data['domain'] !== "example.com") echo $data['domain']; ?>" />
 
-<body>
-    <div class="containerindex">
-        <div class="grid">
-            <div class="wrap">
-                <div class="card">
-                    <form method="post" action="request_cert.php">
-                        <label for="domain">Primary domain</label>
-                        <input id="domain" name="domain" type="text" placeholder="example.com" required pattern="^[A-Za-z0-9.-]{1,253}$" value="<?php if ($data['domain'] !== "example.com") echo $data['domain']; ?>" />
+                    <label for="subdomains" class="muted">Subdomains</label>
+                    <input id="subdomains" name="subdomains" type="text" placeholder="example.com (optional)" value="<?php if ($data['subdomain'] !== "www.example.com") echo $data['subdomain']; ?>" />
 
-                        <label for="subdomains" class="muted">Subdomains</label>
-                        <input id="subdomains" name="subdomains" type="text" placeholder="example.com (optional)" value="<?php if ($data['subdomain'] !== "www.example.com") echo $data['subdomain']; ?>" />
-
-                        <label for="email">Contact email (for Let\'s Encrypt notices)</label>
-                        <input id="email" name="email" type="email" placeholder="your_name@example.com" value="<?php if ($data['email'] !== "name@example.com") echo $data['email']; ?>" required />
+                    <label for="email">Contact email (for Let\'s Encrypt notices)</label>
+                    <input id="email" name="email" type="email" placeholder="your_name@example.com" value="<?php if ($data['email'] !== "name@example.com") echo $data['email']; ?>" required />
 
 
-                        <div class="row">
-                            <div>
-                                <label for="staging">Test mode</label>
-                                <select id="staging" name="staging">
-                                    <option value="0">Production</option>
-                                    <option value="1">Staging (use for testing to avoid rate limits)</option>
-                                </select>
-                            </div>
+                    <div class="row">
+                        <div>
+                            <label for="staging">Test mode</label>
+                            <select id="staging" name="staging">
+                                <option value="0">Production</option>
+                                <option value="1">Staging (use for testing to avoid rate limits)</option>
+                            </select>
                         </div>
+                    </div>
 
 
-                        <div class="checkbox">
-                            <input type="checkbox" id="agree_tc" name="agree_tc" required />
-                            <div>
-                                <label for="agree_tc" style="font-weight:700">I agree to Certbot's Terms of Service and confirm that ports <strong>80 (HTTP)</strong> and <strong>443 (HTTPS)</strong> are forwarded to this server.</label>
-                                <div class="muted">By checking this you authorise the server operator to run Certbot and modify nginx configuration for the supplied domain(s).</div>
-                            </div>
+                    <div class="checkbox">
+                        <input type="checkbox" id="agree_tc" name="agree_tc" required />
+                        <div>
+                            <label for="agree_tc" style="font-weight:700">I agree to Certbot's Terms of Service and confirm that ports <strong>80 (HTTP)</strong> and <strong>443 (HTTPS)</strong> are forwarded to this server.</label>
+                            <div class="muted">By checking this you authorise the server operator to run Certbot and modify nginx configuration for the supplied domain(s).</div>
                         </div>
+                    </div>
 
 
-                        <div class="links">
-                            <a href="https://letsencrypt.org/repository/#let-s-encrypt-subscriber-agreement" target="_blank" rel="noopener">Certbot / Let's Encrypt Terms &amp; Conditions</a>
-                            &nbsp;•&nbsp;
-                            <a href="https://letsencrypt.org/privacy/">Privacy Policy</a>
-                        </div>
+                    <div class="links">
+                        <a href="https://letsencrypt.org/repository/#let-s-encrypt-subscriber-agreement" target="_blank" rel="noopener">Certbot / Let's Encrypt Terms &amp; Conditions</a>
+                        &nbsp;•&nbsp;
+                        <a href="https://letsencrypt.org/privacy/">Privacy Policy</a>
+                    </div>
 
 
-                        <div class="actions">
-                            <button type="submit">Request Certificate</button>
-                            <button type="reset" class="ghost">Reset</button>
-                        </div>
+                    <div class="actions">
+                        <button type="submit">Request Certificate</button>
+                        <button type="reset" class="ghost">Reset</button>
+                    </div>
 
 
-                        <div class="note">
-                            <strong>Why ports 80 and 443 are required</strong>
-                            <pre>
+                    <div class="note">
+                        <strong>Why ports 80 and 443 are required</strong>
+                        <pre>
 - Port 80 (HTTP) is used by Certbot for the HTTP-01 challenge: Let's Encrypt connects over HTTP to verify you control the domain.
 - Port 443 (HTTPS) is required to serve TLS traffic after the certificate is issued. Nginx must accept HTTPS on port 443 so browsers and streaming clients can connect securely.
 
 
 Ensure both ports are reachable from the public internet and forwarded to this server's IP. If you use a firewall, add rules to allow inbound TCP 80 and 443.
                             </pre>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
 
-    <script>
-        document.getElementById('certForm').addEventListener('submit', function(e) {
-            var dom = document.getElementById('domain').value.trim();
-            var subs = document.getElementById('subdomains').value.trim();
-            if (!dom) {
-                e.preventDefault();
-                alert('Primary domain is required');
-                return;
-            }
+<script>
+    document.getElementById('certForm').addEventListener('submit', function(e) {
+        var dom = document.getElementById('domain').value.trim();
+        var subs = document.getElementById('subdomains').value.trim();
+        if (!dom) {
+            e.preventDefault();
+            alert('Primary domain is required');
+            return;
+        }
 
-            var ok = document.getElementById('agree_tc').checked;
-            if (!ok) {
-                e.preventDefault();
-                alert('You must agree to the terms and confirm ports 80 and 443 are forwarded.');
-            }
-        });
-    </script>
-</body>
+        var ok = document.getElementById('agree_tc').checked;
+        if (!ok) {
+            e.preventDefault();
+            alert('You must agree to the terms and confirm ports 80 and 443 are forwarded.');
+        }
+    });
+</script>
 <?php include 'footer.php'; ?>

@@ -630,6 +630,121 @@ include 'static.php';
                 max-width: 100%
             }
         }
+
+        /* ===== CERT REQUEST PAGE ADDON ===== */
+
+        /* wrapper */
+        .wrap {
+            width: 100%;
+        }
+
+        /* labels */
+        .wrap label {
+            display: block;
+            margin-top: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--muted);
+        }
+
+        /* inputs */
+        .wrap input[type=text],
+        .wrap input[type=email],
+        .wrap select {
+            width: 100%;
+            padding: 14px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #020617;
+            color: var(--text);
+            font-size: 14px;
+            transition: .2s;
+        }
+
+        .wrap input:focus,
+        .wrap select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, .15);
+        }
+
+        /* grid row */
+        .wrap .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 12px;
+        }
+
+        /* checkbox block */
+        .wrap .checkbox {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+            align-items: flex-start;
+        }
+
+        .wrap .checkbox input {
+            margin-top: 4px;
+            accent-color: #38bdf8;
+        }
+
+        /* links */
+        .wrap .links {
+            margin-top: 14px;
+            font-size: 14px;
+        }
+
+        .wrap .links a {
+            color: #38bdf8;
+            text-decoration: none;
+        }
+
+        .wrap .links a:hover {
+            text-decoration: underline;
+        }
+
+        /* buttons row */
+        .wrap .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .wrap .ghost {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        /* info note box */
+        .wrap .note {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: var(--radius);
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid var(--border);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* code block */
+        .wrap pre {
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 10px;
+            background: #020617;
+            border: 1px dashed var(--border);
+            color: #cbd5e1;
+            font-size: 13px;
+        }
+
+        /* responsive */
+        @media(max-width:700px) {
+            .wrap .row {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 
 </head>
