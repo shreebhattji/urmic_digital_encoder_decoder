@@ -246,124 +246,181 @@ WantedBy=multi-user.target
 EOL
 
 cat > /usr/local/bin/nginx_system_monitor_sampler.py<< 'EOL'
-#!/usr/bin/env python3
-import time, json, os, subprocess
-from collections import deque
-from datetime import datetime
+#!/usr/bin/env python3 -u
+import time
+import json
+import os
+import subprocess
+import threading
+import re
 import psutil
+import shutil
+from collections import deque
+from datetime import datetime, timezone
 
-OUT_FILE="/var/www/encoder/metrics.json"
-TMP_FILE=OUT_FILE+".tmp"
-SAMPLE_INTERVAL=10.0
-HISTORY_SECONDS=15*60
-MAX_SAMPLES=int(HISTORY_SECONDS/SAMPLE_INTERVAL)
+# ---------------- CONFIGURATION ----------------
+OUT_FILE = "/var/www/encoder/metrics.json"
+TMP_FILE = OUT_FILE + ".tmp"
+SAMPLE_INTERVAL = 10.0
+HISTORY_SECONDS = 15 * 60
+MAX_SAMPLES = int(HISTORY_SECONDS / SAMPLE_INTERVAL)
 
-timestamps=deque(maxlen=MAX_SAMPLES)
-cpu_hist=deque(maxlen=MAX_SAMPLES)
-ram_hist=deque(maxlen=MAX_SAMPLES)
-gpu_hist=deque(maxlen=MAX_SAMPLES)
-net_in_hist=deque(maxlen=MAX_SAMPLES)
-net_out_hist=deque(maxlen=MAX_SAMPLES)
-disk_read_hist=deque(maxlen=MAX_SAMPLES)
-disk_write_hist=deque(maxlen=MAX_SAMPLES)
-disk_percent_hist=deque(maxlen=MAX_SAMPLES)
+# ---------------- DEPENDENCY CHECK ----------------
+if not shutil.which("intel_gpu_top"):
+    raise RuntimeError("intel_gpu_top not installed or not in PATH")
 
-_prev_net=psutil.net_io_counters()
-_prev_disk=psutil.disk_io_counters()
-_prev_time=time.time()
+# ---------------- HISTORY BUFFERS ----------------
+keys = [
+    "timestamps", "cpu_percent", "ram_percent", "gpu_total", "gpu_render",
+    "gpu_video", "gpu_blitter", "gpu_videoenhance", "net_in_Bps",
+    "net_out_Bps", "disk_read_Bps", "disk_write_Bps", "disk_percent"
+]
+hist = {k: deque(maxlen=MAX_SAMPLES) for k in keys}
 
-def igpu_percent():
-    try:
-        out = subprocess.check_output(
-            ["intel_gpu_top","-J","-s","200","-o","-"],
-            stderr=subprocess.DEVNULL,
-            timeout=2
-        )
-        line = out.decode().splitlines()[0]
-        data = json.loads(line)
-        engines = data.get("engines",{})
-        if not engines:
-            return 0.0
-        return round(max(v.get("busy",0) for v in engines.values()),2)
-    except Exception:
-        return 0.0
+_prev_net = psutil.net_io_counters()
+_prev_disk = psutil.disk_io_counters()
+_prev_time = time.time()
 
+# Prime CPU measurement
+psutil.cpu_percent(None)
+
+gpu_data = {"total": 0.0, "render": 0.0, "video": 0.0, "blitter": 0.0, "ve": 0.0}
+gpu_lock = threading.Lock()
+
+# ---------------- GPU MONITOR THREAD ----------------
+def gpu_monitor():
+    global gpu_data
+
+    cmd = ["intel_gpu_top", "-J", "-s", "1000"]
+
+    while True:
+        try:
+            p = subprocess.Popen(
+                cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.DEVNULL,
+                text=True,
+                bufsize=1
+            )
+
+            buf = ""
+            brace = 0
+
+            for chunk in iter(lambda: p.stdout.read(1), ""):
+                if chunk == "{":
+                    brace += 1
+
+                if brace > 0:
+                    buf += chunk
+
+                if chunk == "}":
+                    brace -= 1
+                    if brace == 0 and buf.strip():
+                        try:
+                            obj = json.loads(buf)
+                            engines = obj.get("engines", {})
+
+                            r = v = b = e = 0.0
+
+                            for name, data in engines.items():
+                                busy = float(data.get("busy", 0.0))
+                                n = name.lower()
+
+                                if "render" in n or "rcs" in n:
+                                    r = max(r, busy)
+                                elif "video" in n or "vcs" in n:
+                                    v = max(v, busy)
+                                elif "blitter" in n or "bcs" in n:
+                                    b = max(b, busy)
+                                elif "enhance" in n or "vecs" in n:
+                                    e = max(e, busy)
+
+                            with gpu_lock:
+                                gpu_data["render"] = r
+                                gpu_data["video"] = v
+                                gpu_data["blitter"] = b
+                                gpu_data["ve"] = e
+                                gpu_data["total"] = max(r, v, b, e)
+
+                        except Exception:
+                            pass
+
+                        buf = ""
+
+            p.wait()
+
+        except Exception:
+            time.sleep(2)
+
+# ---------------- SAMPLING ----------------
 def sample_once():
-    global _prev_net,_prev_disk,_prev_time
-    now=time.time()
-    iso=datetime.fromtimestamp(now).isoformat(timespec='seconds')
+    global _prev_net, _prev_disk, _prev_time
 
-    cpu=psutil.cpu_percent(interval=None)
-    ram=psutil.virtual_memory().percent
-    gpu=igpu_percent()
+    now = time.time()
+    elapsed = max(now - _prev_time, 0.1)
 
-    net=psutil.net_io_counters()
-    disk=psutil.disk_io_counters()
+    cpu = psutil.cpu_percent()
+    ram = psutil.virtual_memory().percent
+    net = psutil.net_io_counters()
+    disk = psutil.disk_io_counters()
 
-    try:
-        disk_percent=psutil.disk_usage("/").percent
-    except:
-        disk_percent=0.0
+    in_r = (net.bytes_recv - _prev_net.bytes_recv) / elapsed
+    out_r = (net.bytes_sent - _prev_net.bytes_sent) / elapsed
+    read_r = (disk.read_bytes - _prev_disk.read_bytes) / elapsed
+    write_r = (disk.write_bytes - _prev_disk.write_bytes) / elapsed
 
-    elapsed=now-_prev_time if _prev_time else SAMPLE_INTERVAL
-    if elapsed<=0: elapsed=SAMPLE_INTERVAL
+    with gpu_lock:
+        g = gpu_data.copy()
 
-    in_rate=int(((net.bytes_recv-_prev_net.bytes_recv)/elapsed))
-    out_rate=int(((net.bytes_sent-_prev_net.bytes_sent)/elapsed))
+    # stale GPU protection
+    if time.time() - _prev_time > SAMPLE_INTERVAL * 2:
+        g = {"total": 0, "render": 0, "video": 0, "blitter": 0, "ve": 0}
 
-    read_rate=(disk.read_bytes-_prev_disk.read_bytes)/elapsed
-    write_rate=(disk.write_bytes-_prev_disk.write_bytes)/elapsed
+    hist["timestamps"].append(datetime.now().isoformat(timespec='seconds'))
+    hist["cpu_percent"].append(round(cpu, 1))
+    hist["ram_percent"].append(round(ram, 1))
+    hist["net_in_Bps"].append(int(max(0, in_r)))
+    hist["net_out_Bps"].append(int(max(0, out_r)))
+    hist["disk_read_Bps"].append(int(max(0, read_r)))
+    hist["disk_write_Bps"].append(int(max(0, write_r)))
+    hist["disk_percent"].append(round(psutil.disk_usage('/').percent, 1))
+    hist["gpu_total"].append(round(g["total"], 1))
+    hist["gpu_render"].append(round(g["render"], 1))
+    hist["gpu_video"].append(round(g["video"], 1))
+    hist["gpu_blitter"].append(round(g["blitter"], 1))
+    hist["gpu_videoenhance"].append(round(g["ve"], 1))
 
-    timestamps.append(iso)
-    cpu_hist.append(round(cpu,2))
-    ram_hist.append(round(ram,2))
-    gpu_hist.append(round(gpu,2))
-    net_in_hist.append(int(in_rate))
-    net_out_hist.append(int(out_rate))
-    disk_read_hist.append(int(read_rate))
-    disk_write_hist.append(int(write_rate))
-    disk_percent_hist.append(round(disk_percent,2))
+    _prev_net, _prev_disk, _prev_time = net, disk, now
 
-    _prev_net=net
-    _prev_disk=disk
-    _prev_time=now
-
-def write_json_atomic():
-    payload={
-        "timestamps":list(timestamps),
-        "cpu_percent":list(cpu_hist),
-        "ram_percent":list(ram_hist),
-        "igpu_percent":list(gpu_hist),
-        "net_in_Bps":list(net_in_hist),
-        "net_out_Bps":list(net_out_hist),
-        "disk_read_Bps":list(disk_read_hist),
-        "disk_write_Bps":list(disk_write_hist),
-        "disk_percent":list(disk_percent_hist),
-        "sample_interval":SAMPLE_INTERVAL,
-        "generated_at":datetime.utcnow().isoformat(timespec='seconds')+"Z"
-    }
-    with open(TMP_FILE,"w") as f: json.dump(payload,f)
-    os.replace(TMP_FILE,OUT_FILE)
-
+# ---------------- MAIN LOOP ----------------
 def main():
-    global _prev_net,_prev_disk,_prev_time
-    _prev_net=psutil.net_io_counters()
-    _prev_disk=psutil.disk_io_counters()
-    _prev_time=time.time()
-    time.sleep(0.2)
+    threading.Thread(target=gpu_monitor, daemon=True).start()
 
     while True:
         try:
             sample_once()
-            write_json_atomic()
-        except Exception as e:
-            print("Sampler error:",e)
+
+            payload = {k: list(v) for k, v in hist.items()}
+            payload.update({
+                "sample_interval": SAMPLE_INTERVAL,
+                "generated_at": datetime.now(timezone.utc).isoformat()
+            })
+
+            with open(TMP_FILE, "w") as f:
+                json.dump(payload, f)
+
+            os.replace(TMP_FILE, OUT_FILE)
+
+        except Exception:
+            pass
+
         time.sleep(SAMPLE_INTERVAL)
 
-if __name__=="__main__":
+# ---------------- ENTRY ----------------
+if __name__ == "__main__":
     main()
-EOL
 
+EOL
 
 sudo mkdir -p /etc/srt/;
 cat > /etc/srt/srt.sh<< 'EOL'
