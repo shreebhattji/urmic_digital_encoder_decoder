@@ -123,8 +123,8 @@ include 'header.php'; ?>
 
     </div>
 
-    <section class="benefits">
-        <div class="card">
+    <div class="card" style="margin-top:26px">
+        <section class="benefits">
             <h3>Why choose hosted streaming over just buying a static IP from your ISP ?</h3>
 
             <ul style="display:inline-block;text-align:left;margin-top:12px">
@@ -146,8 +146,8 @@ include 'header.php'; ?>
                 <strong>Hosting :</strong>
                 All servers are hosted with our CDN ISP partners. This project aims to transform ISPs into data-center service providers through a hybrid partnership model. All billing is handled directly by the ISP. We found this is lowest letency and stable solutions for broadcastors . Price includes GST and 2 month will be free on yearly payment .
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
     <div style="margin-top:26px" class="muted">
         Need an exportable copy of this pricing page or custom branding? Contact sales for a tailored quote and SLA.
