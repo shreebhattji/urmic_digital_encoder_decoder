@@ -777,7 +777,13 @@ include 'static.php';
             color: #94a3b8;
             font-size: 13px;
             line-height: 1.6;
-            overflow: auto;
+
+            white-space: pre-wrap;
+            /* allow wrapping */
+            word-break: break-word;
+            /* break long strings */
+            overflow-wrap: anywhere;
+            /* modern wrap support */
         }
     </style>
 
