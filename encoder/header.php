@@ -35,6 +35,7 @@ include 'static.php';
             font-family: Inter, system-ui;
             background: var(--bg);
             color: var(--text);
+            background: radial-gradient(circle at 50% -20%, #0b1225 0%, #020617 60%);
         }
 
         /* HEADER */
@@ -122,15 +123,42 @@ include 'static.php';
         }
 
         /* CONTAINER */
+        /* slightly brighter panel for readability */
+        /* ===== MERGED + IMPROVED VISIBILITY (REPLACE EXISTING BLOCKS) ===== */
 
+        /* container */
         .containerindex {
             max-width: 1280px;
             margin: 30px auto;
             padding: 24px;
-            background: linear-gradient(180deg, var(--panel), var(--panel2));
-            border: 1px solid var(--border);
+            background: linear-gradient(180deg, #0f1b33, #020617);
+            border: 1px solid rgba(56, 189, 248, .25);
             border-radius: var(--radius);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
+            box-shadow:
+                0 0 0 1px rgba(56, 189, 248, .08),
+                0 25px 70px rgba(0, 0, 0, .75),
+                0 0 40px rgba(56, 189, 248, .06);
+            position: relative;
+        }
+
+        /* inner glow separation */
+        .containerindex::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: var(--radius);
+            pointer-events: none;
+            box-shadow: inset 0 0 35px rgba(99, 102, 241, .08);
+        }
+
+        /* cards */
+        .card {
+            padding: 20px;
+            border-radius: var(--radius);
+            background: linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .015));
+            border: 1px solid rgba(255, 255, 255, .12);
+            backdrop-filter: blur(4px);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, .55);
         }
 
         /* GRID */
@@ -143,12 +171,6 @@ include 'static.php';
 
         /* CARD */
 
-        .card {
-            padding: 20px;
-            border-radius: var(--radius);
-            background: rgba(255, 255, 255, .02);
-            border: 1px solid var(--border);
-        }
 
         .card.wide {
             grid-column: 1/-1
@@ -806,31 +828,22 @@ include 'static.php';
             height: 100% !important;
         }
 
-        /* make charts visually clearer */
-        .card {
-            backdrop-filter: blur(4px);
-        }
-
-        /* slightly brighter panel for readability */
-        .containerindex {
-            background: linear-gradient(180deg, #0b1220, #020617);
-        }
 
         /* headings easier to read */
         .card h3 {
-            font-size: 18px;
-            letter-spacing: .3px;
+            color: #f8fafc;
+            text-shadow: 0 0 8px rgba(56, 189, 248, .15);
         }
 
-        /* metrics footer row readability */
+        /* metrics row visibility */
         #lastUpdate,
         #lastCpu,
         #lastRam,
         #lastGpu,
         #lastIn,
         #lastOut {
-            font-weight: 600;
-            color: #e2e8f0;
+            color: #ffffff;
+            font-weight: 700;
         }
     </style>
 
