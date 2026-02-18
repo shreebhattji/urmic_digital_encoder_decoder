@@ -573,6 +573,21 @@ include 'static.php';
             .password-form {
                 max-width: 100%;
             }
+
+            .price {
+                font-size: 20px;
+            }
+
+            th,
+            td {
+                font-size: 13px;
+                padding: 8px 6px;
+            }
+
+            .cta {
+                flex: 1;
+                text-align: center;
+            }
         }
 
         /* ===== PASSWORD PAGE GLOBAL STYLES ===== */
@@ -913,6 +928,96 @@ include 'static.php';
         form[enctype="multipart/form-data"]>.red-btn {
             margin-top: 6px;
             min-width: 200px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 26px;
+        }
+
+        /* price text */
+        .price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #f8fafc;
+            margin-top: 2px;
+        }
+
+        /* badge */
+        .pill {
+            font-size: 12px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #0ea5e9, #6366f1);
+            color: #fff;
+            white-space: nowrap;
+        }
+
+        /* tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        th {
+            text-align: left;
+            padding: 10px 8px;
+            background: rgba(255, 255, 255, .04);
+            border-bottom: 1px solid var(--border);
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px dashed rgba(255, 255, 255, .06);
+            color: #cbd5e1;
+        }
+
+        /* CTA buttons */
+        .cta {
+            display: inline-block;
+            padding: 11px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: .25s;
+        }
+
+        .cta-primary {
+            background: linear-gradient(90deg, #22c55e, #16a34a);
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(34, 197, 94, .25);
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(34, 197, 94, .35);
+        }
+
+        .cta-ghost {
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .cta-ghost:hover {
+            background: rgba(255, 255, 255, .05);
+            border-color: rgba(255, 255, 255, .2);
+        }
+
+        /* benefits section spacing */
+        .benefits {
+            margin-bottom: 28px;
+        }
+
+        /* footer note */
+        footer .muted {
+            text-align: center;
+            font-size: 14px;
         }
     </style>
 
