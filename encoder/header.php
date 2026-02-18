@@ -166,6 +166,7 @@ include 'static.php';
             border: 1px solid rgba(255, 255, 255, .12);
             backdrop-filter: blur(4px);
             box-shadow: 0 8px 28px rgba(0, 0, 0, .55);
+            margin-bottom: 24px;
         }
 
         /* GRID */
