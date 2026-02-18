@@ -138,7 +138,7 @@ include 'static.php';
         .grid {
             display: grid;
             gap: 26px;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
         /* CARD */
@@ -353,6 +353,10 @@ include 'static.php';
             .footer-box {
                 flex-direction: column;
                 text-align: center
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -793,11 +797,10 @@ include 'static.php';
         /* chart container */
         .chart-wrap {
             position: relative;
-            height: 320px;
+            height: 220px;
             margin-top: 6px;
         }
 
-        /* canvas fill container */
         .chart-wrap canvas {
             width: 100% !important;
             height: 100% !important;
@@ -829,7 +832,6 @@ include 'static.php';
             font-weight: 600;
             color: #e2e8f0;
         }
-
     </style>
 
 </head>
