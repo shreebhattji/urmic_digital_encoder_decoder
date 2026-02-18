@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </script>
 <div class="containerindex">
     <div class="grid">
-        <div class="card">
+        <div class="card wide">
             <h2>Limit Access</h2>
 
             <form method="post">

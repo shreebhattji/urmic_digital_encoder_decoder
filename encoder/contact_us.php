@@ -27,7 +27,7 @@ include 'header.php'; ?>
             <p>support@urmic.org
             <br>+91-8000-74-1919
         </div>
-        <div class="card">
+        <div class="card wide">
             <div class="social-row" aria-label="Social links">
             <a class="social-btn" href="https://www.facebook.com/WorldwideDigitalAssociation" target="_blank" rel="noopener" aria-label="Facebook page">
                 <svg viewBox="0 0 23 23" fill="currentColor" aria-hidden="true">
