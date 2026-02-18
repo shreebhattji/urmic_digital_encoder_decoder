@@ -745,6 +745,40 @@ include 'static.php';
                 grid-template-columns: 1fr;
             }
         }
+
+        /* ===== NOTE BLOCK FIX ===== */
+
+        .card .note {
+            margin-top: 22px;
+            padding: 18px;
+            border-radius: 14px;
+            background: linear-gradient(180deg, #020617, #020617);
+            border: 1px solid var(--border);
+            color: #cbd5e1;
+            font-size: 14px;
+            line-height: 1.65;
+        }
+
+        /* title */
+        .card .note strong {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 15px;
+            color: #e2e8f0;
+        }
+
+        /* code block inside note */
+        .card .note pre {
+            margin-top: 12px;
+            padding: 14px;
+            border-radius: 12px;
+            background: #010409;
+            border: 1px dashed rgba(255, 255, 255, .08);
+            color: #94a3b8;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow: auto;
+        }
     </style>
 
 </head>
