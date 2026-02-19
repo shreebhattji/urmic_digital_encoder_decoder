@@ -412,17 +412,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     });
 
     document.getElementById("colorReset").onclick = () => {
+
         const defaults = {
-            hdmi_brightness: 0,
-            hdmi_contrast: 1,
-            hdmi_saturation: 1,
-            hdmi_hue: 0
+            hdmi_brightness: {
+                value: 0,
+                span: "brightnessVal"
+            },
+            hdmi_contrast: {
+                value: 1,
+                span: "contrastVal"
+            },
+            hdmi_saturation: {
+                value: 1,
+                span: "saturationVal"
+            },
+            hdmi_hue: {
+                value: 0,
+                span: "hueVal"
+            }
         };
+
         for (const id in defaults) {
             const el = document.getElementById(id);
-            el.value = defaults[id];
-            document.getElementById(id + "Val").textContent = defaults[id];
+            el.value = defaults[id].value;
+            document.getElementById(defaults[id].span).textContent = defaults[id].value;
         }
+
     };
 
     update();
