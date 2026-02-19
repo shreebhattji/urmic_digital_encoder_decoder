@@ -300,6 +300,11 @@ function netplan_yaml(array $data, int $indent = 0): string
 function update_service($which_service)
 {
 
+    if ($which_service == 'input') {
+        exec("sudo systemctl stop encoder-main");
+        exec("sudo systemctl disable encoder-main");
+        exec("sudo modprobe -r uvcvideo && sudo modprobe uvcvideo");
+    }
     $input = "";
     $input_source = "";
     $input_rtmp_mount = "";
@@ -706,7 +711,6 @@ function update_service($which_service)
                 }
                 exec("sudo systemctl enable encoder-main");
                 exec("sudo systemctl restart encoder-main");
-                exec("sudo reboot");
             }
             break;
         case 'display';
