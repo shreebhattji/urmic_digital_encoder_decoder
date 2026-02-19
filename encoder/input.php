@@ -19,7 +19,11 @@ $defaults = [
         'audio_source' => 'hw:1,0',
         'framerate' => '30',
         'video_delay' => '',
-        'audio_delay' => ''
+        'audio_delay' => '',
+        'brightness' => '',
+        'contrast' => '',
+        'saturation' => '',
+        'hue' => '',
     ],
     'url' => 'https://cdn.urmic.org/unavailable.mp4',
     'rtmp' => [
@@ -69,7 +73,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'audio_source' => $posted('hdmi_audio_source', $defaults['hdmi']['audio_source']),
             'framerate' => $posted('hdmi_framerate', $defaults['hdmi']['framerate']),
             'video_delay' => $posted('hdmi_video_delay', $defaults['hdmi']['video_delay']),
-            'audio_delay' => $posted('hdmi_audio_delay', $defaults['hdmi']['audio_delay'])
+            'audio_delay' => $posted('hdmi_audio_delay', $defaults['hdmi']['audio_delay']),
+            'brightness' => $posted('hdmi_brightness', $defaults['hdmi']['brightness']),
+            'contrast' => $posted('hdmi_contrast', $defaults['hdmi']['contrast']),
+            'saturation' => $posted('hdmi_saturation', $defaults['hdmi']['saturation']),
+            'hue' => $posted('hdmi_hue', $defaults['hdmi']['hue']),
         ],
         'url' => $posted('url', $defaults['url']),
         'rtmp' => [
@@ -215,7 +223,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <span>Brightness</span>
                             <span id="brightnessVal">0</span>
                         </div>
-                        <input type="range" id="brightness" min="-100" max="100" step="1" value="0">
+                        <input type="range" name="hdmi_brightness" id="hdmi_brightness" min="-100" max="100" step="1" value="0">
                     </div>
 
                     <div class="control">
@@ -223,7 +231,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <span>Contrast</span>
                             <span id="contrastVal">1.0</span>
                         </div>
-                        <input type="range" id="contrast" min="0" max="10" step="0.1" value="1">
+                        <input type="range" name="hdmi_contrast" id="hdmi_contrast" min="0" max="10" step="0.1" value="1">
                     </div>
 
                     <div class="control">
@@ -231,7 +239,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <span>Saturation</span>
                             <span id="saturationVal">1.0</span>
                         </div>
-                        <input type="range" id="saturation" min="0" max="10" step="0.1" value="1">
+                        <input type="range" name="hdmi_saturation" id="hdmi_saturation" min="0" max="10" step="0.1" value="1">
                     </div>
 
                     <div class="control">
@@ -239,7 +247,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <span>Hue</span>
                             <span id="hueVal">0</span>
                         </div>
-                        <input type="range" id="hue" min="-180" max="180" step="1" value="0">
+                        <input type="range" name="hdmi_hue" id="hdmi_hue" min="-180" max="180" step="1" value="0">
                     </div>
                     <div class="panel-actions">
                         <button type="button" id="colorReset">Reset</button>

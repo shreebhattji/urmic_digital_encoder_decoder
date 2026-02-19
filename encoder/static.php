@@ -326,7 +326,11 @@ function update_service($which_service)
             'audio_source' => 'hw:1,0',
             'framerate' => '30',
             'video_delay' => '',
-            'audio_delay' => ''
+            'audio_delay' => '',
+            'brightness' => '',
+            'contrast' => '',
+            'saturation' => '',
+            'hue' => '',
         ],
         'url' => 'https://cdn.urmic.org/unavailable.mp4',
         'rtmp' => [
@@ -745,11 +749,11 @@ function update_service($which_service)
         case 'rtmp1';
             update_service_backend("rtmp", "", "");
             if ($service_rtmp0_multiple === "enable") {
-                $rtmp = "ffmpeg -hide_banner -fflags nobuffer -analyzeduration 3000000 -i ";
+                $rtmp = "ffmpeg -hide_banner -fflags nobuffer -i ";
                 if ($use_common_backend === "transcode_every_time") {
                     $rtmp .= $input_transcode_every_time;
                 } else {
-                    $rtmp .= ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1&fifo_size=500000&overrun_nonfatal=1" ';
+                    $rtmp .= ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1&overrun_nonfatal=1" ';
                     switch ($use_common_backend_rtmp0) {
                         case "enable":
                             $rtmp .= ' '
@@ -794,13 +798,13 @@ function update_service($which_service)
 
                 switch ($use_common_backend_rtmp1) {
                     case "enable":
-                        $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?localaddr=127.0.0.1&fifo_size=500000&overrun_nonfatal=1" '
+                        $rtmp = 'ffmpeg -hide_banner -fflags nobuffer -i "udp://@239.255.254.254:39000?localaddr=127.0.0.1&overrun_nonfatal=1" '
                             . ' -c:v copy '
                             . ' -c:a copy '
                             . ' -f flv "rtmp://127.0.0.1/shreeshree/bhattji"';
                         break;
                     case "disable":
-                        $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?localaddr=127.0.0.1&fifo_size=500000&overrun_nonfatal=1" '
+                        $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?localaddr=127.0.0.1&overrun_nonfatal=1" '
                             . ' -c:v h264_qsv '
                             . ' -vf "scale=' . str_replace("x", ":", $data['rtmp1']['resolution']) . '"'
                             . ' -b:v ' . $data['rtmp1']['data_rate']
@@ -837,7 +841,7 @@ function update_service($which_service)
                 switch ($use_common_backend) {
                     case "copy_input":
                     case "use_common_backend":
-                        $srt .= ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1&fifo_size=500000&overrun_nonfatal=1"';
+                        $srt .= ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1&overrun_nonfatal=1"';
                         break;
                     case "transcode_every_time":
                         $srt .= '"' . $input_transcode_every_time . '"';
@@ -886,7 +890,7 @@ function update_service($which_service)
                     case "copy_input":
                     case "use_common_backend":
 
-                        $udp0 .= ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1&fifo_size=500000&overrun_nonfatal=1"';
+                        $udp0 .= ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1&overrun_nonfatal=1"';
 
                         break;
                     case "transcode_every_time":
@@ -941,7 +945,7 @@ function update_service($which_service)
                     case "copy_input":
                     case "use_common_backend":
 
-                        $udp1 .= ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1&fifo_size=500000&overrun_nonfatal=1"';
+                        $udp1 .= ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1&overrun_nonfatal=1"';
 
                         break;
                     case "transcode_every_time":
@@ -996,7 +1000,7 @@ function update_service($which_service)
                 case "copy_input":
                 case "use_common_backend":
 
-                    $udp2 .= ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1&fifo_size=500000&overrun_nonfatal=1" ';
+                    $udp2 .= ' "udp://@239.255.254.254:39000?localaddr=127.0.0.1&overrun_nonfatal=1" ';
 
                     break;
                 case "transcode_every_time":
@@ -1047,7 +1051,7 @@ function update_service($which_service)
             break;
         case "custom";
             if ($service_custom === "enable") {
-                $custom = 'ffmpeg -hwaccel auto -hide_banner   -i "udp://@239.255.254.254:39000?localaddr=127.0.0.1&fifo_size=500000&overrun_nonfatal=1" '
+                $custom = 'ffmpeg -hwaccel auto -hide_banner   -i "udp://@239.255.254.254:39000?localaddr=127.0.0.1&overrun_nonfatal=1" '
                     . $data['custom_output'];
                 $file = "/var/www/encoder-custom.sh";
                 file_put_contents($file, $custom);
@@ -1088,8 +1092,12 @@ function update_service_backend($service, $srt_pass1, $srt_pass2)
             'resolution' => '1920x1080',
             'audio_source' => 'hw:1,0',
             'framerate' => '30',
-            'video_delay' => '300',
-            'audio_delay' => ''
+            'video_delay' => '',
+            'audio_delay' => '',
+            'brightness' => '',
+            'contrast' => '',
+            'saturation' => '',
+            'hue' => '',
         ],
         'url' => 'https://cdn.urmic.org/unavailable.mp4',
         'rtmp' => [
@@ -1109,7 +1117,7 @@ function update_service_backend($service, $srt_pass1, $srt_pass2)
             'framerate' => '30',
             'gop' => '30',
             'audio_db_gain' => '0dB',
-            'audio_data_rate' => '256k',
+            'audio_data_rate' => '128k',
             'audio_sample_rate' => '48000',
             'extra' => ''
         ],
