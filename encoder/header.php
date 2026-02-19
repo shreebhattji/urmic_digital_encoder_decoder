@@ -596,6 +596,10 @@ include 'static.php';
                 flex: 1;
                 text-align: center;
             }
+
+            .panel {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* ===== PASSWORD PAGE GLOBAL STYLES ===== */
@@ -1067,32 +1071,40 @@ include 'static.php';
             margin-right: auto;
             text-align: left;
         }
-        
-        /* ===== COLOR PANEL ADDON ===== */
+
+        /* ===== COLOR PANEL ADDON — COMPACT GRID VERSION ===== */
 
         .panel {
             margin-top: 20px;
-            padding: 22px 24px 26px;
+            padding: 20px 22px 22px;
             border-radius: var(--radius);
             background: linear-gradient(180deg, #020617, #020617);
             border: 1px solid var(--border);
             box-shadow:
-                inset 0 0 25px rgba(99, 102, 241, .05),
-                0 10px 30px rgba(0, 0, 0, .55);
+                inset 0 0 22px rgba(99, 102, 241, .05),
+                0 10px 28px rgba(0, 0, 0, .55);
             position: relative;
+
+            /* 2 controls per row */
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px 22px;
         }
 
+        /* heading spans full width */
         .panel h2 {
+            grid-column: 1/-1;
             text-align: center;
-            font-size: 17px;
-            margin-bottom: 22px;
+            font-size: 16px;
+            margin-bottom: 4px;
             color: #f8fafc;
             letter-spacing: .3px;
         }
 
         /* each slider block */
         .control {
-            margin-bottom: 22px;
+            margin: 0;
+            padding: 0;
         }
 
         /* label + value row */
@@ -1100,27 +1112,28 @@ include 'static.php';
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
-            font-size: 14px;
+            margin-bottom: 6px;
+            font-size: 13px;
             color: var(--muted);
         }
 
         .control .row span:last-child {
             color: #fff;
             font-weight: 600;
-            min-width: 48px;
+            min-width: 42px;
             text-align: right;
         }
 
         /* slider track */
         .control input[type=range] {
             width: 100%;
-            height: 6px;
+            height: 5px;
             border-radius: 6px;
             background: linear-gradient(90deg, #0f172a, #1e293b);
             outline: none;
             appearance: none;
             border: 1px solid rgba(255, 255, 255, .06);
+            transition: .2s;
         }
 
         /* hover glow */
@@ -1131,8 +1144,8 @@ include 'static.php';
         /* slider thumb */
         .control input[type=range]::-webkit-slider-thumb {
             appearance: none;
-            width: 18px;
-            height: 18px;
+            width: 15px;
+            height: 15px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--accent), var(--accent2));
             cursor: pointer;
@@ -1140,11 +1153,12 @@ include 'static.php';
             box-shadow:
                 0 0 0 3px rgba(56, 189, 248, .15),
                 0 2px 8px rgba(0, 0, 0, .6);
+            transition: .15s;
         }
 
         .control input[type=range]::-moz-range-thumb {
-            width: 18px;
-            height: 18px;
+            width: 15px;
+            height: 15px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--accent), var(--accent2));
             border: none;
@@ -1156,12 +1170,10 @@ include 'static.php';
             transform: scale(1.15);
         }
 
-        /* subtle divider between controls */
+        /* remove divider lines */
         .control:not(:last-child) {
-            padding-bottom: 16px;
-            border-bottom: 1px dashed rgba(255, 255, 255, .05);
+            border: none;
         }
-
     </style>
 
 </head>
