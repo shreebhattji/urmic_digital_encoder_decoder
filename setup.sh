@@ -359,3 +359,4 @@ EOL
 
 sudo systemctl enable --now system-monitor.service
 sudo systemctl restart system-monitor.service --no-pager
+sudo reboot
