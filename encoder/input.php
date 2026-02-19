@@ -393,13 +393,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </form>
 <script>
-    const controls = ["brightness", "contrast", "saturation", "hue"];
+    const controls = ["hdmi_brightness", "hdmi_contrast", "hdmi_saturation", "hdmi_hue"];
 
     function update() {
-        const b = brightness.value;
-        const c = contrast.value;
-        const s = saturation.value;
-        const h = hue.value;
+        const b = hdmi_brightness.value;
+        const c = hdmi_contrast.value;
+        const s = hdmi_saturation.value;
+        const h = hdmi_hue.value;
 
         brightnessVal.textContent = b;
         contrastVal.textContent = c;
