@@ -221,33 +221,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="control">
                         <div class="row">
                             <span>Brightness</span>
-                            <span id="brightnessVal">0</span>
+                            <span id="brightnessVal"><?= $data['hdmi']['brightness'] ?></span>
                         </div>
-                        <input type="range" name="hdmi_brightness" id="hdmi_brightness" min="-100" max="100" step="1" value="0">
+                        <input type="range" name="hdmi_brightness" id="hdmi_brightness" min="-100" max="100" step="1" value="<?= $data['hdmi']['brightness'] ?>">
                     </div>
 
                     <div class="control">
                         <div class="row">
                             <span>Contrast</span>
-                            <span id="contrastVal">1.0</span>
+                            <span id="contrastVal"><?= $data['hdmi']['contrast'] ?></span>
                         </div>
-                        <input type="range" name="hdmi_contrast" id="hdmi_contrast" min="0" max="10" step="0.1" value="1">
+                        <input type="range" name="hdmi_contrast" id="hdmi_contrast" min="0" max="10" step="0.1" value="<?= $data['hdmi']['contrast'] ?>">
                     </div>
 
                     <div class="control">
                         <div class="row">
                             <span>Saturation</span>
-                            <span id="saturationVal">1.0</span>
+                            <span id="saturationVal"><?= $data['hdmi']['saturation'] ?></span>
                         </div>
-                        <input type="range" name="hdmi_saturation" id="hdmi_saturation" min="0" max="10" step="0.1" value="1">
+                        <input type="range" name="hdmi_saturation" id="hdmi_saturation" min="0" max="10" step="0.1" value="<?= $data['hdmi']['saturation'] ?>">
                     </div>
 
                     <div class="control">
                         <div class="row">
                             <span>Hue</span>
-                            <span id="hueVal">0</span>
+                            <span id="hueVal"><?= $data['hdmi']['hue'] ?></span>
                         </div>
-                        <input type="range" name="hdmi_hue" id="hdmi_hue" min="-180" max="180" step="1" value="0">
+                        <input type="range" name="hdmi_hue" id="hdmi_hue" min="-180" max="180" step="1" value="<?= $data['hdmi']['hue'] ?>">
                     </div>
                     <div class="panel-actions">
                         <button type="button" id="colorReset">Reset</button>
