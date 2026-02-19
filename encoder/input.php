@@ -413,10 +413,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     document.getElementById("colorReset").onclick = () => {
         const defaults = {
-            brightness: 0,
-            contrast: 1,
-            saturation: 1,
-            hue: 0
+            hdmi_brightness: 0,
+            hdmi_contrast: 1,
+            hdmi_saturation: 1,
+            hdmi_hue: 0
         };
         for (const id in defaults) {
             const el = document.getElementById(id);
