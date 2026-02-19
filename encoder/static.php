@@ -327,10 +327,10 @@ function update_service($which_service)
             'framerate' => '30',
             'video_delay' => '',
             'audio_delay' => '',
-            'brightness' => '',
-            'contrast' => '',
-            'saturation' => '',
-            'hue' => '',
+            'brightness' => '0',
+            'contrast' => '1',
+            'saturation' => '1',
+            'hue' => '0',
         ],
         'url' => 'https://cdn.urmic.org/unavailable.mp4',
         'rtmp' => [
@@ -429,7 +429,7 @@ function update_service($which_service)
                     $input .= "ffmpeg -hide_banner -init_hw_device qsv=hw -filter_hw_device hw -hwaccel qsv -hwaccel_output_format qsv -c:v mjpeg_qsv -f v4l2 -thread_queue_size 128 -use_wallclock_as_timestamps 1 -input_format mjpeg "
                         . " -video_size " . $data['hdmi']['resolution']
                         . " -framerate " . $data['hdmi']['framerate'] . " -i /dev/video0 -f alsa -thread_queue_size 128 -i " . $data['hdmi']['audio_source']
-                        . ' -vf "vpp_qsv=brightness=' . $data['hdmi']['brightness'] . ':contrast=' . $data['hdmi']['contrast'] . ':saturation=' . $data['hdmi']['saturation'] . ':hue=' . $data['hdmi']['hue'] ;
+                        . ' -vf "vpp_qsv=brightness=' . $data['hdmi']['brightness'] . ':contrast=' . $data['hdmi']['contrast'] . ':saturation=' . $data['hdmi']['saturation'] . ':hue=' . $data['hdmi']['hue'];
                     if ($data['hdmi']['resolution'] != $data['common_backend']['resolution'])
                         $input .= ',scale_qsv=' . $common_backend_resolution;
                     if ($hdmi_delay_video != "")
@@ -1091,10 +1091,10 @@ function update_service_backend($service, $srt_pass1, $srt_pass2)
             'framerate' => '30',
             'video_delay' => '',
             'audio_delay' => '',
-            'brightness' => '',
-            'contrast' => '',
-            'saturation' => '',
-            'hue' => '',
+            'brightness' => '0',
+            'contrast' => '1',
+            'saturation' => '1',
+            'hue' => '0',
         ],
         'url' => 'https://cdn.urmic.org/unavailable.mp4',
         'rtmp' => [
