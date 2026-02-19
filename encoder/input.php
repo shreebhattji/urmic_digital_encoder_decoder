@@ -207,7 +207,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="text" id="hdmi_audio_delay" name="hdmi_audio_delay" value="<?php echo htmlspecialchars($data['hdmi']['audio_delay']); ?>" placeholder=" ">
                     <label for="hdmi_audio_delay">Audio Delay in ms : </label>
                 </div>
+                <div class="panel">
+                    <h2>Color Adjustment</h2>
 
+                    <div class="control">
+                        <div class="row">
+                            <span>Brightness</span>
+                            <span id="brightnessVal">0</span>
+                        </div>
+                        <input type="range" id="brightness" min="-100" max="100" step="1" value="0">
+                    </div>
+
+                    <div class="control">
+                        <div class="row">
+                            <span>Contrast</span>
+                            <span id="contrastVal">1.0</span>
+                        </div>
+                        <input type="range" id="contrast" min="0" max="10" step="0.1" value="1">
+                    </div>
+
+                    <div class="control">
+                        <div class="row">
+                            <span>Saturation</span>
+                            <span id="saturationVal">1.0</span>
+                        </div>
+                        <input type="range" id="saturation" min="0" max="10" step="0.1" value="1">
+                    </div>
+
+                    <div class="control">
+                        <div class="row">
+                            <span>Hue</span>
+                            <span id="hueVal">0</span>
+                        </div>
+                        <input type="range" id="hue" min="-180" max="180" step="1" value="0">
+                    </div>
+                </div>
             </div>
 
             <div class="card wide">
