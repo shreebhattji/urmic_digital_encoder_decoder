@@ -397,14 +397,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         contrastVal.textContent = c;
         saturationVal.textContent = s;
         hueVal.textContent = h;
-
-        ffmpegOutput.textContent =
-            `-vf "vpp_qsv=format=nv12:brightness=${b}:contrast=${c}:saturation=${s}:hue=${h}"`;
     }
 
     controls.forEach(id => {
         document.getElementById(id).addEventListener("input", update);
     });
+
+    document.getElementById("colorReset").onclick = () => {
+        const defaults = {
+            brightness: 0,
+            contrast: 1,
+            saturation: 1,
+            hue: 0
+        };
+        for (const id in defaults) {
+            const el = document.getElementById(id);
+            el.value = defaults[id];
+            document.getElementById(id + "Val").textContent = defaults[id];
+        }
+    };
 
     update();
 </script>
