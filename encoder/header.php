@@ -1067,6 +1067,101 @@ include 'static.php';
             margin-right: auto;
             text-align: left;
         }
+        
+        /* ===== COLOR PANEL ADDON ===== */
+
+        .panel {
+            margin-top: 20px;
+            padding: 22px 24px 26px;
+            border-radius: var(--radius);
+            background: linear-gradient(180deg, #020617, #020617);
+            border: 1px solid var(--border);
+            box-shadow:
+                inset 0 0 25px rgba(99, 102, 241, .05),
+                0 10px 30px rgba(0, 0, 0, .55);
+            position: relative;
+        }
+
+        .panel h2 {
+            text-align: center;
+            font-size: 17px;
+            margin-bottom: 22px;
+            color: #f8fafc;
+            letter-spacing: .3px;
+        }
+
+        /* each slider block */
+        .control {
+            margin-bottom: 22px;
+        }
+
+        /* label + value row */
+        .control .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .control .row span:last-child {
+            color: #fff;
+            font-weight: 600;
+            min-width: 48px;
+            text-align: right;
+        }
+
+        /* slider track */
+        .control input[type=range] {
+            width: 100%;
+            height: 6px;
+            border-radius: 6px;
+            background: linear-gradient(90deg, #0f172a, #1e293b);
+            outline: none;
+            appearance: none;
+            border: 1px solid rgba(255, 255, 255, .06);
+        }
+
+        /* hover glow */
+        .control input[type=range]:hover {
+            border-color: rgba(56, 189, 248, .4);
+        }
+
+        /* slider thumb */
+        .control input[type=range]::-webkit-slider-thumb {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            cursor: pointer;
+            border: none;
+            box-shadow:
+                0 0 0 3px rgba(56, 189, 248, .15),
+                0 2px 8px rgba(0, 0, 0, .6);
+        }
+
+        .control input[type=range]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border: none;
+            cursor: pointer;
+        }
+
+        /* active drag effect */
+        .control input[type=range]:active::-webkit-slider-thumb {
+            transform: scale(1.15);
+        }
+
+        /* subtle divider between controls */
+        .control:not(:last-child) {
+            padding-bottom: 16px;
+            border-bottom: 1px dashed rgba(255, 255, 255, .05);
+        }
+
     </style>
 
 </head>
