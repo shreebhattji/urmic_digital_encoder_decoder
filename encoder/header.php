@@ -1094,7 +1094,7 @@ include 'static.php';
         /* heading spans full width */
         .panel h2 {
             grid-column: 1/-1;
-            text-align: center;
+            text-align: left;
             font-size: 16px;
             margin-bottom: 4px;
             color: #f8fafc;
@@ -1173,6 +1173,31 @@ include 'static.php';
         /* remove divider lines */
         .control:not(:last-child) {
             border: none;
+        }
+
+        /* reset button layout */
+        .panel-actions {
+            grid-column: 1/-1;
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 6px;
+        }
+
+        .panel-actions button {
+            padding: 7px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: linear-gradient(180deg, #0f172a, #020617);
+            color: var(--text);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .panel-actions button:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, .15);
         }
     </style>
 

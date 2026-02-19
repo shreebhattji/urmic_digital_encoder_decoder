@@ -242,6 +242,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="range" id="hue" min="-180" max="180" step="1" value="0">
                     </div>
                 </div>
+                <div class="panel-actions">
+                    <button type="button" id="colorReset">Reset</button>
+                </div>
             </div>
 
             <div class="card wide">
@@ -382,28 +385,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </form>
 <script>
-const controls=["brightness","contrast","saturation","hue"];
+    const controls = ["brightness", "contrast", "saturation", "hue"];
 
-function update(){
-  const b=brightness.value;
-  const c=contrast.value;
-  const s=saturation.value;
-  const h=hue.value;
+    function update() {
+        const b = brightness.value;
+        const c = contrast.value;
+        const s = saturation.value;
+        const h = hue.value;
 
-  brightnessVal.textContent=b;
-  contrastVal.textContent=c;
-  saturationVal.textContent=s;
-  hueVal.textContent=h;
+        brightnessVal.textContent = b;
+        contrastVal.textContent = c;
+        saturationVal.textContent = s;
+        hueVal.textContent = h;
 
-  ffmpegOutput.textContent=
-    `-vf "vpp_qsv=format=nv12:brightness=${b}:contrast=${c}:saturation=${s}:hue=${h}"`;
-}
+        ffmpegOutput.textContent =
+            `-vf "vpp_qsv=format=nv12:brightness=${b}:contrast=${c}:saturation=${s}:hue=${h}"`;
+    }
 
-controls.forEach(id=>{
-  document.getElementById(id).addEventListener("input",update);
-});
+    controls.forEach(id => {
+        document.getElementById(id).addEventListener("input", update);
+    });
 
-update();
+    update();
 </script>
 <?php
 if (!empty($saveError)) echo '<p style="color:red;text-align:center;">' . htmlspecialchars($saveError) . '</p>';
