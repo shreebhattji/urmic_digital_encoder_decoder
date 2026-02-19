@@ -241,9 +241,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                         <input type="range" id="hue" min="-180" max="180" step="1" value="0">
                     </div>
-                </div>
-                <div class="panel-actions">
-                    <button type="button" id="colorReset">Reset</button>
+                    <div class="panel-actions">
+                        <button type="button" id="colorReset">Reset</button>
+                    </div>
                 </div>
             </div>
 
