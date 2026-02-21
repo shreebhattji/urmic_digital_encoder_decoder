@@ -781,15 +781,34 @@ include 'static.php';
 
         /* checkbox block */
         .wrap .checkbox {
-            display: flex;
-            gap: 10px;
-            margin-top: 18px;
-            align-items: flex-start;
+            display: grid;
+            grid-template-columns: 20px 1fr;
+            column-gap: 12px;
+            margin-top: 20px;
+            align-items: start;
         }
 
+        /* checkbox */
         .wrap .checkbox input {
-            margin-top: 4px;
+            margin-top: 3px;
+            width: 18px;
+            height: 18px;
             accent-color: #38bdf8;
+        }
+
+        /* text block */
+        .wrap .checkbox label {
+            margin: 0;
+            font-weight: 700;
+            line-height: 1.45;
+            cursor: pointer;
+        }
+
+        /* description under label */
+        .wrap .checkbox .muted {
+            margin-top: 4px;
+            font-size: 13px;
+            line-height: 1.45;
         }
 
         /* links */

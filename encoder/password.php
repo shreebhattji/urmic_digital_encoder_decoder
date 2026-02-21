@@ -145,7 +145,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="field">
                     <label>Confirm New Password</label>
-                    <input type="password" name="confirm_password">
+                    <div class="pass-wrap">
+                        <input type="password" name="confirm_password">
+                    </div>
                 </div>
 
                 <button type="submit">Update</button>
