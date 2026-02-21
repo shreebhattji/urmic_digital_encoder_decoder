@@ -605,8 +605,14 @@ include 'static.php';
             }
 
             /* password form */
+
             .password-form {
                 max-width: 100%;
+            }
+
+            .password-form input {
+                height: 44px;
+                font-size: 13px;
             }
 
             .price {
@@ -629,111 +635,98 @@ include 'static.php';
             }
         }
 
-        /* ===== PASSWORD PAGE GLOBAL STYLES ===== */
+        /* ===== PASSWORD PAGE REFINEMENT PATCH ===== */
 
+        /* center card content better */
         .password-form {
-            max-width: 520px;
-            margin-top: 10px;
+            width: 100%;
+            max-width: 560px;
+            margin-top: 6px;
         }
 
+        /* field spacing + divider refinement */
         .password-form .field {
-            margin-bottom: 18px;
+            margin-bottom: 22px;
+            display: flex;
+            flex-direction: column;
         }
 
+        /* labels */
         .password-form label {
-            display: block;
+            margin-bottom: 8px;
             font-size: 14px;
             font-weight: 600;
-            margin-bottom: 6px;
-            color: var(--muted);
+            color: #cbd5e1;
         }
 
+        /* inputs */
         .password-form input {
-            width: 100%;
-            padding: 14px 12px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
+            height: 46px;
+            padding: 0 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, .12);
             background: #020617;
-            color: var(--text);
+            color: #f8fafc;
             font-size: 14px;
-            transition: .2s;
+            transition: .18s;
         }
 
+        /* focus */
         .password-form input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 2px rgba(56, 189, 248, .15);
+            border-color: #38bdf8;
+            box-shadow:
+                0 0 0 2px rgba(56, 189, 248, .18),
+                0 6px 18px rgba(0, 0, 0, .45);
         }
 
-        .password-form input:invalid {
-            border-color: #ef4444;
-        }
-
-        /* divider between fields */
-        .password-form .field:not(:last-of-type) {
-            padding-bottom: 14px;
-            border-bottom: 1px dashed rgba(255, 255, 255, .05);
-        }
-
-        /* strength bar container */
-        .strength {
-            margin-top: 8px;
-            height: 8px;
-            border-radius: 6px;
-            background: #111827;
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
-
-        /* strength fill */
-        .strength-bar {
-            height: 100%;
-            width: 0%;
-            background: #ef4444;
-            transition: .3s;
-        }
-
-        /* strength text */
-        .strength-text {
-            font-size: 12px;
-            margin-top: 6px;
-            color: #94a3b8;
-        }
-
-        /* colors by strength */
-        .strength-weak {
-            background: #ef4444
-        }
-
-        .strength-medium {
-            background: #f59e0b
-        }
-
-        .strength-good {
-            background: #22c55e
-        }
-
-        .strength-strong {
-            background: linear-gradient(90deg, #22c55e, #38bdf8);
-        }
-
-        /* show password toggle */
-        .pass-toggle {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            font-size: 13px;
-            color: #94a3b8;
-            user-select: none;
-        }
-
+        /* toggle button alignment */
         .pass-wrap {
             position: relative;
         }
 
+        .pass-toggle {
+            right: 14px;
+            font-weight: 500;
+            letter-spacing: .2px;
+        }
 
+        .pass-toggle:hover {
+            color: #38bdf8;
+        }
+
+        /* strength bar container */
+        .strength {
+            height: 10px;
+            border-radius: 8px;
+            margin-top: 12px;
+            background: #020617;
+        }
+
+        /* strength fill animation */
+        .strength-bar {
+            border-radius: 8px;
+        }
+
+        /* strength text */
+        .strength-text {
+            margin-top: 8px;
+            font-size: 13px;
+            letter-spacing: .2px;
+        }
+
+        /* submit button spacing */
+        .password-form button {
+            margin-top: 10px;
+            width: 100%;
+            max-width: 260px;
+            align-self: center;
+        }
+
+        /* better divider line */
+        .password-form .field:not(:last-of-type) {
+            padding-bottom: 18px;
+            border-bottom: 1px dashed rgba(255, 255, 255, .06);
+        }
 
         /* ===== CERT REQUEST PAGE ADDON ===== */
 
