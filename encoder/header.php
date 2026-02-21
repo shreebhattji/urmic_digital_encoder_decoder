@@ -179,11 +179,6 @@ include 'static.php';
 
         /* CARD */
 
-
-        .card.wide {
-            grid-column: 1/-1
-        }
-
         .card h3 {
             margin: 0 0 16px;
             font-size: 17px;
@@ -1055,24 +1050,49 @@ include 'static.php';
         /* full width card */
         .card.wide {
             width: 100%;
-            max-width: 1100px;
+            max-width: 1200px;
             /* adjust max page width */
             margin: 0 auto;
             /* center */
+            grid-column: 1/-1
         }
 
         /* center form layout nicely */
         .card.wide form {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
+        }
+
+        .card.wide .row {
+            width: 100%;
+            max-width: 100%;
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        /* labels flush left */
+        .card.wide .row label {
+            text-align: left;
+            width: 100%;
+        }
+
+        /* textarea full width + proper inner spacing */
+        .card.wide .row textarea {
+            width: 100%;
+            max-width: 100%;
+            display: block;
+        }
+
+        /* helper text aligned left */
+        .card.wide .row small {
+            text-align: left;
         }
 
         /* keep inputs readable */
         .card.wide input,
         .card.wide select,
         .card.wide textarea {
-            max-width: 700px;
             width: 100%;
         }
 
