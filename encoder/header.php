@@ -500,16 +500,51 @@ include 'static.php';
 
         /* form rows */
         .row {
-            margin-bottom: 18px;
+            margin-bottom: 22px;
+            display: flex;
+            flex-direction: column;
         }
+
 
         /* label */
         .row label {
-            display: block;
             font-size: 14px;
             font-weight: 600;
-            margin-bottom: 6px;
-            color: var(--muted);
+            margin-bottom: 8px;
+            color: #cbd5e1;
+            letter-spacing: .2px;
+        }
+
+        .row textarea {
+            width: 100%;
+            min-height: 70px;
+            padding: 14px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, .12);
+            background: linear-gradient(180deg, #020617, #020617);
+            color: #f1f5f9;
+            font-size: 14px;
+            line-height: 1.5;
+            resize: vertical;
+            transition: .18s ease;
+        }
+
+        .row textarea::placeholder {
+            color: #64748b;
+        }
+
+        .row textarea:focus {
+            border-color: #38bdf8;
+            box-shadow:
+                0 0 0 2px rgba(56, 189, 248, .18),
+                0 6px 18px rgba(0, 0, 0, .45);
+            outline: none;
+        }
+
+        .row small {
+            margin-top: 7px;
+            font-size: 12px;
+            color: #64748b;
         }
 
         /* textarea fields */
@@ -529,14 +564,6 @@ include 'static.php';
             outline: none;
             border-color: var(--accent);
             box-shadow: 0 0 0 2px rgba(56, 189, 248, .15);
-        }
-
-        /* helper hint */
-        .row small {
-            display: block;
-            margin-top: 6px;
-            font-size: 12px;
-            color: #64748b;
         }
 
         /* invalid highlight */
