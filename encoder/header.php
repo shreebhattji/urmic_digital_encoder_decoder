@@ -599,17 +599,6 @@ include 'static.php';
                 height: 50px;
             }
 
-            /* password form */
-
-            .password-form {
-                max-width: 100%;
-            }
-
-            .password-form input {
-                height: 44px;
-                font-size: 13px;
-            }
-
             .price {
                 font-size: 20px;
             }
@@ -632,21 +621,18 @@ include 'static.php';
 
         /* ===== PASSWORD PAGE REFINEMENT PATCH ===== */
 
-        /* center card content better */
         .password-form {
             width: 100%;
             max-width: 560px;
             margin-top: 6px;
         }
 
-        /* field spacing + divider refinement */
         .password-form .field {
             margin-bottom: 22px;
             display: flex;
             flex-direction: column;
         }
 
-        /* labels */
         .password-form label {
             margin-bottom: 8px;
             font-size: 14px;
@@ -654,10 +640,11 @@ include 'static.php';
             color: #cbd5e1;
         }
 
-        /* inputs */
+        /* consistent input sizing */
         .password-form input {
+            width: 100%;
             height: 46px;
-            padding: 0 14px;
+            padding: 0 16px;
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, .12);
             background: #020617;
@@ -668,25 +655,43 @@ include 'static.php';
 
         /* focus */
         .password-form input:focus {
+            outline: none;
             border-color: #38bdf8;
             box-shadow:
                 0 0 0 2px rgba(56, 189, 248, .18),
                 0 6px 18px rgba(0, 0, 0, .45);
         }
 
-        /* toggle button alignment */
+        /* wrapper */
         .pass-wrap {
             position: relative;
+            width: 100%;
+        }
+
+
+        /* space for toggle text */
+        .pass-wrap input {
+            padding-right: 70px;
         }
 
         .pass-toggle {
+            position: absolute;
             right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 13px;
             font-weight: 500;
             letter-spacing: .2px;
+            cursor: pointer;
         }
 
         .pass-toggle:hover {
             color: #38bdf8;
+        }
+
+        .password-form .strength {
+            width: 100%;
+            overflow: hidden;
         }
 
         /* strength bar container */
@@ -700,6 +705,12 @@ include 'static.php';
         /* strength fill animation */
         .strength-bar {
             border-radius: 8px;
+        }
+
+        .strength-bar {
+            height: 100%;
+            width: 0;
+            transition: width .25s ease;
         }
 
         /* strength text */
