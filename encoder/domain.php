@@ -69,7 +69,6 @@ if (file_exists($jsonFile)) {
 
                     <div class="actions">
                         <button type="submit">Request Certificate</button>
-                        <button type="reset" class="ghost">Reset</button>
                     </div>
 
 

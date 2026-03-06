@@ -465,6 +465,8 @@ EOL
 
 sudo cp default_nginx_site /var/www/default_nginx_site
 sudo cp default_nginx.conf /var/www/default_nginx.conf
+sudo cp /var/www/default_nginx_site /etc/nginx/sites-available/default
+sudo cp /var/www/default_nginx.conf /etc/nginx/nginx.conf
 
 rm /var/www/html/index.nginx-debian.html;
 sudo mkdir -p /var/www/html/hls/shree;

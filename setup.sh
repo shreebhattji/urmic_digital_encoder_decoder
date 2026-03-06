@@ -1,5 +1,4 @@
 sudo apt update
-sudo apt upgrade -y
 sudo apt install -y apache2 php libapache2-mod-php vainfo ufw intel-media-va-driver-non-free libavcodec-extra mesa-utils i965-va-driver libmfx1 certbot intel-gpu-tools python3-certbot-nginx ffmpeg nginx v4l-utils python3-pip mpv libnginx-mod-rtmp alsa-utils vlan git zlib1g-dev php-zip php-curl
 sudo pip3 install psutil --break-system-packages
 

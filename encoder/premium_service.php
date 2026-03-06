@@ -148,11 +148,6 @@ include 'header.php'; ?>
             </div>
         </section>
     </div>
-
-    <div style="margin-top:26px" class="muted">
-        Need an exportable copy of this pricing page or custom branding? Contact sales for a tailored quote and SLA.
-    </div>
-
 </div>
 
 
