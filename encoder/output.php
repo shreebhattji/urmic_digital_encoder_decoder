@@ -367,6 +367,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <option value="0,2" <?php if ($data['display_audio'] == '0,2') echo 'selected'; ?>>0,2</option>
               <option value="0,3" <?php if ($data['display_audio'] == '0,3') echo 'selected'; ?>>0,3</option>
               <option value="0,7" <?php if ($data['display_audio'] == '0,7') echo 'selected'; ?>>0,7</option>
+              <option value="1,3" <?php if ($data['display_audio'] == '1,3') echo 'selected'; ?>>1,3</option>
             </select>
           </div>
         </div>
