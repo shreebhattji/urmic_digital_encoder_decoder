@@ -112,11 +112,11 @@ if ($subdomains_raw !== '') {
 }
 
 exec("sudo systemctl stop nginx");
-sleep(3); 
+sleep(3);
 exec("sudo certbot delete --all");
-sleep(3); 
+sleep(3);
 exec("sudo systemctl restart nginx");
-sleep(3); 
+sleep(3);
 
 
 // Merge primary domain + subdomains
@@ -130,7 +130,9 @@ foreach ($domains as $d) {
 
 // Build certbot command
 $certbot = "/usr/bin/certbot";
-$cmd = "sudo $certbot --nginx --agree-tos --non-interactive --email "
+exec("sudo cp /var/wwww/default_nginx_site /etc/nginx/sites-available/default");
+exec("sudo sed -i 's/ _;/ " . escapeshellarg($domain) . ";/g' /etc/nginx/sites-available/default");
+$cmd = "sudo $certbot certonly --nginx --agree-tos --non-interactive --email "
     . escapeshellarg($email)
     . " $dargs";
 

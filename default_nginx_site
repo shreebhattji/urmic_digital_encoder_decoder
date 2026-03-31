@@ -1,27 +1,54 @@
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
-    server_name _;
 
     root /var/www/html;
-    index index.html;
+    index index.html index.htm index.nginx-debian.html;
+    server_name _;
 
-    # These are fine at the server level, but safer inside location
+    # CORS (required for video players)
     add_header Access-Control-Allow-Origin "*" always;
-    add_header Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS" always;
-    add_header Access-Control-Allow-Headers "Authorization, Content-Type, Accept, Origin, X-Requested-With" always;
+    add_header Access-Control-Allow-Methods "GET, OPTIONS" always;
+    add_header Access-Control-Allow-Headers "*" always;
 
+    # Handle OPTIONS requests
+    if ($request_method = OPTIONS) {
+        return 204;
+    }
+
+    # Default static
     location / {
-        # Handle the OPTIONS (Preflight) request correctly
-        if ($request_method = OPTIONS) {
-            add_header Access-Control-Allow-Origin "*" always;
-            add_header Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS" always;
-            add_header Access-Control-Allow-Headers "Authorization, Content-Type, Accept, Origin, X-Requested-With" always;
-            add_header Content-Length 0;
-            add_header Content-Type text/plain;
-            return 204;
+        try_files $uri $uri/ =404;
+    }
+
+    # HLS streaming
+    location /hls/ {
+        types {
+            application/vnd.apple.mpegurl m3u8;
+            video/mp2t ts;
         }
 
-        try_files $uri $uri/ =404;
+        try_files $uri =404;
+
+        add_header Cache-Control no-cache;
+        add_header Content-Disposition inline;
+    }
+
+    # DASH streaming
+    location /dash/ {
+        types {
+            application/dash+xml mpd;
+            video/mp4 mp4 m4s;
+        }
+
+        try_files $uri =404;
+
+        add_header Cache-Control no-cache;
+        add_header Content-Disposition inline;
+    }
+
+    # Block .htaccess
+    location ~ /\.ht {
+        deny all;
     }
 }
