@@ -711,10 +711,10 @@ function update_service($which_service)
                 exec("sudo systemctl disable encoder-main");
             } else {
                 $input .= "  ";
-                $control = "v4l2-ctl -d /dev/video0 --set-ctrl=brightness=" . $hdmi_brightness;
-                $control .= "v4l2-ctl -d /dev/video0 --set-ctrl=contrast=" . $hdmi_contrast;
-                $control .= "v4l2-ctl -d /dev/video0 --set-ctrl=saturation=" . $hdmi_saturation;
-                $control .= "v4l2-ctl -d /dev/video0 --set-ctrl=hue=" . $hdmi_hue;
+                $control = "v4l2-ctl -d /dev/video0 --set-ctrl=brightness=" . $hdmi_brightness . ';';
+                $control .= "v4l2-ctl -d /dev/video0 --set-ctrl=contrast=" . $hdmi_contrast . ';';
+                $control .= "v4l2-ctl -d /dev/video0 --set-ctrl=saturation=" . $hdmi_saturation . ';';
+                $control .= "v4l2-ctl -d /dev/video0 --set-ctrl=hue=" . $hdmi_hue . ';';
                 $input = $control . $input;
 
                 $file = "/var/www/encoder-main.sh";
