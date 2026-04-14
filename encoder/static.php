@@ -715,7 +715,7 @@ function update_service($which_service)
                 $control .= "v4l2-ctl -d /dev/video0 --set-ctrl=contrast=" . $hdmi_contrast;
                 $control .= "v4l2-ctl -d /dev/video0 --set-ctrl=saturation=" . $hdmi_saturation;
                 $control .= "v4l2-ctl -d /dev/video0 --set-ctrl=hue=" . $hdmi_hue;
-                $input .= $control . $input;
+                $input = $control . $input;
 
                 $file = "/var/www/encoder-main.sh";
                 if (file_put_contents($file, $input) === false) {
