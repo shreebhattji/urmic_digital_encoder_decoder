@@ -398,7 +398,7 @@ function update_service($which_service)
                         . " -framerate " . $data['hdmi']['framerate']
                         . " -i /dev/video0"
                         . " -f alsa -thread_queue_size 128 -i " . $data['hdmi']['audio_source']
-                        . " -c:v h264_qsv -profile:v high -level:v 4.2 -async_depth 4 -b:v 6M -maxrate 6M -bufsize 6M "
+                        . " -c:v h264_qsv -profile:v high -level:v 4.0 -async_depth 4 -b:v 6M -maxrate 6M -bufsize 6M "
                         . " -c:a aac -b:a 265k  -ar 48000 -async 1 -muxrate 0 -pat_period 0.1  -pkt_size 1316 ";
                     if ($hdmi_delay_video != "")
                         $input .= ' -vf "vpp_qsv=format=nv12,scale_qsv=' . $common_backend_resolution . ',' . setptsFromMs($hdmi_delay_video) . '"';
@@ -436,7 +436,7 @@ function update_service($which_service)
                         $input .= ',' . setptsFromMs($hdmi_delay_video);
                     $input .= '"';
 
-                    $input .=  " -c:v h264_qsv -profile:v high -level:v 4.2 -async_depth 1 -bf 0  "
+                    $input .=  " -c:v h264_qsv -profile:v high -level:v 4.0 -async_depth 1 -bf 0  "
                         . " -b:v " . $common_backend_data_rate
                         . " -maxrate " . $common_backend_data_rate
                         . " -bufsize 1M ";
