@@ -385,6 +385,11 @@ function update_service($which_service)
     $hdmi_delay_video = $data['hdmi']['video_delay'];
     $hdmi_delay_audio = $data['hdmi']['audio_delay'];
 
+    $hdmi_brightness = $data['hdmi']['brightness'];
+    $hdmi_contrast = $data['hdmi']['contrast'];
+    $hdmi_saturation = $data['hdmi']['saturation'];
+    $hdmi_hue = $data['hdmi']['hue'];
+
     if ($srt_pass1 == "")
         $srt_pass1 = generateRandomString(16);
     if ($srt_pass2 == "")
@@ -429,7 +434,7 @@ function update_service($which_service)
                     $input .= "ffmpeg -hide_banner -init_hw_device qsv=hw -filter_hw_device hw -hwaccel qsv -hwaccel_output_format qsv -c:v mjpeg_qsv -f v4l2 -thread_queue_size 128 -use_wallclock_as_timestamps 1 -input_format mjpeg "
                         . " -video_size " . $data['hdmi']['resolution']
                         . " -framerate " . $data['hdmi']['framerate'] . " -i /dev/video0 -f alsa -thread_queue_size 128 -i " . $data['hdmi']['audio_source']
-                        . ' -vf "vpp_qsv=brightness=' . $data['hdmi']['brightness'] . ':contrast=' . $data['hdmi']['contrast'] . ':saturation=' . $data['hdmi']['saturation'] . ':hue=' . $data['hdmi']['hue'];
+                        . ' -vf "';
                     if ($data['hdmi']['resolution'] != $data['common_backend']['resolution'])
                         $input .= ',scale_qsv=' . $common_backend_resolution;
                     if ($hdmi_delay_video != "")
@@ -706,6 +711,12 @@ function update_service($which_service)
                 exec("sudo systemctl disable encoder-main");
             } else {
                 $input .= "  ";
+                $control = "v4l2-ctl -d /dev/video0 --set-ctrl=brightness=" . $hdmi_brightness;
+                $control .= "v4l2-ctl -d /dev/video0 --set-ctrl=contrast=" . $hdmi_contrast;
+                $control .= "v4l2-ctl -d /dev/video0 --set-ctrl=saturation=" . $hdmi_saturation;
+                $control .= "v4l2-ctl -d /dev/video0 --set-ctrl=hue=" . $hdmi_hue;
+                $input .= $control . $input;
+
                 $file = "/var/www/encoder-main.sh";
                 if (file_put_contents($file, $input) === false) {
                     echo "Error writing file.";
