@@ -398,7 +398,7 @@ function update_service($which_service)
                         . " -framerate " . $data['hdmi']['framerate']
                         . " -i /dev/video0"
                         . " -f alsa -thread_queue_size 128 -i " . $data['hdmi']['audio_source']
-                        . " -c:v h264_qsv -profile:v high -level:v 4.0 -async_depth 4 -b:v 6M -maxrate 6M -bufsize 6M "
+                        . " -c:v h264_qsv -profile:v high -level:v 3.1 -async_depth 1 -b:v 5M -maxrate 5M -bufsize 5M "
                         . " -c:a aac -b:a 265k  -ar 48000 -async 1 -muxrate 0 -pat_period 0.1  -pkt_size 1316 ";
                     if ($hdmi_delay_video != "")
                         $input .= ' -vf "vpp_qsv=format=nv12,scale_qsv=' . $common_backend_resolution . ',' . setptsFromMs($hdmi_delay_video) . '"';
@@ -436,7 +436,7 @@ function update_service($which_service)
                         $input .= ',' . setptsFromMs($hdmi_delay_video);
                     $input .= '"';
 
-                    $input .=  " -c:v h264_qsv -profile:v high -level:v 4.0 -async_depth 1 -bf 0  "
+                    $input .=  " -c:v h264_qsv -profile:v high -level:v 4.0 -async_depth 1  "
                         . " -b:v " . $common_backend_data_rate
                         . " -maxrate " . $common_backend_data_rate
                         . " -bufsize 1M ";
@@ -919,12 +919,16 @@ function update_service($which_service)
                 if ($use_common_backend == "use_common_backend" && $data['udp0']['format'] == "h264_qsv") {
                     $udp0 = str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp0);
                     $udp0 = str_replace("scale", "scale_qsv", $udp0);
+                    $udp0 = str_replace("h264_qsv", "h264_qsv -profile:v baseline -level:v 3.1 -async_depth 1 ", $udp0);
                 }
                 if ($data['udp0']['service_udp0_output'] == "usb") {
                     $udp0 = str_replace("pkt_size=1316", "pkt_size=1316&localaddr=172.16.111.111", $udp0);
                 }
                 if ($data['udp0']['udp0_service_name'] != "") {
                     $udp0 = str_replace("-f mpegts", "-metadata service_name=" . $data['udp0']['udp0_service_name'] . " -f mpegts", $udp0);
+                }
+                if (strpos($udp0, "mpeg2video") !== false) {
+                    $udp0 = str_replace("-hwaccel auto", "", $udp0);
                 }
                 $file = "/var/www/encoder-udp0.sh";
                 file_put_contents($file, $udp0);
@@ -975,12 +979,16 @@ function update_service($which_service)
                 if ($use_common_backend == "use_common_backend" && $data['udp1']['format'] == "h264_qsv") {
                     $udp1 = str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp1);
                     $udp1 = str_replace("scale", "scale_qsv", $udp1);
+                    $udp1 = str_replace("h264_qsv", "h264_qsv -profile:v baseline -level:v 3.1 -async_depth 1 ", $udp1);
                 }
                 if ($data['udp1']['service_udp1_output'] === "usb") {
                     $udp1 = str_replace("pkt_size=1316", "pkt_size=1316&localaddr=172.16.111.111", $udp1);
                 }
                 if ($data['udp1']['udp1_service_name'] !== "") {
                     $udp1 = str_replace("-f mpegts", "-metadata service_name=" . $data['udp1']['udp1_service_name'] . " -f mpegts", $udp1);
+                }
+                if (strpos($udp1, "mpeg2video") !== false) {
+                    $udp1 = str_replace("-hwaccel auto", "", $udp1);
                 }
                 $file = "/var/www/encoder-udp1.sh";
                 file_put_contents($file, $udp1);
@@ -1028,12 +1036,16 @@ function update_service($which_service)
                         if ($use_common_backend == "use_common_backend" && $data['udp2']['format'] == "h264_qsv") {
                             $udp2 = str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp2);
                             $udp2 = str_replace("scale", "scale_qsv", $udp2);
+                            $udp2 = str_replace("h264_qsv", "h264_qsv -profile:v baseline -level:v 3.1 -async_depth 1 ", $udp2);
                         }
                         if ($data['udp2']['service_udp2_output'] == "usb") {
                             $udp2 = str_replace("pkt_size=1316", "pkt_size=1316&localaddr=172.16.111.111", $udp2);
                         }
                         if ($data['udp2']['udp2_service_name'] != "") {
                             $udp2 = str_replace("-f mpegts", "-metadata service_name=" . $data['udp2']['udp2_service_name'] . " -f mpegts", $udp2);
+                        }
+                        if (strpos($udp2, "mpeg2video") !== false) {
+                            $udp2 = str_replace("-hwaccel auto", "", $udp2);
                         }
                         break;
                 }
