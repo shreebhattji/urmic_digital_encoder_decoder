@@ -9,6 +9,13 @@ License text:
 https://github.com/shreebhattji/Urmi/blob/main/licence.md
 */
 
+function toVppScale($resolution, $default = "w=1280:h=720")
+{
+    if (preg_match('/^\s*(\d+)\s*[x×]\s*(\d+)\s*$/', $resolution, $m)) {
+        return "w={$m[1]}:h={$m[2]}";
+    }
+    return $default;
+}
 function generateRandomString($length = 16)
 {
     $bytes = random_bytes(ceil($length / 2));
@@ -381,6 +388,7 @@ function update_service($which_service)
     $common_backend_audio_data_rate = $data['common_backend']['audio_data_rate'];
     $common_backend_audio_sample_rate = $data['common_backend']['audio_sample_rate'];
     $common_backend_extra = $data['common_backend']['extra'];
+    $common_backend_resolution_vpp = toVppScale($common_backend_resolution);
     $common_backend_resolution = str_replace("x", ":", $common_backend_resolution);
     $hdmi_delay_video = $data['hdmi']['video_delay'];
     $hdmi_delay_audio = $data['hdmi']['audio_delay'];
@@ -406,9 +414,9 @@ function update_service($which_service)
                         . " -c:v h264_qsv -profile:v high -level:v 3.1 -global_quality 20 5M -maxrate 5M -bufsize 5M "
                         . " -c:a aac -b:a 265k  -ar 48000 -async 1 -muxrate 0 -pat_period 0.1  -pkt_size 1316 ";
                     if ($hdmi_delay_video != "")
-                        $input .= ' -vf "vpp_qsv=format=nv12,scale_qsv=' . $common_backend_resolution . ',' . setptsFromMs($hdmi_delay_video) . '"';
+                        $input .= ' -vf "vpp_qsv=format=nv12:' . $common_backend_resolution_vpp . ',' . setptsFromMs($hdmi_delay_video) . '"';
                     else
-                        $input .= ' -vf "vpp_qsv=format=nv12,scale_qsv=' . $common_backend_resolution . '"';
+                        $input .= ' -vf "vpp_qsv=format=nv12:' . $common_backend_resolution_vpp . '"';
                     if ($hdmi_delay_audio != "")
                         $input .= adelayFromMs($hdmi_delay_audio, 2);
 
@@ -437,7 +445,7 @@ function update_service($which_service)
                     $vf = false;
                     $vf_input = '';
                     if ($data['hdmi']['resolution'] != $data['common_backend']['resolution']) {
-                        $vf_input .= ',scale_qsv=' . $common_backend_resolution;
+                        $vf_input .= ',vpp_qsv=' . $common_backend_resolution_vpp;
                         $vf = true;
                     }
                     if ($hdmi_delay_video != "") {
@@ -780,7 +788,7 @@ function update_service($which_service)
                         case "disable":
                             $rtmp .= ' '
                                 . ' -c:v h264_qsv '
-                                . ' -vf "scale=' . str_replace("x", ":", $data['rtmp0']['resolution']) . '"'
+                                . ' -vf "vpp_qsv=' . $common_backend_resolution_vpp . '"'
                                 . ' -b:v ' . $data['rtmp0']['data_rate']
                                 . ' -maxrate ' . $data['rtmp0']['data_rate']
                                 . ' -bufsize ' . $data['rtmp0']['data_rate']
@@ -798,7 +806,6 @@ function update_service($which_service)
                 }
                 if ($use_common_backend_rtmp0 === "disable") {
                     $rtmp = str_replace("ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -fflags nobuffer -analyzeduration 3000000 -i ", $rtmp);
-                    $rtmp = str_replace("scale", "scale_qsv", $rtmp);
                 }
                 $file = "/var/www/encoder-rtmp0.sh";
                 file_put_contents($file, $rtmp);
@@ -821,7 +828,7 @@ function update_service($which_service)
                     case "disable":
                         $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?localaddr=127.0.0.1&overrun_nonfatal=1" '
                             . ' -c:v h264_qsv '
-                            . ' -vf "scale=' . str_replace("x", ":", $data['rtmp1']['resolution']) . '"'
+                            . ' -vf "vpp_qsv=' . $common_backend_resolution_vpp . '"'
                             . ' -b:v ' . $data['rtmp1']['data_rate']
                             . ' -maxrate ' . $data['rtmp1']['data_rate']
                             . ' -bufsize ' . $data['rtmp1']['data_rate']
@@ -838,7 +845,6 @@ function update_service($which_service)
                 }
                 if ($use_common_backend_rtmp1 === "disable") {
                     $rtmp = str_replace("ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -fflags nobuffer -analyzeduration 3000000 -i ", $rtmp);
-                    $rtmp = str_replace("scale", "scale_qsv", $rtmp);
                 }
                 $file = "/var/www/encoder-rtmp1.sh";
                 file_put_contents($file, $rtmp);
@@ -869,11 +875,11 @@ function update_service($which_service)
                             . ' -f mpegts "srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji"';
                         break;
                     case "disable":
-                        $srt .= ' -c:v ' . $data['srt']['format']
-                            . ' -vf "scale=' . str_replace("x", ":", $data['srt']['resolution']) . '"'
+                        $srt .= ' -c:v h264_qsv '
+                            . ' -vf "vpp_qsv=' . $common_backend_resolution_vpp . '"'
                             . ' -b:v ' . $data['srt']['data_rate']
                             . ' -maxrate ' . $data['srt']['data_rate']
-                            . ' -bufsize ' . $data['udp0']['data_rate']
+                            . ' -bufsize ' . $data['srt']['data_rate']
                             . ' -r ' . $data['srt']['srt']
                             . ' -g ' . $data['srt']['gop']
                             . ' -c:a ' . $data['srt']['audio_format']
@@ -920,7 +926,7 @@ function update_service($which_service)
                         break;
                     case "disable":
                         $udp0 .= ' -c:v ' . $data['udp0']['format']
-                            . ' -vf "scale=' . str_replace("x", ":", $data['udp0']['resolution']) . '"'
+                            . ' -vf "scale=resolution_resolution_resolution'  . '"'
                             . ' -b:v ' . $data['udp0']['data_rate']
                             . ' -maxrate ' . $data['udp0']['data_rate']
                             . ' -bufsize ' . $data['udp0']['data_rate']
@@ -936,8 +942,11 @@ function update_service($which_service)
                 }
                 if ($use_common_backend == "use_common_backend" && $data['udp0']['format'] == "h264_qsv") {
                     $udp0 = str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp0);
-                    $udp0 = str_replace("scale", "scale_qsv", $udp0);
+                    $udp0 = str_replace("scale", "vpp_qsv", $udp0);
+                    $udp0 = str_replace("resolution_resolution_resolution", $common_backend_resolution_vpp, $udp0);
                     $udp0 = str_replace("h264_qsv", "h264_qsv -profile:v high -level:v 3.1 -global_quality 20 ", $udp0);
+                } else {
+                    $udp0 = str_replace("resolution_resolution_resolution", str_replace("x", ":", $data['udp0']['resolution']), $udp0);
                 }
                 if ($data['udp0']['service_udp0_output'] == "usb") {
                     $udp0 = str_replace("pkt_size=1316", "pkt_size=1316&localaddr=172.16.111.111", $udp0);
@@ -996,8 +1005,11 @@ function update_service($which_service)
 
                 if ($use_common_backend == "use_common_backend" && $data['udp1']['format'] == "h264_qsv") {
                     $udp1 = str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp1);
-                    $udp1 = str_replace("scale", "scale_qsv", $udp1);
+                    $udp1 = str_replace("scale", "vpp_qsv", $udp1);
+                    $udp1 = str_replace("resolution_resolution_resolution", $common_backend_resolution_vpp, $udp1);
                     $udp1 = str_replace("h264_qsv", "h264_qsv -profile:v main -level:v 3.1 -global_quality 20 ", $udp1);
+                } else {
+                    $udp1 = str_replace("resolution_resolution_resolution", str_replace("x", ":", $data['udp1']['resolution']), $udp1);
                 }
                 if ($data['udp1']['service_udp1_output'] === "usb") {
                     $udp1 = str_replace("pkt_size=1316", "pkt_size=1316&localaddr=172.16.111.111", $udp1);
@@ -1053,8 +1065,11 @@ function update_service($which_service)
                             . ' -metadata service_provider=ShreeBhattJI -f mpegts "' . $data['udp2']['udp'] . '?pkt_size=1316&ttl=4&buffer_size=1048576"';
                         if ($use_common_backend == "use_common_backend" && $data['udp2']['format'] == "h264_qsv") {
                             $udp2 = str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp2);
-                            $udp2 = str_replace("scale", "scale_qsv", $udp2);
+                            $udp2 = str_replace("scale", "vpp_qsv", $udp2);
+                            $udp2 = str_replace("resolution_resolution_resolution", $common_backend_resolution_vpp, $udp2);
                             $udp2 = str_replace("h264_qsv", "h264_qsv -profile:v main -level:v 3.1 -global_quality 20 ", $udp2);
+                        } else {
+                            $udp2 = str_replace("resolution_resolution_resolution", str_replace("x", ":", $data['udp2']['resolution']), $udp2);
                         }
                         if ($data['udp2']['service_udp2_output'] == "usb") {
                             $udp2 = str_replace("pkt_size=1316", "pkt_size=1316&localaddr=172.16.111.111", $udp2);
