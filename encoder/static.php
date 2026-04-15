@@ -433,13 +433,20 @@ function update_service($which_service)
                 case "hdmi":
                     $input .= "ffmpeg -hide_banner -init_hw_device qsv=hw -filter_hw_device hw -hwaccel qsv -hwaccel_output_format qsv -c:v mjpeg_qsv -f v4l2 -thread_queue_size 128 -use_wallclock_as_timestamps 1 -input_format mjpeg "
                         . " -video_size " . $data['hdmi']['resolution']
-                        . " -framerate " . $data['hdmi']['framerate'] . " -i /dev/video0 -f alsa -thread_queue_size 128 -i " . $data['hdmi']['audio_source']
-                        . ' -vf "';
-                    if ($data['hdmi']['resolution'] != $data['common_backend']['resolution'])
-                        $input .= ',scale_qsv=' . $common_backend_resolution;
-                    if ($hdmi_delay_video != "")
-                        $input .= ',' . setptsFromMs($hdmi_delay_video);
-                    $input .= '"';
+                        . " -framerate " . $data['hdmi']['framerate'] . " -i /dev/video0 -f alsa -thread_queue_size 128 -i " . $data['hdmi']['audio_source'];
+                    $vf = false;
+                    $vf_input = '';
+                    if ($data['hdmi']['resolution'] != $data['common_backend']['resolution']) {
+                        $vf_input .= ',scale_qsv=' . $common_backend_resolution;
+                        $vf = true;
+                    }
+                    if ($hdmi_delay_video != "") {
+                        $vf_input .= ',' . setptsFromMs($hdmi_delay_video);
+                        $vf = true;
+                    }
+                    if ($vf == true) {
+                        $input .= ' -vf "' . $vf_input . '"';
+                    }
 
                     $input .=  " -c:v h264_qsv -profile:v high -level:v 4.0 -async_depth 1  "
                         . " -b:v " . $common_backend_data_rate
