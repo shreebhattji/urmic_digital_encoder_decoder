@@ -456,7 +456,7 @@ function update_service($which_service)
                         $input .= ' -vf "' . $vf_input . '"';
                     }
 
-                    $input .=  " -c:v h264_qsv -profile:v high -level:v 3.1 -global_quality 20  "
+                    $input .=  " -c:v h264_qsv -profile:v high -level:v 4.0 -global_quality 20  "
                         . " -b:v " . $common_backend_data_rate
                         . " -maxrate " . $common_backend_data_rate
                         . " -bufsize 1M ";
