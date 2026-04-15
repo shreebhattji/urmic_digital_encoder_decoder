@@ -419,11 +419,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 span: "brightnessVal"
             },
             hdmi_contrast: {
-                value: 1,
+                value: 150,
                 span: "contrastVal"
             },
             hdmi_saturation: {
-                value: 1,
+                value: 150,
                 span: "saturationVal"
             },
             hdmi_hue: {
