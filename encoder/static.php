@@ -926,7 +926,7 @@ function update_service($which_service)
                         break;
                     case "disable":
                         $udp0 .= ' -c:v ' . $data['udp0']['format']
-                            . ' -vf "scale=resolution_resolution_resolution'  . '"'
+                            . ' -vf "scale=resolution_resolution_resolution"'
                             . ' -b:v ' . $data['udp0']['data_rate']
                             . ' -maxrate ' . $data['udp0']['data_rate']
                             . ' -bufsize ' . $data['udp0']['data_rate']
@@ -988,7 +988,7 @@ function update_service($which_service)
                         break;
                     case "disable":
                         $udp1 .= ' -c:v ' . $data['udp1']['format']
-                            . ' -vf "scale=' . str_replace("x", ":", $data['udp1']['resolution']) . '"'
+                            . ' -vf "scale=resolution_resolution_resolution"'
                             . ' -b:v ' . $data['udp1']['data_rate']
                             . ' -maxrate ' . $data['udp1']['data_rate']
                             . ' -bufsize ' . $data['udp1']['data_rate']
@@ -1051,7 +1051,7 @@ function update_service($which_service)
                         break;
                     case "disable":
                         $udp2 .= ' -c:v ' . $data['udp2']['format']
-                            . ' -vf "scale=' . str_replace("x", ":", $data['udp2']['resolution']) . '"'
+                            . ' -vf "scale=resolution_resolution_resolution"'
                             . ' -b:v ' . $data['udp2']['data_rate']
                             . ' -maxrate ' . $data['udp2']['data_rate']
                             . ' -bufsize ' . $data['udp2']['data_rate']
