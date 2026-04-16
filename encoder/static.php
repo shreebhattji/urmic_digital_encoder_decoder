@@ -1045,12 +1045,12 @@ function update_service($which_service)
             if ($service_udp2 === "enable") {
                 switch ($use_common_backend_udp2) {
                     case "enable":
-                        $udp2 = ' -c:v copy '
+                        $udp2 .= ' -c:v copy '
                             . ' -c:a copy '
                             . ' -f mpegts "' . $data['udp2']['udp'] . '?pkt_size=1316&ttl=4&buffer_size=1048576"';
                         break;
                     case "disable":
-                        $udp2 = ' -c:v ' . $data['udp2']['format']
+                        $udp2 .= ' -c:v ' . $data['udp2']['format']
                             . ' -vf "scale=' . str_replace("x", ":", $data['udp2']['resolution']) . '"'
                             . ' -b:v ' . $data['udp2']['data_rate']
                             . ' -maxrate ' . $data['udp2']['data_rate']
