@@ -943,7 +943,7 @@ function update_service($which_service)
                 if ($use_common_backend == "use_common_backend" && $data['udp0']['format'] == "h264_qsv") {
                     $udp0 = str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp0);
                     $udp0 = str_replace("scale", "vpp_qsv", $udp0);
-                    $udp0 = str_replace("resolution_resolution_resolution", $common_backend_resolution_vpp, $udp0);
+                    $udp0 = str_replace("resolution_resolution_resolution", toVppScale($data['udp0']['resolution']), $udp0);
                     $udp0 = str_replace("h264_qsv", "h264_qsv -profile:v high -level:v 3.1 -global_quality 20 ", $udp0);
                 } else {
                     $udp0 = str_replace("resolution_resolution_resolution", str_replace("x", ":", $data['udp0']['resolution']), $udp0);
@@ -1006,7 +1006,7 @@ function update_service($which_service)
                 if ($use_common_backend == "use_common_backend" && $data['udp1']['format'] == "h264_qsv") {
                     $udp1 = str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp1);
                     $udp1 = str_replace("scale", "vpp_qsv", $udp1);
-                    $udp1 = str_replace("resolution_resolution_resolution", $common_backend_resolution_vpp, $udp1);
+                    $udp1 = str_replace("resolution_resolution_resolution", toVppScale($data['udp1']['resolution']), $udp1);
                     $udp1 = str_replace("h264_qsv", "h264_qsv -profile:v main -level:v 3.1 -global_quality 20 ", $udp1);
                 } else {
                     $udp1 = str_replace("resolution_resolution_resolution", str_replace("x", ":", $data['udp1']['resolution']), $udp1);
@@ -1066,7 +1066,7 @@ function update_service($which_service)
                         if ($use_common_backend == "use_common_backend" && $data['udp2']['format'] == "h264_qsv") {
                             $udp2 = str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp2);
                             $udp2 = str_replace("scale", "vpp_qsv", $udp2);
-                            $udp2 = str_replace("resolution_resolution_resolution", $common_backend_resolution_vpp, $udp2);
+                            $udp2 = str_replace("resolution_resolution_resolution", toVppScale($data['udp2']['resolution']), $udp2);
                             $udp2 = str_replace("h264_qsv", "h264_qsv -profile:v main -level:v 3.1 -global_quality 20 ", $udp2);
                         } else {
                             $udp2 = str_replace("resolution_resolution_resolution", str_replace("x", ":", $data['udp2']['resolution']), $udp2);
