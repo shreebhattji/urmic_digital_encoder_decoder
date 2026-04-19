@@ -132,7 +132,7 @@ foreach ($domains as $d) {
 $certbot = "/usr/bin/certbot";
 exec("sudo cp /var/www/default_nginx_site /etc/nginx/sites-available/default");
 exec("sudo sed -i 's/ _;/ " . escapeshellarg($domain) . ";/g' /etc/nginx/sites-available/default");
-$cmd = "sudo $certbot certonly --nginx --agree-tos --non-interactive --email "
+$cmd = "sudo $certbot --nginx --agree-tos --non-interactive --email "
     . escapeshellarg($email)
     . " $dargs";
 
