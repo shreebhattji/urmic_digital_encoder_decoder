@@ -70,7 +70,7 @@ $defaults = [
     'common_backend' => 'disable',
     'udp' => 'udp://@224.1.1.1:8001',
     'format' => 'h264_qsv',
-    'resolution' => '720x576',
+    'resolution' => '704x576',
     'data_rate' => '1.5M',
     'framerate' => '25',
     'gop' => '25',
@@ -86,7 +86,7 @@ $defaults = [
     'common_backend' => 'disable',
     'udp' => 'udp://@224.1.1.1:8002',
     'format' => 'mpeg2video',
-    'resolution' => '720x576',
+    'resolution' => '704x576',
     'data_rate' => '3M',
     'framerate' => '25',
     'gop' => '25',
@@ -701,8 +701,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <span class="dropdown-label">Resolution :</span>
               <div class="dropdown">
                 <select name="udp0_resolution" id="udp0_resolution">
-                  <option value="720x480" <?php if ($data['udp0']['resolution'] == '720x480') echo 'selected'; ?>>480p 720x480 NTSC DVD</option>
-                  <option value="720x576" <?php if ($data['udp0']['resolution'] == '720x576') echo 'selected'; ?>>576p 720x576 PAL DVD</option>
+                  <option value="704x480" <?php if ($data['udp0']['resolution'] == '704x480') echo 'selected'; ?>>480p 704x480 NTSC DVD</option>
+                  <option value="704x576" <?php if ($data['udp0']['resolution'] == '704x576') echo 'selected'; ?>>576p 704x576 PAL DVD</option>
                   <option value="1280x720" <?php if ($data['udp0']['resolution'] == '1280x720') echo 'selected'; ?>>720p 1280x720 HD</option>
                   <option value="1920x1080" <?php if ($data['udp0']['resolution'] == '1920x1080') echo 'selected'; ?>>1080p 1920x1080 FHD</option>
                   <option value="2560x1440" <?php if ($data['udp0']['resolution'] == '2560x1440') echo 'selected'; ?>>2k 2560x1440 QHD</option>
@@ -842,8 +842,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <span class="dropdown-label">Resolution :</span>
               <div class="dropdown">
                 <select name="udp1_resolution" id="udp1_resolution">
-                  <option value="720x480" <?php if ($data['udp1']['resolution'] == '720x480') echo 'selected'; ?>>480p 720x480 NTSC DVD</option>
-                  <option value="720x576" <?php if ($data['udp1']['resolution'] == '720x576') echo 'selected'; ?>>576p 720x576 PAL DVD</option>
+                  <option value="704x480" <?php if ($data['udp1']['resolution'] == '704x480') echo 'selected'; ?>>480p 704x480 NTSC DVD</option>
+                  <option value="704x576" <?php if ($data['udp1']['resolution'] == '704x576') echo 'selected'; ?>>576p 704x576 PAL DVD</option>
                   <option value="1280x720" <?php if ($data['udp1']['resolution'] == '1280x720') echo 'selected'; ?>>720p 1280x720 HD</option>
                   <option value="1920x1080" <?php if ($data['udp1']['resolution'] == '1920x1080') echo 'selected'; ?>>1080p 1920x1080 FHD</option>
                   <option value="2560x1440" <?php if ($data['udp1']['resolution'] == '2560x1440') echo 'selected'; ?>>2k 2560x1440 QHD</option>
@@ -983,8 +983,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <span class="dropdown-label">Resolution :</span>
               <div class="dropdown">
                 <select name="udp2_resolution" id="udp2_resolution">
-                  <option value="720x480" <?php if ($data['udp2']['resolution'] == '720x480') echo 'selected'; ?>>480p 720x480 NTSC DVD</option>
-                  <option value="720x576" <?php if ($data['udp2']['resolution'] == '720x576') echo 'selected'; ?>>576p 720x576 PAL DVD</option>
+                  <option value="704x480" <?php if ($data['udp2']['resolution'] == '704x480') echo 'selected'; ?>>480p 704x480 NTSC DVD</option>
+                  <option value="704x576" <?php if ($data['udp2']['resolution'] == '704x576') echo 'selected'; ?>>576p 704x576 PAL DVD</option>
                   <option value="1280x720" <?php if ($data['udp2']['resolution'] == '1280x720') echo 'selected'; ?>>720p 1280x720 HD</option>
                   <option value="1920x1080" <?php if ($data['udp2']['resolution'] == '1920x1080') echo 'selected'; ?>>1080p 1920x1080 FHD</option>
                   <option value="2560x1440" <?php if ($data['udp2']['resolution'] == '2560x1440') echo 'selected'; ?>>2k 2560x1440 QHD</option>
