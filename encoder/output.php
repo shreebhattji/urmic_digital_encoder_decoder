@@ -873,10 +873,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <span class="dropdown-label">format :</span>
               <div class="dropdown">
                 <select name="udp1_audio_format" id="udp1_audio_format">
-                  <option value="mp2" <?php if ($data['udp1']['format'] == 'mp2') echo 'selected'; ?>>mp2</option>
-                  <option value="mp3" <?php if ($data['udp1']['format'] == 'mp3') echo 'selected'; ?>>mp3</option>
-                  <option value="aac" <?php if ($data['udp1']['format'] == 'aac') echo 'selected'; ?>>aac</option>
-                  <option value="ac3" <?php if ($data['udp1']['format'] == 'ac3') echo 'selected'; ?>>ac3</option>
+                  <option value="mp2" <?php if ($data['udp1']['audio_format'] == 'mp2') echo 'selected'; ?>>mp2</option>
+                  <option value="mp3" <?php if ($data['udp1']['audio_format'] == 'mp3') echo 'selected'; ?>>mp3</option>
+                  <option value="aac" <?php if ($data['udp1']['audio_format'] == 'aac') echo 'selected'; ?>>aac</option>
+                  <option value="ac3" <?php if ($data['udp1']['audio_format'] == 'ac3') echo 'selected'; ?>>ac3</option>
                 </select>
               </div>
             </div>
@@ -1014,10 +1014,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <span class="dropdown-label">format :</span>
               <div class="dropdown">
                 <select name="udp2_audio_format" id="udp2_audio_format">
-                  <option value="mp2" <?php if ($data['udp2']['format'] == 'mp2') echo 'selected'; ?>>mp2</option>
-                  <option value="mp3" <?php if ($data['udp2']['format'] == 'mp3') echo 'selected'; ?>>mp3</option>
-                  <option value="aac" <?php if ($data['udp2']['format'] == 'aac') echo 'selected'; ?>>aac</option>
-                  <option value="ac3" <?php if ($data['udp2']['format'] == 'ac3') echo 'selected'; ?>>ac3</option>
+                  <option value="mp2" <?php if ($data['udp2']['audio_format'] == 'mp2') echo 'selected'; ?>>mp2</option>
+                  <option value="mp3" <?php if ($data['udp2']['audio_format'] == 'mp3') echo 'selected'; ?>>mp3</option>
+                  <option value="aac" <?php if ($data['udp2']['audio_format'] == 'aac') echo 'selected'; ?>>aac</option>
+                  <option value="ac3" <?php if ($data['udp2']['audio_format'] == 'ac3') echo 'selected'; ?>>ac3</option>
                 </select>
               </div>
             </div>
