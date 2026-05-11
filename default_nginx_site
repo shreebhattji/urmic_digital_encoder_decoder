@@ -7,32 +7,53 @@ server {
     root /var/www/html;
     index index.html index.htm;
 
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+
     # Performance
     sendfile on;
     tcp_nopush on;
     tcp_nodelay on;
 
-    include /etc/nginx/mime.types;
-    default_type application/octet-stream;
+    # Logs
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log;
 
-    # Global CORS
-    add_header Access-Control-Allow-Origin "*" always;
-    add_header Access-Control-Allow-Methods "GET, HEAD, OPTIONS" always;
-    add_header Access-Control-Allow-Headers "*" always;
-    add_header Access-Control-Expose-Headers "Content-Length,Content-Range" always;
+    # =========================
+    # Certbot
+    # =========================
+    location ^~ /.well-known/acme-challenge/ {
+        root /var/www/html;
+        default_type "text/plain";
 
-    # OPTIONS requests
+        allow all;
+
+        try_files $uri =404;
+    }
+
+    # =========================
+    # Default Static
+    # =========================
     location / {
+
+        # CORS
+        add_header Access-Control-Allow-Origin "*" always;
+        add_header Access-Control-Allow-Methods "GET, HEAD, OPTIONS" always;
+        add_header Access-Control-Allow-Headers "*" always;
+        add_header Access-Control-Expose-Headers "Content-Length,Content-Range" always;
+
+        # OPTIONS
         if ($request_method = OPTIONS) {
             return 204;
         }
 
         autoindex on;
+
         try_files $uri $uri/ =404;
     }
 
     # =========================
-    # HLS
+    # HLS Streaming
     # =========================
     location /hls/ {
 
@@ -41,9 +62,21 @@ server {
             video/mp2t ts;
         }
 
-        add_header Cache-Control "no-cache";
-        add_header Accept-Ranges bytes;
-        add_header Content-Disposition inline;
+        # Required CORS for ALL HLS files
+        add_header Access-Control-Allow-Origin "*" always;
+        add_header Access-Control-Allow-Methods "GET, HEAD, OPTIONS" always;
+        add_header Access-Control-Allow-Headers "*" always;
+        add_header Access-Control-Expose-Headers "Content-Length,Content-Range" always;
+
+        # HLS headers
+        add_header Cache-Control "no-cache" always;
+        add_header Accept-Ranges bytes always;
+        add_header Content-Disposition inline always;
+
+        # OPTIONS
+        if ($request_method = OPTIONS) {
+            return 204;
+        }
 
         gzip off;
 
@@ -51,7 +84,7 @@ server {
     }
 
     # =========================
-    # DASH
+    # DASH Streaming
     # =========================
     location /dash/ {
 
@@ -60,28 +93,46 @@ server {
             video/mp4 mp4 m4s;
         }
 
-        add_header Cache-Control "no-cache";
-        add_header Accept-Ranges bytes;
-        add_header Content-Disposition inline;
+        # Required CORS for DASH
+        add_header Access-Control-Allow-Origin "*" always;
+        add_header Access-Control-Allow-Methods "GET, HEAD, OPTIONS" always;
+        add_header Access-Control-Allow-Headers "*" always;
+        add_header Access-Control-Expose-Headers "Content-Length,Content-Range" always;
+
+        # DASH headers
+        add_header Cache-Control "no-cache" always;
+        add_header Accept-Ranges bytes always;
+        add_header Content-Disposition inline always;
+
+        # OPTIONS
+        if ($request_method = OPTIONS) {
+            return 204;
+        }
 
         gzip off;
 
         try_files $uri =404;
     }
 
+    # =========================
     # gzip only manifests
+    # =========================
     location ~* \.(m3u8|mpd)$ {
+
         gzip on;
-        gzip_types application/vnd.apple.mpegurl application/dash+xml;
+
+        gzip_types
+            application/vnd.apple.mpegurl
+            application/dash+xml;
     }
 
+    # =========================
     # Security
+    # =========================
     location ~ /\. {
         deny all;
+
         access_log off;
         log_not_found off;
     }
-
-    access_log /var/log/nginx/access.log;
-    error_log /var/log/nginx/error.log;
 }
