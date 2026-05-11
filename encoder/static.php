@@ -788,7 +788,7 @@ function update_service($which_service)
                         case "disable":
                             $rtmp .= ' '
                                 . ' -c:v h264_qsv '
-                                . ' -vf "vpp_qsv=' . $common_backend_resolution_vpp . '"'
+                                . ' -vf "vpp_qsv=' . toVppScale($data['rtmp0']['resolution']) . '"'
                                 . ' -b:v ' . $data['rtmp0']['data_rate']
                                 . ' -maxrate ' . $data['rtmp0']['data_rate']
                                 . ' -bufsize ' . $data['rtmp0']['data_rate']
@@ -828,7 +828,7 @@ function update_service($which_service)
                     case "disable":
                         $rtmp = 'ffmpeg -hwaccel auto -hide_banner -fflags nobuffer -analyzeduration 3000000 -i "udp://@239.255.254.254:39000?localaddr=127.0.0.1&overrun_nonfatal=1" '
                             . ' -c:v h264_qsv '
-                            . ' -vf "vpp_qsv=' . $common_backend_resolution_vpp . '"'
+                            . ' -vf "vpp_qsv=' . toVppScale($data['rtmp1']['resolution']) . '"'
                             . ' -b:v ' . $data['rtmp1']['data_rate']
                             . ' -maxrate ' . $data['rtmp1']['data_rate']
                             . ' -bufsize ' . $data['rtmp1']['data_rate']
@@ -875,8 +875,8 @@ function update_service($which_service)
                             . ' -f mpegts "srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji"';
                         break;
                     case "disable":
-                        $srt .= ' -c:v h264_qsv '
-                            . ' -vf "vpp_qsv=' . $common_backend_resolution_vpp . '"'
+                        $srt .= ' -c:v ' . $data['srt']['format']
+                            . ' -vf "scale=' . str_replace("x", ":", $data['srt']['resolution']) . '"'
                             . ' -b:v ' . $data['srt']['data_rate']
                             . ' -maxrate ' . $data['srt']['data_rate']
                             . ' -bufsize ' . $data['srt']['data_rate']
