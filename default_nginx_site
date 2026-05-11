@@ -115,18 +115,6 @@ server {
     }
 
     # =========================
-    # gzip only manifests
-    # =========================
-    location ~* \.(m3u8|mpd)$ {
-
-        gzip on;
-
-        gzip_types
-            application/vnd.apple.mpegurl
-            application/dash+xml;
-    }
-
-    # =========================
     # Security
     # =========================
     location ~ /\. {
