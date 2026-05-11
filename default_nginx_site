@@ -13,6 +13,8 @@ server {
 
     # Handle OPTIONS requests
     if ($request_method = OPTIONS) {
+        add_header Access-Control-Allow-Origin "*" always;
+        add_header Access-Control-Allow-Methods "GET, OPTIONS" always;
         return 204;
     }
 
