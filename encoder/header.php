@@ -1,6 +1,6 @@
 <?php
 require 'require_login.php';
-include 'static.php';
+include 'sdevtatic.php';
 ?>
 <!doctype html>
 <html lang="en">
@@ -17,7 +17,7 @@ include 'static.php';
         :root {
             --bg: #020617;
             --panel: #0f172a;
-            --panel2: #0deg0617;
+            --panel2: #020617;
             --accent: #38bdf8;
             --accent2: #6366f1;
             --text: #e5e7eb;
@@ -59,10 +59,14 @@ include 'static.php';
         .top-header-1 a {
             text-decoration: none;
             background: linear-gradient(90deg, var(--accent), var(--accent2));
+
+            /* standard + vendor for compatibility */
             background-clip: text;
             -webkit-background-clip: text;
+
             color: transparent;
             -webkit-text-fill-color: transparent;
+            /* required for Safari/WebKit */
         }
 
 
@@ -100,7 +104,7 @@ include 'static.php';
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(2, 6, 23, 0.85);
+            background: rgba(2, 6, 23, .85);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border);
             z-index: 1000;
@@ -126,6 +130,10 @@ include 'static.php';
         }
 
         /* CONTAINER */
+        /* slightly brighter panel for readability */
+        /* ===== MERGED + IMPROVED VISIBILITY (REPLACE EXISTING BLOCKS) ===== */
+
+        /* container */
         .containerindex {
             max-width: 1280px;
             margin: 30px auto;
@@ -140,6 +148,7 @@ include 'static.php';
             position: relative;
         }
 
+        /* inner glow separation */
         .containerindex::before {
             content: "";
             position: absolute;
@@ -154,93 +163,7 @@ include 'static.php';
             padding: 20px;
             border-radius: var(--radius);
             background: linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .015));
-// ... existing code ...
-        /* ===== FIREWALL PAGE ADDON ===== */
-
-        /* section title */
-        .card h2 {
-            margin: 0 0 18px;
-            font-size: 18px;
-            font-weight: 600;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 8px;
-            color: #f1f5f9;
-        }
-
-        /* form rows */
-        .row {
-            margin-bottom: 22px;
-            display: flex;
-            flex-direction: column;
-        }
-
-
-        /* label */
-        .row label {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #cbd5e1;
-            letter-spacing: .2px;
-        }
-
-        .row textarea {
-            width: 100%;
-            min-height: 70px;
-            padding: 14px 14px;
-            border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, .12);
-            background: linear-gradient(180deg, #020617, #020617);
-            color: #f1f5f9;
-            font-size: 14px;
-            line-height: 1.5;
-            resize: vertical;
-            transition: .18s ease;
-        }
-
-        .row textarea::placeholder {
-// ... existing code ...
-        /* consistent input sizing */
-        .password-form input {
-            width: 100%;
-            height: 46px;
-            padding: 0 16px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, .12);
-            background: #020617;
-            color: #f8fafc;
-            font-size: 14px;
-            transition: .18s;
-        }
-
-        /* focus */
-// ... existing code ...
-        /* inputs */
-        .wrap input[type=text],
-        .wrap input[type=email],
-        .wrap select {
-            width: 100%;
-            padding: 14px 12px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 55, .08);
-            background: #020617;
-            color: var(--text);
-            font-size: 14px;
-            transition: .2s;
-        }
-
-        .wrap input:focus,
-// ... existing code ...
-        /* badge */
-        .pill {
-            font-size: 12px;
-            padding: 6px 12px;
-            border-radius: 999px;
-            background: linear-gradient(90deg, #0ea5e9, #6366f1, 255, .08);
-            color: #fff;
-            white-space: nowrap;
-        }
-
             backdrop-filter: blur(4px);
             box-shadow: 0 8px 28px rgba(0, 0, 0, .55);
             margin-bottom: 24px;
@@ -635,7 +558,6 @@ include 'static.php';
             font-size: 14px;
             resize: vertical;
             transition: .2s;
-            /* Added for consistency */
             box-sizing: border-box;
         }
 
@@ -841,7 +763,7 @@ include 'static.php';
             width: 100%;
             padding: 14px 12px;
             border-radius: 10px;
-            border: 1px solid rgba(255,255, 255, .08);
+            border: 1px solid rgba(255, 255, 255, .08);
             background: #020617;
             color: var(--text);
             font-size: 14px;
@@ -944,13 +866,9 @@ include 'static.php';
             color: #cbd5e1;
             font-size: 13px;
             line-height: 1.6;
-
             white-space: pre-wrap;
-            /* allow wrapping */
             word-break: break-word;
-            /* break long strings */
             overflow-wrap: anywhere;
-            /* modern wrap support */
         }
 
         /* ===== NOTE BLOCK FIX ===== */
@@ -1105,6 +1023,8 @@ include 'static.php';
         }
 
         th {
+            text-align: left;
+            padding: 10px 8px;
             background: rgba(255, 255, 255, .04);
             border-bottom: 1px solid var(--border);
             color: #e2e8f0;
@@ -1184,7 +1104,6 @@ include 'static.php';
             align-items: flex-start;
         }
 
-        /* the card.wide .row */
         .card.wide .row {
             width: 100%;
             max-width: 100%;
@@ -1281,6 +1200,7 @@ include 'static.php';
         .control .row span:last-child {
             color: #fff;
             font-weight: 600;
+            min-width: 42px;
             text-align: right;
         }
 
