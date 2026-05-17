@@ -49,7 +49,7 @@ include 'sdevtatic.php';
             display: flex;
             align-items: center;
             justify-content:
-            center;
+                center;
             background: #020617;
             border-bottom: 1px solid var(--border);
             z-index: 1002;
@@ -130,6 +130,8 @@ include 'sdevtatic.php';
             min-height: 100vh;
             width: 100%;
             display: block;
+            position: relative;
+            z-index: 1;
         }
 
         /* CONTAINER */
