@@ -23,7 +23,7 @@ $data = $defaults;
 
 if (is_file($jsonFile)) {
     $stored = json_decode(file_get_contents($jsonFile), true);
-    if (is_array($undecoded)) { // Fixed potential typo from $stored to $stored
+    if (is_array($stored)) { 
         $data =  $stored;
     }
 }
@@ -132,16 +132,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     window.onload = attachValidation;
 </script>
 <div class="containerindex">
-    <!-- Firewall Status Toggle (Right Aligned) -->
-    <div style="display: flex; justify-content: flex-end; margin-bottom: 15px;">
-        <div style="text-align: right;">
-            <span style="padding: 5px 10px; border-radius: 4px; background: <?= $currentStatus === 'enabled' ? '#d4edda' : '#f8d7da' ?>; color: <?= $currentStatus === 'enabled' ? '#155724' : '#721c24' ?>; font-weight: bold; margin-right: 10px;">
-                Firewall : <?= ucfirst($currentStatus) ?>
+    <!-- Firewall Status Toggle (Left Aligned & Modernized) -->
+    <div style="display: flex; justify-content: flex-start; margin-bottom: 20px;">
+        <div style="display: flex; align-items: center; gap: 12px; background: rgba(255, 255, 255, 0.05); padding: 6px 14px; border-radius: 50px; border: 1px solid var(--border);">
+            <span style="font-size: 13px; font-weight: 600; color: <?= $currentStatus === 'enabled' ? '#4ade80' : '#f87171' ?>; text-transform: uppercase; letter-spacing: 0.5px;">
+                ● <?= $currentStatus === 'enabled' ? 'Active' : 'Inactive' ?>
             </span>
-            <form method="post" style="display: inline;">
-                <button type="submit" name="toggle_subject" value="toggle" style="display:none;"></button>
-                <button type="submit" name="toggle_status" value="<?= $currentStatus === 'enabled' ? 'disable' : 'enable' ?>" style="background: <?= $currentStatus === 'enabled' ? '#dc3545' : '#28a745' ?>; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
-                    <?= $currentStatus === 'enabled' ? 'Disable' : 'Enable' ?>
+            <div style="width: 1px; height: 18px; background: var(--border);"></div>
+            <form method="post" style="display: inline; margin: 0;">
+                <button type="submit" name="toggle_status" value="<?= $currentStatus === 'enabled' ? 'disable' : 'enable' ?>" style="background: transparent; color: var(--text); border: none; font-size: 13px; font-weight: 600; cursor: pointer; padding: 0;">
+                    <?= $currentStatus === 'enabled' ? 'Disable Firewall' : 'Enable Firewall' ?>
                 </button>
             </form>
         </div>
