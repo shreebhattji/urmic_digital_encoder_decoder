@@ -28,43 +28,60 @@ if (is_file($jsonFile)) {
     }
 }
 
+// Function to get UFW status
+function getUfwStatus() {
+    $status = shell_exec("sudo ufw status");
+    return (strpos($status, 'Status: active') !== false) ? 'enabled' : 'disabled';
+}
+
+$currentStatus = getUfwStatus();
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    exec("echo y | sudo ufw reset");
-    exec("sudo ufw default allow outgoing");
-    exec("sudo ufw default deny incoming");
-    exec("sudo ufw allow proto udp to 224.0.0.0/4");
-    exec("sudo ufw route allow proto udp to 224.0.0.0/4");
-    exec("sudo ufw deny out to 239.255.254.254 port 39000 proto udp");
-
-    foreach ($defaults as $port => $_) {
-        $data[$port] = trim($_POST["port_$port"] ?? '');
-    }
-
-    $tmp = $jsonFile . '.tmp';
-    file_put_contents(
-        $tmp,
-        json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
-    );
-    rename($tmp, $jsonFile);
-
-    foreach ($data as $port => $value) {
-        $tmp = array_filter(
-            array_map('trim', explode(',', (string)$value)),
-            'strlen'
-        );
-        if (count($tmp) > 0) {
-            foreach ($tmp as $ip) {
-                exec("sudo ufw allow from " . $ip." to any port " . $port . " proto tcp");
-            }
+    if (isset($_POST['toggle_status'])) {
+        if ($_POST['toggle_status'] === 'enable') {
+            exec("sudo ufw --force enable");
         } else {
-            exec("sudo ufw allow " . $port);
+            exec("sudo ufw disable");
         }
-    }
+        $currentStatus = getUfwStatus();
+    } else {
+        exec("echo y | sudo ufw reset");
+        exec("sudo ufw default allow outgoing");
+        exec("sudo ufw default deny incoming");
+        exec("sudo ufw allow proto udp to 224.0.0.0/4");
+        exec("sudo ufw route allow proto udp to 224.0.0.0/4");
+        exec("sudo ufw deny out to 239.255.254.254 port 39000 proto udp");
 
-    exec("sudo ufw allow from 172.16.111.112 to 172.16.111.111 port 8080");
-    exec("sudo ufw --force enable");
-    exec("sudo ufw reload");
+        foreach ($defaults as $port => $_) {
+            $data[$port] = trim($_POST["port_$port"] ?? '');
+        }
+
+        $tmp = $jsonFile . '.tmp';
+        file_put_contents(
+            $tmp,
+            json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
+        );
+        rename($tmp, $jsonFile);
+
+        foreach ($data as $port => $value) {
+            $tmp = array_filter(
+                array_map('trim', explode(',', (string)$value)),
+                'strlen'
+            );
+            if (count($tmp) > 0) {
+                foreach ($tmp as $ip) {
+                    exec("sudo ufw allow from " . $ip." to any port " . $port . " proto tcp");
+                }
+            } else {
+                exec("sudo ufw allow " . $port);
+            }
+        }
+
+        exec("sudo ufw allow from 172.16.111.112 to 172.16.111.111 port 8080");
+        exec("sudo ufw --force enable");
+        exec("sudo ufw reload");
+    }
 }
 ?>
 
@@ -102,7 +119,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="containerindex">
     <div class="grid">
         <div class="card wide">
-            <h2>Limit Access</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0;">Limit Access</h2>
+                <div style="text-align: right;">
+                    <span style="padding: 5px 10px; border-radius: 4px; background: <?= $currentStatus === 'enabled' ? '#d4edda' : '#f8d7da' ?>; color: <?= $currentStatus === 'enabled' ? '#155724' : '#721c24' ?>; font-weight: bold; margin-right: 10px;">
+                        UFW: <?= ucfirst($currentStatus) ?>
+                    </span>
+                    <form method="post" style="display: inline;">
+                        <button type="submit" name="toggle_status" value="<?= $currentStatus === 'enabled' ? 'disable' : 'enable' ?>" style="background: <?= $currentStatus === 'enabled' ? '#dc3545' : '#28a745' ?>; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+                            <?= $currentStatus === 'enabled' ? 'Disable' : 'Enable' ?>
+                        </button>
+                    </form>
+                </div>
+            </div>
 
             <form method="post">
                 <?php foreach ($data as $port => $value): ?>
@@ -114,12 +143,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             placeholder="IPv4, IPv6 (comma separated)"><?= htmlspecialchars($value) ?></textarea>
 
                         <small>Example: 192.168.1.10/24, 2001:db8::1</small>
-                    </div>
+                    </div >
                 <?php endforeach; ?>
 
                 <button type="submit">Limit Access</button>
             </form>
-        </div>
-    </div>
-</div>
+        </div >
+    </div >
+</div >
 <?php include 'footer.php' ?>
