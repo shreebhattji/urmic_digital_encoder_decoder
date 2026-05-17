@@ -31,7 +31,7 @@ if (is_file($jsonFile)) {
 // Function to get UFW status
 function getUfwStatus() {
     $status = shell_exec("sudo ufw status");
-    return (strintpos($status, 'Status: active') !== false) ? 'enabled' : 'disabled';
+    return (strpos($status, 'Status: active') !== false) ? 'enabled' : 'disabled';
 }
 
 $currentStatus = getUfwStatus();
