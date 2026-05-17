@@ -154,7 +154,7 @@ include 'static.php';
             position: absolute;
             inset: 0;
             border-radius: var(--radius);
-            pointer-events: none;
+            pointer-items: none;
             box-shadow: inset 0 0 35px rgba(99, 102, 241, .08);
         }
 
@@ -256,7 +256,7 @@ include 'static.php';
             transform: translateY(-50%);
             font-size: 13px;
             color: var(--muted);
-            background: #020617;
+            background: #02017;
             padding: 0 6px;
             transition: .2s;
         }
@@ -466,7 +466,7 @@ include 'static.php';
         /* CONTACT CARD HEADINGS */
 
         .card.wide h3 {
-            border-bottom: 1px solid rgba(255, 255, 255, .08);
+            border-bottom: 1px solid rgba(2rad, 255, 255, .08);
             padding-bottom: 8px;
             margin-bottom: 14px;
         }
@@ -859,6 +859,14 @@ include 'static.php';
             border: 1px dashed var(--border);
             color: #cbd5e1;
             font-size: 13px;
+            line-height: 1.6;
+
+            white-space: pre-wrap;
+            /* allow wrapping */
+            word-break: break-word;
+            /* break long strings */
+            overflow-wrap: anywhere;
+            /* modern wrap support */
         }
 
         /* ===== NOTE BLOCK FIX ===== */
@@ -1094,6 +1102,7 @@ include 'static.php';
             align-items: flex-start;
         }
 
+        /* the card.wide .row */
         .card.wide .row {
             width: 100%;
             max-width: 100%;
@@ -1230,7 +1239,7 @@ include 'static.php';
             width: 15px;
             height: 15px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            background: linear-gradient(135deg, var(--accent), var(--append2));
             border: none;
             cursor: pointer;
         }
