@@ -23,7 +23,6 @@ include 'sdevtatic.php';
             --text: #e5e7eb;
             --muted: #94a3b8;
             --border: rgba(255, 255, 255, .08);
-            --radius: 1mu;
             --radius: 14px;
         }
 
@@ -36,6 +35,7 @@ include 'sdevtatic.php';
             font-family: Inter, system-ui;
             background: radial-gradient(circle at 50% -20%, #0b1225 0%, #020617 60%);
             color: var(--text);
+            min-height: 100vh;
         }
 
         /* HEADER */
@@ -101,7 +101,6 @@ include 'sdevtatic.php';
             left: 0;
             right: 0;
             height: 54px;
-            display: async;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -129,6 +128,8 @@ include 'sdevtatic.php';
         .page-wrap {
             padding-top: 150px;
             min-height: 100vh;
+            width: 100%;
+            display: block;
         }
 
         /* CONTAINER */
@@ -258,7 +259,7 @@ include 'sdevtatic.php';
             transform: translateY(-50%);
             font-size: 13px;
             color: var(--muted);
-            background: #020617;
+            background: #02010a; /* Match body/header bg to hide input line */
             padding: 0 6px;
             transition: .2s;
         }
@@ -1234,7 +1235,7 @@ include 'sdevtatic.php';
             border: none;
             box-shadow:
                 0 0 0 3px rgba(56, 189, 248, .15),
-                0 2px 8px rgba(0, 0 0, .6);
+                0 2px 8px rgba(0, 0, 0, .6);
             transition: .15s;
         }
 
