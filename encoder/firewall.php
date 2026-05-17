@@ -133,23 +133,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     window.onload = attachValidation;
 </script>
 <div class="containerindex">
+    <!-- Firewall Status Toggle (Left Aligned & Modernized) -->
+    <div style="display: flex; justify-content: flex-start; margin-bottom: 20px;">
+        <div style="display: flex; align-items: center; gap: 12px; background: rgba(255, 255, 255, 0.05); padding: 6px 14px; border-radius: 50px; border: 1px solid var(--border); line-height: 1;">
+            <span style="font-size: 13px; font-weight: 600; color: <?= $currentStatus === 'enabled' ? '#4ade80' : '#f87171' ?>; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center;">
+                <span style="margin-right: 6px;">●</span><?= $currentStatus === 'enabled' ? 'Active' : 'Inactive' ?>
+            </span>
+            <div style="width: 1px; height: 18px; background: var(--border);"></div>
+            <form method="post" style="display: inline; margin: 0; line-height: 1;">
+                <button type="submit" name="toggle_status" value="<?= $currentStatus === 'enabled' ? 'disable' : 'enable' ?>" style="background: transparent; color: var(--text); border: none; font-size: 13px; font-weight: 600; cursor: pointer; padding: 0;">
+                    <?= $currentStatus === 'enabled' ? 'Disable Firewall' : 'Enable Firewall' ?>
+                </button>
+            </form>
+        </div>
+    </div>
 
     <div class="grid">
         <div class="card wide">
-            <!-- Firewall Status Toggle (Left Aligned & Modernized) -->
-            <div style="display: flex; justify-content: flex-start; margin-bottom: 20px;">
-                <div style="display: flex; align-items: center; gap: 12px; background: rgba(255, 255, 255, 0.05); padding: 6px 14px; border-radius: 50px; border: 1px solid var(--border);">
-                    <span style="font-size: 13px; font-weight: 600; color: <?= $currentStatus === 'enabled' ? '#4ade80' : '#f87171' ?>; text-transform: uppercase; letter-spacing: 0.5px;">
-                        ● <?= $currentStatus === 'enabled' ? 'Active' : 'Inactive' ?>
-                    </span>
-                    <div style="width: 1px; height: 18px; background: var(--border);"></div>
-                    <form method="post" style="display: inline; margin: 0;">
-                        <button type="submit" name="toggle_status" value="<?= $currentStatus === 'enabled' ? 'disable' : 'enable' ?>" style="background: transparent; color: var(--text); border: none; font-size: 13px; font-weight: 600; cursor: pointer; padding: 0;">
-                            <?= $currentStatus === 'enabled' ? 'Disable Firewall' : 'Enable Firewall' ?>
-                        </button>
-                    </form>
-                </div>
-            </div>
             <h2 style="margin: 0 0 20px 0;">Limit Access</h2>
 
             <form method="post">

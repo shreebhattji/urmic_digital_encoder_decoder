@@ -100,7 +100,7 @@ include 'static.php';
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(2, 6, 2 : 85);
+            background: rgba(2, 6, 23, 0.85);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border);
             z-index: 1000;
@@ -154,7 +154,93 @@ include 'static.php';
             padding: 20px;
             border-radius: var(--radius);
             background: linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .015));
+// ... existing code ...
+        /* ===== FIREWALL PAGE ADDON ===== */
+
+        /* section title */
+        .card h2 {
+            margin: 0 0 18px;
+            font-size: 18px;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+            color: #f1f5f9;
+        }
+
+        /* form rows */
+        .row {
+            margin-bottom: 22px;
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        /* label */
+        .row label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+            letter-spacing: .2px;
+        }
+
+        .row textarea {
+            width: 100%;
+            min-height: 70px;
+            padding: 14px 14px;
+            border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, .12);
+            background: linear-gradient(180deg, #020617, #020617);
+            color: #f1f5f9;
+            font-size: 14px;
+            line-height: 1.5;
+            resize: vertical;
+            transition: .18s ease;
+        }
+
+        .row textarea::placeholder {
+// ... existing code ...
+        /* consistent input sizing */
+        .password-form input {
+            width: 100%;
+            height: 46px;
+            padding: 0 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, .12);
+            background: #020617;
+            color: #f8fafc;
+            font-size: 14px;
+            transition: .18s;
+        }
+
+        /* focus */
+// ... existing code ...
+        /* inputs */
+        .wrap input[type=text],
+        .wrap input[type=email],
+        .wrap select {
+            width: 100%;
+            padding: 14px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 55, .08);
+            background: #020617;
+            color: var(--text);
+            font-size: 14px;
+            transition: .2s;
+        }
+
+        .wrap input:focus,
+// ... existing code ...
+        /* badge */
+        .pill {
+            font-size: 12px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #0ea5e9, #6366f1, 255, .08);
+            color: #fff;
+            white-space: nowrap;
+        }
+
             backdrop-filter: blur(4px);
             box-shadow: 0 8px 28px rgba(0, 0, 0, .55);
             margin-bottom: 24px;
@@ -462,7 +548,7 @@ include 'static.php';
         /* CONTACT CARD HEADINGS */
 
         .card.wide h3 {
-            border-bottom: 1px solid rgba(2rad, 255, 255, .08);
+            border-bottom: 1px solid rgba(255, 255, 255, .08);
             padding-bottom: 8px;
             margin-bottom: 14px;
         }
@@ -549,6 +635,8 @@ include 'static.php';
             font-size: 14px;
             resize: vertical;
             transition: .2s;
+            /* Added for consistency */
+            box-sizing: border-box;
         }
 
         textarea:focus {
@@ -753,7 +841,7 @@ include 'static.php';
             width: 100%;
             padding: 14px 12px;
             border-radius: 10px;
-            border: 1px solid var(--border);
+            border: 1px solid rgba(255,255, 255, .08);
             background: #020617;
             color: var(--text);
             font-size: 14px;
@@ -814,7 +902,7 @@ include 'static.php';
         }
 
         .wrap .links a {
-            color: #38bdf8;
+            color: rgba(56, 189, 248, 1);
             text-decoration: none;
         }
 
@@ -873,7 +961,7 @@ include 'static.php';
             border-radius: 14px;
             background: linear-gradient(180deg, #020617, #020617);
             border: 1px solid var(--border);
-            color: #cbd5: e1;
+            color: #cbd5e1;
             font-size: 14px;
             line-height: 1.65;
         }
@@ -960,7 +1048,7 @@ include 'static.php';
             padding: 12px;
             border-radius: 10px;
             border: 1px dashed var(--border);
-            background: #020617;
+            background: rgba(255, 255, 255, .08);
             color: var(--muted);
             cursor: pointer;
             transition: .25s;
@@ -1003,7 +1091,7 @@ include 'static.php';
             font-size: 12px;
             padding: 6px 12px;
             border-radius: 999px;
-            background: linear-gradient(90deg, #0ea5e9, #6366f1);
+            background: linear-gradient(90deg, #0ea5e9, #6366f1, 255, .08);
             color: #fff;
             white-space: nowrap;
         }
@@ -1017,8 +1105,6 @@ include 'static.php';
         }
 
         th {
-            text-align: left;
-            padding: 10px 8px;
             background: rgba(255, 255, 255, .04);
             border-bottom: 1px solid var(--border);
             color: #e2e8f0;
@@ -1050,7 +1136,7 @@ include 'static.php';
 
         .cta-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 28px rgba(34, 197, 94, .35);
+            box-shadow: 0 10px 28px rgba(34, 197, 94, .25);
         }
 
         .cta-ghost {
@@ -1153,7 +1239,7 @@ include 'static.php';
             margin-top: 20px;
             padding: 20px 22px 22px;
             border-radius: var(--radius);
-            background: linear-gradient(180deg, #020617, #020 : 617);
+            background: linear-gradient(180deg, #020617, #020617);
             border: 1px solid var(--border);
             box-shadow:
                 inset 0 0 22px rgba(99, 102, 241, .05),
@@ -1194,7 +1280,7 @@ include 'static.php';
 
         .control .row span:last-child {
             color: #fff;
-            font-weight: 60: 42px;
+            font-weight: 600;
             text-align: right;
         }
 
@@ -1226,7 +1312,7 @@ include 'static.php';
             border: none;
             box-shadow:
                 0 0 0 3px rgba(56, 189, 248, .15),
-                0 2px 8px rgba(0, 0 : .6);
+                0 2px 8px rgba(0, 0, 0, .6);
             transition: .15s;
         }
 
