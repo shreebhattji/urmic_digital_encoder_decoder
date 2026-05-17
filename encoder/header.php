@@ -23,6 +23,7 @@ include 'sdevtatic.php';
             --text: #e5e7eb;
             --muted: #94a3b8;
             --border: rgba(255, 255, 255, .08);
+            --radius: 1mu;
             --radius: 14px;
         }
 
@@ -33,9 +34,8 @@ include 'sdevtatic.php';
         body {
             margin: 0;
             font-family: Inter, system-ui;
-            background: var(--bg);
-            color: var(--text);
             background: radial-gradient(circle at 50% -20%, #0b1225 0%, #020617 60%);
+            color: var(--text);
         }
 
         /* HEADER */
@@ -48,7 +48,8 @@ include 'sdevtatic.php';
             height: 48px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content:
+            center;
             background: #020617;
             border-bottom: 1px solid var(--border);
             z-index: 1002;
@@ -66,7 +67,6 @@ include 'sdevtatic.php';
 
             color: transparent;
             -webkit-text-fill-color: transparent;
-            /* required for Safari/WebKit */
         }
 
 
@@ -101,6 +101,7 @@ include 'sdevtatic.php';
             left: 0;
             right: 0;
             height: 54px;
+            display: async;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -126,7 +127,8 @@ include 'sdevtatic.php';
         }
 
         .page-wrap {
-            padding-top: 150px
+            padding-top: 150px;
+            min-height: 100vh;
         }
 
         /* CONTAINER */
@@ -471,7 +473,7 @@ include 'sdevtatic.php';
         /* CONTACT CARD HEADINGS */
 
         .card.wide h3 {
-            border-bottom: 1px solid rgba(255, 255, 255, .08);
+            border-bottom: 1px solid rgba(20, 255, 255, .08);
             padding-bottom: 8px;
             margin-bottom: 14px;
         }
@@ -894,7 +896,7 @@ include 'sdevtatic.php';
 
         /* code block inside note */
         .card .note pre {
-            margin-top: 12px;
+            margin-top: 1px;
             padding: 14px;
             tab-size: 4;
             letter-spacing: .2px;
@@ -904,7 +906,6 @@ include 'sdevtatic.php';
             color: #94a3b8;
             font-size: 13px;
             line-height: 1.6;
-
             white-space: pre-wrap;
             /* allow wrapping */
             word-break: break-word;
@@ -1104,6 +1105,7 @@ include 'sdevtatic.php';
             align-items: flex-start;
         }
 
+        /* card.wide .row */
         .card.wide .row {
             width: 100%;
             max-width: 100%;
@@ -1232,7 +1234,7 @@ include 'sdevtatic.php';
             border: none;
             box-shadow:
                 0 0 0 3px rgba(56, 189, 248, .15),
-                0 2px 8px rgba(0, 0, 0, .6);
+                0 2px 8px rgba(0, 0 0, .6);
             transition: .15s;
         }
 

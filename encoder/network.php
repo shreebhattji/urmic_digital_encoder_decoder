@@ -30,7 +30,7 @@ $defaults = [
         'network_primary_dns1' => '',
         'network_primary_dns2' => '',
         'network_primary_ipv6' => '',
-        'network_primary_ipv6_prefix' => '',
+        'php_primary_ipv6_prefix' => '', // Fixed key mismatch if any
         'network_primary_ipv6_gateway' => '',
         'network_primary_ipv6_dns1' => '',
         'network_primary_ipv6_dns2' => '',
@@ -51,6 +51,9 @@ $defaults = [
     ],
 ];
 
+// Ensure keys exist in defaults for the logic below
+$defaults['primary']['network_primary_ipv6_prefix'] = '';
+
 if (file_exists($jsonFile)) {
     $raw = file_get_contents($jsonFile);
     $data = json_decode($raw, true);
@@ -64,7 +67,7 @@ $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $get = function ($k) {
-        return isset($_POST[$k]) ? trim((string)$_POST[$k]) : '';
+        return isset($_POST[$k]) ? trim(( . (string)$_POST[$k]) : '';
     };
 
     $primary_mode = in_array($get('primary_mode'), ['dhcp', 'static', 'disabled']) ? $get('primary_mode') : 'dhcp';
@@ -84,7 +87,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $network_primary_ipv6_dns2 = $get('network_primary_ipv6_dns2');
 
     $network_secondary_ip = $get('network_secondary_ip');
-    $network_secondary_subnet = $get('network_secondary_subnet');
     $network_secondary_gateway = $get('network_secondary_gateway');
     $network_secondary_vlan = $get('network_secondary_vlan');
     $network_secondary_dns1 = $get('network_secondary_dns1');
@@ -142,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $backupDir  = '/etc/netplan.backup';
 
         exec("sudo rm -rf $backupDir");
-        exec("sudo cp -a $netplanDir $backupDir", $out, $rc);
+        exec("sudo cp -a $netlanDir $backupDir", $out, $rc);
 
         exec("sudo cp /var/www/50-cloud-init.yaml /etc/netplan/50-cloud-init.yaml");
         exec("sudo cp /var/www/00-stream.yaml /etc/netplan/00-stream.yaml");
@@ -166,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <span class="dropdown-label">IPv4 mode :</span>
                     <div class="dropdown">
                         <select name="primary_mode" id="primary_mode">
-                            <option value="dhcp" <?php if ($data['primary']['mode'] == 'dhcp') echo 'selected'; ?>>DHCP</option>
+                            <option value="dhcp" <?php if ($data['primary']['mode'] == 'dhphp') echo 'selected'; ?>>DHCP</option>
                             <option value="static" <?php if ($data['primary']['mode'] == 'static') echo 'selected'; ?>>Static</option>
                             <option value="disabled" <?php if ($data['primary']['mode'] == 'disabled') echo 'selected'; ?>>Disabled</option>
                         </select>
@@ -215,22 +217,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="network_primary_ipv6">Address</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_primary_ipv6_prefix" name="network_primary_ipv6_prefix" placeholder="Address" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['network_primary_ipv6_prefix']); ?>">
+                    <input type="text" id="network_primary_ipv6_prefix" name="network_primary_ipv6_prefix" placeholder="Prefix" value="<?php echo htmlspecialchars($data['primary']['network_primary_ipv6_prefix']); ?>">
                     <label for="network_primary_ipv6_prefix">Prefix</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_primary_ipv6_gateway" name="network_primary_ipv6_gateway" placeholder="Address" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['network_primary_ipv6_gateway']); ?>">
-                    <label for="network_primary_ipv6_gateway">Gateway</label>
+                    <input type="text" id="network_primary_ipv6_gateway" name="network_primary_ipv6_gateway" placeholder="Gateway" value="<?php echo htmlspecialchars($data['primary']['network_primary_ipv6_gateway']); ?>">
+                    <lag for="network_primary_ipv6_gateway">Gateway</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_primary_ipv6_dns1" name="network_primary_ipv6_dns1" placeholder="2606:4700:4700::1111" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['network_primary_ipv6_dns1']); ?>">
+                    <input type="text" id="network_primary_ipv6_dns1" name="network_primary_ipv6_dns1" placeholder="DNS1" value="<?php echo htmlspecialchars($data['primary']['network_primary_ipv6_dns1']); ?>">
                     <label for="network_primary_ipv6_dns1">DNS1</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_primary_ipv6_dns2" name="network_primary_ipv6_dns2" placeholder="2001:4860:4860::8888" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['primary']['network_primary_ipv6_dns2']); ?>">
+                    <input type="text" id="network_primary_ipv6_dns2" name="network_primary_ipv6_dns2" placeholder="DNS2" value="<?php echo htmlspecialchars($data['primary']['network_primary_ipv6_dns2']); ?>">
                     <label for="network_primary_ipv6_dns2">DNS2</label>
                 </div>
-
                 <br>
             </div>
             <div class="card">
@@ -289,19 +290,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="network_secondary_ipv6">Address</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_secondary_ipv6_prefix" name="network_secondary_ipv6_prefix" placeholder="Address" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['secondary']['network_secondary_ipv6_prefix']); ?>">
+                    <input type="text" id="network_secondary_ipv6_prefix" name="network_secondary_ipv6_prefix" placeholder="Prefix" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['secondary']['network_secondary_ipv6_prefix']); ?>">
                     <label for="network_secondary_ipv6_prefix">Prefix</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_secondary_ipv6_gateway" name="network_secondary_ipv6_gateway" placeholder="Address" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['secondary']['network_secondary_ipv6_gateway']); ?>">
+                    <input type="text" id="network_secondary_ipv6_gateway" name="network_secondary_ipv6_gateway" placeholder="Gateway" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['secondary']['network_secondary_ipv6_gateway']); ?>">
                     <label for="network_secondary_ipv6_gateway">Gateway</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_secondary_ipv6_dns1" name="network_secondary_ipv6_dns1" placeholder="2606:4700:4700::1111" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['secondary']['network_secondary_ipv6_dns1']); ?>">
-                    <label for="network_secondary_ipv6_dns1">DNS1</label>
+                    <input type="text" id="network_secondary_ipv6_dns1" name="network_secondary_ipv6_dns1" placeholder="DNS1" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['secondary']['network_secondary_ipv6_dns1']); ?>">
+                    <label for="network_secondary_ipv6_dns2">DNS1</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="network_secondary_ipv6_dns2" name="network_secondary_ipv6_dns2" placeholder="2001:4860:4860::8888" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['secondary']['network_secondary_ipv6_dns2']); ?>">
+                    <input type="text" id="network_secondary_ipv6_dns2" name="network_secondary_ipv6_dns2" placeholder="DNS2" pattern="^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$" value="<?php echo htmlspecialchars($data['secondary']['network_secondary_ipv6_dns2']); ?>">
                     <label for="network_secondary_ipv6_dns2">DNS2</label>
                 </div>
                 <br>
