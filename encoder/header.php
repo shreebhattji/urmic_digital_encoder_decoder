@@ -259,9 +259,10 @@ include 'sdevtatic.php';
             transform: translateY(-50%);
             font-size: 13px;
             color: var(--muted);
-            background: #02010a; /* Match body/header bg to hide input line */
+            background: #020617;
             padding: 0 6px;
             transition: .2s;
+            pointer-events: none;
         }
 
         .input-group input:focus+label,
