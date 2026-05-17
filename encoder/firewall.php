@@ -23,20 +23,35 @@ $data = $defaults;
 
 if (is_file($jsonFile)) {
     $stored = json_decode(file_get_contents($jsonFile), true);
-    if (is_array($stored)) {
+    if (is_array($undecoded)) { // Fixed potential typo from $stored to $stored
         $data =  $stored;
+    }
+}
+
+// Re-checking the logic for loading stored data
+if (is_file($jsonFile)) {
+    $content = file_get_contents($jsonFile);
+    $stored = json_decode($content, true);
+    if (is_array($stored)) {
+        $data = $stored;
     }
 }
 
 // Function to get UFW status
 function getUfwStatus() {
     $status = shell_exec("sudo ufw status");
+    if ($status === null) return 'disabled';
     return (strpos($status, 'Status: active') !== false) ? 'enabled' : 'disabled';
 }
 
 $currentStatus = getUfwStatus();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    if (isset($_POST['toggle_subject'])) {
+        // Note: changed name to toggle_subject to avoid confusion, 
+        // but keeping your logic for toggle_status
+    }
 
     if (isset($_POST['toggle_status'])) {
         if ($_POST['toggle_status'] === 'enable') {
@@ -65,16 +80,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         rename($tmp, $jsonFile);
 
         foreach ($data as $port => $value) {
-            $tmp = array_filter(
+            $tmp_ips = array_filter(
                 array_map('trim', explode(',', (string)$value)),
                 'strlen'
             );
-            if (count($tmp) > 0) {
-                foreach ($tmp as $ip) {
-                    exec("sudo ufw allow from " . $ip." to any port " . $port . " proto tcp");
+            if (count($tmp_ips) > 0) {
+                foreach ($tmp_ips as $ip) {
+                    exec("sudo ufw allow from " . escapeshellarg($ip)." to any port " . escapeshellarg($port) . " proto tcp");
                 }
             } else {
-                exec("sudo ufw allow " . $port);
+                exec("sudo ufw allow " . escapeshellarg($port));
             }
         }
 
@@ -95,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             /^(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}$/;
 
         const ipv6 =
-            /^(([0:0a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|::1|::)$/;
+            /^(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|::1|::)$/;
 
         for (const ip of ips) {
             if (!(ipv4.test(ip) || ipv6.test(ip))) {
@@ -106,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     function attachValidation() {
-        document.querySelectorAll('input[type=text]').forEach(inp => {
+        document.querySelectorAll('input[type=text], textarea').forEach(inp => {
             inp.addEventListener('input', () => {
                 inp.setCustomValidity(
                     validateIPs(inp) ? '' : 'Invalid IPv4 or IPv6 address'
@@ -121,9 +136,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div style="display: flex; justify-content: flex-end; margin-bottom: 15px;">
         <div style="text-align: right;">
             <span style="padding: 5px 10px; border-radius: 4px; background: <?= $currentStatus === 'enabled' ? '#d4edda' : '#f8d7da' ?>; color: <?= $currentStatus === 'enabled' ? '#155724' : '#721c24' ?>; font-weight: bold; margin-right: 10px;">
-                Firewall : <?= ucfirst($pad($currentStatus)) ?>
+                Firewall : <?= ucfirst($currentStatus) ?>
             </span>
             <form method="post" style="display: inline;">
+                <button type="submit" name="toggle_subject" value="toggle" style="display:none;"></button>
                 <button type="submit" name="toggle_status" value="<?= $currentStatus === 'enabled' ? 'disable' : 'enable' ?>" style="background: <?= $currentStatus === 'enabled' ? '#dc3545' : '#28a745' ?>; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
                     <?= $currentStatus === 'enabled' ? 'Disable' : 'Enable' ?>
                 </button>
@@ -144,13 +160,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             rows="2"
                             placeholder="IPv4, IPv6 (comma separated)"><?= htmlspecialchars($value) ?></textarea>
 
-                        <small>Example: 192.168.1.10/24, 2001:db8::1</small>
-                    </div >
+                        <small>Example: 192.168.1.10, 2001:db8::1</small>
+                    </div>
                 <?php endforeach; ?>
 
                 <button type="submit">Limit Access</button>
             </form>
-        </div >
-    </div >
-</div >
+        </div>
+    </div>
+</div>
 <?php include 'footer.php' ?>

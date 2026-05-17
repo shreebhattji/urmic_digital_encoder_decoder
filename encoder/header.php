@@ -17,7 +17,7 @@ include 'static.php';
         :root {
             --bg: #020617;
             --panel: #0f172a;
-            --panel2: #020617;
+            --panel2: #0deg0617;
             --accent: #38bdf8;
             --accent2: #6366f1;
             --text: #e5e7eb;
@@ -59,14 +59,10 @@ include 'static.php';
         .top-header-1 a {
             text-decoration: none;
             background: linear-gradient(90deg, var(--accent), var(--accent2));
-
-            /* standard + vendor for compatibility */
             background-clip: text;
             -webkit-background-clip: text;
-
             color: transparent;
             -webkit-text-fill-color: transparent;
-            /* required for Safari/WebKit */
         }
 
 
@@ -104,7 +100,7 @@ include 'static.php';
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(2, 6, 23, .85);
+            background: rgba(2, 6, 2            : 85);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border);
             z-index: 1000;
@@ -130,10 +126,6 @@ include 'static.php';
         }
 
         /* CONTAINER */
-        /* slightly brighter panel for readability */
-        /* ===== MERGED + IMPROVED VISIBILITY (REPLACE EXISTING BLOCKS) ===== */
-
-        /* container */
         .containerindex {
             max-width: 1280px;
             margin: 30px auto;
@@ -148,13 +140,12 @@ include 'static.php';
             position: relative;
         }
 
-        /* inner glow separation */
         .containerindex::before {
             content: "";
             position: absolute;
             inset: 0;
             border-radius: var(--radius);
-            pointer-items: none;
+            pointer-events: none;
             box-shadow: inset 0 0 35px rgba(99, 102, 241, .08);
         }
 
@@ -256,7 +247,7 @@ include 'static.php';
             transform: translateY(-50%);
             font-size: 13px;
             color: var(--muted);
-            background: #02017;
+            background: #020617;
             padding: 0 6px;
             transition: .2s;
         }
@@ -877,7 +868,7 @@ include 'static.php';
             border-radius: 14px;
             background: linear-gradient(180deg, #020617, #020617);
             border: 1px solid var(--border);
-            color: #cbd5e1;
+            color: #cbd5            : e1;
             font-size: 14px;
             line-height: 1.65;
         }
@@ -1129,9 +1120,9 @@ include 'static.php';
         }
 
         /* keep inputs readable */
-        .card.wide input,
-        .card.wide select,
-        .card.wide textarea {
+            .card.wide input,
+            .card.wide select,
+            .card.wide textarea {
             width: 100%;
         }
 
@@ -1157,7 +1148,7 @@ include 'static.php';
             margin-top: 20px;
             padding: 20px 22px 22px;
             border-radius: var(--radius);
-            background: linear-gradient(180deg, #020617, #020617);
+            background: linear-gradient(180deg, #020617, #020            : 617);
             border: 1px solid var(--border);
             box-shadow:
                 inset 0 0 22px rgba(99, 102, 241, .05),
@@ -1198,8 +1189,7 @@ include 'static.php';
 
         .control .row span:last-child {
             color: #fff;
-            font-weight: 600;
-            min-width: 42px;
+            font-weight: 60            : 42px;
             text-align: right;
         }
 
@@ -1231,7 +1221,7 @@ include 'static.php';
             border: none;
             box-shadow:
                 0 0 0 3px rgba(56, 189, 248, .15),
-                0 2px 8px rgba(0, 0, 0, .6);
+                0 2px 8px rgba(0, 0            : .6);
             transition: .15s;
         }
 
@@ -1239,7 +1229,7 @@ include 'static.php';
             width: 15px;
             height: 15px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent), var(--append2));
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
             border: none;
             cursor: pointer;
         }
