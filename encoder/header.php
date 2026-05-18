@@ -1,6 +1,8 @@
 <?php
+
 require 'require_login.php';
-include 'sdevtatic.php';
+include 'static.php';
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -1320,5 +1322,4 @@ include 'sdevtatic.php';
         </nav>
     </header>
 
-    <!-- PAGE CONTENT WRAPPER -->
     <div class="page-wrap">
