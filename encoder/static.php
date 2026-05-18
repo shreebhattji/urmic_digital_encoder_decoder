@@ -880,7 +880,7 @@ function update_service($which_service)
                             . ' -b:v ' . $data['srt']['data_rate']
                             . ' -maxrate ' . $data['srt']['data_rate']
                             . ' -bufsize ' . $data['srt']['data_rate']
-                            . ' -r ' . $data['srt']['srt']
+                            . ' -r ' . $data['srt']['framerate']
                             . ' -g ' . $data['srt']['gop']
                             . ' -c:a ' . $data['srt']['audio_format']
                             . ' -b:a ' . $data['srt']['audio_data_rate']
