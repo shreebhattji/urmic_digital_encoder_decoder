@@ -330,7 +330,7 @@ function update_service($which_service)
         'use_common_backend' => 'use_common_backend',
         'hdmi' => [
             'resolution' => '1920x1080',
-            'audio_source' => 'hw:1,0',
+            'audio_source' => 'hw:0,0',
             'framerate' => '30',
             'video_delay' => '',
             'audio_delay' => '',
@@ -411,7 +411,7 @@ function update_service($which_service)
                         . " -framerate " . $data['hdmi']['framerate']
                         . " -i /dev/video0"
                         . " -f alsa -thread_queue_size 128 -i " . $data['hdmi']['audio_source']
-                        . " -c:v h264_qsv -profile:v high -level:v 3.1 -global_quality 20 5M -maxrate 5M -bufsize 5M "
+                        . " -c:v h264_qsv -profile:v main -global_quality 20 5M -maxrate 5M -bufsize 5M "
                         . " -c:a aac -b:a 265k  -ar 48000 -async 1 -muxrate 0 -pat_period 0.1  -pkt_size 1316 ";
                     if ($hdmi_delay_video != "")
                         $input .= ' -vf "vpp_qsv=format=nv12:' . $common_backend_resolution_vpp . ',' . setptsFromMs($hdmi_delay_video) . '"';
@@ -456,7 +456,7 @@ function update_service($which_service)
                         $input .= ' -vf "' . $vf_input . '"';
                     }
 
-                    $input .=  " -c:v h264_qsv -profile:v high -level:v 4.0 -global_quality 20  "
+                    $input .=  " -c:v h264_qsv -profile:v main -global_quality 20  "
                         . " -b:v " . $common_backend_data_rate
                         . " -maxrate " . $common_backend_data_rate
                         . " -bufsize 1M ";
@@ -944,7 +944,7 @@ function update_service($which_service)
                     $udp0 = str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp0);
                     $udp0 = str_replace("scale", "vpp_qsv", $udp0);
                     $udp0 = str_replace("resolution_resolution_resolution", toVppScale($data['udp0']['resolution']), $udp0);
-                    $udp0 = str_replace("h264_qsv", "h264_qsv -profile:v high -level:v 3.1 -global_quality 20 ", $udp0);
+                    $udp0 = str_replace("h264_qsv", "h264_qsv -profile:v main -global_quality 20 ", $udp0);
                 } else {
                     $udp0 = str_replace("resolution_resolution_resolution", str_replace("x", ":", $data['udp0']['resolution']), $udp0);
                 }
@@ -1007,7 +1007,7 @@ function update_service($which_service)
                     $udp1 = str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp1);
                     $udp1 = str_replace("scale", "vpp_qsv", $udp1);
                     $udp1 = str_replace("resolution_resolution_resolution", toVppScale($data['udp1']['resolution']), $udp1);
-                    $udp1 = str_replace("h264_qsv", "h264_qsv -profile:v main -level:v 3.1 -global_quality 20 ", $udp1);
+                    $udp1 = str_replace("h264_qsv", "h264_qsv -profile:v main -global_quality 20 ", $udp1);
                 } else {
                     $udp1 = str_replace("resolution_resolution_resolution", str_replace("x", ":", $data['udp1']['resolution']), $udp1);
                 }
@@ -1067,7 +1067,7 @@ function update_service($which_service)
                             $udp2 = str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp2);
                             $udp2 = str_replace("scale", "vpp_qsv", $udp2);
                             $udp2 = str_replace("resolution_resolution_resolution", toVppScale($data['udp2']['resolution']), $udp2);
-                            $udp2 = str_replace("h264_qsv", "h264_qsv -profile:v main -level:v 3.1 -global_quality 20 ", $udp2);
+                            $udp2 = str_replace("h264_qsv", "h264_qsv -profile:v main -global_quality 20 ", $udp2);
                         } else {
                             $udp2 = str_replace("resolution_resolution_resolution", str_replace("x", ":", $data['udp2']['resolution']), $udp2);
                         }
@@ -1132,7 +1132,7 @@ function update_service_backend($service, $srt_pass1, $srt_pass2)
         'use_common_backend' => 'use_common_backend',
         'hdmi' => [
             'resolution' => '1920x1080',
-            'audio_source' => 'hw:1,0',
+            'audio_source' => 'hw:0,0',
             'framerate' => '30',
             'video_delay' => '',
             'audio_delay' => '',

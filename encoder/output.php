@@ -693,7 +693,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <select name="udp0_format" id="udp0_format">
                   <option value="mpeg2video" <?php if ($data['udp0']['format'] == 'mpeg2video') echo 'selected'; ?>>mpeg2</option>
                   <option value="h264_qsv" <?php if ($data['udp0']['format'] == 'h264_qsv') echo 'selected'; ?>>h264</option>
-                  <option value="h265" <?php if ($data['udp0']['format'] == 'h265') echo 'selected'; ?>>h265</option>
+                  <option value="hevc_qsv" <?php if ($data['udp0']['format'] == 'h265') echo 'selected'; ?>>h265</option>
                 </select>
               </div>
             </div>
@@ -834,7 +834,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <select name="udp1_format" id="udp1_format">
                   <option value="mpeg2video" <?php if ($data['udp1']['format'] == 'mpeg2video') echo 'selected'; ?>>mpeg2</option>
                   <option value="h264_qsv" <?php if ($data['udp1']['format'] == 'h264_qsv') echo 'selected'; ?>>h264</option>
-                  <option value="h265" <?php if ($data['udp1']['format'] == 'h265') echo 'selected'; ?>>h265</option>
+                  <option value="hevc_qsv" <?php if ($data['udp1']['format'] == 'h265') echo 'selected'; ?>>h265</option>
                 </select>
               </div>
             </div>
@@ -975,7 +975,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <select name="udp2_format" id="udp2_format">
                   <option value="mpeg2video" <?php if ($data['udp2']['format'] == 'mpeg2video') echo 'selected'; ?>>mpeg2</option>
                   <option value="h264_qsv" <?php if ($data['udp2']['format'] == 'h264_qsv') echo 'selected'; ?>>h264</option>
-                  <option value="h265" <?php if ($data['udp2']['format'] == 'h265') echo 'selected'; ?>>h265</option>
+                  <option value="hevc_qsv" <?php if ($data['udp2']['format'] == 'h265') echo 'selected'; ?>>h265</option>
                 </select>
               </div>
             </div>
@@ -1106,9 +1106,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <span class="dropdown-label">format :</span>
               <div class="dropdown">
                 <select name="srt_format" id="srt_format">
-                  <option value="mpeg2video" <?php if ($data['srt']['format'] == 'mpeg2video') echo 'selected'; ?>>mpeg2</option>
                   <option value="h264_qsv" <?php if ($data['srt']['format'] == 'h264_qsv') echo 'selected'; ?>>h264</option>
-                  <option value="h265" <?php if ($data['srt']['format'] == 'h265') echo 'selected'; ?>>h265</option>
+                  <option value="hevc_qsv" <?php if ($data['srt']['format'] == 'h265') echo 'selected'; ?>>h265</option>
                 </select>
               </div>
             </div>
