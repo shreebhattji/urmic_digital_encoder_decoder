@@ -29,91 +29,104 @@ function getValue($data, $key)
         <div class="grid">
             <h2 style="text-align: center; color: white; margin-bottom: 20px;">Company Information Entry</h2>
 
-
             <!-- Channel Details -->
             <div class="card wide">
-                <div class="input-group">
-                    <input type="text" name="channel_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'channel_name')); ?>" placeholder=" " required>
-                    <label for="channel_name">Channel Name</label>
+                <div class="dropdown-container">
+                    <span class="dropdown-label">Channel Name:</span>
+                    <div class="dropdown">
+                        <input type="text" name="channel_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'channel_name')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
+                    </div>
                 </div>
             </div>
 
             <div class="card wide">
                 <div class="input-group">
-                    <textarea name="office_address" placeholder=" " required><?php echo htmlspecialchars(getValue($saved_data, 'office_address')); ?></textarea>
-                    <label for="office_address">Office Address</label>
+                    <textarea name="office_address" placeholder=" " required style="width: 100%; min-height: 80px; background: transparent; border: 1px solid #444; color: white; padding: 10px; border-radius: 4px;"><?php echo htmlspecialchars(getValue($saved_data, 'office_address')); ?></textarea>
+                    <label for="office_address" style="position: static; margin-top: 5px;">Office Address</label>
                 </div>
             </div>
 
             <!-- Contact Details -->
             <div class="card wide">
-                <div class="input-group">
-                    <input type="text" name="contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_details')); ?>" placeholder=" " required>
-                    <label for="contact_details">Contact Details</label>
+                <div class="dropdown-container">
+                    <span class="dropdown-label">Contact Details:</span>
+                    <div class="dropdown">
+                        <input type="text" name="contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_details')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
+                    </div>
                 </div>
             </div>
 
             <!-- Enforcement Officer Details -->
             <div class="card wide">
-                <div class="input-group">
-                    <input type="text" name="enforcement_officer" value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer')); ?>" placeholder=" " required>
-                    <label for="enforcement_officer">Enforcement Officer</label>
+                <div class="dropdown-container">
+                    <span class="dropdown-label">Enforcement Officer:</span>
+                    <div class="dropdown">
+                        <input type="text" name="enforcement_officer" value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
+                    </div>
                 </div>
             </div>
 
             <div class="card wide">
-                <div class="input-group">
-                    <input type="text" name="eo_contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'eo_contact_details')); ?>" placeholder=" " required>
-                    <label for="eo_contact_details">EO Contact Details</label>
+                <div class="dropdown-container">
+                    <span class="dropdown-label">EO Contact Details:</span>
+                    <div class="dropdown">
+                        <input type="text" name="eo_contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'eo_contact_details')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
+                    </div>
                 </div>
             </div>
 
             <!-- Company Details -->
             <div class="card wide">
-                <div class="input-group">
-                    <input type="text" name="company_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" placeholder=" " required>
-                    <label for="company_name">Company Name</label>
+                <div class="dropdown-container">
+                    <span class="dropdown-label">Company Name:</span>
+                    <div class="dropdown">
+                        <input type="text" name="company_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
+                    </div>
                 </div>
             </div>
 
             <div class="card wide">
-                <div class="input-group">
-                    <input type="text" name="cin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'cin_number')); ?>" placeholder=" " required>
-                    <label for="cin_number">CIN Number</label>
+                <div class="dropdown-container">
+                    <span class="dropdown-label">CIN Number:</span>
+                    <div class="dropdown">
+                        <input type="text" name="cin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'cin_number')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
+                    </div>
                 </div>
             </div>
 
             <div class="card wide">
-                <div class="input-group">
-                    <input type="text" name="gstin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'gstin_number')); ?>" placeholder=" " required>
-                    <label for="gstin_number">GSTIN Number</label>
+                <div class="dropdown-container">
+                    <span class="dropdown-label">GSTIN Number:</span>
+                    <div class="dropdown">
+                        <input type="text" name="gstin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'gstin_number')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
+                    </div>
                 </div>
             </div>
 
             <!-- File Uploads -->
             <div class="card wide">
+                <h3 style="margin-bottom: 15px;">Upload Ad (PNG)</h3>
                 <div class="input-group">
-                    <label style="display: block; margin-bottom: 10px; color: var(--muted); font-size: 14px;">Upload Ad (PNG)</label>
-                    <input type="file" name="app_ad" accept="image/png">
+                    <input type="file" name="app_ad" accept="image/png" style="color: white;">
                     <?php if (file_exists('/var/www/html/app_ad.png')): ?>
-                        <div class="mt-2"><small class="text-muted">Current:</small><br><img src="/var/www/html/app_ad.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7;"></div >
+                        <div class="mt-2"><small style="color: #aaa;">Current:</small><br><img src="/var/www/html/app_ad.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7; margin-top: 5px;"></div>
                     <?php endif; ?>
                 </div>
             </div>
 
             <div class="card wide">
+                <h3 style="margin-bottom: 15px;">Upload Logo (PNG)</h3>
                 <div class="input-group">
-                    <label style="display: block; margin-bottom: 10px; color: var(--muted); font-size: 14px;">Upload Logo (PNG)</label>
-                    <input type="file" name="app_logo" accept="image/png">
+                    <input type="file" name="app_logo" accept="image/png" style="color: white;">
                     <?php if (file_exists('/var/www/html/app_logo.png')): ?>
-                        <div class="mt-2"><small class="text-muted">Current:</small><br><img src="/var/www/html/app_logo.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7;"></div >
+                        <div class="mt-2"><small style="color: #aaa;">Current:</small><br><img src="/var/www/html/app_logo.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7; margin-top: 5px;"></div>
                     <?php endif; ?>
                 </div>
             </div>
         </div>
 
-        <div class="card wide" style="text-align: center; margin-top: 20px;">
-            <button type="submit" name="submit" class="cta-primary" style="padding: 12px 60px; font-size: 16px;">Save All Details</button>
+        <div style="text-align:center; width:100%; margin-top:20px; margin-bottom: 40px;">
+            <button type="submit" name="submit" style="background:#c00;color:#fff;padding:12px 60px;border:none;font-weight:bold;border-radius:6px;cursor:pointer;font-size:16px;">Save All Details</button>
         </div>
     </div>
 </form>
