@@ -1,7 +1,7 @@
 Urmi Universal Encoder Decoder ( INTELQSV )
 ----------------------------------------
 
-H264 - H265 Encoder 
+H264 - H265 -  Encoder/Decoder 
 HLS - DASH - RTMP - SRT - UDP - HTTPS -  FFMPEG Output Support
 
 Instalation 
