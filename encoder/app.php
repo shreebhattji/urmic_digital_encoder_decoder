@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
 Urmi you happy me happy licence
 
@@ -8,7 +8,7 @@ License text:
 https://github.com/shreebhatt_ji/Urmi/blob/main/licence.md
 */
 
-include 'header.php'; 
+include 'header.php';
 
 $json_file = '/var/www/html/app.json';
 $saved_data = [];
@@ -18,26 +18,27 @@ if (file_exists($json_file)) {
     $saved_data = json_decode($json_content, true) ?? [];
 }
 
-function getValue($data, $key) {
+function getValue($data, $key)
+{
     return $data[$key] ?? '';
 }
 ?>
 
-<div class="containerindex">
-    <h2 style="text-align: center; color: white; margin-bottom: 20px;">Company Information Entry</h2>
-    
-    <form action="" method="POST" enctype="multipart/form-data">
+<form action="" method="POST" enctype="multipart/form-data">
+    <div class="containerindex">
         <div class="grid">
-            
+            <h2 style="text-align: center; color: white; margin-bottom: 20px;">Company Information Entry</h2>
+
+
             <!-- Channel Details -->
-            <div class="card">
+            <div class="card wide">
                 <div class="input-group">
                     <input type="text" name="channel_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'channel_name')); ?>" placeholder=" " required>
                     <label for="channel_name">Channel Name</label>
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card wide">
                 <div class="input-group">
                     <textarea name="office_address" placeholder=" " required><?php echo htmlspecialchars(getValue($saved_data, 'office_address')); ?></textarea>
                     <label for="office_address">Office Address</label>
@@ -45,7 +46,7 @@ function getValue($data, $key) {
             </div>
 
             <!-- Contact Details -->
-            <div class="card">
+            <div class="card wide">
                 <div class="input-group">
                     <input type="text" name="contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_details')); ?>" placeholder=" " required>
                     <label for="contact_details">Contact Details</label>
@@ -53,14 +54,14 @@ function getValue($data, $key) {
             </div>
 
             <!-- Enforcement Officer Details -->
-            <div class="card">
+            <div class="card wide">
                 <div class="input-group">
                     <input type="text" name="enforcement_officer" value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer')); ?>" placeholder=" " required>
                     <label for="enforcement_officer">Enforcement Officer</label>
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card wide">
                 <div class="input-group">
                     <input type="text" name="eo_contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'eo_contact_details')); ?>" placeholder=" " required>
                     <label for="eo_contact_details">EO Contact Details</label>
@@ -68,21 +69,21 @@ function getValue($data, $key) {
             </div>
 
             <!-- Company Details -->
-            <div class="card">
+            <div class="card wide">
                 <div class="input-group">
                     <input type="text" name="company_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" placeholder=" " required>
                     <label for="company_name">Company Name</label>
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card wide">
                 <div class="input-group">
                     <input type="text" name="cin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'cin_number')); ?>" placeholder=" " required>
                     <label for="cin_number">CIN Number</label>
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card wide">
                 <div class="input-group">
                     <input type="text" name="gstin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'gstin_number')); ?>" placeholder=" " required>
                     <label for="gstin_number">GSTIN Number</label>
@@ -90,7 +91,7 @@ function getValue($data, $key) {
             </div>
 
             <!-- File Uploads -->
-            <div class="card">
+            <div class="card wide">
                 <label style="display: block; margin-bottom: 10px; color: var(--muted); font-size: 14px;">Upload Ad (PNG)</label>
                 <input type="file" name="app_ad" accept="image/png">
                 <?php if (file_exists('/var/www/html/app_ad.png')): ?>
@@ -98,7 +99,7 @@ function getValue($data, $key) {
                 <?php endif; ?>
             </div>
 
-            <div class="card">
+            <div class="card wide">
                 <label style="display: block; margin-bottom: 10px; color: var(--muted); font-size: 14px;">Upload Logo (PNG)</label>
                 <input type="file" name="app_logo" accept="image/png">
                 <?php if (file_exists('/var/www/html/app_logo.png')): ?>
@@ -110,9 +111,10 @@ function getValue($data, $key) {
         <div class="card wide" style="text-align: center; margin-top: 20px;">
             <button type="submit" name="submit" class="cta-primary" style="padding: 12px 60px; font-size: 16px;">Save All Details</button>
         </div>
-    </form>
+    </div>
+</form>
 
-    <div class="mt-4">
+<div class="mt-4">
     <?php
     if (isset($_POST['submit'])) {
         $upload_paths = [
@@ -138,13 +140,19 @@ function getValue($data, $key) {
         }
 
         $text_fields = [
-            'channel_name', 'office_address', 'contact_details', 'enforcement_officer', 
-            'eo_contact_details', 'company_name', 'cin_number', 'gstin_number'
+            'channel_name',
+            'office_address',
+            'contact_details',
+            'enforcement_officer',
+            'eo_contact_details',
+            'company_name',
+            'cin_number',
+            'gstin_number'
         ];
-        
+
         $data_to_save = [];
         foreach ($text_for_save as $field) { // Note: fixed variable name from previous logic
-             // ... (logic remains same)
+            // ... (logic remains same)
         }
         // Re-implementing the logic correctly for the snippet
         foreach ($text_fields as $field) {
@@ -167,7 +175,6 @@ function getValue($data, $key) {
         }
     }
     ?>
-    </div>
 </div>
 
 <?php include 'footer.php'; ?>
