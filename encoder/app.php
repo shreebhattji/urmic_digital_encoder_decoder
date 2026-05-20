@@ -49,8 +49,8 @@ if (isset($_POST['submit'])) {
             }
 
             // 2. Determine target dimensions
-            $target_width = ($input_name === 'app_logo') ? 256 : 1080;
-            $target_height = ($input_name === 'app_logo') ? 256 : 1080;
+            $target_width = ($input_name === 'app_logo') ? 128 : 256;
+            $target_height = ($input_name === 'app_logo') ? 128 : 256;
 
             // 3. Load the source image
             $src_img = @imagecreatefrompng($tmp_path);
@@ -64,7 +64,7 @@ if (isset($_POST['submit'])) {
 
             // 5. Preserve transparency for PNG
             imagealphablending($dst_img, false);
-            imagesavealpha($dst_img, true);
+            imagesavealpha($png_alpha = $dst_img, true);
             $transparent = imagecolorallocatealpha($dst_img, 255, 255, 255, 127);
             imagefill($dst_img, 0, 0, $transparent);
 
@@ -144,35 +144,41 @@ function getValue($data, $key)
 include 'header.php';
 ?>
 
+<style>
+    .containerindex { max-width: 1000px; margin: 0 auto; padding: 20px; font-family: sans-serif; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .card { background: #1a1a1a; padding: 25px; border-radius: 12px; border: 1px solid #333; }
+    .card.wide { grid-column: span 2; }
+    .input-group { position: relative; margin-bottom: 25px; }
+    .input-group input[type="text"] {
+        width: 100%; padding: 12px; background: transparent; border: 1px solid #444;
+        border-radius: 6px; color: white; outline: none; box-sizing: border-box;
+    }
+    .input-group label { position: absolute; left: 12px; top: 12px; color: #888; pointer-events: none; transition: 0.2s; }
+    .input-group input:focus, .input-group input:not(:placeholder-shown) { border-color: #c00; }
+    .input-group input:focus + label, .input-group input:not(:placeholder-shown) + label {
+        top: -10px; left: 8px; font-size: 12px; color: #c00; background: #1a1a1a; padding: 0 4px;
+    }
+    .dropdown-container { position: relative; margin-bottom: 25px; }
+    select { width: 100%; padding: 12px; background: #222; color: white; border: 1px solid #444; border-radius: 6px; }
+    .img-thumbnail { border-radius: 4px; border: 1px solid #444; }
+    .mt-2 { margin-top: 10px; }
+</style>
+
 <script>
-    /**
-     * Function to clear file input and set the hidden removal flag
-     * Also provides immediate UI feedback by hiding the preview
-     */
     function prepareRemoval(inputId, removeInputId, previewImgId) {
-        // 1. Clear the file input
         document.getElementById(inputId).value = "";
-
-        // 2. Set the hidden removal flag for PHP to process on submit
         document.getElementById(removeInputId).value = "1";
-
-        // 3. UI Feedback: Hide the image preview immediately
         const imgElement = document.getElementById(previewImgId);
         if (imgElement) {
             imgElement.style.display = 'none';
-
-            // Hide the "Remove Existing" button (it's the next sibling of the image)
             const btn = imgElement.nextElementSibling;
-            if (btn && btn.tagName === 'BUTTON') {
-                btn.style.display = 'none';
-            }
+            if (btn && btn.tagName === 'BUTTON') btn.style.display = 'none';
         }
-
-        // 4. Update the text label to inform the user
         const container = document.getElementById(inputId).parentElement;
         const label = container.querySelector('small');
         if (label) {
-            label.innerText = "File marked for removal (will delete on save)";
+            label.innerText = "File marked for removal";
             label.style.color = "#ff4d4d";
         }
     }
@@ -180,117 +186,119 @@ include 'header.php';
 
 <div class="containerindex">
     <form method="POST" enctype="multipart/form-data">
-        <!-- Hidden inputs to handle deletion -->
         <input type="hidden" name="remove_files[app_ad]" id="remove_app_ad" value="">
         <input type="hidden" name="remove_files[app_logo]" id="remove_app_logo" value="">
 
         <div class="grid">
-            <h2 style="color: #ff4d4d;">Company Information Entry</h2>
+            <h2 style="color: #ff4d4d; grid-column: span 2; margin-bottom: 10px;">Company Information Entry</h2>
 
             <?php if (!empty($error_message)): ?>
-                <div style="background: #ff0000; color: white; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+                <div style="background: #ff0000; color: white; padding: 15px; border-radius: 6px; margin-bottom: 20px; grid-column: span 2;">
                     <?php echo $error_message; ?>
                 </div>
             <?php endif; ?>
 
             <!-- Company Details -->
             <div class="card wide">
-                <div class="input-group">
-                    <input type="text" name="channel_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'channel_name')); ?>" required>
-                    <label>Channel Name</label>
+                <h3 style="margin-top:0; color: #fff;">General Details</h3>
+                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="input-wrap">
+                        <div class="input-group">
+                            <input type="text" name="channel_name" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'channel_name')); ?>" required>
+                            <label>Channel Name</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" name="office_address" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'office_address')); ?>" required>
+                            <label>Office Address</label>
+                        </div>
+                    </div>
+                    <div class="input-wrap">
+                        <div class="input-group">
+                            <input type="text" name="contact_details" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_details')); ?>" required>
+                            <label>Contact Details</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" name="enforcement_officer" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer')); ?>" required>
+                            <label>Enforcement Officer</label>
+                        </div>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <input type="text" name="office_address" value="<?php echo htmlspecialchars(getValue($saved_data, 'office_address')); ?>" required>
-                    <label>Office Address</label>
+                
+                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 10px;">
+                    <div class="input-group">
+                        <input type="text" name="eo_contact_control" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'eo_contact_details')); ?>" required>
+                        <label>EO Contact Details</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" name="company_name" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" required>
+                        <label>Company Name</label>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <input type="text" name="contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_details')); ?>" required>
-                    <label>Contact Details</label>
-                </div>
-                <div class="input-group">
-                    <input type="text" name="enforcement_officer" value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer')); ?>" required>
-                    <label>Enforcement Officer</label>
-                </div>
-                <div class="input-group">
-                    <input type="text" name="eo_contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'eo_contact_details')); ?>" required>
-                    <label>EO Contact Details</label>
-                </div>
-                <div class="input-group">
-                    <intput type="text" name="company_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" required>
-                    <label>Company Name</label>
-                </div>
-                <div class="input-group">
-                    <input type="text" name="cin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'cin_number')); ?>">
-                    <label>CIN Number</label>
-                </div>
-                <div class="input-group">
-                    <input type="text" name="gstin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'gstin_number')); ?>">
-                    <label>GSTIN Number</label>
+
+                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 10px;">
+                    <div class="input-group">
+                        <input type="text" name="cin_number" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'cin_number')); ?>">
+                        <label>CIN Number</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" name="gstin_number" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'gstin_number')); ?>">
+                        <label>GSTIN Number</label>
+                    </div>
                 </div>
             </div>
 
             <!-- Content Details -->
             <div class="card wide">
-                <h3 style="margin-bottom: 15px;">Content Details</h3>
-                <div class="input-group">
-                    <input type="text" name="content_type" value="<?php echo htmlspecialchars(getValue($saved_data, 'content_type')); ?>" required>
-                    <label>Content Type</label>
-                </div>
-                <div class="dropdown-container">
-                    <span class="dropdown-label">Content Rating</span>
-                    <div class="dropdown">
+                <h3 style="margin-top:0; color: #fff;">Content Details</h3>
+                <div class="grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                    <div class="input-group">
+                        <input type="text" name="content_type" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'content_type')); ?>" required>
+                        <label>Content Type</label>
+                    </div>
+                    <div class="dropdown-container">
                         <select name="content_rating" id="content_rating">
                             <?php
-                            $ratings = [
-                                'U' => 'Universal',
-                                'UA' => 'Parental Guidance',
-                                'A' => 'Adults Only',
-                                'S' => 'Special'
-                            ];
+                            $ratings = ['U' => 'Universal', 'UA' => 'Parental Guidance', 'A' => 'Adults Only', 'S' => 'Special'];
                             foreach ($ratings as $code => $desc) {
-                                $selected = (getValue($saved_data, 'content_rating') === $code) ? 'selected' : '';
-                                echo "<option value=\"$code\" $selected>$code ($desc)</option>";
+                               $selected = (getValue($saved_data, 'content_rating') === $code) ? 'selected' : '';
+                               echo "<option value=\"$code\" $selected>$code ($desc)</option>";
                             }
                             ?>
                         </select>
                     </div>
-                </div>
-                <div class="input-group">
-                    <input type="text" name="content_language" value="<?php echo htmlspecialchars(getValue($saved_data, 'content_language')); ?>" required>
-                    <label>Content Language</label>
+                    <div class="input-group">
+                        <input type="text" name="content_language" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'content_language')); ?>" required>
+                        <label>Content Language</label>
+                    </div>
                 </div>
             </div>
 
             <!-- Upload Ad Section -->
-            <div class="card wide">
-                <h3 style="margin-bottom: 15px;">Upload Ad (PNG)</h3>
+            <div class="card">
+                <h3 style="margin-top:0; color: #fff;">Upload Ad (PNG)</h3>
                 <div class="input-group">
                     <input type="file" name="app_ad" id="file_app_ad" accept="image/png" style="color: white;">
                     <?php if (isset($_FILES['app_ad']) && $_FILES['app_ad']['tmp_name'] != ''): ?>
-                        <div class="mt-2"><small style="color: #aaa;">New file selected (will upload on save)</small></div>
+                        <div class="mt-2"><small style="color: #aaa;">New file selected</small></div>
                     <?php elseif (file_exists('/var/www/html/app_ad.png')): ?>
                         <div class="mt-2">
-                            <small style="color: #aaa;">Current:</small><br>
-                            <img src="/app_ad.png" id="preview_app_ad" class="img-thumbnail" style="max-height: 60px; opacity: 0.7; margin-top: 5px;">
-                            <button type="button" onclick="prepareRemoval('file_app_ ad', 'remove_app_ad', 'preview_app_ad')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; display:block; margin-top:5px;">Remove Existing</button>
+                            <img src="/app_ad.png" id="preview_app_ad" class="img-thumbnail" style="max-height: 60px; opacity: 0.7;">
+                            <button type="button" onclick="prepareRemoval('file_app_ad', 'remove_app_ad', 'preview_app_ad')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; display:block; margin-top:5px;">Remove Existing</button>
                         </div>
                     <?php endif; ?>
                 </div>
             </div>
 
             <!-- Upload Logo Section -->
-            <div class="card wide">
-                <h3 style="margin: 15px 0;">Upload Logo (PNG)</h3>
+            <div class="card">
+                <h3 style="margin-top:0; color: #fff;">Upload Logo (PNG)</h3>
                 <div class="input-group">
                     <input type="file" name="app_logo" id="file_app_logo" accept="image/png" style="color: white;">
-
                     <?php if (isset($_FILES['app_logo']) && $_FILES['app_logo']['tmp_name'] != ''): ?>
-                        <div class="mt-2"><small style="color: #aaa;">New file selected (will upload on save)</small></div>
+                        <div class="mt-2"><small style="color: #aaa;">New file selected</small></div>
                     <?php elseif (file_exists('/var/www/html/app_logo.png')): ?>
                         <div class="mt-2">
-                            <input type="hidden" name="app_logo_placeholder" value="true">
-                            <small style="color: #aaa;">Current:</small><br>
-                            <img src="/app_logo.png" id="preview_app_logo" class="img-thumbnail" style="max-height: 60px; opacity: 0.7; margin-top: 5px;">
+                            <img src="/app_logo.png" id="preview_app_logo" class="img-thumbnail" style="max-height: 60px; opacity: 0.7;">
                             <button type="button" onclick="prepareRemoval('file_app_logo', 'remove_app_logo', 'preview_app_logo')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; display:block; margin-top:5px;">Remove Existing</button>
                         </div>
                     <?php endif; ?>
@@ -298,8 +306,8 @@ include 'header.php';
             </div>
         </div>
 
-        <div style="text-align:center; width:100%; margin-top:20px; margin-bottom: 40px;">
-            <button type="submit" name="submit" style="background:#c00;color:#fff;padding:12px 60px;border:none;font-weight:bold;border-radius:6px;cursor:pointer;font-size:16px;">Save All Details</button>
+        <div style="text-align:center; width:100%; margin: 40px 0;">
+            <button type="submit" name="submit" style="background:#c00;color:#fff;padding:15px 80px;border:none;font-weight:bold;border-radius:6px;cursor:pointer;font-size:18px; transition: 0.3s;">Save All Details</button>
         </div>
     </form>
 </div>
