@@ -31,11 +31,9 @@ function getValue($data, $key)
 
             <!-- Channel Details -->
             <div class="card wide">
-                <div class="dropdown-container">
-                    <span class="dropdown-label">Channel Name:</span>
-                    <div class="dropdown">
-                        <input type="text" name="channel_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'channel_name')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
-                    </div>
+                <div class="input-group">
+                    <input type="text" name="channel_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'channel_name')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
+                    <label for="channel_name">Channel Name</label>
                 </div>
             </div>
 
@@ -48,58 +46,46 @@ function getValue($data, $key)
 
             <!-- Contact Details -->
             <div class="card wide">
-                <div class="dropdown-container">
-                    <span class="dropdown-label">Contact Details:</span>
-                    <div class="dropdown">
-                        <input type="text" name="contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_details')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
-                    </div>
+                <div class="input-group">
+                    <input type="text" name="contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_details')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
+                    <label for="contact_details">Contact Details</label>
                 </div>
             </div>
 
             <!-- Enforcement Officer Details -->
             <div class="card wide">
-                <div class="dropdown-container">
-                    <span class="dropdown-label">Enforcement Officer:</span>
-                    <div class="dropdown">
-                        <input type="text" name="enforcement_officer" value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
-                    </div>
+                <div class="input-group">
+                    <input type="text" name="enforcement_officer" value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
+                    <label for="enforcement_officer">Enforcement Officer</label>
                 </div>
             </div>
 
             <div class="card wide">
-                <div class="dropdown-container">
-                    <span class="dropdown-label">EO Contact Details:</span>
-                    <div class="dropdown">
-                        <input type="text" name="eo_contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'eo_contact_details')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
-                    </div>
+                <div class="input-group">
+                    <input type="text" name="eo_contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'eo_contact_details')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
+                    <label for="eo_contact_details">EO Contact Details</label>
                 </div>
             </div>
 
             <!-- Company Details -->
             <div class="card wide">
-                <div class="dropdown-container">
-                    <span class="dropdown-label">Company Name:</span>
-                    <div class="dropdown">
-                        <input type="text" name="company_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
-                    </div>
+                <div class="input-group">
+                    <input type="text" name="company_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
+                    <label for="company_name">Company Name</label>
                 </div>
             </div>
 
             <div class="card wide">
-                <div class="dropdown-container">
-                    <span class="dropdown-label">CIN Number:</span>
-                    <div class="dropdown">
-                        <input type="text" name="cin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'cin_number')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
-                    </div>
+                <div class="input-group">
+                    <input type="text" name="cin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'cin_number')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
+                    <label for="cin_number">CIN Number</label>
                 </div>
             </div>
 
             <div class="card wide">
-                <div class="dropdown-container">
-                    <span class="dropdown-label">GSTIN Number:</span>
-                    <div class="dropdown">
-                        <input type="text" name="gstin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'gstin_number')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
-                    </div>
+                <div class="input-group">
+                    <input type="text" name="gstin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'gstin_number')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
+                    <label for="gstin_number">GSTIN Number</label>
                 </div>
             </div>
 
