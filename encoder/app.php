@@ -230,10 +230,7 @@ include 'header.php';
             <div class="card wide">
                 <h3 style="margin-bottom: 15px;">Upload Ad (PNG)</h3>
                 <div class="input-group">
-                    <input type="file" name="app_ad" id="file_app_ann" accept="image/png" style="color: white;">
-                    <!-- We use a secondary input for the actual file upload to keep IDs clean -->
                     <input type="file" name="app_ad" id="file_app_ad" accept="image/png" style="color: white;">
-
                     <?php if (isset($_FILES['app_ad']) && $_FILES['app_ad']['tmp_name'] != ''): ?>
                         <div class="mt-2"><small style="color: #aaa;">New file selected (will upload on save)</small></div>
                     <?php elseif (file_exists('/var/www/html/app_ad.png')): ?>
