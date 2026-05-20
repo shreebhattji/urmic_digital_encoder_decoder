@@ -14,7 +14,6 @@ $error_message = '';
 // --- 1. Handle Form Submission BEFORE any HTML is sent ---
 if (isset($_POST['submit'])) {
     $upload_paths = [
-        'app_und' => '/var/www/html/app_ad.png', 
         'app_ad' => '/var/www/html/app_ad.png',
         'app_logo' => '/var/www/html/app_logo.png'
     ];
@@ -22,11 +21,25 @@ if (isset($_POST['submit'])) {
 
     $errors = [];
 
+    // Handle File Deletions (Remove feature)
+    $to_delete = $_POST['remove_files'] ?? [];
+    foreach ($to_delete as $file_key => $should_delete) {
+        if ($should_delete === '1' && isset($upload_paths[$file_key])) {
+            $path = $upload_paths[$file_key];
+            if (file_exists($path)) {
+                unlink($path);
+                // Also remove from encoder directory
+                $secondary_path = $secondary_dir . basename($path);
+                if (file_exists($secondary_path)) unlink($secondary_path);
+            }
+        }
+    }
+
     // Handle File Uploads
     foreach ($upload_paths as $input_name => $destination) {
         if (isset($_FILES[$input_name]) && $_FILES[$input_name]['error'] == 0) {
             $tmp_path = $_FILES[$input_name]['tmp_name'];
-            
+
             // 1. Verify it is actually a PNG using GD/getimagesize
             $image_info = @getimagesize($tmp_path);
             if (!$image_info || $image_info[2] !== IMAGETYPE_PNG) {
@@ -35,13 +48,8 @@ if (isset($_POST['submit'])) {
             }
 
             // 2. Determine target dimensions
-            // Logo: 512x512, Ad: 1080x1080
-            $target_width = 1080;
-            $target_height = 1080;
-            if ($input_name === 'app_logo') {
-                $target_width = 512;
-                $target_height = 512;
-            }
+            $target_width = ($input_name === 'app_logo') ? 512 : 1080;
+            $target_height = ($input_name === 'app_logo') ? 512 : 1080;
 
             // 3. Load the source image
             $src_img = @imagecreatefrompng($tmp_path);
@@ -50,7 +58,7 @@ if (isset($_POST['submit'])) {
                 continue;
             }
 
-            // 4. Create a blank truecolor canvas for the new size
+            // 4. Create a blank truecolor canvas
             $dst_img = imagecreatetruecolor($target_width, $target_height);
 
             // 5. Preserve transparency for PNG
@@ -59,28 +67,32 @@ if (isset($_POST['submit'])) {
             $transparent = imagecolorallocatealpha($dst_img, 255, 255, 255, 127);
             imagefill($dst_img, 0, 0, $transparent);
 
-            // 6. Resize (Resample) using interpolation for high quality
+            // 6. Resize (Resample)
             imagecopyresampled(
-                $dst_img, $src_img, 
-                0, 0, 0, 0, 
-                $target_width, $target_height, 
-                imagesx($src_img), imagesy($src_img)
+                $dst_img,
+                $src_img,
+                0,
+                0,
+                0,
+                0,
+                $target_width,
+                $target_height,
+                imagesx($src_img),
+                imagesy($src_img)
             );
 
             // 7. Save to primary destination with compression (level 7)
             if (imagepng($dst_img, $destination, 7)) {
-                // Create a copy in the encoder directory (/var/www/encoder/)
-                $filename = basename($destination);
+                $filename = basename($int_name);
                 $secondary_destination = $secondary_dir . $filename;
-                
+
                 if (!copy($destination, $secondary_destination)) {
-                    $errors[] = "Failed to create secondary copy for $input_name in encoder folder.";
+                    $errors[] = "Failed to create secondary copy for $input_name.";
                 }
             } else {
                 $errors[] = "Failed to save processed $input_name.";
             }
 
-            // 8. Free memory
             imagedestroy($src_img);
             imagedestroy($dst_img);
         }
@@ -106,8 +118,6 @@ if (isset($_POST['submit'])) {
     // Save if no errors occurred
     if (empty($errors)) {
         file_put_contents($json_file, json_encode($data_to_save, JSON_PRETTY_PRINT));
-        
-        // Redirect to the same page to refresh the data and clear POST state
         header("Location: " . $_SERVER['PHP_SELF']);
         exit;
     } else {
@@ -127,12 +137,23 @@ function getValue($data, $key)
     return $data[$key] ?? '';
 }
 
-// Now we can safely start sending HTML
 include 'header.php';
 ?>
 
-<form method="POST" enctype="multipart/form-data">
-    <div class="containerindex">
+<script>
+    // Function to clear file input and set the hidden removal flag
+    function prepareRemoval(inputId, removeInputId) {
+        document.getElementById(inputId).value = "";
+        document.getElementById(removeInputId).value = "1";
+    }
+</script>
+
+<div class="containerindex">
+    <form method="POST" enctype="multipart/form-data">
+        <!-- Hidden inputs to handle deletion -->
+        <input type="hidden" name="remove_files[app_ad]" id="remove_app_ad" value="">
+        <input type="hidden" name="remove_files[app_logo]" id="remove_app_logo" value="">
+
         <div class="grid">
             <h2 style="color: #ff4d4d;">Company Information Entry</h2>
 
@@ -146,54 +167,70 @@ include 'header.php';
             <div class="card wide">
                 <div class="input-group">
                     <input type="text" name="channel_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'channel_name')); ?>" required>
-                    <label for="channel_name">Channel Name</label>
+                    <label>Channel Name</label>
                 </div>
                 <div class="input-group">
                     <input type="text" name="office_address" value="<?php echo htmlspecialchars(getValue($saved_data, 'office_address')); ?>" required>
-                    <label for="office_address">Office Address</label>
+                    <label>Office Address</label>
                 </div>
                 <div class="input-group">
                     <input type="text" name="contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_details')); ?>" required>
-                    <label for="contact_details">Contact Details</label>
+                    <label>Contact Details</label>
                 </div>
                 <div class="input-group">
                     <input type="text" name="enforcement_officer" value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer')); ?>" required>
-                    <label for="enforcement_officer">Enforcement Officer</label>
+                    <label>Enforcement Officer</label>
                 </div>
                 <div class="input-group">
                     <input type="text" name="eo_contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'eo_contact_details')); ?>" required>
-                    <label for="eo_contact_details">EO Contact Details</label>
+                    <label>EO Contact Details</label>
                 </div>
                 <div class="input-group">
                     <input type="text" name="company_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" required>
-                    <label for="company_name">Company Name</label>
+                    <label>Company Name</label>
                 </div>
                 <div class="input-group">
                     <input type="text" name="cin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'cin_number')); ?>">
-                    <label for="cin_number">CIN Number</label>
+                    <label>CIN Number</label>
                 </div>
                 <div class="input-group">
                     <input type="text" name="gstin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'gstin_number')); ?>">
-                    <label for="gstin_number">GSTIN Number</label>
+                    <label>GSTIN Number</label>
                 </div>
             </div>
 
+            <!-- Upload Ad Section -->
             <div class="card wide">
                 <h3 style="margin-bottom: 15px;">Upload Ad (PNG)</h3>
                 <div class="input-group">
-                    <input type="file" name="app_ad" accept="image/png" style="color: white;">
-                    <?php if (file_exists('/var/www/html/app_ad.png')): ?>
-                        <div class="mt-2"><small style="color: #aaa;">Current:</small><br><img src="/app_ad.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7; margin-top: 5px;"></div >
+                    <input type="file" name="app_ad" id="file_app_int" accept="image/png" style="color: white;">
+
+                    <?php if (isset($_FILES['app_ad']) && $_FILES['app_ad']['tmp_name'] != ''): ?>
+                        <div class="mt-2"><small style="color: #aaa;">New file selected (will upload on save)</small></div>
+                    <?php elseif (file_exists('/var/www/html/app_ad.png')): ?>
+                        <div class="mt-2">
+                            <small style="color: #aaa;">Current:</small><br>
+                            <img src="/app_ad.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7; margin-top: 5px;">
+                            <button type="button" onclick="prepareRemoval('file_app_int', 'remove_app_ad')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; display:block; margin-top:5px;">Remove Existing</button>
+                        </div>
                     <?php endif; ?>
                 </div>
             </div>
 
+            <!-- Upload Logo Section -->
             <div class="card wide">
                 <h3 style="margin-bottom: 15px;">Upload Logo (PNG)</h3>
                 <div class="input-group">
-                    <input type="file" name="app_logo" accept="image/png" style="color: white;">
-                    <?php if (file_exists('/var/www/html/app_logo.png')): ?>
-                        <div class="mt-2"><small style="color: #aaa;">Current:</small><br><img src="/app_logo.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7; margin-top: 5px;"></div >
+                    <input type="file" name="app_logo" id="file_app_logo" accept="image/png" style="color: white;">
+
+                    <?php if (isset($_FILES['app_logo']) && $_FILES['app_logo']['tmp_name'] != ''): ?>
+                        <div class="mt-2"><small style="color: #aaa;">New file selected (will upload on save)</small></div>
+                    <?php elseif (file_exists('/var/www/html/app_logo.png')): ?>
+                        <div class="mt-2">
+                            <small style="color: #aaa;">Current:</small><br>
+                            <img src="/app_logo.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7; margin-top: 5px;">
+                            <button type="button" onclick="prepareRemoval('file_app_logo', 'remove_app_logo')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; display:block; margin-top:5px;">Remove Existing</button>
+                        </div>
                     <?php endif; ?>
                 </div>
             </div>
@@ -202,7 +239,7 @@ include 'header.php';
         <div style="text-align:center; width:100%; margin-top:20px; margin-bottom: 40px;">
             <button type="submit" name="submit" style="background:#c00;color:#fff;padding:12px 60px;border:none;font-weight:bold;border-radius:6px;cursor:pointer;font-size:16px;">Save All Details</button>
         </div>
-    </div>
-</form>
+    </form>
+</div>
 
 <?php include 'footer.php'; ?>
