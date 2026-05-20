@@ -190,7 +190,7 @@ include 'header.php';
         <input type="hidden" name="remove_files[app_logo]" id="remove_app_logo" value="">
 
         <div class="grid">
-            <h2 style="color: #ff4d4d; grid-column: span 2; margin-bottom: 10px;">Company Information Entry</h2>
+            <h2>Company Information Entry</h2>
 
             <?php if (!empty($error_message)): ?>
                 <div style="background: #ff0000; color: white; padding: 15px; border-radius: 6px; margin-bottom: 20px; grid-column: span 2;">
@@ -200,8 +200,8 @@ include 'header.php';
 
             <!-- Company Details -->
             <div class="card wide">
-                <h3 style="margin-top:0; color: #fff;">General Details</h3>
-                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 20px;">
+                <h3>General Details</h3>
+                <div class="grid">
                     <div class="input-wrap">
                         <div class="input-group">
                             <input type="text" name="channel_name" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'channel_name')); ?>" required>
@@ -224,9 +224,9 @@ include 'header.php';
                     </div>
                 </div>
                 
-                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 10px;">
+                <div class="grid">
                     <div class="input-group">
-                        <input type="text" name="eo_contact_control" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'eo_contact_details')); ?>" required>
+                        <input type="text" name="eo_contact_details" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'eo_contact_details')); ?>" required>
                         <label>EO Contact Details</label>
                     </div>
                     <div class="input-group">
@@ -235,7 +235,7 @@ include 'header.php';
                     </div>
                 </div>
 
-                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 10px;">
+                <div class="grid">
                     <div class="input-group">
                         <input type="text" name="cin_number" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'cin_number')); ?>">
                         <label>CIN Number</label>
@@ -249,8 +249,8 @@ include 'header.php';
 
             <!-- Content Details -->
             <div class="card wide">
-                <h3 style="margin-top:0; color: #fff;">Content Details</h3>
-                <div class="grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                <h3>Content Details</h3>
+                <div class="grid">
                     <div class="input-group">
                         <input type="text" name="content_type" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'content_type')); ?>" required>
                         <label>Content Type</label>
@@ -275,7 +275,7 @@ include 'header.php';
 
             <!-- Upload Ad Section -->
             <div class="card">
-                <h3 style="margin-top:0; color: #fff;">Upload Ad (PNG)</h3>
+                <h3>Upload Ad (PNG)</h3>
                 <div class="input-group">
                     <input type="file" name="app_ad" id="file_app_ad" accept="image/png" style="color: white;">
                     <?php if (isset($_FILES['app_ad']) && $_FILES['app_ad']['tmp_name'] != ''): ?>
@@ -291,7 +291,7 @@ include 'header.php';
 
             <!-- Upload Logo Section -->
             <div class="card">
-                <h3 style="margin-top:0; color: #fff;">Upload Logo (PNG)</h3>
+                <h3>Upload Logo (PNG)</h3>
                 <div class="input-group">
                     <input type="file" name="app_logo" id="file_app_logo" accept="image/png" style="color: white;">
                     <?php if (isset($_FILES['app_logo']) && $_FILES['app_logo']['tmp_name'] != ''): ?>
