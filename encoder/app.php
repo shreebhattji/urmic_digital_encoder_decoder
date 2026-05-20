@@ -38,7 +38,8 @@ if (isset($_POST['submit'])) {
         $data_to_save[$field] = $_POST[$field] ?? '';
     }
 
-    file_put_contents($json_file, json_encode($data_to_save, JSON_PRETTY_PRINT));
+    if (empty($errors))
+        file_put_contents($json_file, json_encode($data_to_save, JSON_PRETTY_PRINT));
 }
 ?>
 
@@ -137,6 +138,5 @@ function getValue($data, $key)
         </div>
     </div>
 </form>
-
 
 <?php include 'footer.php'; ?>
