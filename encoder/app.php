@@ -226,31 +226,32 @@ include 'header.php';
                 </div>
             </div>
 
-            <!-- Content Details -->
             <div class="card wide">
                 <h3>Content Details</h3>
                 <div class="grid">
-                    <div class="input-group">
-                        <input type="text" name="content_type" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'content_type')); ?>" required>
-                        <label>Content Type</label>
-                    </div>
-                    <div class="dropdown-container">
-                        <span class="dropdown-label">Content Rating</span>
-                        <div class="dropdown">
-                            <select name="content_rating" id="content_rating">
-                                <?php
-                                $ratings = ['U' => 'Universal', 'UA' => 'Parental Guidance', 'A' => 'Adults Only', 'S' => 'Special'];
-                                foreach ($ratings as $code => $desc) {
-                                    $selected = (getValue($saved_data, 'content_rating') === $code) ? 'selected' : '';
-                                    echo "<option value=\"$code\" $selected>$code ($desc)</option>";
-                                }
-                                ?>
-                            </select>
+                    <div class="card">
+                        <div class="input-group">
+                            <input type="text" name="content_type" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'content_type')); ?>" required>
+                            <label>Content Type</label>
                         </div>
-                    </div>
-                    <div class="input-group">
-                        <input type="text" name="content_language" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'content_language')); ?>" required>
-                        <label>Content Language</label>
+                        <div class="dropdown-container">
+                            <span class="dropdown-label">Content Rating</span>
+                            <div class="dropdown">
+                                <select name="content_rating" id="content_rating">
+                                    <?php
+                                    $ratings = ['U' => 'Universal', 'UA' => 'Parental Guidance', 'A' => 'Adults Only', 'S' => 'Special'];
+                                    foreach ($ratings as $code => $desc) {
+                                        $selected = (getValue($saved_data, 'content_rating') === $code) ? 'selected' : '';
+                                        echo "<option value=\"$code\" $selected>$code ($desc)</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" name="content_language" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'content_language')); ?>" required>
+                            <label>Content Language</label>
+                        </div>
                     </div>
                 </div>
             </div>
