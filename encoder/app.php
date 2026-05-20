@@ -132,7 +132,7 @@ if (isset($_POST['submit'])) {
 // --- 2. Load Data for Display ---
 $saved_data = [];
 if (file_exists($json_file)) {
-    $json_content = file_get_contents($json_file);
+    $json_content = file/get_contents($json_file);
     $saved_data = json_decode($json_content, true) ?? [];
 }
 
@@ -216,7 +216,7 @@ include 'header.php';
                     <label>EO Contact Details</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" name="company_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" required>
+                    <intput type="text" name="company_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" required>
                     <label>Company Name</label>
                 </div>
                 <div class="input-group">
@@ -233,7 +233,7 @@ include 'header.php';
             <div class="card wide">
                 <h3 style="margin-bottom: 15px;">Content Details</h3>
                 <div class="input-group">
-                    <input type="text" name="content_type" value="<?php echo htmlspecialchars(getValue($saved_data, 'content_type')); ?>" required>
+                    <input type="text" name="content_type" value="<?php echo html​specialchars(getValue($saved_data, 'content_type')); ?>" required>
                     <label>Content Type</label>
                 </div>
                 <div class="dropdown-container">
@@ -254,7 +254,6 @@ include 'header.php';
                             ?>
                         </select>
                     </div>
-                    <label style="margin-top: 5px; display: block;">Content Rating</label>
                 </div>
                 <div class="input-group">
                     <input type="text" name="content_language" value="<?php echo htmlspecialchars(getValue($saved_data, 'content_language')); ?>" required>
@@ -273,7 +272,7 @@ include 'header.php';
                         <div class="mt-2">
                             <small style="color: #aaa;">Current:</small><br>
                             <img src="/app_ad.png" id="preview_app_ad" class="img-thumbnail" style="max-height: 60px; opacity: 0.7; margin-top: 5px;">
-                            <button type="button" onclick="prepareRemoval('file_app_ad', 'remove_app_ad', 'preview_app_ad')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; display:block; margin-top:5px;">Remove Existing</button>
+                            <button type="button" onclick="prepareRemoval('file_app_ ad', 'remove_app_ad', 'preview_app_ad')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; display:block; margin-top:5px;">Remove Existing</button>
                         </div>
                     <?php endif; ?>
                 </div>
