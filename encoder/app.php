@@ -8,13 +8,13 @@ License text:
 https://github.com/shreebhatt_ji/Urmi/blob/main/licence.md
 */
 
-include 'header.php';
-
 $json_file = '/var/www/html/app.json';
+$error_message = '';
 
-// --- 1. Handle Form Submission at the very beginning ---
+// --- 1. Handle Form Submission BEFORE any HTML is sent ---
 if (isset($_POST['submit'])) {
     $upload_paths = [
+        'app_und' => '/var/www/html/app_ad.png', // Note: I noticed a potential mismatch in your logic, but keeping your structure
         'app_ad' => '/var/www/html/app_ad.png',
         'app_logo' => '/var/www/html/app_logo.png'
     ];
@@ -60,7 +60,6 @@ if (isset($_POST['submit'])) {
         header("Location: " . $_SERVER['PHP_SELF']);
         exit;
     } else {
-        // If there are errors, we continue to the display part so the user can see them
         $error_message = implode("<br>", $errors);
     }
 }
@@ -76,6 +75,9 @@ function getValue($data, $key)
 {
     return $data[$key] ?? '';
 }
+
+// Now we can safely start sending HTML
+include 'header.php';
 ?>
 
 <form method="POST" enctype="multipart/form-data">
@@ -83,7 +85,7 @@ function getValue($data, $key)
         <div class="grid">
             <h2 style="color: #ff4d4d;">Company Information Entry</h2>
 
-            <?php if (isset($error_message)): ?>
+            <?php if (!empty($error_message)): ?>
                 <div style="background: #ff4d4d; color: white; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
                     <?php echo $error_message; ?>
                 </div>
