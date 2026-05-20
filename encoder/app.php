@@ -49,8 +49,8 @@ if (isset($_POST['submit'])) {
             }
 
             // 2. Determine target dimensions
-            $target_width = ($input_name === 'app_logo') ? 512 : 1080;
-            $target_height = ($input_name === 'app_logo') ? 512 : 1080;
+            $target_width = ($input_name === 'app_logo') ? 256 : 1080;
+            $target_height = ($input_name === 'app_logo') ? 256 : 1080;
 
             // 3. Load the source image
             $src_img = @imagecreatefrompng($tmp_path);
@@ -108,7 +108,10 @@ if (isset($_POST['submit'])) {
         'eo_contact_details',
         'company_name',
         'cin_number',
-        'gstin_number'
+        'gstin_number',
+        'content_type',
+        'content_rating',
+        'content_language'
     ];
 
     $data_to_save = [];
@@ -190,7 +193,7 @@ include 'header.php';
                 </div>
             <?php endif; ?>
 
-            <!-- Channel Details -->
+            <!-- Company Details -->
             <div class="card wide">
                 <div class="input-group">
                     <input type="text" name="channel_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'channel_name')); ?>" required>
@@ -223,6 +226,37 @@ include 'header.php';
                 <div class="input-group">
                     <input type="text" name="gstin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'gstin_number')); ?>">
                     <label>GSTIN Number</label>
+                </div>
+            </div>
+
+            <!-- Content Details -->
+            <div class="card wide">
+                <h3 style="margin-bottom: 15px;">Content Details</h3>
+                <div class="input-group">
+                    <input type="text" name="content_type" value="<?php echo htmlspecialchars(getValue($saved_data, 'content_type')); ?>" required>
+                    <label>Content Type</label>
+                </div>
+                <div class="input-group">
+                    <select name="content_rating" style="background: transparent; color: white; border: 1px solid #444; padding: 10px; border-radius: 4px; width: 100%; appearance: none; outline: none;" required>
+                        <option value="" disabled <?php echo empty(getValue($saved_data, 'content_rating')) ? 'selected' : ''; ?>>Select Rating</option>
+                        <?php
+                        $ratings = [
+                            'U' => 'Universal',
+                            'UA' => 'Parental Guidance',
+                            'A' => 'Adults Only',
+                            'S' => 'Special'
+                        ];
+                        foreach ($ratings as $code => $desc) {
+                            $selected = (getValue($saved_data, 'content_rating') === $code) ? 'selected' : '';
+                            echo "<option value=\"$code\" $selected>$code ($desc)</option>";
+                        }
+                        ?>
+                    </select>
+                    <label style="margin-top: 5px; display: block;">Content Rating</label>
+                </div>
+                <div class="input-group">
+                    <input type="text" name="content_language" value="<?php echo htmlspecialchars(getValue($saved_data, 'content_language')); ?>" required>
+                    <label>Content Language</label>
                 </div>
             </div>
 
