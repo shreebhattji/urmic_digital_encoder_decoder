@@ -32,14 +32,14 @@ function getValue($data, $key)
             <!-- Channel Details -->
             <div class="card wide">
                 <div class="input-group">
-                    <input type="text" name="channel_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'channel_name')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
-                    <label for="channel_name">Channel Name</label>
+                    <input type="text" name="channel_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'channel_name')); ?>" >
+                    <label for="channel:channel_name">Channel Name</label>
                 </div>
             </div>
 
             <div class="card wide">
                 <div class="input-group">
-                    <textarea name="office_address" placeholder=" " required style="width: 100%; min-height: 80px; background: transparent; border: 1px solid #444; color: white; padding: 10px; border-radius: 4px;"><?php echo htmlspecialchars(getValue($saved_data, 'office_address')); ?></textarea>
+                    <input type="text" name="office_address" value="<?php echo htmlspecialchars(getValue($saved_data, 'office_address')); ?>" >
                     <label for="office_address" style="position: static; margin-top: 5px;">Office Address</label>
                 </div>
             </div>
@@ -47,7 +47,7 @@ function getValue($data, $key)
             <!-- Contact Details -->
             <div class="card wide">
                 <div class="input-group">
-                    <input type="text" name="contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_details')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
+                    <input type="text" name="contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_details')); ?>" >
                     <label for="contact_details">Contact Details</label>
                 </div>
             </div>
@@ -55,14 +55,14 @@ function getValue($data, $key)
             <!-- Enforcement Officer Details -->
             <div class="card wide">
                 <div class="input-group">
-                    <input type="text" name="enforcement_officer" value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
+                    <input type="text" name="enforcement_officer" value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer')); ?>" >
                     <label for="enforcement_officer">Enforcement Officer</label>
                 </div>
             </div>
 
             <div class="card wide">
                 <div class="input-group">
-                    <input type="text" name="eo_contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'eo_contact_details')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
+                    <input type="text" name="eo_contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'eo_contact_details')); ?>" >
                     <label for="eo_contact_details">EO Contact Details</label>
                 </div>
             </div>
@@ -70,21 +70,21 @@ function getValue($data, $key)
             <!-- Company Details -->
             <div class="card wide">
                 <div class="input-group">
-                    <input type="text" name="company_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
+                    <input type="text" name="company_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" >
                     <label for="company_name">Company Name</label>
                 </div>
             </div>
 
             <div class="card wide">
                 <div class="input-group">
-                    <input type="text" name="cin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'cin_number')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
+                    <input type="text" name="cin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'cin_number')); ?>" >
                     <label for="cin_number">CIN Number</label>
                 </div>
             </div>
 
             <div class="card wide">
                 <div class="input-group">
-                    <input type="text" name="gstin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'gstin_number')); ?>" style="width: 100%; background: transparent; border: none; color: white; outline: none;">
+                    <input type="text" name="gstin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'gstin_number')); ?>" >
                     <label for="gstin_number">GSTIN Number</label>
                 </div>
             </div>
