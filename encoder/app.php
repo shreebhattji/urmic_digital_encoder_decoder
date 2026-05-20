@@ -132,7 +132,7 @@ if (isset($_POST['submit'])) {
 // --- 2. Load Data for Display ---
 $saved_data = [];
 if (file_exists($json_file)) {
-    $json_content = file/get_contents($json_file);
+    $json_content = file_get_contents($json_file);
     $saved_data = json_decode($json_content, true) ?? [];
 }
 
@@ -233,7 +233,7 @@ include 'header.php';
             <div class="card wide">
                 <h3 style="margin-bottom: 15px;">Content Details</h3>
                 <div class="input-group">
-                    <input type="text" name="content_type" value="<?php echo html​specialchars(getValue($saved_data, 'content_type')); ?>" required>
+                    <input type="text" name="content_type" value="<?php echo htmlspecialchars(getValue($saved_data, 'content_type')); ?>" required>
                     <label>Content Type</label>
                 </div>
                 <div class="dropdown-container">
