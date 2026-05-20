@@ -24,7 +24,7 @@ function getValue($data, $key)
 }
 ?>
 
-<form action="" method="POST" enctype="multipart/form-data">
+<form method="POST">
     <div class="containerindex">
         <div class="grid">
             <h2 style="text-align: center; color: white; margin-bottom: 20px;">Company Information Entry</h2>
@@ -32,27 +32,27 @@ function getValue($data, $key)
             <!-- Channel Details -->
             <div class="card wide">
                 <div class="input-group">
-                    <input type="text" name="channel_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'channel_name')); ?>" >
-                    <label for="channel:channel_name">Channel Name</label>
+                    <input type="text" name="channel_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'channel_name')); ?>" require>
+                    <label for="channel_name">Channel Name</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" name="office_address" value="<?php echo htmlspecialchars(getValue($saved_data, 'office_address')); ?>" >
-                    <label for="office_address" style="position: static; margin-top: 5px;">Office Address</label>
+                    <input type="text" name="office_address" value="<?php echo htmlspecialchars(getValue($saved_data, 'office_address')); ?>" require>
+                    <label for="office_address">Office Address</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" name="contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_details')); ?>" >
+                    <input type="text" name="contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_details')); ?>" require>
                     <label for="contact_details">Contact Details</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" name="enforcement_officer" value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer')); ?>" >
+                    <input type="text" name="enforcement_officer" value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer')); ?>" require>
                     <label for="enforcement_officer">Enforcement Officer</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" name="eo_contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'eo_contact_details')); ?>" >
+                    <input type="text" name="eo_contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'eo_contact_details')); ?>" require>
                     <label for="eo_contact_details">EO Contact Details</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" name="company_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" >
+                    <input type="text" name="company_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" require>
                     <label for="company_name">Company Name</label>
                 </div>
                 <div class="input-group">
