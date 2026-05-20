@@ -229,10 +229,6 @@ include 'header.php';
             <div class="card wide">
                 <h3>Content Details</h3>
                 <div class="grid">
-                    <div class="input-group">
-                        <input type="text" name="content_type" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'content_type')); ?>" required>
-                        <label>Content Type</label>
-                    </div>
                     <div class="dropdown-container">
                         <span class="dropdown-label">Content Rating</span>
                         <div class="dropdown">
@@ -246,6 +242,11 @@ include 'header.php';
                                 ?>
                             </select>
                         </div>
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <input type="text" name="content_type" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'content_type')); ?>" required>
+                        <label>Content Type</label>
                     </div>
                     <div class="input-group">
                         <input type="text" name="content_language" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'content_language')); ?>" required>
