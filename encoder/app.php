@@ -25,23 +25,64 @@ if (isset($_POST['submit'])) {
     // Handle File Uploads
     foreach ($upload_paths as $input_name => $destination) {
         if (isset($_FILES[$input_name]) && $_FILES[$input_name]['error'] == 0) {
-            $ext = pathinfo($_FILES[$input_name]['name'], PATHINFO_EXTENSION);
-            if (strtolower($ext) !== 'png') {
-                $errors[] = "File for $input_name must be a PNG.";
-            } else {
-                // Move to primary destination (/var/www/html/)
-                if (move_uploaded_file($_FILES[$input_name]['tmp_name'], $destination)) {
-                    // Create a copy in the encoder directory (/var/www/encoder/)
-                    $filename = basename($destination);
-                    $secondary_destination = $secondary_dir . $filename;
-                    
-                    if (!copy($destination, $secondary_destination)) {
-                        $errors[] = "Failed to create secondary copy for $input_name in encoder folder.";
-                    }
-                } else {
-                    $errors[] = "Failed to upload $input_name.";
-                }
+            $tmp_path = $_FILES[$input_name]['tmp_name'];
+            
+            // 1. Verify it is actually a PNG using GD/getimagesize
+            $image_info = @getimagesize($tmp_path);
+            if (!$image_info || $image_info[2] !== IMAGETYPE_PNG) {
+                $errors[] = "File for $input_name must be a valid PNG image.";
+                continue;
             }
+
+            // 2. Determine target dimensions
+            // Logo: 512x512, Ad: 1080x1080
+            $target_width = 1080;
+            $target_height = 1080;
+            if ($input_name === 'app_logo') {
+                $target_width = 512;
+                $target_height = 512;
+            }
+
+            // 3. Load the source image
+            $src_img = @imagecreatefrompng($tmp_path);
+            if (!$src_img) {
+                $errors[] = "Failed to process $input_name (Invalid PNG data).";
+                continue;
+            }
+
+            // 4. Create a blank truecolor canvas for the new size
+            $dst_img = imagecreatetruecolor($target_width, $target_height);
+
+            // 5. Preserve transparency for PNG
+            imagealphablending($dst_img, false);
+            imagesavealpha($dst_img, true);
+            $transparent = imagecolorallocatealpha($dst_img, 255, 255, 255, 127);
+            imagefill($dst_img, 0, 0, $transparent);
+
+            // 6. Resize (Resample) using interpolation for high quality
+            imagecopyresampled(
+                $dst_img, $src_img, 
+                0, 0, 0, 0, 
+                $target_width, $target_height, 
+                imagesx($src_img), imagesy($src_img)
+            );
+
+            // 7. Save to primary destination with compression (level 7)
+            if (imagepng($dst_img, $destination, 7)) {
+                // Create a copy in the encoder directory (/var/www/encoder/)
+                $filename = basename($destination);
+                $secondary_destination = $secondary_dir . $filename;
+                
+                if (!copy($destination, $secondary_destination)) {
+                    $errors[] = "Failed to create secondary copy for $input_name in encoder folder.";
+                }
+            } else {
+                $errors[] = "Failed to save processed $input_name.";
+            }
+
+            // 8. Free memory
+            imagedestroy($src_img);
+            imagedestroy($dst_img);
         }
     }
 
@@ -67,7 +108,6 @@ if (isset($_POST['submit'])) {
         file_put_contents($json_file, json_encode($data_to_save, JSON_PRETTY_PRINT));
         
         // Redirect to the same page to refresh the data and clear POST state
-        header("cap_url: " . $_SERVER['PHP_SELF']);
         header("Location: " . $_SERVER['PHP_SELF']);
         exit;
     } else {
@@ -142,8 +182,8 @@ include 'header.php';
                 <h3 style="margin-bottom: 15px;">Upload Ad (PNG)</h3>
                 <div class="input-group">
                     <input type="file" name="app_ad" accept="image/png" style="color: white;">
-                    <?php if (file_exists('app_ad.png')): ?>
-                        <div class="mt-2"><small style="color: #aaa;">Current:</small><br><img src="/app_ad.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7; margin-top: 5px;"></div>
+                    <?php if (file_exists('/var/www/html/app_ad.png')): ?>
+                        <div class="mt-2"><small style="color: #aaa;">Current:</small><br><img src="/app_ad.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7; margin-top: 5px;"></div >
                     <?php endif; ?>
                 </div>
             </div>
@@ -152,8 +192,8 @@ include 'header.php';
                 <h3 style="margin-bottom: 15px;">Upload Logo (PNG)</h3>
                 <div class="input-group">
                     <input type="file" name="app_logo" accept="image/png" style="color: white;">
-                    <?php if (file_exists('app_logo.png')): ?>
-                        <div class="mt-2"><small style="color: #aaa;">Current:</small><br><img src="/app_logo.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7; margin-top: 5px;"></div>
+                    <?php if (file_exists('/var/www/html/app_logo.png')): ?>
+                        <div class="mt-2"><small style="color: #aaa;">Current:</small><br><img src="/app_logo.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7; margin-top: 5px;"></div >
                     <?php endif; ?>
                 </div>
             </div>
