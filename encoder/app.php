@@ -144,27 +144,6 @@ function getValue($data, $key)
 include 'header.php';
 ?>
 
-<style>
-    .containerindex { max-width: 1000px; margin: 0 auto; padding: 20px; font-family: sans-serif; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    .card { background: #1a1a1a; padding: 25px; border-radius: 12px; border: 1px solid #333; }
-    .card.wide { grid-column: span 2; }
-    .input-group { position: relative; margin-bottom: 25px; }
-    .input-group input[type="text"] {
-        width: 100%; padding: 12px; background: transparent; border: 1px solid #444;
-        border-radius: 6px; color: white; outline: none; box-sizing: border-box;
-    }
-    .input-group label { position: absolute; left: 12px; top: 12px; color: #888; pointer-events: none; transition: 0.2s; }
-    .input-group input:focus, .input-group input:not(:placeholder-shown) { border-color: #c00; }
-    .input-group input:focus + label, .input-group input:not(:placeholder-shown) + label {
-        top: -10px; left: 8px; font-size: 12px; color: #c00; background: #1a1a1a; padding: 0 4px;
-    }
-    .dropdown-container { position: relative; margin-bottom: 25px; }
-    select { width: 100%; padding: 12px; background: #222; color: white; border: 1px solid #444; border-radius: 6px; }
-    .img-thumbnail { border-radius: 4px; border: 1px solid #444; }
-    .mt-2 { margin-top: 10px; }
-</style>
-
 <script>
     function prepareRemoval(inputId, removeInputId, previewImgId) {
         document.getElementById(inputId).value = "";
