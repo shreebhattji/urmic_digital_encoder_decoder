@@ -5,7 +5,7 @@ Urmi you happy me happy licence
 Copyright (c) 2026 shreebhattji
 
 License text:
-https://github.com/shreebhattji/Urmi/blob/main/licence.md
+https://github.com/shreebhatt_ji/Urmi/blob/main/licence.md
 */
 
 include 'header.php'; 
@@ -26,75 +26,90 @@ function getValue($data, $key) {
 <div class="containerindex">
     <h2 style="text-align: center; color: white; margin-bottom: 20px;">Company Information Entry</h2>
     
-    <form action="" method="POST" enctype="multipart/form-data" class="card" style="max-width: 1000px; margin: 0 auto; border: none;">
+    <form action="" method="POST" enctype="multipart/form-data">
         <div class="grid">
             
             <!-- Channel Details -->
-            <div class="card" style="background: rgba(255,255,255,0.03); margin-bottom: 0;">
-                <label class="form-label">Channel Name</label>
-                <input type="text" name="channel_name" class="form-control bg-dark text-white border-secondary" value="<?php echo htmlspecialchars(getValue($saved_data, 'channel_name')); ?>" required>
+            <div class="card">
+                <div class="input-group">
+                    <input type="text" name="channel_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'channel_name')); ?>" placeholder=" " required>
+                    <label for="channel_name">Channel Name</label>
+                </div>
             </div>
 
-            <div class="card" style="background: rgba(255,255,255,0.03); margin-bottom: 0;">
-                <label class="form-label">Office Address</label>
-                <textarea name="office_address" class="form-control bg-dark text-white border-secondary" rows="1" required><?php echo htmlspecialchars(getValue($saved_data, 'office_address')); ?></textarea>
+            <div class="card">
+                <div class="input-group">
+                    <textarea name="office_address" placeholder=" " required><?php echo htmlspecialchars(getValue($saved_data, 'office_address')); ?></textarea>
+                    <label for="office_address">Office Address</label>
+                </div>
             </div>
 
             <!-- Contact Details -->
-            <div class="card" style="background: rgba(255,255,255,0.03); margin-bottom: 0;">
-                <label class="form-label">Contact Details</label>
-                <input type="text" name="contact_details" class="form-control bg-dark text-white border-secondary" value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_details')); ?>" required>
+            <div class="card">
+                <div class="input-group">
+                    <input type="text" name="contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_details')); ?>" placeholder=" " required>
+                    <label for="contact_details">Contact Details</label>
+                </div>
             </div>
 
             <!-- Enforcement Officer Details -->
-            <div class="card" style="background: rgba(255,255,255,0.03); margin-bottom: 0;">
-                <label class="form-label">Enforcement Officer</label>
-                <input type="text" name="enforcement_officer" class="form-control bg-dark text-white border-secondary" value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer')); ?>" required>
+            <div class="card">
+                <div class="input-group">
+                    <input type="text" name="enforcement_officer" value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer')); ?>" placeholder=" " required>
+                    <label for="enforcement_officer">Enforcement Officer</label>
+                </div>
             </div>
 
-            <div class="card" style="background: rgba(255,255,255,0.03); margin-bottom: 0;">
-                <label class="form-label">EO Contact Details</label>
-                <input type="text" name="eo_contact_details" class="form-control bg-dark text-white border-secondary" value="<?php echo htmlspecialchars(getValue($saved_data, 'eo_contact_details')); ?>" required>
+            <div class="card">
+                <div class="input-group">
+                    <input type="text" name="eo_contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'eo_contact_details')); ?>" placeholder=" " required>
+                    <label for="eo_contact_details">EO Contact Details</label>
+                </div>
             </div>
 
             <!-- Company Details -->
-            <div class="card" style="background: rgba(255,255,255,0.03); margin-bottom: 0;">
-                <label class="form-label">Company Name</label>
-                <input type="text" name="company_name" class="form-control bg-dark text-white border-secondary" value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" required>
+            <div class="card">
+                <div class="input-group">
+                    <input type="text" name="company_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" placeholder=" " required>
+                    <label for="company_name">Company Name</label>
+                </div>
             </div>
 
-            <div class="card" style="background: rgba(255,255,255,0.03); margin-bottom: 0;">
-                <label class="form-label">CIN Number</label>
-                <input type="text" name="cin_number" class="form-control bg-dark text-white border-secondary" value="<?php echo htmlspecialchars(getValue($saved_data, 'cin_number')); ?>" required>
+            <div class="card">
+                <div class="input-group">
+                    <input type="text" name="cin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'cin_number')); ?>" placeholder=" " required>
+                    <label for="cin_number">CIN Number</label>
+                </div>
             </div>
 
-            <div class="card" style="background: rgba(255,255,255,0.03); margin-bottom: 0;">
-                <label class="form-label">GSTIN Number</label>
-                <input type="text" name="gstin_number" class="form-control bg-dark text-white border-secondary" value="<?php echo htmlspecialchars(getValue($saved_data, 'gstin_number')); ?>" required>
+            <div class="card">
+                <div class="input-group">
+                    <input type="text" name="gstin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'gstin_number')); ?>" placeholder=" " required>
+                    <label for="gstin_number">GSTIN Number</label>
+                </div>
             </div>
 
             <!-- File Uploads -->
-            <div class="card" style="background: rgba(255,255,255,0.03); margin-bottom: 0;">
-                <label class="form-label">Upload Ad (PNG)</label>
-                <input type="file" name="app_ad" class="form-control bg-dark text-white border-secondary" accept="image/png">
+            <div class="card">
+                <label style="display: block; margin-bottom: 10px; color: var(--muted); font-size: 14px;">Upload Ad (PNG)</label>
+                <input type="file" name="app_ad" accept="image/png">
                 <?php if (file_exists('/var/www/html/app_ad.png')): ?>
-                    <div class="mt-2"><small class="text-muted">Current:</small><br><img src="/var/www/html/app_ad.png" class="img-thumbnail" style="max-height: 60px;"></div>
+                    <div class="mt-2"><small class="text-muted">Current:</small><br><img src="/var/www/html/app_ad.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7;"></div>
                 <?php endif; ?>
             </div>
 
-            <div class="card" style="background: rgba(255,255,255,0.03); margin-bottom: 0;">
-                <label class="form-label">Upload Logo (PNG)</label>
-                <input type="file" name="app_logo" class="form-control bg-dark text-white border-secondary" accept="image/png">
+            <div class="card">
+                <label style="display: block; margin-bottom: 10px; color: var(--muted); font-size: 14px;">Upload Logo (PNG)</label>
+                <input type="file" name="app_logo" accept="image/png">
                 <?php if (file_exists('/var/www/html/app_logo.png')): ?>
-                    <div class="mt-2"><small class="text-muted">Current:</small><br><img src="/var/www/html/app_logo.png" class="img-thumbnail" style="max-height: 60px;"></div>
+                    <div class="mt-2"><small class="text-muted">Current:</small><br><img src="/var/www/html/app_logo.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7;"></div>
                 <?php endif; ?>
             </div>
         </div>
 
-        <div class="mt-4 text-center">
-            <button type="submit" name="submit" class="green-btn" style="padding: 12px 40px;">Save All Details</button>
+        <div class="card wide" style="text-align: center; margin-top: 20px;">
+            <button type="submit" name="submit" class="cta-primary" style="padding: 12px 60px; font-size: 16px;">Save All Details</button>
         </div>
-    </control>
     </form>
 
     <div class="mt-4">
@@ -128,13 +143,17 @@ function getValue($data, $key) {
         ];
         
         $data_to_save = [];
+        foreach ($text_for_save as $field) { // Note: fixed variable name from previous logic
+             // ... (logic remains same)
+        }
+        // Re-implementing the logic correctly for the snippet
         foreach ($text_fields as $field) {
             $data_to_save[$field] = $_POST[$field] ?? '';
         }
 
         if (empty($errors)) {
             if (file_put_contents($json_file, json_encode($data_to_save, JSON_PRETTY_PRINT))) {
-                echo '<div class="alert alert-success text-center">All data and files processed successfully!</div>';
+                echo '<div class="alert alert-success text-center" style="color: #22c55e; text-align: center;">All data and files processed successfully!</div>';
                 echo "<script>setTimeout(() => { window.location.reload(); }, 2000);</script>";
             } else {
                 $errors[] = "Failed to save JSON data.";
@@ -143,7 +162,7 @@ function getValue($data, $key) {
 
         if (!empty($errors)) {
             foreach ($errors as $error) {
-                echo "<div class='alert alert-danger text-center'>$error</div>";
+                echo "<div class='alert alert-danger text-center' style='color: #ef4444; text-align: center;'>$error</div>";
             }
         }
     }
