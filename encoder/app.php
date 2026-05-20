@@ -1,4 +1,18 @@
 <?php
+/*
+Urmi you happy me happy licence
+
+Copyright (c) 2026 shreebhattji
+
+License text:
+https://github.com/shreebhatt_ji/Urmi/blob/main/licence.md
+*/
+
+include 'header.php';
+
+$json_file = '/var/www/html/app.json';
+
+// --- 1. Handle Form Submission at the very beginning ---
 if (isset($_POST['submit'])) {
     $upload_paths = [
         'app_ad' => '/var/www/html/app_ad.png',
@@ -7,21 +21,21 @@ if (isset($_POST['submit'])) {
 
     $errors = [];
 
+    // Handle File Uploads
     foreach ($upload_paths as $input_name => $destination) {
         if (isset($_FILES[$input_name]) && $_FILES[$input_name]['error'] == 0) {
             $ext = pathinfo($_FILES[$input_name]['name'], PATHINFO_EXTENSION);
             if (strtolower($ext) !== 'png') {
                 $errors[] = "File for $input_name must be a PNG.";
             } else {
-                if (move_uploaded_file($_FILES[$input_name]['tmp_name'], $destination)) {
-                    // Success
-                } else {
+                if (!move_uploaded_file($_FILES[$input_name]['tmp_name'], $destination)) {
                     $errors[] = "Failed to upload $input_name.";
                 }
             }
         }
     }
 
+    // Handle Text Fields
     $text_fields = [
         'channel_name',
         'office_address',
@@ -38,26 +52,21 @@ if (isset($_POST['submit'])) {
         $data_to_save[$field] = $_POST[$field] ?? '';
     }
 
-    if (empty($errors))
+    // Save if no errors occurred
+    if (empty($errors)) {
         file_put_contents($json_file, json_encode($data_to_save, JSON_PRETTY_PRINT));
+        
+        // Redirect to the same page to refresh the data and clear POST state
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit;
+    } else {
+        // If there are errors, we continue to the display part so the user can see them
+        $error_message = implode("<br>", $errors);
+    }
 }
-?>
 
-<?php
-/*
-Urmi you happy me happy licence
-
-Copyright (c) 2026 shreebhattji
-
-License text:
-https://github.com/shreebhatt_ji/Urmi/blob/main/licence.md
-*/
-
-include 'header.php';
-
-$json_file = '/var/www/html/app.json';
+// --- 2. Load Data for Display ---
 $saved_data = [];
-
 if (file_exists($json_file)) {
     $json_content = file_get_contents($json_file);
     $saved_data = json_decode($json_content, true) ?? [];
@@ -69,35 +78,41 @@ function getValue($data, $key)
 }
 ?>
 
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
     <div class="containerindex">
         <div class="grid">
-            <h2>Company Information Entry</h2>
+            <h2 style="color: #ff4d4d;">Company Information Entry</h2>
+
+            <?php if (isset($error_message)): ?>
+                <div style="background: #ff4d4d; color: white; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+                    <?php echo $error_message; ?>
+                </div>
+            <?php endif; ?>
 
             <!-- Channel Details -->
             <div class="card wide">
                 <div class="input-group">
-                    <input type="text" name="channel_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'channel_name')); ?>" require>
+                    <input type="text" name="channel_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'channel_name')); ?>" required>
                     <label for="channel_name">Channel Name</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" name="office_address" value="<?php echo htmlspecialchars(getValue($saved_data, 'office_address')); ?>" require>
+                    <input type="text" name="office_address" value="<?php echo htmlspecialchars(getValue($saved_data, 'office_address')); ?>" required>
                     <label for="office_address">Office Address</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" name="contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_details')); ?>" require>
+                    <input type="text" name="contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_details')); ?>" required>
                     <label for="contact_details">Contact Details</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" name="enforcement_officer" value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer')); ?>" require>
+                    <input type="text" name="enforcement_officer" value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer')); ?>" required>
                     <label for="enforcement_officer">Enforcement Officer</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" name="eo_contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'eo_contact_details')); ?>" require>
+                    <input type="text" name="eo_contact_details" value="<?php echo htmlspecialchars(getValue($saved_data, 'eo_contact_details')); ?>" required>
                     <label for="eo_contact_details">EO Contact Details</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" name="company_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" require>
+                    <input type="text" name="company_name" value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" required>
                     <label for="company_name">Company Name</label>
                 </div>
                 <div class="input-group">
@@ -110,7 +125,6 @@ function getValue($data, $key)
                 </div>
             </div>
 
-
             <div class="card wide">
                 <h3 style="margin-bottom: 15px;">Upload Ad (PNG)</h3>
                 <div class="input-group">
@@ -120,7 +134,6 @@ function getValue($data, $key)
                     <?php endif; ?>
                 </div>
             </div>
-
 
             <div class="card wide">
                 <h3 style="margin-bottom: 15px;">Upload Logo (PNG)</h3>
