@@ -30,7 +30,9 @@ if (isset($_POST['submit'])) {
                 unlink($path);
                 // Also remove from encoder directory
                 $secondary_path = $secondary_dir . basename($path);
-                if (file_exists($secondary_path)) unlink($payload_path = $secondary_path);
+                if (file_exists($secondary_path)) {
+                    unlink($secondary_path);
+                }
             }
         }
     }
@@ -140,10 +142,36 @@ include 'header.php';
 ?>
 
 <script>
-    // Function to clear file input and set the hidden removal flag
-    function prepareRemoval(inputId, removeInputId) {
+    /**
+     * Function to clear file input and set the hidden removal flag
+     * Also provides immediate UI feedback by hiding the preview
+     */
+    function prepareRemoval(inputId, removeInputId, previewImgId) {
+        // 1. Clear the file input
         document.getElementById(inputId).value = "";
+        
+        // 2. Set the hidden removal flag for PHP to process on submit
         document.getElementById(removeInputId).value = "1";
+        
+        // 3. UI Feedback: Hide the image preview immediately
+        const imgElement = document.getElementById(previewImgId);
+        if (imgElement) {
+            imgElement.style.display = 'none';
+            
+            // Hide the "Remove Existing" button (it's the next sibling of the image)
+            const btn = imgElement.nextElementSibling;
+            if (btn && btn.tagName === 'BUTTON') {
+                btn.style.display = 'none';
+            }
+        }
+
+        // 4. Update the text label to inform the user
+        const container = document.getElementById(inputId).parentElement;
+        const label = container.querySelector('small');
+        if (label) {
+            label.innerText = "File marked for removal (will delete on save)";
+            label.style.color = "#ff4d4d";
+        }
     }
 </script>
 
@@ -202,6 +230,8 @@ include 'header.php';
             <div class="card wide">
                 <h3 style="margin-bottom: 15px;">Upload Ad (PNG)</h3>
                 <div class="input-group">
+                    <input type="file" name="app_ad" id="file_app_ann" accept="image/png" style="color: white;">
+                    <!-- We use a secondary input for the actual file upload to keep IDs clean -->
                     <input type="file" name="app_ad" id="file_app_ad" accept="image/png" style="color: white;">
 
                     <?php if (isset($_FILES['app_ad']) && $_FILES['app_ad']['tmp_name'] != ''): ?>
@@ -209,8 +239,8 @@ include 'header.php';
                     <?php elseif (file_exists('/var/www/html/app_ad.png')): ?>
                         <div class="mt-2">
                             <small style="color: #aaa;">Current:</small><br>
-                            <img src="/app_ad.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7; margin-top: 5px;">
-                            <button type="button" onclick="prepareRemoval('file_app_ad', 'remove_app_ad')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; display:block; margin-top:5px;">Remove Existing</button>
+                            <img src="/app_ad.png" id="preview_app_ad" class="img-thumbnail" style="max-height: 60px; opacity: 0.7; margin-top: 5px;">
+                            <button type="button" onclick="prepareRemoval('file_app_ad', 'remove_app_ad', 'preview_app_ad')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; display:block; margin-top:5px;">Remove Existing</button>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -228,8 +258,8 @@ include 'header.php';
                         <div class="mt-2">
                             <input type="hidden" name="app_logo_placeholder" value="true">
                             <small style="color: #aaa;">Current:</small><br>
-                            <img src="/app_logo.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7; margin-top: 5px;">
-                            <button type="button" onclick="prepareRemoval('file_app_logo', 'remove_app_logo')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; display:block; margin-top:5px;">Remove Existing</button>
+                            <img src="/app_logo.png" id="preview_app_logo" class="img-thumbnail" style="max-height: 60px; opacity: 0.7; margin-top: 5px;">
+                            <button type="button" onclick="prepareRemoval('file_app_logo', 'remove_app_logo', 'preview_app_logo')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; display:block; margin-top:5px;">Remove Existing</button>
                         </div>
                     <?php endif; ?>
                 </div>
