@@ -152,15 +152,15 @@ include 'header.php';
     function prepareRemoval(inputId, removeInputId, previewImgId) {
         // 1. Clear the file input
         document.getElementById(inputId).value = "";
-        
+
         // 2. Set the hidden removal flag for PHP to process on submit
         document.getElementById(removeInputId).value = "1";
-        
+
         // 3. UI Feedback: Hide the image preview immediately
         const imgElement = document.getElementById(previewImgId);
         if (imgElement) {
             imgElement.style.display = 'none';
-            
+
             // Hide the "Remove Existing" button (it's the next sibling of the image)
             const btn = imgElement.nextElementSibling;
             if (btn && btn.tagName === 'BUTTON') {
@@ -236,22 +236,24 @@ include 'header.php';
                     <input type="text" name="content_type" value="<?php echo htmlspecialchars(getValue($saved_data, 'content_type')); ?>" required>
                     <label>Content Type</label>
                 </div>
-                <div class="input-group">
-                    <select name="content_rating" style="background: transparent; color: white; border: 1px solid #444; padding: 10px; border-radius: 4px; width: 100%; appearance: none; outline: none;" required>
-                        <option value="" disabled <?php echo empty(getValue($saved_data, 'content_rating')) ? 'selected' : ''; ?>>Select Rating</option>
-                        <?php
-                        $ratings = [
-                            'U' => 'Universal',
-                            'UA' => 'Parental Guidance',
-                            'A' => 'Adults Only',
-                            'S' => 'Special'
-                        ];
-                        foreach ($ratings as $code => $desc) {
-                            $selected = (getValue($saved_data, 'content_rating') === $code) ? 'selected' : '';
-                            echo "<option value=\"$code\" $selected>$code ($desc)</option>";
-                        }
-                        ?>
-                    </select>
+                <div class="dropdown-container">
+                    <span class="dropdown-label">Content Rating</span>
+                    <div class="dropdown">
+                        <select name="content_rating" id="content_rating">
+                            <?php
+                            $ratings = [
+                                'U' => 'Universal',
+                                'UA' => 'Parental Guidance',
+                                'A' => 'Adults Only',
+                                'S' => 'Special'
+                            ];
+                            foreach ($ratings as $code => $desc) {
+                                $selected = (getValue($saved_data, 'content_rating') === $code) ? 'selected' : '';
+                                echo "<option value=\"$code\" $selected>$code ($desc)</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
                     <label style="margin-top: 5px; display: block;">Content Rating</label>
                 </div>
                 <div class="input-group">
