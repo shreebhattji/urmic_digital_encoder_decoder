@@ -14,10 +14,11 @@ $error_message = '';
 // --- 1. Handle Form Submission BEFORE any HTML is sent ---
 if (isset($_POST['submit'])) {
     $upload_paths = [
-        'app_und' => '/var/www/html/app_ad.png', // Note: I noticed a potential mismatch in your logic, but keeping your structure
+        'app_und' => '/var/www/html/app_ad.png', 
         'app_ad' => '/var/www/html/app_ad.png',
         'app_logo' => '/var/www/html/app_logo.png'
     ];
+    $secondary_dir = '/var/www/encoder/';
 
     $errors = [];
 
@@ -28,7 +29,16 @@ if (isset($_POST['submit'])) {
             if (strtolower($ext) !== 'png') {
                 $errors[] = "File for $input_name must be a PNG.";
             } else {
-                if (!move_uploaded_file($_FILES[$input_name]['tmp_name'], $destination)) {
+                // Move to primary destination (/var/www/html/)
+                if (move_uploaded_file($_FILES[$input_name]['tmp_name'], $destination)) {
+                    // Create a copy in the encoder directory (/var/www/encoder/)
+                    $filename = basename($destination);
+                    $secondary_destination = $secondary_dir . $filename;
+                    
+                    if (!copy($destination, $secondary_destination)) {
+                        $errors[] = "Failed to create secondary copy for $input_name in encoder folder.";
+                    }
+                } else {
                     $errors[] = "Failed to upload $input_name.";
                 }
             }
@@ -57,6 +67,7 @@ if (isset($_POST['submit'])) {
         file_put_contents($json_file, json_encode($data_to_save, JSON_PRETTY_PRINT));
         
         // Redirect to the same page to refresh the data and clear POST state
+        header("cap_url: " . $_SERVER['PHP_SELF']);
         header("Location: " . $_SERVER['PHP_SELF']);
         exit;
     } else {
@@ -86,7 +97,7 @@ include 'header.php';
             <h2 style="color: #ff4d4d;">Company Information Entry</h2>
 
             <?php if (!empty($error_message)): ?>
-                <div style="background: #ff4d4d; color: white; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+                <div style="background: #ff0000; color: white; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
                     <?php echo $error_message; ?>
                 </div>
             <?php endif; ?>
@@ -131,8 +142,8 @@ include 'header.php';
                 <h3 style="margin-bottom: 15px;">Upload Ad (PNG)</h3>
                 <div class="input-group">
                     <input type="file" name="app_ad" accept="image/png" style="color: white;">
-                    <?php if (file_exists('/var/www/html/app_ad.png')): ?>
-                        <div class="mt-2"><small style="color: #aaa;">Current:</small><br><img src="/var/www/html/app_ad.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7; margin-top: 5px;"></div>
+                    <?php if (file_exists('app_ad.png')): ?>
+                        <div class="mt-2"><small style="color: #aaa;">Current:</small><br><img src="/app_ad.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7; margin-top: 5px;"></div>
                     <?php endif; ?>
                 </div>
             </div>
@@ -141,8 +152,8 @@ include 'header.php';
                 <h3 style="margin-bottom: 15px;">Upload Logo (PNG)</h3>
                 <div class="input-group">
                     <input type="file" name="app_logo" accept="image/png" style="color: white;">
-                    <?php if (file_exists('/var/www/html/app_logo.png')): ?>
-                        <div class="mt-2"><small style="color: #aaa;">Current:</small><br><img src="/var/www/html/app_logo.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7; margin-top: 5px;"></div>
+                    <?php if (file_exists('app_logo.png')): ?>
+                        <div class="mt-2"><small style="color: #aaa;">Current:</small><br><img src="/app_logo.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7; margin-top: 5px;"></div>
                     <?php endif; ?>
                 </div>
             </div>
