@@ -92,19 +92,23 @@ function getValue($data, $key)
 
             <!-- File Uploads -->
             <div class="card wide">
-                <label style="display: block; margin-bottom: 10px; color: var(--muted); font-size: 14px;">Upload Ad (PNG)</label>
-                <input type="file" name="app_ad" accept="image/png">
-                <?php if (file_exists('/var/www/html/app_ad.png')): ?>
-                    <div class="mt-2"><small class="text-muted">Current:</small><br><img src="/var/www/html/app_ad.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7;"></div>
-                <?php endif; ?>
+                <div class="input-group">
+                    <label style="display: block; margin-bottom: 10px; color: var(--muted); font-size: 14px;">Upload Ad (PNG)</label>
+                    <input type="file" name="app_ad" accept="image/png">
+                    <?php if (file_exists('/var/www/html/app_ad.png')): ?>
+                        <div class="mt-2"><small class="text-muted">Current:</small><br><img src="/var/www/html/app_ad.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7;"></div >
+                    <?php endif; ?>
+                </div>
             </div>
 
             <div class="card wide">
-                <label style="display: block; margin-bottom: 10px; color: var(--muted); font-size: 14px;">Upload Logo (PNG)</label>
-                <input type="file" name="app_logo" accept="image/png">
-                <?php if (file_exists('/var/www/html/app_logo.png')): ?>
-                    <div class="mt-2"><small class="text-muted">Current:</small><br><img src="/var/www/html/app_logo.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7;"></div>
-                <?php endif; ?>
+                <div class="input-group">
+                    <label style="display: block; margin-bottom: 10px; color: var(--muted); font-size: 14px;">Upload Logo (PNG)</label>
+                    <input type="file" name="app_logo" accept="image/png">
+                    <?php if (file_exists('/var/www/html/app_logo.png')): ?>
+                        <div class="mt-2"><small class="text-muted">Current:</small><br><img src="/var/www/html/app_logo.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7;"></div >
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
 
@@ -151,10 +155,6 @@ function getValue($data, $key)
         ];
 
         $data_to_save = [];
-        foreach ($text_for_save as $field) { // Note: fixed variable name from previous logic
-            // ... (logic remains same)
-        }
-        // Re-implementing the logic correctly for the snippet
         foreach ($text_fields as $field) {
             $data_to_save[$field] = $_POST[$field] ?? '';
         }
