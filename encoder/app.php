@@ -243,11 +243,25 @@ include 'header.php';
                             </select>
                         </div>
                     </div>
-                    <br>
+                    <div class="dropdown-container">
+                        <span class="dropdown-label">Content Type</span>
+                        <div class="dropdown">
+                            <select name="content_type" id="content_type">
+                                <?php
+                                $ratings = [];
+                                foreach ($ratings as $desc) {
+                                    $selected = (getValue($saved_data, 'content_type') === $code) ? 'selected' : '';
+                                    echo "<option value=\"$code\" $selected>$desc</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
                     <div class="input-group">
                         <input type="text" name="content_type" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'content_type')); ?>" required>
                         <label>Content Type</label>
                     </div>
+                    <br>
                     <div class="input-group">
                         <input type="text" name="content_language" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'content_language')); ?>" required>
                         <label>Content Language</label>
