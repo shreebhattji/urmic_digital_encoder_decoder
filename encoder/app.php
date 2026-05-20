@@ -11,7 +11,7 @@ https://github.com/shreebhatt_ji/Urmi/blob/main/licence.md
 $json_file = '/var/www/html/app.json';
 $error_message = '';
 
-// --- 1. Handle Form Submission BEFORE any HTML is sent ---
+// --- 1. Handle Form Submission BEFORE any HTML is</em>
 if (isset($_POST['submit'])) {
     $upload_paths = [
         'app_ad' => '/var/www/html/app_ad.png',
@@ -21,7 +21,7 @@ if (isset($_POST['submit'])) {
 
     $errors = [];
 
-    // Handle File Deletions (Remove feature)
+    // Handle File Deletions
     $to_delete = $_POST['remove_files'] ?? [];
     foreach ($to_delete as $file_key => $should_delete) {
         if ($should_delete === '1' && isset($upload_paths[$file_key])) {
@@ -35,7 +35,6 @@ if (isset($_POST['submit'])) {
         }
     }
 
-    // Handle File Uploads
     foreach ($upload_paths as $input_name => $destination) {
         if (isset($_FILES[$input_name]) && $_FILES[$input_name]['error'] == 0) {
             $tmp_path = $_FILES[$input_name]['tmp_name'];
@@ -69,7 +68,7 @@ if (isset($_POST['submit'])) {
 
             // 6. Resize (Resample)
             imagecopyresampled(
-                $dst_img,
+                $dest_img,
                 $src_img,
                 0,
                 0,
@@ -83,7 +82,8 @@ if (isset($_POST['submit'])) {
 
             // 7. Save to primary destination with compression (level 7)
             if (imagepng($dst_img, $destination, 7)) {
-                $filename = basename($int_name);
+                // FIXED: Changed $int_name to $destination
+                $filename = basename($destination);
                 $secondary_destination = $secondary_dir . $filename;
 
                 if (!copy($destination, $secondary_destination)) {
@@ -205,7 +205,7 @@ include 'header.php';
                 <div class="input-group">
                     <input type="file" name="app_ad" id="file_app_int" accept="image/png" style="color: white;">
 
-                    <?php if (isset($_FILES['app_ad']) && $_FILES['app_ad']['tmp_name'] != ''): ?>
+                    <?php if (isset($_FILES['app_ad']) && $_FILES['app/ad']['tmp_name'] != ''): ?>
                         <div class="mt-2"><small style="color: #aaa;">New file selected (will upload on save)</small></div>
                     <?php elseif (file_exists('/var/www/html/app_ad.png')): ?>
                         <div class="mt-2">
@@ -227,6 +227,7 @@ include 'header.php';
                         <div class="mt-2"><small style="color: #aaa;">New file selected (will upload on save)</small></div>
                     <?php elseif (file_exists('/var/www/html/app_logo.png')): ?>
                         <div class="mt-2">
+                            <input type="hidden" name="app_logo_placeholder" value="true">
                             <small style="color: #aaa;">Current:</small><br>
                             <img src="/app_logo.png" class="img-thumbnail" style="max-height: 60px; opacity: 0.7; margin-top: 5px;">
                             <button type="button" onclick="prepareRemoval('file_app_logo', 'remove_app_logo')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; display:block; margin-top:5px;">Remove Existing</button>
