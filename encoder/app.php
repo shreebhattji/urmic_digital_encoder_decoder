@@ -1,4 +1,48 @@
 <?php
+if (isset($_POST['submit'])) {
+    $upload_paths = [
+        'app_ad' => '/var/www/html/app_ad.png',
+        'app_logo' => '/var/www/html/app_logo.png'
+    ];
+
+    $errors = [];
+
+    foreach ($upload_paths as $input_name => $destination) {
+        if (isset($_FILES[$input_name]) && $_FILES[$input_name]['error'] == 0) {
+            $ext = pathinfo($_FILES[$input_name]['name'], PATHINFO_EXTENSION);
+            if (strtolower($ext) !== 'png') {
+                $errors[] = "File for $input_name must be a PNG.";
+            } else {
+                if (move_uploaded_file($_FILES[$input_name]['tmp_name'], $destination)) {
+                    // Success
+                } else {
+                    $errors[] = "Failed to upload $input_name.";
+                }
+            }
+        }
+    }
+
+    $text_fields = [
+        'channel_name',
+        'office_address',
+        'contact_details',
+        'enforcement_officer',
+        'eo_contact_details',
+        'company_name',
+        'cin_number',
+        'gstin_number'
+    ];
+
+    $data_to_save = [];
+    foreach ($text_fields as $field) {
+        $data_to_save[$field] = $_POST[$field] ?? '';
+    }
+
+    file_put_contents($json_file, json_encode($data_to_save, JSON_PRETTY_PRINT));
+}
+?>
+
+<?php
 /*
 Urmi you happy me happy licence
 
@@ -27,7 +71,7 @@ function getValue($data, $key)
 <form method="POST">
     <div class="containerindex">
         <div class="grid">
-            <h2 style="text-align: center; color: white; margin-bottom: 20px;">Company Information Entry</h2>
+            <h2>Company Information Entry</h2>
 
             <!-- Channel Details -->
             <div class="card wide">
@@ -56,11 +100,11 @@ function getValue($data, $key)
                     <label for="company_name">Company Name</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" name="cin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'cin_number')); ?>" >
+                    <input type="text" name="cin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'cin_number')); ?>">
                     <label for="cin_number">CIN Number</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" name="gstin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'gstin_number')); ?>" >
+                    <input type="text" name="gstin_number" value="<?php echo htmlspecialchars(getValue($saved_data, 'gstin_number')); ?>">
                     <label for="gstin_number">GSTIN Number</label>
                 </div>
             </div>
@@ -76,7 +120,7 @@ function getValue($data, $key)
                 </div>
             </div>
 
-            
+
             <div class="card wide">
                 <h3 style="margin-bottom: 15px;">Upload Logo (PNG)</h3>
                 <div class="input-group">
@@ -94,63 +138,5 @@ function getValue($data, $key)
     </div>
 </form>
 
-<div class="mt-4">
-    <?php
-    if (isset($_POST['submit'])) {
-        $upload_paths = [
-            'app_ad' => '/var/www/html/app_ad.png',
-            'app_logo' => '/var/www/html/app_logo.png'
-        ];
-
-        $errors = [];
-
-        foreach ($upload_paths as $input_name => $destination) {
-            if (isset($_FILES[$input_name]) && $_FILES[$input_name]['error'] == 0) {
-                $ext = pathinfo($_FILES[$input_name]['name'], PATHINFO_EXTENSION);
-                if (strtolower($ext) !== 'png') {
-                    $errors[] = "File for $input_name must be a PNG.";
-                } else {
-                    if (move_uploaded_file($_FILES[$input_name]['tmp_name'], $destination)) {
-                        // Success
-                    } else {
-                        $errors[] = "Failed to upload $input_name.";
-                    }
-                }
-            }
-        }
-
-        $text_fields = [
-            'channel_name',
-            'office_address',
-            'contact_details',
-            'enforcement_officer',
-            'eo_contact_details',
-            'company_name',
-            'cin_number',
-            'gstin_number'
-        ];
-
-        $data_to_save = [];
-        foreach ($text_fields as $field) {
-            $data_to_save[$field] = $_POST[$field] ?? '';
-        }
-
-        if (empty($errors)) {
-            if (file_put_contents($json_file, json_encode($data_to_save, JSON_PRETTY_PRINT))) {
-                echo '<div class="alert alert-success text-center" style="color: #22c55e; text-align: center;">All data and files processed successfully!</div>';
-                echo "<script>setTimeout(() => { window.location.reload(); }, 2000);</script>";
-            } else {
-                $errors[] = "Failed to save JSON data.";
-            }
-        }
-
-        if (!empty($errors)) {
-            foreach ($errors as $error) {
-                echo "<div class='alert alert-danger text-center' style='color: #ef4444; text-align: center;'>$error</div>";
-            }
-        }
-    }
-    ?>
-</div>
 
 <?php include 'footer.php'; ?>
