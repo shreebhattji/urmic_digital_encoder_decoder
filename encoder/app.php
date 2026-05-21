@@ -243,6 +243,7 @@ include 'header.php';
                             </select>
                         </div>
                     </div>
+                    <br>
                     <div class="dropdown-container">
                         <span class="dropdown-label">Content Type</span>
                         <div class="dropdown">
@@ -256,10 +257,6 @@ include 'header.php';
                                 ?>
                             </select>
                         </div>
-                    </div>
-                    <div class="input-group">
-                        <input type="text" name="content_type" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'content_type')); ?>" required>
-                        <label>Content Type</label>
                     </div>
                     <br>
                     <div class="input-group">
