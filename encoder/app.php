@@ -248,10 +248,10 @@ include 'header.php';
                         <div class="dropdown">
                             <select name="content_type" id="content_type">
                                 <?php
-                                $ratings = [];
+                                $ratings = ['News & Information','Entertainment','Religious & Spiritual','Sports & Recreation'];
                                 foreach ($ratings as $desc) {
-                                    $selected = (getValue($saved_data, 'content_type') === $code) ? 'selected' : '';
-                                    echo "<option value=\"$code\" $selected>$desc</option>";
+                                    $selected = (getValue($saved_data, 'content_type') === $desc) ? 'selected' : '';
+                                    echo "<option value=\"$desc\" $selected>$desc</option>";
                                 }
                                 ?>
                             </select>
