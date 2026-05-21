@@ -237,7 +237,7 @@ include 'header.php';
                                 $ratings = ['`U` ( Universal )' => 'Universal', '`UA` ( Parental Guidance )' => 'Parental Guidance', '`A` ( Adults Only )' => 'Adults Only', '`S` ( Special )' => 'Special'];
                                 foreach ($ratings as $code => $desc) {
                                     $selected = (getValue($saved_data, 'content_rating') === $code) ? 'selected' : '';
-                                    echo "<option value=\"$code\" $selected>$code ($desc)</option>";
+                                    echo "<option value=\"$code\" $selected>$code</option>";
                                 }
                                 ?>
                             </select>
