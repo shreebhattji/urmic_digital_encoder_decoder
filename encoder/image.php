@@ -129,8 +129,8 @@ include 'header.php';
     }
 </script>
 
-<div class="containerindex">
-    <form method="POST" enctype="multipart/form-data">
+<form method="POST">
+    <div class="containerindex">
         <input type="hidden" name="remove_files[app_ad]" id="remove_app_ad" value="">
         <input type="hidden" name="remove_files[app_logo]" id="remove_app_logo" value="">
 
@@ -175,11 +175,10 @@ include 'header.php';
                 </div>
             </div>
         </div>
-
-        <div style="text-align:center; width:100%; margin: 40px 0;">
-            <button type="submit" name="submit" style="background:#c00;color:#fff;padding:115px 80px;border:none;font-weight:bold;border-radius:6px;cursor:pointer;font-size:18px; transition: 0.3s;">Update Images</button>
+        <div style="text-align:center; width:100%; margin-top:12px;">
+            <button type="submit" name="display" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Update Images</button>
         </div>
-    </form>
-</div>
+    </div>
+</form>
 
 <?php include 'footer.php'; ?>
