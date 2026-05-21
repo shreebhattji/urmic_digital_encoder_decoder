@@ -1305,6 +1305,7 @@ include 'static.php';
         <a href="contact_us.php">Contact Us</a>
         <a href="premium_service.php">Premium</a>
         <a href="domain.php">Domain SSL</a>
+        <a href="image.php">Image</a>
     </header>
 
     <!-- HEADER ROW 3 -->
