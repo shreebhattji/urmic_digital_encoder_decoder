@@ -48,7 +48,7 @@ if (isset($_POST['submit'])) {
                 continue;
             }
 
-            // 2. Determine target dimensions
+
             $target_width = ($input_name === 'app_logo') ? 128 : 256;
             $target_height = ($input_name === 'app_logo') ? 128 : 256;
 
@@ -64,7 +64,7 @@ if (isset($_POST['submit'])) {
 
             // 5. Preserve transparency for PNG
             imagealphablending($dst_img, false);
-            imagesavealpha($png_alpha = $dst_img, true);
+            imagesavealpha($dst_img, true);
             $transparent = imagecolorallocatealpha($dst_img, 255, 255, 255, 127);
             imagefill($dst_img, 0, 0, $transparent);
 
@@ -103,6 +103,8 @@ if (isset($_POST['submit'])) {
     $text_fields = [
         'channel_name',
         'office_address',
+        'office_address_1',
+        'office_address_2',
         'contact_details',
         'enforcement_officer',
         'eo_contact_details',
@@ -169,7 +171,7 @@ include 'header.php';
         <input type="hidden" name="remove_files[app_logo]" id="remove_app_logo" value="">
 
         <div class="grid">
-            <h2>Company Information Entry</h2>
+            <h2 style="grid-column: span 2;">Company Information Entry</h2>
 
             <?php if (!empty($error_message)): ?>
                 <div style="background: #ff0000; color: white; padding: 15px; border-radius: 6px; margin-bottom: 20px; grid-column: span 2;">
@@ -178,7 +180,7 @@ include 'header.php';
             <?php endif; ?>
 
             <!-- Company Details -->
-            <div class="card wide">
+            <div class="card wide" style="grid-column: span 2;">
                 <h3>General Details</h3>
                 <div class="grid">
                     <div class="input-wrap">
@@ -190,8 +192,14 @@ include 'header.php';
                             <input type="text" name="office_address" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'office_address')); ?>" required>
                             <label>Office Address</label>
                         </div>
-                    </div>
-                    <div class="input-wrap">
+                        <div class="input-group">
+                            <input type="text" name="office_address_1" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'office_address_1')); ?>" required>
+                            <label>Office Address 1</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" name="office_address_2" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'office_address_2')); ?>" required>
+                            <label>Office Address 2</label>
+                        </div>
                         <div class="input-group">
                             <input type="text" name="contact_details" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_details')); ?>" required>
                             <label>Contact Details</label>
@@ -200,33 +208,27 @@ include 'header.php';
                             <input type="text" name="enforcement_officer" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer')); ?>" required>
                             <label>Enforcement Officer</label>
                         </div>
-                    </div>
-                </div>
-
-                <div class="grid">
-                    <div class="input-group">
-                        <input type="text" name="eo_contact_details" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'eo_contact_details')); ?>" required>
-                        <label>EO Contact Details</label>
-                    </div>
-                    <div class="input-group">
-                        <input type="text" name="company_name" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" required>
-                        <label>Company Name</label>
-                    </div>
-                </div>
-
-                <div class="grid">
-                    <div class="input-group">
-                        <input type="text" name="cin_number" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'cin_number')); ?>">
-                        <label>CIN Number</label>
-                    </div>
-                    <div class="input-group">
-                        <input type="text" name="gstin_number" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'gstin_number')); ?>">
-                        <label>GSTIN Number</label>
+                        <div class="input-group">
+                            <input type="text" name="eo_contact_details" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'eo_contact_details')); ?>" required>
+                            <label>EO Contact Details</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" name="company_name" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" required>
+                            <label>Company Name</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" name="cin_number" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'cin_number')); ?>">
+                            <label>CIN Number</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" name="gstin_number" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'gstin_number')); ?>">
+                            <label>GSTIN Number</label>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="card wide">
+            <div class="card wide" style="grid-column: span 2;">
                 <h3>Content Details</h3>
                 <div class="grid">
                     <div class="dropdown-container">
@@ -234,31 +236,29 @@ include 'header.php';
                         <div class="dropdown">
                             <select name="content_rating" id="content_rating">
                                 <?php
-                                $ratings = ['`U` ( Universal )' => 'Universal', '`UA` ( Parental Guidance )' => 'Parental Guidance', '`A` ( Adults Only )' => 'Adults Only', '`S` ( Special )' => 'Special'];
+                               $ratings = ['`U` ( Universal )' => 'Universal', '`UA` ( Parental Guidance )' => 'Parental Guidance', '`A` ( Adults Only )' => 'Adults Only', '`S` ( Special )' => 'Special'];
                                 foreach ($ratings as $code => $desc) {
                                     $selected = (getValue($saved_data, 'content_rating') === $code) ? 'selected' : '';
-                                    echo "<option value=\"$code\" $selected>$code</option>";
+                                    echo "<option value=\"".htmlspecialchars($code)."\" $selected>".htmlspecialchars($code)."</option>";
                                 }
                                 ?>
                             </select>
                         </div>
                     </div>
-                    <br>
                     <div class="dropdown-container">
                         <span class="dropdown-label">Content Type</span>
                         <div class="dropdown">
                             <select name="content_type" id="content_type">
-                                <?php
-                                $ratings = ['News & Information','Entertainment','Religious & Spiritual','Sports & Recreation'];
-                                foreach ($ratings as $desc) {
+                               <?php
+                                $types = ['News & Information', 'Entertainment', 'Religious & Spiritual', 'Sports & Recreation'];
+                                foreach ($types as $desc) {
                                     $selected = (getValue($saved_data, 'content_type') === $desc) ? 'selected' : '';
-                                    echo "<option value=\"$desc\" $selected>$desc</option>";
+                                    echo "<option value=\"".htmlspecialchars($desc)."\" $selected>".htmlspecialchars($desc)."</option>";
                                 }
                                 ?>
                             </select>
                         </div>
                     </div>
-                    <br>
                     <div class="input-group">
                         <input type="text" name="content_language" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'content_language')); ?>" required>
                         <label>Content Language</label>
