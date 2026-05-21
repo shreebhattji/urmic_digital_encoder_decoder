@@ -234,7 +234,7 @@ include 'header.php';
                         <div class="dropdown">
                             <select name="content_rating" id="content_rating">
                                 <?php
-                                $ratings = ['U' => 'Universal', 'UA' => 'Parental Guidance', 'A' => 'Adults Only', 'S' => 'Special'];
+                                $ratings = ['`U` ( Universal )' => 'Universal', '`UA` ( Parental Guidance )' => 'Parental Guidance', '`A` ( Adults Only )' => 'Adults Only', '`S` ( Special )' => 'Special'];
                                 foreach ($ratings as $code => $desc) {
                                     $selected = (getValue($saved_data, 'content_rating') === $code) ? 'selected' : '';
                                     echo "<option value=\"$code\" $selected>$code ($desc)</option>";
