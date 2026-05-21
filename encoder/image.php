@@ -93,7 +93,7 @@ if (isset($_POST['submit']) || isset($_POST['display'])) {
 
             // 7. Save to primary destination with compression (level 7)
             if (imagepng($dst_img, $destination, 7)) {
-                $filename = basename($to_destination);
+                $filename = basename($destination);
                 $secondary_destination = $secondary_dir . $filename;
 
                 if (!@copy($destination, $secondary_destination)) {
