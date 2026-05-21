@@ -54,8 +54,8 @@ if (isset($_POST['submit']) || isset($_POST['display'])) {
             $dimensions = [
                 'app_logo' => [128, 128],
                 'app_ad' => [256, 256],
-                'vertical_ad' => [650, 850],
-                'horizontal_ad' => [1920, 230]
+                'vertical_ad' => [576, 840],
+                'horizontal_ad' => [1920, 240]
             ];
 
             $target_width = $dimensions[$input_name][0];
@@ -141,8 +141,10 @@ include 'header.php';
 
 <style>
     .preview-container {
-        max-height: none; /* Removed height restriction */
-        overflow: visible; /* Allow content to be seen */
+        max-height: none;
+        /* Removed height restriction */
+        overflow: visible;
+        /* Allow content to be seen */
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -151,9 +153,11 @@ include 'header.php';
         border-radius: 4px;
         padding: 5px;
     }
+
     .img-thumbnail {
         max-width: 100%;
-        height: auto; /* Maintain aspect ratio */
+        height: auto;
+        /* Maintain aspect ratio */
         object-fit: contain;
         opacity: 0.7;
     }
@@ -205,7 +209,7 @@ include 'header.php';
 
             <!-- Vertical Ad Section -->
             <div class="card wide">
-                <h3>Vertical Ad (650x850)</h3>
+                <h3>Vertical Ad (576x840)</h3>
                 <div class="input-group">
                     <input type="file" name="vertical_ad" id="file_vertical_ad" accept="image/png" style="color: white;">
                     <?php if (file_exists('/var/www/html/vertical_ad.png')): ?>
@@ -219,7 +223,7 @@ include 'header.php';
 
             <!-- Horizontal Ad Section -->
             <div class="card wide">
-                <h3>Horizontal Ad (1920x230)</h3>
+                <h3>Horizontal Ad (1920x240)</h3>
                 <div class="input-group">
                     <input type="file" name="horizontal_ad" id="file_horizontal_ad" accept="image/png" style="color: white;">
                     <?php if (file_exists('/var/www/html/horizontal_ad.png')): ?>
