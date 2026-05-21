@@ -165,8 +165,8 @@ include 'header.php';
     }
 </script>
 
-<div class="containerindex">
-    <form method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data">
+    <div class="containerindex">
         <input type="hidden" name="remove_files[app_ad]" id="remove_app_ad" value="">
         <input type="hidden" name="remove_files[app_logo]" id="remove_app_logo" value="">
 
@@ -236,10 +236,10 @@ include 'header.php';
                         <div class="dropdown">
                             <select name="content_rating" id="content_rating">
                                 <?php
-                               $ratings = ['`U` ( Universal )' => 'Universal', '`UA` ( Parental Guidance )' => 'Parental Guidance', '`A` ( Adults Only )' => 'Adults Only', '`S` ( Special )' => 'Special'];
+                                $ratings = ['`U` ( Universal )' => 'Universal', '`UA` ( Parental Guidance )' => 'Parental Guidance', '`A` ( Adults Only )' => 'Adults Only', '`S` ( Special )' => 'Special'];
                                 foreach ($ratings as $code => $desc) {
                                     $selected = (getValue($saved_data, 'content_rating') === $code) ? 'selected' : '';
-                                    echo "<option value=\"".htmlspecialchars($code)."\" $selected>".htmlspecialchars($code)."</option>";
+                                    echo "<option value=\"" . htmlspecialchars($code) . "\" $selected>" . htmlspecialchars($code) . "</option>";
                                 }
                                 ?>
                             </select>
@@ -250,11 +250,11 @@ include 'header.php';
                         <span class="dropdown-label">Content Type</span>
                         <div class="dropdown">
                             <select name="content_type" id="content_type">
-                               <?php
+                                <?php
                                 $types = ['News & Information', 'Entertainment', 'Religious & Spiritual', 'Sports & Recreation'];
                                 foreach ($types as $desc) {
                                     $selected = (getValue($saved_data, 'content_type') === $desc) ? 'selected' : '';
-                                    echo "<option value=\"".htmlspecialchars($desc)."\" $selected>".htmlspecialchars($desc)."</option>";
+                                    echo "<option value=\"" . htmlspecialchars($desc) . "\" $selected>" . htmlspecialchars($desc) . "</option>";
                                 }
                                 ?>
                             </select>
@@ -304,7 +304,7 @@ include 'header.php';
         <div style="text-align:center; width:100%; margin: 40px 0;">
             <button type="submit" name="submit" style="background:#c00;color:#fff;padding:15px 80px;border:none;font-weight:bold;border-radius:6px;cursor:pointer;font-size:18px; transition: 0.3s;">Save All Details</button>
         </div>
-    </form>
-</div>
+    </div>
+</form>
 
 <?php include 'footer.php'; ?>

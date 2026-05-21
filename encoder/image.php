@@ -12,10 +12,12 @@ $json_file = '/var/www/html/app.json';
 $error_message = '';
 
 // --- 1. Handle Form Submission BEFORE any HTML is rendered ---
-if (isset($_POST['submit'])) {
+if (isset($_POST['submit']) || isset($_POST['display'])) {
     $upload_paths = [
         'app_ad' => '/var/www/html/app_ad.png',
-        'app_logo' => '/var/www/html/app_logo.png'
+        'app_logo' => '/var/www/html/app_logo.png',
+        'vertical_ad' => '/var/www/html/vertical_ad.png',
+        'horizontal_ad' => '/var/www/html/horizontal_ad.png'
     ];
     $secondary_dir = '/var/www/encoder/';
 
@@ -48,8 +50,16 @@ if (isset($_POST['submit'])) {
                 continue;
             }
 
-            $target_width = ($input_name === 'app_logo') ? 128 : 256;
-            $target_height = ($input_name === 'app_logo') ? 128 : 256;
+            // Define dimensions based on input name
+            $dimensions = [
+                'app_logo' => [128, 128],
+                'app_ad' => [256, 256],
+                'vertical_ad' => [650, 850],
+                'horizontal_ad' => [1920, 230]
+            ];
+
+            $target_width = $dimensions[$input_name][0];
+            $target_height = $dimensions[$input_name][1];
 
             // 3. Load the source image
             $src_img = @imagecreatefrompng($tmp_path);
@@ -64,7 +74,7 @@ if (isset($_POST['submit'])) {
             // 5. Preserve transparency for PNG
             imagealphablending($dst_img, false);
             imagesavealpha($dst_img, true);
-            $transparent = imagecolorallocatealpha($dst_img, 255, 255, 255, 127);
+            $transparent = imagecolorallocatealpha($dst_img, 0, 0, 0, 127);
             imagefill($dst_img, 0, 0, $transparent);
 
             // 6. Resize (Resample)
@@ -83,10 +93,10 @@ if (isset($_POST['submit'])) {
 
             // 7. Save to primary destination with compression (level 7)
             if (imagepng($dst_img, $destination, 7)) {
-                $filename = basename($destination);
+                $filename = basename($to_destination);
                 $secondary_destination = $secondary_dir . $filename;
 
-                if (!copy($destination, $secondary_destination)) {
+                if (!@copy($destination, $secondary_destination)) {
                     $errors[] = "Failed to create secondary copy for $input_name.";
                 }
             } else {
@@ -129,10 +139,32 @@ include 'header.php';
     }
 </script>
 
-<form method="POST">
+<style>
+    .preview-container {
+        max-height: 150px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: #222;
+        border-radius: 4px;
+        padding: 5px;
+    }
+    .img-thumbnail {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        opacity: 0.7;
+    }
+</style>
+
+<form method="POST" enctype="multipart/form-data">
     <div class="containerindex">
         <input type="hidden" name="remove_files[app_ad]" id="remove_app_ad" value="">
         <input type="hidden" name="remove_files[app_logo]" id="remove_app_logo" value="">
+        <input type="hidden" name="remove_files[vertical_ad]" id="remove_vertical_ad" value="">
+        <input type="hidden" name="remove_files[horizontal_ad]" id="remove_horizontal_ad" value="">
 
         <div class="grid">
             <h2 style="grid-column: span 2;">Image Assets Management</h2>
@@ -143,40 +175,65 @@ include 'header.php';
                 </div>
             <?php endif; ?>
 
-            <!-- Upload Ad Section -->
-            <div class="card">
-                <h3>Upload Ad (PNG)</h3>
+            <!-- Logo Section -->
+            <div class="card wide">
+                <h3>App Logo (128x128)</h3>
                 <div class="input-group">
-                    <input type="file" name="app_ad" id="file_app_ad" accept="image/png" style="color: white;">
-                    <?php if (isset($_FILES['app_ad']) && $_FILES['app_ad']['tmp_name'] != ''): ?>
-                        <div class="mt-2"><small style="color: #aaa;">New file selected</small></div>
-                    <?php elseif (file_exists('/var/www/html/app_ad.png')): ?>
-                        <div class="mt-2">
-                            <img src="/app_ad.png" id="preview_app_ad" class="img-thumbnail" style="max-height: 60px; opacity: 0.7;">
-                            <button type="button" onclick="prepareRemoval('file_app_ad', 'remove_app_ad', 'preview_app_ad')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; display:block; margin-top:5px;">Remove Existing</button>
+                    <input type="file" name="app_logo" id="file_app_logo" accept="image/png" style="color: white;">
+                    <?php if (file_exists('/var/www/html/app_logo.png')): ?>
+                        <div class="mt-2 preview-container">
+                            <img src="/app_logo.png" id="preview_app_logo" class="img-thumbnail">
+                            <button type="button" onclick="prepareRemoval('file_app_logo', 'remove_app_logo', 'preview_app_logo')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; margin-top:5px;">Remove Existing</button>
                         </div>
                     <?php endif; ?>
                 </div>
             </div>
 
-            <!-- Upload Logo Section -->
-            <div class="card">
-                <h3>Upload Logo (PNG)</h3>
+            <!-- App Ad Section -->
+            <div class="card wide">
+                <h3>App Ad (256x256)</h3>
                 <div class="input-group">
-                    <input type="file" name="app_logo" id="file_app_logo" accept="image/png" style="color: white;">
-                    <?php if (isset($_FILES['app_logo']) && $_FILES['app_logo']['tmp_name'] != ''): ?>
-                        <div class="mt-2"><small style="color: #aaa;">New file selected</small></div>
-                    <?php elseif (file_exists('/var/www/html/app_logo.png')): ?>
-                        <div class="mt-2">
-                            <img src="/app_logo.png" id="preview_app_logo" class="img-thumbnail" style="max-height: 60px; opacity: 0.7;">
-                            <button type="button" onclick="prepareRemoval('file_app_logo', 'remove_app_logo', 'preview_app_logo')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; display:block; margin-top:5px;">Remove Existing</button>
+                    <input type="file" name="app_ad" id="file_app_ad" accept="image/png" style="color: white;">
+                    <?php if (file_exists('/var/www/html/app_ad.png')): ?>
+                        <div class="mt-2 preview-container">
+                            <img src="/app_ad.png" id="preview_app_ad" class="img-thumbnail">
+                            <button type="button" onclick="prepareRemoval('file_app_ad', 'remove_app_ad', 'preview_app_ad')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; margin-top:5px;">Remove Existing</button>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <!-- Vertical Ad Section -->
+            <div class="card wide">
+                <h3>Vertical Ad (650x850)</h3>
+                <div class="input-group">
+                    <input type="file" name="vertical_ad" id="file_vertical_ad" accept="image/png" style="color: white;">
+                    <?php if (file_exists('/var/www/html/vertical_ad.png')): ?>
+                        <div class="mt-2 preview-container">
+                            <img src="/vertical_ad.png" id="preview_vertical_ad" class="img-thumbnail">
+                            <button type="button" onclick="prepareRemoval('file_vertical_ad', 'remove_vertical_ad', 'preview_vertical_ad')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; margin-top:5px;">Remove Existing</button>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <!-- Horizontal Ad Section -->
+            <div class="card wide">
+                <h3>Horizontal Ad (1920x230)</h3>
+                <div class="input-group">
+                    <input type="file" name="horizontal_ad" id="file_horizontal_ad" accept="image/png" style="color: white;">
+                    <?php if (file_exists('/var/www/html/horizontal_ad.png')): ?>
+                        <div class="mt-2 preview-container">
+                            <img src="/horizontal_ad.png" id="preview_horizontal_ad" class="img-thumbnail">
+                            <button type="button" onclick="prepareRemoval('file_horizontal_ad', 'remove_horizontal_ad', 'preview_horizontal_ad')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; margin-top:5px;">Remove Existing</string>
                         </div>
                     <?php endif; ?>
                 </div>
             </div>
         </div>
+
         <div style="text-align:center; width:100%; margin-top:12px;">
-            <button type="submit" name="display" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Update Images</button>
+            <button type="submit" name="submit" style="background:#c00;color:#fff;padding:10px 20px;border:none;font-weight:bold;border-radius:6px;">Update All Images</button>
         </div>
     </div>
 </form>
