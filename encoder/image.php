@@ -54,7 +54,7 @@ if (isset($_POST['submit']) || isset($_POST['display'])) {
             $dimensions = [
                 'app_logo' => [128, 128],
                 'app_ad' => [256, 256],
-                'vertical_ad' => [576, 840],
+                'vertical_ad' => [288, 840],
                 'horizontal_ad' => [1920, 240]
             ];
 
@@ -209,7 +209,7 @@ include 'header.php';
 
             <!-- Vertical Ad Section -->
             <div class="card wide">
-                <h3>Vertical Ad (576x840)</h3>
+                <h3>Vertical Ad (288x840)</h3>
                 <div class="input-group">
                     <input type="file" name="vertical_ad" id="file_vertical_ad" accept="image/png" style="color: white;">
                     <?php if (file_exists('/var/www/html/vertical_ad.png')): ?>
