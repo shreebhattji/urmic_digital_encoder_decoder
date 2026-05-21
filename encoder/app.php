@@ -171,7 +171,7 @@ include 'header.php';
         <input type="hidden" name="remove_files[app_logo]" id="remove_app_logo" value="">
 
         <div class="grid">
-            <h2 style="grid-column: span 2;">Company Information Entry</h2>
+            <h2 style="grid-column: span 2;">Broadcasting Information</h2>
 
             <?php if (!empty($error_message)): ?>
                 <div style="background: #ff0000; color: white; padding: 15px; border-radius: 6px; margin-bottom: 20px; grid-column: span 2;">

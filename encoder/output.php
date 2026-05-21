@@ -1146,10 +1146,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <span class="dropdown-label">format :</span>
               <div class="dropdown">
                 <select name="srt_audio_format" id="srt_audio_format">
-                  <option value="mp2" <?php if ($data['srt']['format'] == 'mp2') echo 'selected'; ?>>mp2</option>
-                  <option value="mp3" <?php if ($data['srt']['format'] == 'mp3') echo 'selected'; ?>>mp3</option>
-                  <option value="aac" <?php if ($data['srt']['format'] == 'aac') echo 'selected'; ?>>aac</option>
-                  <option value="ac3" <?php if ($data['srt']['format'] == 'ac3') echo 'selected'; ?>>ac3</option>
+                  <option value="mp2" <?php if ($data['srt']['audio_format'] == 'mp2') echo 'selected'; ?>>mp2</option>
+                  <option value="mp3" <?php if ($data['srt']['audio_format'] == 'mp3') echo 'selected'; ?>>mp3</option>
+                  <option value="aac" <?php if ($data['srt']['audio_format'] == 'aac') echo 'selected'; ?>>aac</option>
+                  <option value="ac3" <?php if ($data['srt']['audio_format'] == 'ac3') echo 'selected'; ?>>ac3</option>
                 </select>
               </div>
             </div>
