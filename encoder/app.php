@@ -245,6 +245,7 @@ include 'header.php';
                             </select>
                         </div>
                     </div>
+                    <br>
                     <div class="dropdown-container">
                         <span class="dropdown-label">Content Type</span>
                         <div class="dropdown">
@@ -259,6 +260,7 @@ include 'header.php';
                             </select>
                         </div>
                     </div>
+                    <br>
                     <div class="input-group">
                         <input type="text" name="content_language" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'content_language')); ?>" required>
                         <label>Content Language</label>
