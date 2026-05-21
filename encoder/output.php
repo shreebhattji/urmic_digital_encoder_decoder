@@ -100,7 +100,7 @@ $defaults = [
   ],
   'srt' => [
     'common_backend' => 'enable',
-    'format' => 'mpeg2video',
+    'format' => 'hevc_qsv',
     'resolution' => '1920x1080',
     'data_rate' => '6M',
     'framerate' => '50',
@@ -1107,7 +1107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <div class="dropdown">
                 <select name="srt_format" id="srt_format">
                   <option value="h264_qsv" <?php if ($data['srt']['format'] == 'h264_qsv') echo 'selected'; ?>>h264</option>
-                  <option value="hevc_qsv" <?php if ($data['srt']['format'] == 'h265') echo 'selected'; ?>>h265</option>
+                  <option value="hevc_qsv" <?php if ($data['srt']['format'] == 'hevc_qsv') echo 'selected'; ?>>h265</option>
                 </select>
               </div>
             </div>
