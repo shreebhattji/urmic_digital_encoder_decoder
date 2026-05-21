@@ -141,8 +141,8 @@ include 'header.php';
 
 <style>
     .preview-container {
-        max-height: 150px;
-        overflow: hidden;
+        max-height: none; /* Removed height restriction */
+        overflow: visible; /* Allow content to be seen */
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -153,7 +153,7 @@ include 'header.php';
     }
     .img-thumbnail {
         max-width: 100%;
-        max-height: 100%;
+        height: auto; /* Maintain aspect ratio */
         object-fit: contain;
         opacity: 0.7;
     }
