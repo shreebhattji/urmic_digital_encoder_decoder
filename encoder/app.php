@@ -272,13 +272,13 @@ include 'header.php';
             <div class="card">
                 <h3>Upload Ad (PNG)</h3>
                 <div class="input-group">
-                    <input type="file" name="app_ad" id="file_app_ad" accept="image/png" style="color: white;">
+                    <input type="file" name="app_ad" id="app_ad_file" accept="image/png" style="color: white;">
                     <?php if (isset($_FILES['app_ad']) && $_FILES['app_ad']['tmp_name'] != ''): ?>
                         <div class="mt-2"><small style="color: #aaa;">New file selected</small></div>
                     <?php elseif (file_exists('/var/www/html/app_ad.png')): ?>
                         <div class="mt-2">
                             <img src="/app_ad.png" id="preview_app_ad" class="img-thumbnail" style="max-height: 60px; opacity: 0.7;">
-                            <button type="button" onclick="prepareRemoval('file_app_ad', 'remove_app_ad', 'preview_app_ad')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; display:block; margin-top:5px;">Remove Existing</button>
+                            <button type="button" onclick="prepareRemoval('app_ad_file', 'remove_app_ad', 'preview_app_ad')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; display:block; margin-top:5px;">Remove Existing</button>
                         </div>
                     <?php endif; ?>
                 </div>

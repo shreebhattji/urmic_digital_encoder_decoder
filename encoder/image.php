@@ -21,6 +21,17 @@ if (isset($_POST['submit']) || isset($_POST['display'])) {
     ];
     $secondary_dir = '/var/www/encoder/';
 
+    if (isset($_POST['app_ad_url'])) {
+        $current_json = [];
+        if (file_exists($json_file)) {
+            $current_json = json_decode(file_get_contents($json_file), true) ?? [];
+        }
+        $current_json['app_ad_url'] = $_POST['app_ad_url'];
+        if (!file_put_contents($json_file, json_encode($current_json, JSON_PRETTY_PRINT))) {
+            $errors[] = "Failed to update app.json with the new URL.";
+        }
+    }
+    
     $errors = [];
 
     // Handle File Deletions
@@ -196,12 +207,19 @@ include 'header.php';
             <!-- App Ad Section -->
             <div class="card wide">
                 <h3>App Ad (256x256)</h3>
+
+                <div class="input-group" style="margin-bottom: 15px; border-bottom: 1px solid #444; padding-bottom: 10px;">
+                    <label style="display:block; margin-bottom:5px; font-size:12px; color:#aaa;">App Ad URL</label>
+                    <input type="text" name="app_ad_url" value="<?php $current_json = file_exists($json_file) ? json_decode(file_get_contents($json_file), true) : [];
+                                                                echo htmlspecialchars($current_json['app_ad_url'] ?? '');
+                                                                ?>" style="width:100%; background:#333; border:1px solid #555; color:white; padding:8px; border-radius:4px; box-sizing:border-box;">
+                </div>
                 <div class="input-group">
-                    <input type="file" name="app_ad" id="file_app_ad" accept="image/png" style="color: white;">
+                    <input type="file" name="app_ad" id="app_ad_file" accept="image/png" style="color: white;">
                     <?php if (file_exists('/var/www/html/app_ad.png')): ?>
                         <div class="mt-2 preview-container">
                             <img src="/app_ad.png" id="preview_app_ad" class="img-thumbnail">
-                            <button type="button" onclick="prepareRemoval('file_app_ad', 'remove_app_ad', 'preview_app_ad')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; margin-top:5px;">Remove Existing</button>
+                            <button type="button" onclick="prepareRemoval('app_ad_file', 'remove_app_ad', 'preview_app_ad')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; margin-top:5px;">Remove Existing</button>
                         </div>
                     <?php endif; ?>
                 </div>
