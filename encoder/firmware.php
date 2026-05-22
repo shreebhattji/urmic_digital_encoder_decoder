@@ -9,7 +9,7 @@ https://github.com/shreebhattji/Urmi/blob/main/licence.md
 */
 
 exec("sudo chmod 444 /sys/class/dmi/id/product_uuid");
-$version = "12.27";
+$version = "12.28";
 
 function fail(string $msg): never
 {
@@ -503,6 +503,13 @@ EwIDAQAB
             update_service("custom");
             update_service("input");
             break;
+        case 'install_deps':
+            exec('sudo apt update');
+            exec('sudo apt install -y apache2 php libapache2-mod-php vainfo ufw intel-media-va-driver-non-free libavcodec-extra mesa-utils i965-va-driver libmfx1 certbot intel-gpu-tools python3-certbot-nginx ffmpeg nginx v4l-utils python3-pip mpv libnginx-mod-rtmp alsa-utils vlan git zlib1g-dev php-zip php-curl php-gd');
+            break;
+        case 'resinatll';
+            exec('cd /tmp;git clone --depth 1 https://git.dbhatt.org/hw_partner/urmic_digital_encoder_decoder.git;cd urmic_digital_encoder_decoder;chmod +x install.sh;./install.sh');
+            break;
     }
     if ($_POST['action'] === "backup")
         include 'header.php';
@@ -525,6 +532,14 @@ EwIDAQAB
 
     function confirmbackup() {
         return confirm("Are you sure you want to download backup ? ");
+    }
+
+    function confirmDeps() {
+        return confirm("Are you sure you want to run Installation Dependency ?");
+    }
+
+    function confirmReinstall() {
+        return confirm("Are you sure you want to Reinstall Software ?");
     }
 </script>
 
@@ -552,8 +567,18 @@ EwIDAQAB
             </form>
         </div>
         <div class="card wide">
-            <form method="post" class="form-center">
+            <form method="post" class="form-center" onsubmit="return confirmUpdate()">
                 <button type="submit" name="action" value="update" class="red-btn">Update Firmware</button>
+            </form>
+        </div>
+        <div class="card wide">
+            <form method="post" class="form-center" onsubmit="return confirmDeps()">
+                <button type="submit" name="action" value="install_deps" class="blue-btn">Install Dependencies</button>
+            </form>
+        </div>
+        <div class="card wide">
+            <form method="post" class="form-center" onsubmit="return confirmReinstall()">
+                <button type="submit" name="action" value="resinatll" class="blue-btn">ReInstall Software</button>
             </form>
         </div>
         <div class="card wide">
