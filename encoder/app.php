@@ -66,95 +66,93 @@ include 'header.php';
             <?php endif; ?>
 
             <!-- Company Details -->
-            <div class="card wide" style="grid-column: span 2;">
+            <div class="card wide">
                 <h3 style="margin-top:0;">General Details</h3>
-                <div class="grid">
-                    <div class="input-wrap">
-                        <div class="input-group">
-                            <input type="text" name="channel_name" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'channel_name')); ?>" required>
-                            <label>Channel Name</label>
-                        </div>
-                        <div class="input-group">
-                            <input type="text" name="office_address" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'office_address')); ?>" required>
-                            <label>Office Address</label>
-                        </div>
-                        <div class="input-group">
-                            <input type="text" name="office_address_1" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'office_address_1')); ?>" required>
-                            <label>Office Address 1</label>
-                        </div>
-                        <div class="input-group">
-                            <input type="text" name="office_address_2" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'office_address_2')); ?>" required>
-                            <label></div>
-                        </div>
+                <div class="input-wrap">
+                    <div class="input-group">
+                        <input type="text" name="channel_name" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'channel_name')); ?>" required>
+                        <label>Channel Name</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" name="office_address" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'office_address')); ?>" required>
+                        <label>Office Address</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" name="office_address_1" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'office_address_1')); ?>" required>
+                        <label>Office Address 1</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" name="office_address_2" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'office_address_2')); ?>" required>
+                        <label>Office Address 2</label>
+                    </div>
 
-                        <!-- Contact 1 -->
-                        <div class="input-group">
-                            <input type="text" name="contact_name_1" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_name_1')); ?>" required>
-                            <label>Contact Name 1</label>
-                        </div>
-                        <div class="input-group">
-                            <input type="text" name="contact_number_1" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_number_1')); ?>" required>
-                            <label>Contact Number 1</label>
-                        </div>
+                    <!-- Contact 1 -->
+                    <div class="input-group">
+                        <input type="text" name="contact_name_1" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_name_1')); ?>" required>
+                        <label>Contact Name 1</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" name="contact_number_1" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_number_1')); ?>" required>
+                        <label>Contact Number 1</label>
+                    </div>
 
-                        <!-- Contact 2 -->
-                        <div class="input-group">
-                            <input type="text" name="contact_name_2" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_name_2')); ?>">
-                            <label>Contact Name 2</label>
-                        </div>
-                        <div class="input-group">
-                            <input type="text" name="contact_number_2" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_number_2')); ?>">
-                            <label>Contact Number 2</label>
-                        </div>
+                    <!-- Contact 2 -->
+                    <div class="input-group">
+                        <input type="text" name="contact_name_2" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_name_2')); ?>">
+                        <label>Contact Name 2</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" name="contact_number_2" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_number_2')); ?>">
+                        <label>Contact Number 2</label>
+                    </div>
 
-                        <!-- Contact 3 -->
-                        <div class="input-group">
-                            <input type="text" name="contact_name_3" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_name_3')); ?>">
-                            <label>Contact Name 3</label>
-                        </div>
-                        <div class="input-group">
-                            <input type="text" name="contact_number_3" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_number_3')); ?>">
-                            <label>Contact Number 3</label>
-                        </div>
+                    <!-- Contact 3 -->
+                    <div class="input-group">
+                        <input type="text" name="contact_name_3" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_name_3')); ?>">
+                        <label>Contact Name 3</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" name="contact_number_3" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_number_3')); ?>">
+                        <label>Contact Number 3</label>
+                    </div>
 
-                        <div class="input-group">
-                            <input type="text" name="enforcement_officer" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer')); ?>" required>
-                            <label>Enforcement Officer</label>
-                        </div>
-                        <div class="input-group">
-                            <input type="text" name="enforcement_officer_contact" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer_contact')); ?>" required>
-                            <label>EO Contact Details</label>
-                        </div>
-                        <div class="input-group">
-                            <input type="text" name="company_name" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" required>
-                            <label>Company Name</label>
-                        </div>
-                        <div class="input-group">
-                            <input type="text" name="cin_number" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'cin_number')); ?>">
-                            <label>CIN Number</label>
-                        </div>
-                        <div class="input-group">
-                            <input type="text" name="gstin_number" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'gstin_number')); ?>">
-                            <label>GSTIN Number</label>
-                        </div>
+                    <div class="input-group">
+                        <input type="text" name="enforcement_officer" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer')); ?>" required>
+                        <label>Enforcement Officer</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" name="enforcement_officer_contact" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer_contact')); ?>" required>
+                        <label>EO Contact Details</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" name="company_name" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" required>
+                        <label>Company Name</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" name="cin_number" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'cin_number')); ?>">
+                        <label>CIN Number</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" name="gstin_number" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'gstin_number')); ?>">
+                        <label>GSTIN Number</label>
                     </div>
                 </div>
             </div>
 
-            <div class="card wide" style="grid-column: span 2;">
+            <div class="card wide">
                 <h3 style="margin-top:0;">Content Details</h3>
                 <div class="grid">
                     <div class="dropdown-container">
                         <span class="dropdown-label">Content Rating</span>
                         <div class="dropdown">
                             <select name="content_rating" id="content_rating">
-                               <?php
-                               $ratings = ['`U` ( Universal )' => 'Universal', '`UA` ( Parental Guidance )' => 'Parental Guidance', '`A` ( Adults Only )' => 'Adults Only', '`S` ( Special )' => 'Special'];
-                               foreach ($ratings as $code => $desc) {
-                                   $selected = (getValue($saved_data, 'content_rating') === $code) ? 'selected' : '';
-                                   echo "<option value=\"" . htmlspecialchars($code) . "\" $selected>" . htmlspecialchars($code) . "</option>";
-                               }
-                               ?>
+                                <?php
+                                $ratings = ['`U` ( Universal )' => 'Universal', '`UA` ( Parental Guidance )' => 'Parental Guidance', '`A` ( Adults Only )' => 'Adults Only', '`S` ( Special )' => 'Special'];
+                                foreach ($ratings as $code => $desc) {
+                                    $selected = (getValue($saved_data, 'content_rating') === $code) ? 'selected' : '';
+                                    echo "<option value=\"" . htmlspecialchars($code) . "\" $selected>" . htmlspecialchars($code) . "</option>";
+                                }
+                                ?>
                             </select>
                         </div>
                     </div>
@@ -163,13 +161,13 @@ include 'header.php';
                         <span class="dropdown-label">Content Type</span>
                         <div class="dropdown">
                             <select name="content_type" id="content_type">
-                               <?php
-                               $types = ['News & Information', 'Entertainment', 'Religious & Spiritual', 'Sports & Recreation'];
-                               foreach ($types as $desc) {
-                                   $selected = (getValue($saved_data, 'content_type') === $desc) ? 'selected' : '';
-                                   echo "<option value=\"" . htmlspecialchars($desc) . "\" $selected>" . htmlspecialchars($desc) . "</option>";
-                               }
-                               ?>
+                                <?php
+                                $types = ['News & Information', 'Entertainment', 'Religious & Spiritual', 'Sports & Recreation'];
+                                foreach ($types as $desc) {
+                                    $selected = (getValue($saved_data, 'content_type') === $desc) ? 'selected' : '';
+                                    echo "<option value=\"" . htmlspecialchars($desc) . "\" $selected>" . htmlspecialchars($desc) . "</option>";
+                                }
+                                ?>
                             </select>
                         </div>
                     </div>
