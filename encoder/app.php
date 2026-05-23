@@ -89,65 +89,65 @@ include 'header.php';
                         <label>Office Address 2</label>
                     </div>
                 </div>
-                <div class="card wide">
+            </div>
+            <div class="card wide">
                 <h3 style="margin-top:0;">Contact Details</h3>
 
-                    <!-- Contact 1 -->
-                    <div class="input-group">
-                        <input type="text" name="contact_name_1" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_name_1')); ?>" required>
-                        <label>Contact Name 1</label>
-                    </div>
-                    <div class="input-group">
-                        <input type="text" name="contact_number_1" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_number_1')); ?>" required>
-                        <label>Contact Number 1</label>
-                    </div>
-
-                    <!-- Contact 2 -->
-                    <div class="input-group">
-                        <input type="text" name="contact_name_2" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_name_2')); ?>">
-                        <label>Contact Name 2</label>
-                    </div>
-                    <div class="input-group">
-                        <input type="text" name="contact_number_2" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_number_2')); ?>">
-                        <label>Contact Number 2</label>
-                    </div>
-
-                    <!-- Contact 3 -->
-                    <div class="input-group">
-                        <input type="text" name="contact_name_3" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_name_3')); ?>">
-                        <label>Contact Name 3</label>
-                    </div>
-                    <div class="input-group">
-                        <input type="text" name="contact_number_3" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_number_3')); ?>">
-                        <label>Contact Number 3</label>
-                    </div>
+                <!-- Contact 1 -->
+                <div class="input-group">
+                    <input type="text" name="contact_name_1" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_name_1')); ?>" required>
+                    <label>Contact Name 1</label>
                 </div>
-                <div class="card wide">
+                <div class="input-group">
+                    <input type="text" name="contact_number_1" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_number_1')); ?>" required>
+                    <label>Contact Number 1</label>
+                </div>
+
+                <!-- Contact 2 -->
+                <div class="input-group">
+                    <input type="text" name="contact_name_2" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_name_2')); ?>">
+                    <label>Contact Name 2</label>
+                </div>
+                <div class="input-group">
+                    <input type="text" name="contact_number_2" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_number_2')); ?>">
+                    <label>Contact Number 2</label>
+                </div>
+
+                <!-- Contact 3 -->
+                <div class="input-group">
+                    <input type="text" name="contact_name_3" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_name_3')); ?>">
+                    <label>Contact Name 3</label>
+                </div>
+                <div class="input-group">
+                    <input type="text" name="contact_number_3" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_number_3')); ?>">
+                    <label>Contact Number 3</label>
+                </div>
+            </div>
+            <div class="card wide">
                 <h3 style="margin-top:0;">Enforcement</h3>
 
-                    <div class="input-group">
-                        <input type="text" name="enforcement_officer" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer')); ?>" required>
-                        <label>Enforcement Officer</label>
-                    </div>
-                    <div class="input-group">
-                        <input type="text" name="enforcement_officer_contact" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer_contact')); ?>" required>
-                        <label>EO Contact Details</label>
-                    </div>
-                </div>
-                <div class="card wide">
-                    <h3 style="margin-top:0;">Company Details</h3>
                 <div class="input-group">
-                        <input type="text" name="company_name" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" required>
-                        <label>Company Name</label>
-                    </div>
-                    <div class="input-group">
-                        <input type="text" name="cin_number" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'cin_number')); ?>">
-                        <label>CIN Number</label>
-                    </div>
-                    <div class="input-group">
-                        <input type="text" name="gstin_number" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'gstin_number')); ?>">
-                        <label>GSTIN Number</label>
-                    </div>
+                    <input type="text" name="enforcement_officer" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer')); ?>" required>
+                    <label>Enforcement Officer</label>
+                </div>
+                <div class="input-group">
+                    <input type="text" name="enforcement_officer_contact" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer_contact')); ?>" required>
+                    <label>EO Contact Details</label>
+                </div>
+            </div>
+            <div class="card wide">
+                <h3 style="margin-top:0;">Company Details</h3>
+                <div class="input-group">
+                    <input type="text" name="company_name" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" required>
+                    <label>Company Name</label>
+                </div>
+                <div class="input-group">
+                    <input type="text" name="cin_number" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'cin_number')); ?>">
+                    <label>CIN Number</label>
+                </div>
+                <div class="input-group">
+                    <input type="text" name="gstin_number" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'gstin_number')); ?>">
+                    <label>GSTIN Number</label>
                 </div>
             </div>
 
