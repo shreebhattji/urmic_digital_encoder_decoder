@@ -49,7 +49,7 @@ if ($https) $text .= "<br>https://" . $domain;
 $text .= "</h5>";
 
 if ($service_display == 'enable') {
-    $text .= "<br><h5>Display Output is Enable</h5>";
+    $text .= "<h5>Display Output is Enable</h5>";
 }
 
 
@@ -92,13 +92,13 @@ if ($service_srt_multiple == 'enable') {
 }
 
 if ($service_udp0 == 'enable') {
-    $text .= "<h5>".$data['udp0']['udp']."</h5>";
+    $text .= "<h5>" . $data['udp0']['udp'] . "</h5>";
 }
 if ($service_udp1 == 'enable') {
-    $text .= "<h5>".$data['udp1']['udp']."</h5>";
+    $text .= "<h5>" . $data['udp1']['udp'] . "</h5>";
 }
 if ($service_udp2 == 'enable') {
-    $text .= "<h5>".$data['udp2']['udp']."</h5>";
+    $text .= "<h5>" . $data['udp2']['udp'] . "</h5>";
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -107,6 +107,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $data = explode("_", $_POST['action']);
 
         switch ($data[0]) {
+
+            case 'main':
+                switch ($data[1]) {
+                    case 'restart':
+                        exec('sudo systemctl enable encoder-display');
+                        exec('sudo systemctl restart encoder-display');
+                        break;
+                    case 'enable':
+                        exec('sudo systemctl enable encoder-display');
+                        exec('sudo systemctl restart encoder-display');
+                        break;
+                    case 'disable':
+                        exec('sudo systemctl stop encoder-display');
+                        exec('sudo systemctl disable encoder-display');
+                        break;
+                }
+                break;
             case 'main':
                 switch ($data[1]) {
                     case 'restart':
@@ -387,6 +404,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="containerindex">
     <div class="grid">
         <div class="card">
+            <h3>Display Output</h3>
+            <?php
+            $status = shell_exec("sudo systemctl is-active encoder-display 2>&1");
+            $status = trim($status);
+
+            if ($status === "active")
+                $serviceEnabled = true;
+            else
+                $serviceEnabled = false;
+            ?>
+
+            <div class="card-row">
+                <div class="card-right">
+                    <div class="service-label">
+                        <strong>Service</strong>
+
+                        <?php if ($serviceEnabled): ?>
+                            <span class="badge badge-enabled">Enabled</span>
+                        <?php else: ?>
+                            <span class="badge badge-disabled">Disabled</span>
+                        <?php endif; ?>
+                    </div>
+
+                    <form method="post" class="service-buttons">
+                        <button type="submit" name="action" value="display_restart" class="btn-restart">
+                            Restart
+                        </button>
+
+                        <?php if ($serviceEnabled): ?>
+                            <button type="submit" name="action" value="display_disable" class="btn-disable">
+                                Disable
+                            </button>
+                        <?php else: ?>
+                            <button type="submit" name="action" value="display_enable" class="btn-enable">
+                                Enable
+                            </button>
+                        <?php endif; ?>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
             <h3>Input Service</h3>
             <?php
             $status = shell_exec("sudo systemctl is-active encoder-main 2>&1");
@@ -499,42 +559,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <button type="submit" name="action" value="rtmp1_disable" class="btn-disable">Disable</button>
                         <?php else: ?>
                             <button type="submit" name="action" value="rtmp1_enable" class="btn-enable">Enable</button>
-                        <?php endif; ?>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <h3>SRT Server</h3>
-            <?php
-            $status = shell_exec("sudo systemctl is-active encoder-srt 2>&1");
-            $status = trim($status);
-
-            if ($status === "active")
-                $serviceEnabled = true;
-            else
-                $serviceEnabled = false;
-            ?>
-
-            <div class="card-row">
-                <div class="card-right">
-                    <div class="service-label">
-                        <strong>Service</strong>
-
-                        <?php if ($serviceEnabled): ?>
-                            <span class="badge badge-enabled">Enabled</span>
-                        <?php else: ?>
-                            <span class="badge badge-disabled">Disabled</span>
-                        <?php endif; ?>
-                    </div>
-
-                    <form method="post" class="service-buttons">
-                        <button type="submit" name="action" value="srt_restart" class="btn-restart">Restart</button>
-
-                        <?php if ($serviceEnabled): ?>
-                            <button type="submit" name="action" value="srt_disable" class="btn-disable">Disable</button>
-                        <?php else: ?>
-                            <button type="submit" name="action" value="srt_enable" class="btn-enable">Enable</button>
                         <?php endif; ?>
                     </form>
                 </div>
@@ -700,6 +724,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </form>
             </div>
         </div>
+        <div class="card">
+            <h3>SRT Server</h3>
+            <?php
+            $status = shell_exec("sudo systemctl is-active encoder-srt 2>&1");
+            $status = trim($status);
+
+            if ($status === "active")
+                $serviceEnabled = true;
+            else
+                $serviceEnabled = false;
+            ?>
+
+            <div class="card-row">
+                <div class="card-right">
+                    <div class="service-label">
+                        <strong>Service</strong>
+
+                        <?php if ($serviceEnabled): ?>
+                            <span class="badge badge-enabled">Enabled</span>
+                        <?php else: ?>
+                            <span class="badge badge-disabled">Disabled</span>
+                        <?php endif; ?>
+                    </div>
+
+                    <form method="post" class="service-buttons">
+                        <button type="submit" name="action" value="srt_restart" class="btn-restart">Restart</button>
+
+                        <?php if ($serviceEnabled): ?>
+                            <button type="submit" name="action" value="srt_disable" class="btn-disable">Disable</button>
+                        <?php else: ?>
+                            <button type="submit" name="action" value="srt_enable" class="btn-enable">Enable</button>
+                        <?php endif; ?>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <div class="card wide">
             <h3>Output Links</h3>
             <?php echo $text; ?>
