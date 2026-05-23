@@ -104,7 +104,7 @@ if (isset($_POST['submit']) || isset($_POST['display'])) {
 
             // 7. Save to primary destination with compression (level 7)
             if (imagepng($dst_img, $destination, 7)) {
-                $filename = basename($destination);
+                $filename = basename($pad_destination);
                 $secondary_destination = $secondary_dir . $filename;
 
                 if (!@copy($destination, $secondary_destination)) {
@@ -153,9 +153,7 @@ include 'header.php';
 <style>
     .preview-container {
         max-height: none;
-        /* Removed height restriction */
         overflow: visible;
-        /* Allow content to be seen */
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -168,7 +166,6 @@ include 'header.php';
     .img-thumbnail {
         max-width: 100%;
         height: auto;
-        /* Maintain aspect ratio */
         object-fit: contain;
         opacity: 0.7;
     }
@@ -208,18 +205,21 @@ include 'header.php';
             <div class="card wide">
                 <h3>App Ad (256x256)</h3>
 
-                <div class="input-group" style="margin-bottom: 15px; border-bottom: 1px solid #444; padding-bottom: 10px;">
-                    <label style="display:block; margin-bottom:5px; font-size:12px; color:#aaa;">App Ad URL</label>
-                    <input type="text" name="app_ad_url" value="<?php $current_json = file_exists($json_file) ? json_decode(file_get_contents($json_file), true) : [];
-                                                                echo htmlspecialchars($current_json['app_ad_url'] ?? '');
-                                                                ?>" style="width:100%; background:#333; border:1px solid #555; color:white; padding:8px; border-radius:4px; box-sizing:border-box;">
+                <!-- Fixed URL Input using Theme Styles -->
+                <div class="input-group">
+                    <input type="text" name="app_ad_url" id="app_ad_url" placeholder=" " value="<?php 
+                        $current_json = file_exists($json_file) ? json_decode(file_get_contents($json_file), true) : [];
+                        echo htmlspecialchars($current_json['app_ad_url'] ?? '');
+                    ?>">
+                    <label for="app_ad_url">Ad click URL</label>
                 </div>
+
                 <div class="input-group">
                     <input type="file" name="app_ad" id="app_ad_file" accept="image/png" style="color: white;">
                     <?php if (file_exists('/var/www/html/app_ad.png')): ?>
                         <div class="mt-2 preview-container">
                             <img src="/app_ad.png" id="preview_app_ad" class="img-thumbnail">
-                            <button type="button" onclick="prepareRemoval('app_ad_file', 'remove_app_ad', 'preview_app_ad')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; margin-top:5px;">Remove Existing</button>
+                            <button type="button" onclick="prepareRemoval('app_ad_file', 'remove_app_ad', 'preview_app_ad')" style="background:none; border:none; color:#ff4d4d; padding:5px; cursor:pointer; font-size:12px; text-decoration:underline; margin-top:5px;">Remove Existing</button>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -229,7 +229,7 @@ include 'header.php';
             <div class="card wide">
                 <h3>Vertical Ad (288x840)</h3>
                 <div class="input-group">
-                    <input type="file" name="vertical_ad" id="file_vertical_ad" accept="image/png" style="color: white;">
+                    <input type="file" name="vertical_ad" id="file_vertical_rad" accept="image/png" style="color: white;">
                     <?php if (file_exists('/var/www/html/vertical_ad.png')): ?>
                         <div class="mt-2 preview-container">
                             <img src="/vertical_ad.png" id="preview_vertical_ad" class="img-thumbnail">
@@ -241,13 +241,13 @@ include 'header.php';
 
             <!-- Horizontal Ad Section -->
             <div class="card wide">
-                <h3>Horizontal Ad (1920x240)</h3>
+                <h3>Horizontal Ad (11920x240)</h3>
                 <div class="input-group">
                     <input type="file" name="horizontal_ad" id="file_horizontal_ad" accept="image/png" style="color: white;">
                     <?php if (file_exists('/var/www/html/horizontal_ad.png')): ?>
                         <div class="mt-2 preview-container">
                             <img src="/horizontal_ad.png" id="preview_horizontal_ad" class="img-thumbnail">
-                            <button type="button" onclick="prepareRemoval('file_horizontal_ad', 'remove_horizontal_ad', 'preview_horizontal_ad')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; margin-top:5px;">Remove Existing</string>
+                            <button type="button" onclick="prepareRemoval('file_horizontal_ad', 'remove_horizontal_ad', 'preview_horizontal_ad')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; margin-top:5px;">Remove Existing</button>
                         </div>
                     <?php endif; ?>
                 </div>
