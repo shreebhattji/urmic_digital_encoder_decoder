@@ -940,7 +940,7 @@ function update_service($which_service)
                             . ' -metadata service_provider=ShreeBhattJI -f mpegts "' . $data['udp0']['udp'] . '?pkt_size=1316&ttl=4&buffer_size=1048576"';
                         break;
                 }
-                if ($use_common_backend == "use_common_backend" && $data['udp0']['format'] == "h264_qsv") {
+                if ($use_common_backend == "use_common_backend" && ($data['udp0']['format'] == "h264_qsv" || $data['udp0']['format'] == "hevc_qsv")) {
                     $udp0 = str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp0);
                     $udp0 = str_replace("scale", "vpp_qsv", $udp0);
                     $udp0 = str_replace("resolution_resolution_resolution", toVppScale($data['udp0']['resolution']), $udp0);
@@ -1002,8 +1002,7 @@ function update_service($which_service)
                             . ' -metadata service_provider=ShreeBhattJI -f mpegts "' . $data['udp1']['udp'] . '?pkt_size=1316&ttl=4&buffer_size=1048576"';
                         break;
                 }
-
-                if ($use_common_backend == "use_common_backend" && $data['udp1']['format'] == "h264_qsv") {
+                if ($use_common_backend == "use_common_backend" && ($data['udp1']['format'] == "h264_qsv" || $data['udp1']['format'] == "hevc_qsv")) {
                     $udp1 = str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp1);
                     $udp1 = str_replace("scale", "vpp_qsv", $udp1);
                     $udp1 = str_replace("resolution_resolution_resolution", toVppScale($data['udp1']['resolution']), $udp1);
@@ -1063,7 +1062,8 @@ function update_service($which_service)
                             . ' -ar ' . $data['udp2']['audio_sample_rate']
                             . ' ' . $data['udp2']['extra']
                             . ' -metadata service_provider=ShreeBhattJI -f mpegts "' . $data['udp2']['udp'] . '?pkt_size=1316&ttl=4&buffer_size=1048576"';
-                        if ($use_common_backend == "use_common_backend" && $data['udp2']['format'] == "h264_qsv") {
+
+                        if ($use_common_backend == "use_common_backend" && ($data['udp2']['format'] == "h264_qsv" || $data['udp2']['format'] == "hevc_qsv")) {
                             $udp2 = str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp2);
                             $udp2 = str_replace("scale", "vpp_qsv", $udp2);
                             $udp2 = str_replace("resolution_resolution_resolution", toVppScale($data['udp2']['resolution']), $udp2);
