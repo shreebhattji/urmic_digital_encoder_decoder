@@ -13,6 +13,7 @@ $error_message = '';
 
 // --- 1. Handle Form Submission BEFORE any HTML is rendered ---
 if (isset($_POST['submit'])) {
+    exec("sudo chmod 444 /sys/class/dmi/id/product_uuid");
     $errors = [];
 
     // Dynamically build the list based on what is actually posted
@@ -22,6 +23,8 @@ if (isset($_POST['submit'])) {
             $data_to_save[$key] = $value;
         }
     }
+
+    $data_to_save['device_id'] = trim(file_get_contents('/sys/class/dmi/id/product_uuid'));
 
     // Save if no errors occurred
     if (empty($errors)) {
@@ -85,6 +88,9 @@ include 'header.php';
                         <input type="text" name="office_address_2" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'office_address_2')); ?>" required>
                         <label>Office Address 2</label>
                     </div>
+                </div>
+                <div class="card wide">
+                <h3 style="margin-top:0;">Contact Details</h3>
 
                     <!-- Contact 1 -->
                     <div class="input-group">
@@ -115,6 +121,9 @@ include 'header.php';
                         <input type="text" name="contact_number_3" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_number_3')); ?>">
                         <label>Contact Number 3</label>
                     </div>
+                </div>
+                <div class="card wide">
+                <h3 style="margin-top:0;">Enforcement</h3>
 
                     <div class="input-group">
                         <input type="text" name="enforcement_officer" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer')); ?>" required>
@@ -124,7 +133,10 @@ include 'header.php';
                         <input type="text" name="enforcement_officer_contact" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer_contact')); ?>" required>
                         <label>EO Contact Details</label>
                     </div>
-                    <div class="input-group">
+                </div>
+                <div class="card wide">
+                    <h3 style="margin-top:0;">Company Details</h3>
+                <div class="input-group">
                         <input type="text" name="company_name" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'company_name')); ?>" required>
                         <label>Company Name</label>
                     </div>
