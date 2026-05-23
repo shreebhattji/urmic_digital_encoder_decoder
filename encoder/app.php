@@ -15,29 +15,7 @@ $error_message = '';
 if (isset($_POST['submit'])) {
     $errors = [];
 
-    // Handle Text Fields
-    $text_fields = [
-        'channel_name',
-        'office_address',
-        'office_address_1',
-        'office_address_2',
-        'contact_name_1',
-        'contact_number_1',
-        'contact_name_2',
-        'contact_number_2',
-        'contact_name_3',
-        'contact_number_3',
-        'enforcement_officer',
-        'enforcement_officer_contact',
-        'company_name',
-        'cin_number',
-        'gstin_number',
-        'content_type',
-        'content_rating',
-        'content_language'
-    ];
-
-    // Dynamically build the list based on what is actually posted to handle the 3 contacts
+    // Dynamically build the list based on what is actually posted
     $data_to_save = [];
     foreach ($_POST as $key => $value) {
         if ($key !== 'submit') {
@@ -47,18 +25,23 @@ if (isset($_POST['submit'])) {
 
     // Save if no errors occurred
     if (empty($errors)) {
-        file_put_contents($json_file, json_encode($data_to_save, JSON_PRETTY_PRINT));
+        if (file_put_contents($json_file, json_encode($data_to_save, JSON_PRETTY_PRINT)) === false) {
+            $errors[] = "Failed to write to file. Check permissions.";
+        }
+    }
+
+    if (!empty($errors)) {
+        $error_message = implode("<br>", $errors);
+    } else {
+        // Redirect to prevent form resubmission on refresh
         header("Location: " . $_SERVER['PHP_SELF']);
         exit;
-    } else {
-        $error_message = implode("<br>", $errors);
     }
 }
 
 // --- 2. Load Data for Display ---
 $saved_data = [];
 if (file_exists($json_file)) {
-    $json_content = file_get_contents($json_file); // Note: fixed typo from your snippet if it was file_get_contents
     $json_content = file_get_contents($json_file);
     $saved_data = json_decode($json_content, true) ?? [];
 }
@@ -91,7 +74,7 @@ include 'header.php';
                             <input type="text" name="channel_name" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'channel_name')); ?>" required>
                             <label>Channel Name</label>
                         </div>
-                        <div class="input/group">
+                        <div class="input-group">
                             <input type="text" name="office_address" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'office_address')); ?>" required>
                             <label>Office Address</label>
                         </div>
@@ -101,7 +84,7 @@ include 'header.php';
                         </div>
                         <div class="input-group">
                             <input type="text" name="office_address_2" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'office_address_2')); ?>" required>
-                            <label>Office Address 2</label>
+                            <label></div>
                         </div>
 
                         <!-- Contact 1 -->
@@ -115,7 +98,7 @@ include 'header.php';
                         </div>
 
                         <!-- Contact 2 -->
-                        <div class="input/group">
+                        <div class="input-group">
                             <input type="text" name="contact_name_2" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_name_2')); ?>">
                             <label>Contact Name 2</label>
                         </div>
@@ -166,10 +149,10 @@ include 'header.php';
                         <div class="dropdown">
                             <select name="content_rating" id="content_rating">
                                <?php
-                                $ratings = ['`U` ( Universal )' => 'Universal', '`UA` ( Parental Guidance )' => 'Parental Guidance', '`A` ( Adults Only )' => 'Adults Only', '`S` ( Special )' => 'Special'];
-                                foreach ($ratings as $code => $desc) {
+                               $ratings = ['`U` ( Universal )' => 'Universal', '`UA` ( Parental Guidance )' => 'Parental Guidance', '`A` ( Adults Only )' => 'Adults Only', '`S` ( Special )' => 'Special'];
+                               foreach ($ratings as $code => $desc) {
                                    $selected = (getValue($saved_data, 'content_rating') === $code) ? 'selected' : '';
-                                    echo "<option value=\"" . htmlspecialchars($code) . "\" $selected>" . htmlspecialchars($code) . "</option>";
+                                   echo "<option value=\"" . htmlspecialchars($code) . "\" $selected>" . htmlspecialchars($code) . "</option>";
                                }
                                ?>
                             </select>
