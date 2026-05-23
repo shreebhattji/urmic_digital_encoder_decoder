@@ -13,91 +13,7 @@ $error_message = '';
 
 // --- 1. Handle Form Submission BEFORE any HTML is rendered ---
 if (isset($_POST['submit'])) {
-    $upload_paths = [
-        'app_ad' => '/var/www/html/app_ad.png',
-        'app_logo' => '/var/www/html/app_logo.png'
-    ];
-    $secondary_dir = '/var/www/encoder/';
-
     $errors = [];
-
-    // Handle File Deletions
-    $to_delete = $_POST['remove_files'] ?? [];
-    foreach ($to_delete as $file_key => $should_delete) {
-        if ($should_delete === '1' && isset($upload_paths[$file_key])) {
-            $path = $upload_paths[$file_key];
-            if (file_exists($path)) {
-                unlink($path);
-                // Also remove from encoder directory
-                $secondary_path = $secondary_dir . basename($path);
-                if (file_exists($secondary_path)) {
-                    unlink($secondary_path);
-                }
-            }
-        }
-    }
-
-    foreach ($upload_paths as $input_name => $destination) {
-        if (isset($_FILES[$input_name]) && $_FILES[$input_name]['error'] == 0) {
-            $tmp_path = $_FILES[$input_name]['tmp_name'];
-
-            // 1. Verify it is actually a PNG using GD/getimagesize
-            $image_info = @getimagesize($tmp_path);
-            if (!$image_info || $image_info[2] !== IMAGETYPE_PNG) {
-                $errors[] = "File for $input_name must be a valid PNG image.";
-                continue;
-            }
-
-
-            $target_width = ($input_name === 'app_logo') ? 128 : 256;
-            $target_height = ($input_name === 'app_logo') ? 128 : 256;
-
-            // 3. Load the source image
-            $src_img = @imagecreatefrompng($tmp_path);
-            if (!$src_img) {
-                $errors[] = "Failed to process $input_name (Invalid PNG data).";
-                continue;
-            }
-
-            // 4. Create a blank truecolor canvas
-            $dst_img = imagecreatetruecolor($target_width, $target_height);
-
-            // 5. Preserve transparency for PNG
-            imagealphablending($dst_img, false);
-            imagesavealpha($dst_img, true);
-            $transparent = imagecolorallocatealpha($dst_img, 255, 255, 255, 127);
-            imagefill($dst_img, 0, 0, $transparent);
-
-            // 6. Resize (Resample)
-            imagecopyresampled(
-                $dst_img,
-                $src_img,
-                0,
-                0,
-                0,
-                0,
-                $target_width,
-                $target_height,
-                imagesx($src_img),
-                imagesy($src_img)
-            );
-
-            // 7. Save to primary destination with compression (level 7)
-            if (imagepng($dst_img, $destination, 7)) {
-                $filename = basename($destination);
-                $secondary_destination = $secondary_dir . $filename;
-
-                if (!copy($destination, $secondary_destination)) {
-                    $errors[] = "Failed to create secondary copy for $input_name.";
-                }
-            } else {
-                $errors[] = "Failed to save processed $input_name.";
-            }
-
-            imagedestroy($src_img);
-            imagedestroy($dst_img);
-        }
-    }
 
     // Handle Text Fields
     $text_fields = [
@@ -105,9 +21,14 @@ if (isset($_POST['submit'])) {
         'office_address',
         'office_address_1',
         'office_address_2',
-        'contact_details',
+        'contact_name_1',
+        'contact_number_1',
+        'contact_name_2',
+        'contact_number_2',
+        'contact_name_3',
+        'contact_number_3',
         'enforcement_officer',
-        'eo_contact_details',
+        'enforcement_officer_contact',
         'company_name',
         'cin_number',
         'gstin_number',
@@ -116,9 +37,12 @@ if (isset($_POST['submit'])) {
         'content_language'
     ];
 
+    // Dynamically build the list based on what is actually posted to handle the 3 contacts
     $data_to_save = [];
-    foreach ($text_fields as $field) {
-        $data_to_save[$field] = $_POST[$field] ?? '';
+    foreach ($_POST as $key => $value) {
+        if ($key !== 'submit') {
+            $data_to_save[$key] = $value;
+        }
     }
 
     // Save if no errors occurred
@@ -134,6 +58,7 @@ if (isset($_POST['submit'])) {
 // --- 2. Load Data for Display ---
 $saved_data = [];
 if (file_exists($json_file)) {
+    $json_content = file_get_contents($json_file); // Note: fixed typo from your snippet if it was file_get_contents
     $json_content = file_get_contents($json_file);
     $saved_data = json_decode($json_content, true) ?? [];
 }
@@ -146,30 +71,8 @@ function getValue($data, $key)
 include 'header.php';
 ?>
 
-<script>
-    function prepareRemoval(inputId, removeInputId, previewImgId) {
-        document.getElementById(inputId).value = "";
-        document.getElementById(removeInputId).value = "1";
-        const imgElement = document.getElementById(previewImgId);
-        if (imgElement) {
-            imgElement.style.display = 'none';
-            const btn = imgElement.nextElementSibling;
-            if (btn && btn.tagName === 'BUTTON') btn.style.display = 'none';
-        }
-        const container = document.getElementById(inputId).parentElement;
-        const label = container.querySelector('small');
-        if (label) {
-            label.innerText = "File marked for removal";
-            label.style.color = "#ff4d4d";
-        }
-    }
-</script>
-
-<form method="POST" enctype="multipart/form-data">
+<form method="POST">
     <div class="containerindex">
-        <input type="hidden" name="remove_files[app_ad]" id="remove_app_ad" value="">
-        <input type="hidden" name="remove_files[app_logo]" id="remove_app_logo" value="">
-
         <div class="grid">
             <h2 style="grid-column: span 2;">Broadcasting Information</h2>
 
@@ -181,14 +84,14 @@ include 'header.php';
 
             <!-- Company Details -->
             <div class="card wide" style="grid-column: span 2;">
-                <h3>General Details</h3>
+                <h3 style="margin-top:0;">General Details</h3>
                 <div class="grid">
                     <div class="input-wrap">
                         <div class="input-group">
                             <input type="text" name="channel_name" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'channel_name')); ?>" required>
                             <label>Channel Name</label>
                         </div>
-                        <div class="input-group">
+                        <div class="input/group">
                             <input type="text" name="office_address" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'office_address')); ?>" required>
                             <label>Office Address</label>
                         </div>
@@ -200,16 +103,43 @@ include 'header.php';
                             <input type="text" name="office_address_2" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'office_address_2')); ?>" required>
                             <label>Office Address 2</label>
                         </div>
+
+                        <!-- Contact 1 -->
                         <div class="input-group">
-                            <input type="text" name="contact_details" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_details')); ?>" required>
-                            <label>Contact Details</label>
+                            <input type="text" name="contact_name_1" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_name_1')); ?>" required>
+                            <label>Contact Name 1</label>
                         </div>
+                        <div class="input-group">
+                            <input type="text" name="contact_number_1" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_number_1')); ?>" required>
+                            <label>Contact Number 1</label>
+                        </div>
+
+                        <!-- Contact 2 -->
+                        <div class="input/group">
+                            <input type="text" name="contact_name_2" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_name_2')); ?>">
+                            <label>Contact Name 2</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" name="contact_number_2" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_number_2')); ?>">
+                            <label>Contact Number 2</label>
+                        </div>
+
+                        <!-- Contact 3 -->
+                        <div class="input-group">
+                            <input type="text" name="contact_name_3" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_name_3')); ?>">
+                            <label>Contact Name 3</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" name="contact_number_3" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'contact_number_3')); ?>">
+                            <label>Contact Number 3</label>
+                        </div>
+
                         <div class="input-group">
                             <input type="text" name="enforcement_officer" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer')); ?>" required>
                             <label>Enforcement Officer</label>
                         </div>
                         <div class="input-group">
-                            <input type="text" name="eo_contact_details" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'eo_contact_details')); ?>" required>
+                            <input type="text" name="enforcement_officer_contact" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'enforcement_officer_contact')); ?>" required>
                             <label>EO Contact Details</label>
                         </div>
                         <div class="input-group">
@@ -229,19 +159,19 @@ include 'header.php';
             </div>
 
             <div class="card wide" style="grid-column: span 2;">
-                <h3>Content Details</h3>
+                <h3 style="margin-top:0;">Content Details</h3>
                 <div class="grid">
                     <div class="dropdown-container">
                         <span class="dropdown-label">Content Rating</span>
                         <div class="dropdown">
                             <select name="content_rating" id="content_rating">
-                                <?php
+                               <?php
                                 $ratings = ['`U` ( Universal )' => 'Universal', '`UA` ( Parental Guidance )' => 'Parental Guidance', '`A` ( Adults Only )' => 'Adults Only', '`S` ( Special )' => 'Special'];
                                 foreach ($ratings as $code => $desc) {
-                                    $selected = (getValue($saved_data, 'content_rating') === $code) ? 'selected' : '';
+                                   $selected = (getValue($saved_data, 'content_rating') === $code) ? 'selected' : '';
                                     echo "<option value=\"" . htmlspecialchars($code) . "\" $selected>" . htmlspecialchars($code) . "</option>";
-                                }
-                                ?>
+                               }
+                               ?>
                             </select>
                         </div>
                     </div>
@@ -250,13 +180,13 @@ include 'header.php';
                         <span class="dropdown-label">Content Type</span>
                         <div class="dropdown">
                             <select name="content_type" id="content_type">
-                                <?php
-                                $types = ['News & Information', 'Entertainment', 'Religious & Spiritual', 'Sports & Recreation'];
-                                foreach ($types as $desc) {
-                                    $selected = (getValue($saved_data, 'content_type') === $desc) ? 'selected' : '';
-                                    echo "<option value=\"" . htmlspecialchars($desc) . "\" $selected>" . htmlspecialchars($desc) . "</option>";
-                                }
-                                ?>
+                               <?php
+                               $types = ['News & Information', 'Entertainment', 'Religious & Spiritual', 'Sports & Recreation'];
+                               foreach ($types as $desc) {
+                                   $selected = (getValue($saved_data, 'content_type') === $desc) ? 'selected' : '';
+                                   echo "<option value=\"" . htmlspecialchars($desc) . "\" $selected>" . htmlspecialchars($desc) . "</option>";
+                               }
+                               ?>
                             </select>
                         </div>
                     </div>
@@ -265,38 +195,6 @@ include 'header.php';
                         <input type="text" name="content_language" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'content_language')); ?>" required>
                         <label>Content Language</label>
                     </div>
-                </div>
-            </div>
-
-            <!-- Upload Ad Section -->
-            <div class="card">
-                <h3>Upload Ad (PNG)</h3>
-                <div class="input-group">
-                    <input type="file" name="app_ad" id="app_ad_file" accept="image/png" style="color: white;">
-                    <?php if (isset($_FILES['app_ad']) && $_FILES['app_ad']['tmp_name'] != ''): ?>
-                        <div class="mt-2"><small style="color: #aaa;">New file selected</small></div>
-                    <?php elseif (file_exists('/var/www/html/app_ad.png')): ?>
-                        <div class="mt-2">
-                            <img src="/app_ad.png" id="preview_app_ad" class="img-thumbnail" style="max-height: 60px; opacity: 0.7;">
-                            <button type="button" onclick="prepareRemoval('app_ad_file', 'remove_app_ad', 'preview_app_ad')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; display:block; margin-top:5px;">Remove Existing</button>
-                        </div>
-                    <?php endif; ?>
-                </div>
-            </div>
-
-            <!-- Upload Logo Section -->
-            <div class="card">
-                <h3>Upload Logo (PNG)</h3>
-                <div class="input-group">
-                    <input type="file" name="app_logo" id="file_app_logo" accept="image/png" style="color: white;">
-                    <?php if (isset($_FILES['app_logo']) && $_FILES['app_logo']['tmp_name'] != ''): ?>
-                        <div class="mt-2"><small style="color: #aaa;">New file selected</small></div>
-                    <?php elseif (file_exists('/var/www/html/app_logo.png')): ?>
-                        <div class="mt-2">
-                            <img src="/app_logo.png" id="preview_app_logo" class="img-thumbnail" style="max-height: 60px; opacity: 0.7;">
-                            <button type="button" onclick="prepareRemoval('file_app_logo', 'remove_app_logo', 'preview_app_logo')" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:12px; text-decoration:underline; display:block; margin-top:5px;">Remove Existing</button>
-                        </div>
-                    <?php endif; ?>
                 </div>
             </div>
         </div>
