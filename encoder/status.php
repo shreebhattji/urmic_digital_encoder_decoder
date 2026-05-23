@@ -29,6 +29,8 @@ if (file_exists($jsonFile)) {
     $data = json_decode($raw, true);
 }
 
+$service_display = $data['service_display'];
+
 $service_rtmp0_multiple = $data['service_rtmp0_multiple'];
 $service_rtmp0_hls = $data['service_rtmp0_hls'];
 $service_rtmp0_dash = $data['service_rtmp0_dash'];
@@ -37,10 +39,20 @@ $service_rtmp1_hls = $data['service_rtmp1_hls'];
 $service_rtmp1_dash = $data['service_rtmp1_dash'];
 $service_srt_multiple = $data['service_srt_multiple'];
 
+$service_udp0 = $data['service_udp0'];
+$service_udp1 = $data['service_udp1'];
+$service_udp2 = $data['service_udp2'];
+
 $text = "<h3>Encoder</h3>";
 $text .= "<h5>http://" . $domain;
 if ($https) $text .= "<br>https://" . $domain;
 $text .= "</h5>";
+
+if ($service_display == 'enable') {
+    $text .= "<br><h5>Display Output is Enable</h5>";
+}
+
+
 
 if ($service_rtmp0_multiple == 'enable') {
     $text .= "<h5>rtmp://" . $domain . "/shree/bhattji<br>";
@@ -77,6 +89,16 @@ if ($service_rtmp1_multiple == 'enable') {
 
 if ($service_srt_multiple == 'enable') {
     $text .= "<h5>srt://" . $domain . ":1937?streamid=shree/bhatt/ji</h5>";
+}
+
+if ($service_udp0 == 'enable') {
+    $text .= "<h5>".$data['udp0']['udp']."</h5>";
+}
+if ($service_udp1 == 'enable') {
+    $text .= "<h5>".$data['udp1']['udp']."</h5>";
+}
+if ($service_udp2 == 'enable') {
+    $text .= "<h5>".$data['udp2']['udp']."</h5>";
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

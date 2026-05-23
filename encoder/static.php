@@ -857,7 +857,7 @@ function update_service($which_service)
             break;
         case "srt";
             update_service_backend('srt', $srt_pass1, $srt_pass2);
-            if ($service_srt_multiple) {
+            if ($service_srt_multiple === "enable") {
                 $srt = 'ffmpeg -hwaccel auto -hide_banner  -fflags +discardcorrupt -i ';
                 switch ($use_common_backend) {
                     case "copy_input":
@@ -1108,11 +1108,6 @@ function update_service($which_service)
             break;
     }
 }
-
-
-function update_firewall() {}
-
-function update_firmware() {}
 
 function update_service_backend($service, $srt_pass1, $srt_pass2)
 {
