@@ -876,7 +876,7 @@ function update_service($which_service)
                         break;
                     case "disable":
                         $srt .= ' -c:v ' . $data['srt']['format']
-                            . ' -vf "scale=' . str_replace("x", ":", $data['srt']['resolution']) . '"'
+                            . ' -vf "scale=resolution_resolution_resolution"'
                             . ' -b:v ' . $data['srt']['data_rate']
                             . ' -maxrate ' . $data['srt']['data_rate']
                             . ' -bufsize ' . $data['srt']['data_rate']
@@ -889,6 +889,15 @@ function update_service($which_service)
                             . ' ' . $data['srt']['extra']
                             . ' -pkt_size 1316 -flush_packets 0 -f mpegts "srt://127.0.0.1:1937?streamid=' . $srt_pass1 . '/' . $srt_pass2 . '/ji"';
                         break;
+                }
+
+                if ($use_common_backend == "use_common_backend" && ($data['srt']['format'] == "h264_qsv" || $data['srt']['format'] == "hevc_qsv")) {
+                    $udp0 = str_replace("ffmpeg -hwaccel auto -hide_banner  -fflags +discardcorrupt -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $srt);
+                    $udp0 = str_replace("scale", "vpp_qsv", $srt);
+                    $udp0 = str_replace("resolution_resolution_resolution", toVppScale($data['srt']['resolution']), $srt);
+                    $udp0 = str_replace("h264_qsv", "h264_qsv -profile:v main -global_quality 20 ", $srt);
+                } else {
+                    $udp0 = str_replace("resolution_resolution_resolution", str_replace("x", ":", $data['srt']['resolution']), $srt);
                 }
 
                 $file = "/var/www/encoder-srt.sh";
