@@ -41,7 +41,7 @@ $defaults = [
   ],
   'rtmp1' => [
     'common_backend' => 'disable',
-    'resolution' => '720x576',
+    'resolution' => '702x576',
     'data_rate' => '1.5M',
     'framerate' => '25',
     'gop' => '25',
@@ -423,7 +423,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <div class="dropdown">
                 <select name="rtmp0_resolution" id="rtmp0_resolution">
                   <option value="720x480" <?php if ($data['rtmp0']['resolution'] == '720x480') echo 'selected'; ?>>480p 720x480 NTSC DVD</option>
-                  <option value="720x576" <?php if ($data['rtmp0']['resolution'] == '720x576') echo 'selected'; ?>>576p 720x576 PAL DVD</option>
+                  <option value="702x576" <?php if ($data['rtmp0']['resolution'] == '702x576') echo 'selected'; ?>>576p 702x576 PAL DVD</option>
                   <option value="1280x720" <?php if ($data['rtmp0']['resolution'] == '1280x720') echo 'selected'; ?>>720p 1280x720 HD</option>
                   <option value="1920x1080" <?php if ($data['rtmp0']['resolution'] == '1920x1080') echo 'selected'; ?>>1080p 1920x1080 FHD</option>
                   <option value="2560x1440" <?php if ($data['rtmp0']['resolution'] == '2560x1440') echo 'selected'; ?>>2k 2560x1440 QHD</option>
@@ -562,7 +562,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <div class="dropdown">
                 <select name="rtmp1_resolution" id="rtmp1_resolution">
                   <option value="720x480" <?php if ($data['rtmp1']['resolution'] == '720x480') echo 'selected'; ?>>480p 720x480 NTSC DVD</option>
-                  <option value="720x576" <?php if ($data['rtmp1']['resolution'] == '720x576') echo 'selected'; ?>>576p 720x576 PAL DVD</option>
+                  <option value="702x576" <?php if ($data['rtmp1']['resolution'] == '702x576') echo 'selected'; ?>>576p 702x576 PAL DVD</option>
                   <option value="1280x720" <?php if ($data['rtmp1']['resolution'] == '1280x720') echo 'selected'; ?>>720p 1280x720 HD</option>
                   <option value="1920x1080" <?php if ($data['rtmp1']['resolution'] == '1920x1080') echo 'selected'; ?>>1080p 1920x1080 FHD</option>
                   <option value="2560x1440" <?php if ($data['rtmp1']['resolution'] == '2560x1440') echo 'selected'; ?>>2k 2560x1440 QHD</option>
@@ -1108,6 +1108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <select name="srt_format" id="srt_format">
                   <option value="h264_qsv" <?php if ($data['srt']['format'] == 'h264_qsv') echo 'selected'; ?>>h264</option>
                   <option value="hevc_qsv" <?php if ($data['srt']['format'] == 'hevc_qsv') echo 'selected'; ?>>h265</option>
+                  <option value="vp9_qsv" <?php if ($data['srt']['format'] == 'vp9_qsv') echo 'selected'; ?>>vp9</option>
                 </select>
               </div>
             </div>
@@ -1116,7 +1117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <div class="dropdown">
                 <select name="srt_resolution" id="srt_resolution">
                   <option value="720x480" <?php if ($data['srt']['resolution'] == '720x480') echo 'selected'; ?>>480p 720x480 NTSC DVD</option>
-                  <option value="720x576" <?php if ($data['srt']['resolution'] == '720x576') echo 'selected'; ?>>576p 720x576 PAL DVD</option>
+                  <option value="702x576" <?php if ($data['srt']['resolution'] == '702x576') echo 'selected'; ?>>576p 702x576 PAL DVD</option>
                   <option value="1280x720" <?php if ($data['srt']['resolution'] == '1280x720') echo 'selected'; ?>>720p 1280x720 HD</option>
                   <option value="1920x1080" <?php if ($data['srt']['resolution'] == '1920x1080') echo 'selected'; ?>>1080p 1920x1080 FHD</option>
                   <option value="2560x1440" <?php if ($data['srt']['resolution'] == '2560x1440') echo 'selected'; ?>>2k 2560x1440 QHD</option>

@@ -398,9 +398,9 @@ function update_service($which_service)
     $hdmi_saturation = $data['hdmi']['saturation'];
     $hdmi_hue = $data['hdmi']['hue'];
 
-    if ($srt_pass1 == "")
+    if ($srt_pass1 === "")
         $srt_pass1 = generateRandomString(16);
-    if ($srt_pass2 == "")
+    if ($srt_pass2 === "")
         $srt_pass2 = generateRandomString(16);
     switch ($use_common_backend) {
         case "copy_input":
@@ -721,7 +721,7 @@ function update_service($which_service)
 
     switch ($which_service) {
         case 'input':
-            if ($use_common_backend == "") {
+            if ($use_common_backend === "") {
                 exec("sudo systemctl stop encoder-main");
                 exec("sudo systemctl disable encoder-main");
             } else {
@@ -891,7 +891,7 @@ function update_service($which_service)
                         break;
                 }
 
-                if ($use_common_backend == "use_common_backend" && ($data['srt']['format'] == "h264_qsv" || $data['srt']['format'] == "hevc_qsv")) {
+                if ($use_common_backend === "use_common_backend" && ($data['srt']['format'] === "h264_qsv" || $data['srt']['format'] === "hevc_qsv")) {
                     $udp0 = str_replace("ffmpeg -hwaccel auto -hide_banner  -fflags +discardcorrupt -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $srt);
                     $udp0 = str_replace("scale", "vpp_qsv", $srt);
                     $udp0 = str_replace("resolution_resolution_resolution", toVppScale($data['srt']['resolution']), $srt);
@@ -949,7 +949,7 @@ function update_service($which_service)
                             . ' -metadata service_provider=ShreeBhattJI -f mpegts "' . $data['udp0']['udp'] . '?pkt_size=1316&ttl=4&buffer_size=1048576"';
                         break;
                 }
-                if ($use_common_backend == "use_common_backend" && ($data['udp0']['format'] == "h264_qsv" || $data['udp0']['format'] == "hevc_qsv")) {
+                if ($use_common_backend === "use_common_backend" && ($data['udp0']['format'] === "h264_qsv" || $data['udp0']['format'] === "hevc_qsv")) {
                     $udp0 = str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp0);
                     $udp0 = str_replace("scale", "vpp_qsv", $udp0);
                     $udp0 = str_replace("resolution_resolution_resolution", toVppScale($data['udp0']['resolution']), $udp0);
@@ -957,7 +957,7 @@ function update_service($which_service)
                 } else {
                     $udp0 = str_replace("resolution_resolution_resolution", str_replace("x", ":", $data['udp0']['resolution']), $udp0);
                 }
-                if ($data['udp0']['service_udp0_output'] == "usb") {
+                if ($data['udp0']['service_udp0_output'] === "usb") {
                     $udp0 = str_replace("pkt_size=1316", "pkt_size=1316&localaddr=172.16.111.111", $udp0);
                 }
                 if ($data['udp0']['udp0_service_name'] != "") {
@@ -1011,7 +1011,7 @@ function update_service($which_service)
                             . ' -metadata service_provider=ShreeBhattJI -f mpegts "' . $data['udp1']['udp'] . '?pkt_size=1316&ttl=4&buffer_size=1048576"';
                         break;
                 }
-                if ($use_common_backend == "use_common_backend" && ($data['udp1']['format'] == "h264_qsv" || $data['udp1']['format'] == "hevc_qsv")) {
+                if ($use_common_backend === "use_common_backend" && ($data['udp1']['format'] === "h264_qsv" || $data['udp1']['format'] === "hevc_qsv")) {
                     $udp1 = str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp1);
                     $udp1 = str_replace("scale", "vpp_qsv", $udp1);
                     $udp1 = str_replace("resolution_resolution_resolution", toVppScale($data['udp1']['resolution']), $udp1);
@@ -1072,7 +1072,7 @@ function update_service($which_service)
                             . ' ' . $data['udp2']['extra']
                             . ' -metadata service_provider=ShreeBhattJI -f mpegts "' . $data['udp2']['udp'] . '?pkt_size=1316&ttl=4&buffer_size=1048576"';
 
-                        if ($use_common_backend == "use_common_backend" && ($data['udp2']['format'] == "h264_qsv" || $data['udp2']['format'] == "hevc_qsv")) {
+                        if ($use_common_backend === "use_common_backend" && ($data['udp2']['format'] === "h264_qsv" || $data['udp2']['format'] === "hevc_qsv")) {
                             $udp2 = str_replace("ffmpeg -hwaccel auto -hide_banner -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $udp2);
                             $udp2 = str_replace("scale", "vpp_qsv", $udp2);
                             $udp2 = str_replace("resolution_resolution_resolution", toVppScale($data['udp2']['resolution']), $udp2);
@@ -1080,7 +1080,7 @@ function update_service($which_service)
                         } else {
                             $udp2 = str_replace("resolution_resolution_resolution", str_replace("x", ":", $data['udp2']['resolution']), $udp2);
                         }
-                        if ($data['udp2']['service_udp2_output'] == "usb") {
+                        if ($data['udp2']['service_udp2_output'] === "usb") {
                             $udp2 = str_replace("pkt_size=1316", "pkt_size=1316&localaddr=172.16.111.111", $udp2);
                         }
                         if ($data['udp2']['udp2_service_name'] != "") {
