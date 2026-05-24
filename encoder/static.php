@@ -891,13 +891,13 @@ function update_service($which_service)
                         break;
                 }
 
-                if ($use_common_backend === "use_common_backend" && ($data['srt']['format'] === "h264_qsv" || $data['srt']['format'] === "hevc_qsv")) {
-                    $udp0 = str_replace("ffmpeg -hwaccel auto -hide_banner  -fflags +discardcorrupt -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $srt);
-                    $udp0 = str_replace("scale", "vpp_qsv", $srt);
-                    $udp0 = str_replace("resolution_resolution_resolution", toVppScale($data['srt']['resolution']), $srt);
-                    $udp0 = str_replace("h264_qsv", "h264_qsv -profile:v main -global_quality 20 ", $srt);
+                if ($use_common_backend === "use_common_backend" && ($data['srt']['format'] === "h264_qsv" || $data['srt']['format'])) {
+                    $srt = str_replace("ffmpeg -hwaccel auto -hide_banner  -fflags +discardcorrupt -i", "ffmpeg  -hwaccel qsv -hwaccel_output_format qsv -hide_banner -i ", $srt);
+                    $srt = str_replace("scale", "vpp_qsv", $srt);
+                    $srt = str_replace("resolution_resolution_resolution", toVppScale($data['srt']['resolution']), $srt);
+                    $srt = str_replace("h264_qsv", "h264_qsv -profile:v main -global_quality 20 ", $srt);
                 } else {
-                    $udp0 = str_replace("resolution_resolution_resolution", str_replace("x", ":", $data['srt']['resolution']), $srt);
+                    $srt = str_replace("resolution_resolution_resolution", str_replace("x", ":", $data['srt']['resolution']), $srt);
                 }
 
                 $file = "/var/www/encoder-srt.sh";
