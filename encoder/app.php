@@ -190,6 +190,33 @@ include 'header.php';
                     </div>
                 </div>
             </div>
+
+            <!-- External Links Card -->
+            <div class="card wide">
+                <h3 style="margin-top:0;">External Links</h3>
+                <div class="input-wrap">
+                    <div class="input-group">
+                        <input type="text" name="website_url" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'website_url')); ?>">
+                        <label>Website URL</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" name="facebook_url" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'facebook_url')); ?>">
+                        <label>Facebook URL</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" name="youtube_url" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'youtube_url')); ?>">
+                        <label>YouTube URL</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" name="telegram_url" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'telegram_url')); ?>">
+                        <label>Telegram URL</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" name="linkedin_url" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'linkedin_url')); ?>">
+                        <label>LinkedIn URL</label>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div style="text-align:center; width:100%; margin: 40px 0;">
