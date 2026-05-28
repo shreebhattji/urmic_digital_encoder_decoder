@@ -219,6 +219,10 @@ include 'header.php';
                         <input type="text" name="linkedin_url" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'linkedin_url')); ?>">
                         <label>LinkedIn URL</label>
                     </div>
+                    <div class="input-group">
+                        <input type="text" name="twitter_url" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'twitter_url')); ?>">
+                        <label>X.com URL</label>
+                    </div>
                 </div>
             </div>
         </div>
