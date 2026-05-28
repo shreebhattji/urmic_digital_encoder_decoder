@@ -212,6 +212,10 @@ include 'header.php';
                         <label>Telegram URL</label>
                     </div>
                     <div class="input-group">
+                        <input type="text" name="instagram_url" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'instagram_url')); ?>">
+                        <label>Instragram</label>
+                    </div>
+                    <div class="input-group">
                         <input type="text" name="linkedin_url" placeholder=" " value="<?php echo htmlspecialchars(getValue($saved_data, 'linkedin_url')); ?>">
                         <label>LinkedIn URL</label>
                     </div>
