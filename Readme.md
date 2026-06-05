@@ -1,27 +1,29 @@
 Urmi Universal Encoder Decoder ( INTELQSV )
 ----------------------------------------
 
-H264 - H265 -  Encoder/Decoder 
-HLS - DASH - RTMP - SRT - UDP - HTTPS -  FFMPEG Output Support
+H264 - H265 -  Encoder/Decoder  
+HLS - DASH - RTMP - SRT - UDP - HTTPS -  FFMPEG Output Support  
 
 Instalation 
 ----------------------------------------
 
 Install Ubuntu server 24.04 and run following commands as root 
 
-cd /tmp
-apt install git -y
-cd /tmp
-git clone --depth 1 https://git.dbhatt.org/hw_partner/urmic_digital_encoder_decoder.git
-cd urmic_digital_encoder_decoder
-chmod +x install.sh
-./install.sh
+cd /tmp;  
+apt install git -y;  
+cd /tmp;  
+git clone --depth 1 https://git.dbhatt.org/hw_partner/urmic_digital_encoder_decoder.git;  
+cd urmic_digital_encoder_decoder;  
+chmod +x install.sh;  
+./install.sh  
 
-after reboot visit https://IP:8080
-default Username :- shreebhattji
-default password :- foreverstreamingpartner
 
-Under Licence  https://github.com/shreebhattji/Urmi 
+after reboot visit https://IP:8080  
+default Username :- shreebhattji  
+default password :- foreverstreamingpartner  
+
+
+Under Licence  https://github.com/shreebhattji/Urmi  
 
 
 Urmi an "you happy me happy" license
