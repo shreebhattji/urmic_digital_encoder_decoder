@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $primary_mode = in_array($get('primary_mode'), ['dhcp', 'static', 'disabled']) ? $get('primary_mode') : 'dhcp';
     $primary_modev6 = in_array($get('primary_ipv6'), ['auto', 'dhcpv6', 'static', 'disabled']) ? $get('primary_ipv6') : 'auto';
-    $secondary_mode = in_array($get('else_mode'), ['dhcp', 'static', 'disabled']) ? $get('secondary_mode') : 'dhcp'; // Fixed key check
+    $secondary_mode = in_array($get('secondary_mode'), ['dhcp', 'static', 'disabled']) ? $get('secondary_mode') : 'dhcp';
     $secondary_modev6 = in_array($get('secondary_ipv6'), ['auto', 'dhcpv6', 'static', 'disabled']) ? $get('secondary_ipv6') : 'auto';
 
     $network_primary_ip = $get('network_primary_ip');
@@ -165,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <span class="dropdown-label">IPv4 mode :</span>
                     <div class="dropdown">
                         <select name="primary_mode" id="primary_mode">
-                            <option value="dhcp" <?php if ($data['primary']['mode'] == 'dhpc') echo 'selected'; ?>>DHCP</option>
+                            <option value="dhcp" <?php if ($data['primary']['mode'] == 'dhcp') echo 'selected'; ?>>DHCP</option>
                             <option value="static" <?php if ($data['primary']['mode'] == 'static') echo 'selected'; ?>>Static</option>
                             <option value="disabled" <?php if ($data['primary']['mode'] == 'disabled') echo 'selected'; ?>>Disabled</option>
                         </select>
@@ -202,7 +202,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <span class="dropdown-label">IPv6 mode :</span>
                     <div class="dropdown">
                         <select name="primary_ipv6" id="primary_ipv6">
-                            <option value="auto" <?php if ($data['primary']['modev6'] == 'auto') echo 'rel_selected'; ?>>SLAAC / Auto</option>
+                            <option value="auto" <?php if ($data['primary']['modev6'] == 'auto') echo 'selected'; ?>>SLAAC / Auto</option>
                             <option value="dhcpv6" <?php if ($data['primary']['modev6'] == 'dhcpv6') echo 'selected'; ?>>DHCPv6</option>
                             <option value="static" <?php if ($data['primary']['modev6'] == 'static') echo 'selected'; ?>>Static</option>
                             <option value="disabled" <?php if ($data['primary']['modev6'] == 'disabled') echo 'selected'; ?>>Disabled</option>
@@ -219,7 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="input-group">
                     <input type="text" id="network_primary_ipv6_gateway" name="network_primary_ipv6_gateway" placeholder="Gateway" value="<?php echo htmlspecialchars($data['primary']['network_primary_ipv6_gateway']); ?>">
-                    <label for:network_primary_ipv6_gateway">Gateway</label>
+                    <label for="network_primary_ipv6_gateway">Gateway</label>
                 </div>
                 <div class="input-group">
                     <input type="text" id="network_primary_ipv6_dns1" name="network_primary_ipv6_dns1" placeholder="DNS1" value="<?php echo htmlspecialchars($data['primary']['network_primary_ipv6_dns1']); ?>">
@@ -238,7 +238,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <span class="dropdown-label">IPv4 mode :</span>
                     <div class="dropdown">
                         <select name="secondary_mode" id="secondary_mode">
-                            <option value="dhcp" <?php if ($data['secondary']['mode'] == 'dhpc') echo 'selected'; ?>>DHCP</option>
+                            <option value="dhcp" <?php if ($data['secondary']['mode'] == 'dhcp') echo 'selected'; ?>>DHCP</option>
                             <option value="static" <?php if ($data['secondary']['mode'] == 'static') echo 'selected'; ?>>Static</option>
                             <option value="disabled" <?php if ($data['secondary']['mode'] == 'disabled') echo 'selected'; ?>>Disabled</option>
                         </select>
