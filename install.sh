@@ -516,7 +516,7 @@ DEVICE_ID="$(sudo cat /sys/class/dmi/id/product_uuid | tr -d '\n')"
 sudo sed -i 's/certificatecertificatecertificatecertificate/'$DEVICE_ID'/g' /var/www/html/certification.html
 
 FSTAB="/etc/fstab"
-TMPFS_LINE="tmpfs  /mnt/ramdisk  tmpfs  size=1536M,mode=0755  0  0"
+TMPFS_LINE="tmpfs  /mnt/ramdisk  tmpfs  size=2048M,mode=0755  0  0"
 
 BIND_LINES=(
 "/mnt/ramdisk/hls       /var/www/html/hls       none  bind  0  0"
@@ -530,7 +530,7 @@ mkdir -p /mnt/ramdisk/{hls,dash,scramble} /var/www/{hls,dash,scramble}
 # Check if tmpfs is mounted
 if ! mountpoint -q /mnt/ramdisk; then
   echo "tmpfs not mounted. Mounting now..."
-  mount -t tmpfs -o size=1536M,mode=0755 tmpfs /mnt/ramdisk
+  mount -t tmpfs -o size=2048M,mode=0755 tmpfs /mnt/ramdisk
 fi
 
 # Ensure bind mounts are active
@@ -556,5 +556,8 @@ done
 
 # Validate
 mount -a
+
+sudo systemctl stop syslog.socket
+sudo systemctl disable syslog.socket
 
 sudo reboot;
