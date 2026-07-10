@@ -12,7 +12,7 @@ Install Ubuntu server 24.04 and run following commands as root
 cd /tmp;  
 apt install git -y;  
 cd /tmp;  
-git clone --depth 1 https://git.dbhatt.org/hw_partner/urmic_digital_encoder_decoder.git;  
+git clone --depth 1 https://git.urmic.org/hw_partner/urmic_digital_encoder_decoder.git;  
 cd urmic_digital_encoder_decoder;  
 chmod +x install.sh;  
 ./install.sh  
